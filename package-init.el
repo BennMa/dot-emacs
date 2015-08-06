@@ -1,5 +1,43 @@
+(use-package helm-config
+  :defer 5
+  :bind (("C-c h"   . helm-command-prefix)
+         ("C-h a"   . helm-apropos)
+         ("C-x f"   . helm-multi-files)
+         ("M-s b"   . helm-occur)
+         ("M-s n"   . my-helm-find)
+         ("M-H"     . helm-resume))
+
+  :preface
+  (defun my-helm-find ()
+    (interactive)
+    (helm-find nil))
+
+  :config
+  (use-package helm-commands)
+  (use-package helm-files)
+  (use-package helm-buffers)
+  (use-package helm-mode
+    :diminish helm-mode
+    :init
+    (helm-mode 1))
+
+  (use-package helm-ls-git)
+
+  ;; (use-package helm-match-plugin
+  ;;   :config
+  ;;   (helm-match-plugin-mode 1))
+
+  (helm-autoresize-mode 1)
+
+  (bind-key "<tab>" 'helm-execute-persistent-action helm-map)
+  (bind-key "C-i" 'helm-execute-persistent-action helm-map)
+  (bind-key "C-z" 'helm-select-action helm-map)
+  (bind-key "M-v" 'helm-previous-page helm-map)
+
+  (when (executable-find "curl")
+    (setq helm-google-suggest-use-curl-p t)))
+
 (use-package projectile
-  :diminish projectile-mode
   :commands projectile-global-mode
   :defer 5
   :bind-keymap ("M-p" . projectile-command-map)
@@ -209,7 +247,7 @@
      (font-lock-comment-delimiter-face ((t (:foreground "#465457" :slant italic))))
      (font-lock-constant-face ((t (:foreground "#AE81FF"))))
      (font-lock-doc-face ((t (:foreground "#E6DB74" :slant italic))))
-     (font-lock-function-name-face ((t (:foreground "#57d001" :height 160)))) ;; #F92672
+     (font-lock-function-name-face ((t (:foreground "#57d001")))) ;; #F92672  :height 160
      (font-lock-keyword-face ((t (:foreground "#66D9EF"))))
      (font-lock-negation-char-face ((t (:weight bold))))
      (font-lock-preprocessor-face ((t (:foreground "#A6E22E"))))
@@ -280,10 +318,200 @@
   (window-number-meta-mode))
 
 (use-package auto-highlight-symbol
+  :demand t
   :bind (("C-1" . ahs-backward)
          ("C-2" . ahs-forward))
   :config
   (global-auto-highlight-symbol-mode t))
+
+(use-package cus-edit
+  :defer 5
+  :config
+  (use-package initsplit))
+
+(use-package org-init
+  :commands my-org-startup
+  :bind (("M-C"   . jump-to-org-agenda)
+         ("M-m"   . org-smart-capture)
+         ("M-M"   . org-inline-note)
+         ("C-c a" . org-agenda)
+         ("C-c S" . org-store-link)
+         ("C-c l" . org-insert-link)
+         ("C-. n" . org-velocity-read))
+  :defer 30
+  :config
+  ;; (run-with-idle-timer 300 t 'jump-to-org-agenda)
+  (my-org-startup)
+  (add-hook 'org-mode-hook #'(lambda () (yas-minor-mode 1))))
+
+
+(use-package dired
+  :bind ("C-c J" . dired-double-jump)
+  :preface
+  (defvar mark-files-cache (make-hash-table :test #'equal))
+
+  (defun mark-similar-versions (name)
+    (let ((pat name))
+      (if (string-match "^\\(.+?\\)-[0-9._-]+$" pat)
+          (setq pat (match-string 1 pat)))
+      (or (gethash pat mark-files-cache)
+          (ignore (puthash pat t mark-files-cache)))))
+
+  (defun dired-mark-similar-version ()
+    (interactive)
+    (setq mark-files-cache (make-hash-table :test #'equal))
+    (dired-mark-sexp '(mark-similar-versions name)))
+
+  (defun dired-double-jump (first-dir second-dir)
+    (interactive
+     (list (read-directory-name "First directory: "
+                                (expand-file-name "~")
+                                nil nil "dl/")
+           (read-directory-name "Second directory: "
+                                (expand-file-name "~")
+                                nil nil "Archives/")))
+    (dired first-dir)
+    (dired-other-window second-dir))
+
+  :config
+  (use-package dired-x)
+  (use-package dired+
+    :config
+    (unbind-key "M-s f" dired-mode-map))
+
+  (bind-key "l" 'dired-up-directory dired-mode-map)
+
+  (defun my-dired-switch-window ()
+    (interactive)
+    (if (eq major-mode 'sr-mode)
+        (call-interactively #'sr-change-window)
+      (call-interactively #'other-window)))
+
+  (bind-key "<tab>" 'my-dired-switch-window dired-mode-map)
+
+  (bind-key "M-!" 'async-shell-command dired-mode-map)
+  (unbind-key "M-G" dired-mode-map)
+
+  (defadvice dired-omit-startup (after diminish-dired-omit activate)
+    "Make sure to remove \"Omit\" from the modeline."
+    (diminish 'dired-omit-mode) dired-mode-map)
+
+  (defadvice dired-next-line (around dired-next-line+ activate)
+    "Replace current buffer if file is a directory."
+    ad-do-it
+    (while (and  (not  (eobp)) (not ad-return-value))
+      (forward-line)
+      (setq ad-return-value(dired-move-to-filename)))
+    (when (eobp)
+      (forward-line -1)
+      (setq ad-return-value(dired-move-to-filename))))
+
+  (defadvice dired-previous-line (around dired-previous-line+ activate)
+    "Replace current buffer if file is a directory."
+    ad-do-it
+    (while (and  (not  (bobp)) (not ad-return-value))
+      (forward-line -1)
+      (setq ad-return-value(dired-move-to-filename)))
+    (when (bobp)
+      (call-interactively 'dired-next-line)))
+
+  (defvar dired-omit-regexp-orig (symbol-function 'dired-omit-regexp))
+
+  ;; Omit files that Git would ignore
+  (defun dired-omit-regexp ()
+    (let ((file (expand-file-name ".git"))
+          parent-dir)
+      (while (and (not (file-exists-p file))
+                  (progn
+                    (setq parent-dir
+                          (file-name-directory
+                           (directory-file-name
+                            (file-name-directory file))))
+                    ;; Give up if we are already at the root dir.
+                    (not (string= (file-name-directory file)
+                                  parent-dir))))
+        ;; Move up to the parent dir and try again.
+        (setq file (expand-file-name ".git" parent-dir)))
+      ;; If we found a change log in a parent, use that.
+      (if (file-exists-p file)
+          (let ((regexp (funcall dired-omit-regexp-orig))
+                (omitted-files
+                 (shell-command-to-string "git clean -d -x -n")))
+            (if (= 0 (length omitted-files))
+                regexp
+              (concat
+               regexp
+               (if (> (length regexp) 0)
+                   "\\|" "")
+               "\\("
+               (mapconcat
+                #'(lambda (str)
+                    (concat
+                     "^"
+                     (regexp-quote
+                      (substring str 13
+                                 (if (= ?/ (aref str (1- (length str))))
+                                     (1- (length str))
+                                   nil)))
+                     "$"))
+                (split-string omitted-files "\n" t)
+                "\\|")
+               "\\)")))
+        (funcall dired-omit-regexp-orig)))))
+
+(use-package dired-toggle
+  :load-path "site-lisp/dired-toggle"
+  :bind ("C-. d" . dired-toggle)
+  :preface
+  (defun my-dired-toggle-mode-hook ()
+    (interactive)
+    (visual-line-mode 1)
+    (setq-local visual-line-fringe-indicators '(nil right-curly-arrow))
+    (setq-local word-wrap nil))
+  :config
+  (add-hook 'dired-toggle-mode-hook #'my-dired-toggle-mode-hook))
+
+(use-package yasnippet
+  :diminish yas-minor-mode
+  :commands (yas-expand yas-minor-mode)
+  :functions (yas-guess-snippet-directories yas-table-name)
+  :defines (yas-guessed-modes)
+  :mode ("/\\.emacs\\.d/snippets/" . snippet-mode)
+  :bind (("<backtab>" . yas-expand)
+         ("C-c y TAB" . yas-expand)
+         ("C-c y s"   . yas-insert-snippet)
+         ("C-c y n"   . yas-new-snippet)
+         ("C-c y v"   . yas-visit-snippet-file))
+  :preface
+  (defun yas-new-snippet (&optional choose-instead-of-guess)
+    (interactive "P")
+    (let ((guessed-directories (yas-guess-snippet-directories)))
+      (switch-to-buffer "*new snippet*")
+      (erase-buffer)
+      (kill-all-local-variables)
+      (snippet-mode)
+      (set (make-local-variable 'yas-guessed-modes)
+           (mapcar #'(lambda (d)
+                       (intern (yas-table-name (car d))))
+                   guessed-directories))
+      (unless (and choose-instead-of-guess
+                   (not (y-or-n-p "Insert a snippet with useful headers? ")))
+        (yas-expand-snippet
+         (concat "\n"
+                 "# -*- mode: snippet -*-\n"
+                 "# name: $1\n"
+                 "# --\n"
+                 "$0\n")))))
+
+  :config
+  (yas-load-directory "~/.emacs.d/snippets/")
+
+  (bind-key "C-i" 'yas-next-field-or-maybe-expand yas-keymap))
+
+(use-package bookmark
+  :defer 10
+  :config
+  (use-package bookmark+))
 
 (use-package web-mode
   :mode (("\\.php[0-9]?\\'" . web-mode)
@@ -293,9 +521,33 @@
   :config
   (defun my-web-mode-hook ()
     "Hooks for Web mode."
-    (auto-highlight-symbol-mode 1)
-    (setq web-mode-code-indent-offset 2)
-    (setq web-mode-markup-indent-offset 2)
-    (setq web-mode-css-indent-offset 2))
-  ;;(add-hook 'web-mode-hook '(lambda() (my-web-mode-hook))
-  )
+    (auto-highlight-symbol-mode 1))
+  (add-hook 'web-mode-hook '(lambda() (my-web-mode-hook))))
+
+(use-package css-mode
+  :mode "\\.css\\'")
+
+(use-package yaml-mode
+  :mode ("\\.ya?ml\\'" . yaml-mode))
+
+(use-package cmake-mode
+  :mode (("CMakeLists\\.txt\\'" . cmake-mode)
+         ("\\.cmake\\'"         . cmake-mode)))
+
+(use-package expand-region
+  :bind ("C-=" . er/expand-region))
+
+(use-package fold-this
+  :disabled t
+  :bind (("C-c C-f" . fold-this-all)
+         ("C-c C-F" . fold-this)
+         ("C-c M-f" . fold-this-unfold-all)))
+
+(use-package autorevert
+  :commands auto-revert-mode
+  :diminish auto-revert-mode
+  :init
+  (add-hook 'find-file-hook #'(lambda () (auto-revert-mode 1))))
+
+(use-package dedicated
+  :bind ("C-. D" . dedicated-mode))

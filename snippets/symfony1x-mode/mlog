@@ -1,0 +1,5 @@
+# name: mlog
+# --
+sfContext->getInstance()->getLogger()->${1:info}(sprintf(
+  "${2:%s}", $0
+));

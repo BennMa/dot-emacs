@@ -69,7 +69,7 @@
    (quote
     ((java-mode . "gnu")
      (awk-mode . "awk")
-     (other . "gnu"))) t)
+     (other . "gnu"))))
  '(calendar-daylight-time-zone-name "CDT")
  '(calendar-latitude 40.73471)
  '(calendar-longitude -89.554659)
@@ -349,6 +349,7 @@
  '(flyspell-abbrev-p nil)
  '(flyspell-incorrect-hook (quote (flyspell-maybe-correct-transposition)))
  '(flyspell-use-meta-tab nil)
+ '(fold-this-persistent-folds-file "~/.emacs.d/data/fold-this.el")
  '(font-lock-support-mode (quote jit-lock-mode))
  '(font-lock-verbose nil)
  '(frame-title-format
@@ -383,9 +384,17 @@
  '(global-font-lock-mode t nil (font-lock))
  '(global-undo-tree-mode t)
  '(grep-find-command (quote ("ag --noheading --column --ignore branches " . 43)))
+ '(grep-find-ignored-directories
+   (quote
+    ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "cache")))
+ '(grep-find-ignored-files
+   (quote
+    (".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo" "TAG" "#*" "~*")))
  '(helm-adaptive-history-file "~/.emacs.d/data/helm-adaptive-history")
- '(helm-ag-base-command "/usr/local/bin/ag --nocolor --nogroup")
+ '(helm-ag-always-set-extra-option nil)
+ '(helm-ag-base-command "/usr/local/bin/ag --nocolor --nogroup --smart-case")
  '(helm-ag-ignore-patterns nil)
+ '(helm-ag-insert-at-point nil)
  '(helm-ag-use-agignore t)
  '(helm-ag-use-grep-ignore-list t)
  '(helm-buffers-fuzzy-matching t)
@@ -488,6 +497,7 @@
  '(icicle-max-candidates 100)
  '(ido-auto-merge-work-directories-length 0)
  '(ido-cannot-complete-command (quote ido-exit-minibuffer))
+ '(ido-confirm-unique-completion t)
  '(ido-decorations
    (quote
     ("{" "}" "," ",..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
@@ -562,7 +572,7 @@
  '(previous-buffer-black-list (quote ("^[	 ]*\\*.*\\*[	 ]*$" "collected.org")))
  '(previous-buffer-white-list
    (quote
-    ("\\*mu4e-\\(main\\|headers\\)\\*" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)\\*" "\\*terminal.*\\*" "\\*magit:[	 ]*.*\\*" "\\*Tail:.*" "\\*erlang.*\\*")))
+    ("\\*mu4e-\\(main\\|headers\\)\\*" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)\\*" "\\*terminal.*\\*" "\\*magit:[	 ]*.*\\*" "\\*Tail:.*" "\\*erlang.*\\*" "\\*Customize.*\\*")))
  '(projectile-cache-file "~/.emacs.d/data/projectile.cache")
  '(projectile-enable-caching t)
  '(projectile-globally-ignored-files (quote ("TAGS" "GPATH" "GRTAGS" "GTAGS" "ID")))

@@ -37,19 +37,38 @@
 ;; ------ packages from elpa
 (el-get-bundle elpa:projectile)
 (el-get-bundle elpa:helm)
+(el-get-bundle elpa:helm-core)
+(el-get-bundle elpa:helm-ls-git)
 (el-get-bundle elpa:helm-projectile)
 (el-get-bundle elpa:ido-hacks)
 (el-get-bundle elpa:flx-ido)
 (el-get-bundle elpa:magit)
-(el-get-bundle elpa:web-mode)
 (el-get-bundle elpa:color-theme)
 (el-get-bundle elpa:powerline)
 (el-get-bundle elpa:window-number)
 (el-get-bundle elpa:auto-highlight-symbol)
+(el-get-bundle elpa:dired+)
+(el-get-bundle elpa:dired-toggle)
+(el-get-bundle elpa:bookmark+)
+(el-get-bundle elpa:dedicated)
+
+(el-get-bundle elpa:cmake-mode)
+(el-get-bundle elpa:web-mode)
+(el-get-bundle elpa:yaml-mode)
+(el-get-bundle elpa:css-mode)
+(el-get-bundle elpa:calfw)
 
 ;; ------ packages from others
+
 (el-get-bundle ag)
 (el-get-bundle helm-ag)
+(el-get-bundle diminish)
+(el-get-bundle initsplit)
+(el-get-bundle yasnippet)
+(el-get-bundle expand-region)
+(el-get-bundle fold-this)
+(el-get-bundle org)
+(el-get-bundle org-magit)
 
 ;; ------ utility macros and functions
 (defsubst hook-into-modes (func &rest modes)
@@ -70,10 +89,10 @@
 (put 'upcase-region    'disabled nil)   ; Let upcasing work
 
 ;; ------ keybindings init
-(load (expand-file-name "keybindings-init" user-emacs-directory))
+(load (expand-file-name "keybinding-init" user-emacs-directory))
 
 ;; ------ packages init
-(load (expand-file-name "packages-init" user-emacs-directory))
+(load (expand-file-name "package-init" user-emacs-directory))
 
 ;; ------ time costing
 (when window-system
