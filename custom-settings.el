@@ -455,13 +455,13 @@
        (or
         (mode . magit-status-mode)
         (mode . magit-log-mode)))
-      ("Haskell"
+      ("Web"
        (or
-        (mode . haskell-mode)
-        (mode . haskell-cabal-mode)
-        (mode . literate-haskell-mode)))
-      ("Coq"
-       (mode . coq-mode))
+        (mode . web-mode)
+        (mode . php-mode)
+        (mode . js-mode)
+        (mode . css-mode)
+        (mode . yaml-mode)))
       ("C++"
        (or
         (mode . c-mode)

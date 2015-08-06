@@ -51,6 +51,11 @@
 (el-get-bundle elpa:dired-toggle)
 (el-get-bundle elpa:bookmark+)
 (el-get-bundle elpa:dedicated)
+(el-get-bundle elpa:ggtags)
+(el-get-bundle elpa:etags-select)
+(el-get-bundle elpa:etags-table)
+(el-get-bundle elpa:escreen)
+(el-get-bundle elpa:hl-line+)
 
 (el-get-bundle elpa:cmake-mode)
 (el-get-bundle elpa:web-mode)
@@ -78,6 +83,23 @@
   (catch 'matched_ (dolist (regex list)
                      (if (string-match regex string)
                          (throw 'matched_ t))) nil))
+
+(defun my-split-window (number)
+  (let* ((W1 (get-buffer-window))
+         (windows (list (cons 1 W1)))
+         i W2 W3 W4 W5 W6 W7 W8 W9 W10 W11 W12
+         curr-window last-window)
+    (when (> number 1)
+      (setq W2 (split-window W1 nil 'below))
+      (add-to-list 'windows (cons 2 W2) t))
+    (loop for i from 3 upto number do
+          (setq curr-window (intern (concat "W" (int-to-string i))))
+          (setq last-window (symbol-value (intern (concat "W"
+                                                          (int-to-string (- i 2)))) ))
+          (set curr-window (split-window last-window nil 'right))
+          (add-to-list 'windows (cons i (symbol-value curr-window)) t)
+          (balance-windows) )
+    windows))
 
 ;; ------ enable disabled commands
 (put 'downcase-region  'disabled nil)   ; Let downcasing work

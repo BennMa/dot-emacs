@@ -22,6 +22,7 @@
 
 ;; ====== global-map
 
+(fset 'yes-or-no-p 'y-or-n-p)
 (autoload 'org-cycle "org" nil t)
 (autoload 'hippie-expand "hippie-exp" nil t)
 (autoload 'indent-according-to-mode "indent" nil t)

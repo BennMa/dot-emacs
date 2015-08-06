@@ -132,6 +132,13 @@
   (use-package helm-ag
     :commands helm-ag))
 
+(use-package ibuffer
+  :bind ("C-x C-b" . ibuffer)
+  :init
+  (add-hook 'ibuffer-mode-hook
+            #'(lambda ()
+                (ibuffer-switch-to-saved-filter-groups "default"))))
+
 
 (use-package ido
   :demand t
@@ -551,3 +558,49 @@
 
 (use-package dedicated
   :bind ("C-. D" . dedicated-mode))
+
+(use-package escreen
+  :bind-keymap ("C-c w" . escreen-map)
+  :commands (escreen-create-screen)
+  :config
+  (bind-key "e" 'escreen-goto-last-screen escreen-map)
+  (bind-key "m" 'escreen-menu escreen-map)
+  (escreen-install))
+
+(use-package hl-line
+  :commands hl-line-mode
+  :bind (("M-o h" . hl-line-mode))
+  :config
+  (use-package hl-line+))
+
+(use-package ggtags
+  :disabled t
+  :commands ggtags-mode
+  :diminish ggtags-mode)
+
+(use-package etags
+  :commands (etags-select-find-tag-at-point)
+  :bind ("M-?" . etags-select-find-tag)
+  :config
+  (bind-key* "M-." 'etags-select-find-tag-at-point)
+  (bind-key* "M-p R" 'my-regenerate-tags)
+
+  (defun my-regenerate-tags (dir)
+    "Create tags file."
+    (interactive (list (replace-regexp-in-string "/$" ""
+                                                 (read-string "Directory: " (projectile-project-root)))))
+    (let ((etags-command "/Applications/Emacs.app/Contents/MacOS/bin/etags")
+          (etags-regex-file (expand-file-name "lisp/tags_regexfile" user-emacs-directory))
+          (allowed-ext "(yml|php[0-9]?|ini|html?|js|[ch]|el)")
+          (target-dir dir))
+      (shell-command 
+       (format "find -E %s/ -type f -regex \".*\\.%s$\" | %s -o %s --regex=@%s -"
+               target-dir
+               allowed-ext
+               etags-command
+               (expand-file-name "TAGS" target-dir)
+               etags-regex-file))))
+  
+  (use-package etags-select)
+  (use-package etags-table))
+
