@@ -35,6 +35,7 @@
 (require 'diminish nil t)
 
 ;; ------ packages from elpa
+(el-get-bundle elpa:exec-path-from-shell)
 (el-get-bundle elpa:projectile)
 (el-get-bundle elpa:helm)
 (el-get-bundle elpa:helm-core)
@@ -54,8 +55,12 @@
 (el-get-bundle elpa:ggtags)
 (el-get-bundle elpa:etags-select)
 (el-get-bundle elpa:etags-table)
+(el-get-bundle elpa:session)
+(el-get-bundle elpa:company)
+(el-get-bundle elpa:backup-each-save)
 (el-get-bundle elpa:escreen)
 (el-get-bundle elpa:hl-line+)
+(el-get-bundle elpa:git-messenger)
 
 (el-get-bundle elpa:cmake-mode)
 (el-get-bundle elpa:web-mode)

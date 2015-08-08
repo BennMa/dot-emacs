@@ -37,7 +37,10 @@
  '(auto-save-timeout 2)
  '(backup-directory-alist
    (quote
-    (("/Volumes/Files/" . "/Volumes/Files/.backups")
+    (("/Users/benn/.emacs.d/" . "/Users/benn/.emacs.d/.backups")
+     ("/Users/benn/Mine/Emacs/" . "/Users/benn/Mine/Emacs/.backups")
+     ("/Users/benn/Mine/Documents/" . "/Users/benn/Mine/Documents/.backups")
+     ("/Users/benn/Mine/Projects/" . "/Users/benn/Mine/Projects/.backups")
      ("\\(recentf\\|archive/sent\\)" . "/tmp")
      (".*" . "~/.backups"))))
  '(backward-delete-char-untabify-method (quote untabify))
@@ -275,6 +278,8 @@
  '(eshell-visual-commands
    (quote
     ("vi" "top" "screen" "less" "lynx" "rlogin" "telnet")))
+ '(etags-table-alist nil)
+ '(etags-table-search-up-depth 10)
  '(eudc-inline-expansion-format (quote ("%s <%s>" name email)))
  '(eval-expr-print-function (quote pp))
  '(eww-lnum-actions-link-alist
@@ -373,6 +378,7 @@
  '(gdb-find-source-frame t)
  '(gdb-same-frame nil)
  '(ggtags-enable-navigation-keys nil)
+ '(ggtags-global-output-format (quote cscope))
  '(ggtags-oversize-limit 1048576)
  '(ggtags-use-sqlite3 t)
  '(git-commit-mode-hook
@@ -389,7 +395,7 @@
     ("SCCS" "RCS" "CVS" "MCVS" ".svn" ".git" ".hg" ".bzr" "_MTN" "_darcs" "{arch}" "cache")))
  '(grep-find-ignored-files
    (quote
-    (".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo" "TAG" "#*" "~*")))
+    (".#*" "*.o" "*~" "*.bin" "*.lbin" "*.so" "*.a" "*.ln" "*.blg" "*.bbl" "*.elc" "*.lof" "*.glo" "*.idx" "*.lot" "*.fmt" "*.tfm" "*.class" "*.fas" "*.lib" "*.mem" "*.x86f" "*.sparcf" "*.dfsl" "*.pfsl" "*.d64fsl" "*.p64fsl" "*.lx64fsl" "*.lx32fsl" "*.dx64fsl" "*.dx32fsl" "*.fx64fsl" "*.fx32fsl" "*.sx64fsl" "*.sx32fsl" "*.wx64fsl" "*.wx32fsl" "*.fasl" "*.ufsl" "*.fsl" "*.dxl" "*.lo" "*.la" "*.gmo" "*.mo" "*.toc" "*.aux" "*.cp" "*.fn" "*.ky" "*.pg" "*.tp" "*.vr" "*.cps" "*.fns" "*.kys" "*.pgs" "*.tps" "*.vrs" "*.pyc" "*.pyo" "TAG" "#*" "~*" "*.dat")))
  '(helm-adaptive-history-file "~/.emacs.d/data/helm-adaptive-history")
  '(helm-ag-always-set-extra-option nil)
  '(helm-ag-base-command "/usr/local/bin/ag --nocolor --nogroup --smart-case")
@@ -521,7 +527,7 @@
    (quote
     (("\\`\\(gnus\\|nn\\|message\\|mail\\|mm-\\|smtp\\|send-mail\\|check-mail\\|spam\\|sc-\\)" "~/.emacs.d/gnus-settings.el" nil nil)
      ("\\`\\(org-\\)" "~/.emacs.d/org-settings.el" nil nil))))
- '(ispell-extra-args (quote ("--sug-mode=fast" "--keyboard=dvorak")))
+ '(ispell-extra-args nil)
  '(kill-do-not-save-duplicates t)
  '(kill-whole-line t)
  '(large-file-warning-threshold nil)
@@ -577,6 +583,9 @@
  '(projectile-enable-caching t)
  '(projectile-globally-ignored-files (quote ("TAGS" "GPATH" "GRTAGS" "GTAGS" "ID")))
  '(projectile-known-projects-file "~/.emacs.d/data/projectile-bookmarks.eld")
+ '(projectile-project-root-files
+   (quote
+    (".mproject" "rebar.config" "project.clj" "SConstruct" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs")))
  '(projectile-switch-project-action (quote helm-projectile))
  '(ps-font-size (quote (8 . 10)))
  '(ps-footer-font-size (quote (12 . 14)))
@@ -682,6 +691,7 @@
  '(sr-windows-default-ratio 80)
  '(ssl-certificate-verification-policy 1)
  '(svn-status-hide-unmodified t)
+ '(tags-add-tables t)
  '(tags-apropos-verbose t)
  '(tags-case-fold-search nil)
  '(tail-max-size 25)

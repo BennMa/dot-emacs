@@ -54,7 +54,7 @@
          ("~/Mine/Documents/TaskManagement/Actions.org")))
        (org-agenda-overriding-header "Deferred tasks:")))
      ("Y" "Someday tasks" tags "TODO=\"SOMEDAY\""
-      ((org-agenda-overriding-header "Someday tasks:")))     
+      ((org-agenda-overriding-header "Someday tasks:")))
      ("c" "Appointment Calendar" agenda ""
       ((org-agenda-overriding-header "Appointment Calendar")
        (org-agenda-sorting-strategy

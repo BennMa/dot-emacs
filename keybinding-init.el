@@ -3,6 +3,7 @@
 ;;   C-x <letter>  primary map (has many defaults too)
 ;;   C-c <letter>  secondary map (not just for mode-specific)
 ;;   C-. <letter>  tertiary map
+;;   C-;-<anything> projectile
 ;;
 ;;   M-g <letter>  goto map
 ;;   M-s <letter>  search map
@@ -14,7 +15,6 @@
 ;;   A-<anything>
 ;;   M-A-<anything>
 ;;
-;;   M-p-<anything> projectile
 ;;
 ;; Single-letter bindings still available:
 ;;   C- ,'";:?<>|!#$%^&*`~ <tab>
@@ -80,7 +80,6 @@
 ;; ------ C-M-
 
 (bind-key "<C-M-backspace>" 'backward-kill-sexp)
-(bind-key "C-M-<tab>" 'ido-switch-buffer)
 
 ;; ====== M-
 

@@ -1,3 +1,9 @@
+(use-package exec-path-from-shell
+  :config
+  (if window-system
+    (exec-path-from-shell-initialize))
+  (exec-path-from-shell-copy-env "PYTHONPATH"))
+
 (use-package helm-config
   :defer 5
   :bind (("C-c h"   . helm-command-prefix)
@@ -38,10 +44,12 @@
     (setq helm-google-suggest-use-curl-p t)))
 
 (use-package projectile
+  :diminish projectile-mode
   :commands projectile-global-mode
-  :defer 5
-  :bind-keymap ("M-p" . projectile-command-map)
+  :bind-keymap ("C-;" . projectile-command-map)
   :config
+  (unbind-key "C-c p" projectile-mode-map)
+  
   (use-package helm-projectile
     :config
     (setq projectile-completion-system 'helm)
@@ -51,7 +59,7 @@
   (use-package symfony1x
     :load-path "lisp/symfony1x"
     :init
-    (setq symfony1x-mode-key-prefix "M-p ;")
+    (setq symfony1x-mode-key-prefix "C-; ;")
     :config
     (defun symfony1x-mode-init()
       (when (member (projectile-project-name)
@@ -59,12 +67,21 @@
         (make-local-variable 'symfony1x-mode-status)
         (symfony1x-mode t)))
     (add-hook 'projectile-mode-hook 'symfony1x-mode-init))
+
+  (add-hook 'projectile-mode-hook #'(lambda()
+                                      (flycheck-mode 1)
+                                      (ggtags-mode 1)))
   
   (projectile-global-mode))
 
+
+(use-package git-messenger
+  :bind ("C-x G" . git-messenger:popup-message))
+
+
 (use-package magit
-  :bind (("C-x g" . magit-status)
-         ("C-x G" . magit-status-with-prefix))
+  :bind (("C-x g" . magit-status))
+         ;; ("C-x G" . magit-status-with-prefix))
   :preface
   (defun magit-monitor (&optional no-display)
     "Start git-monitor in the current directory."
@@ -147,8 +164,8 @@
             ido-selected
             ido-final-text
             ido-show-confirm-message)
-  :bind (("C-x b" . ido-switch-buffer)
-         ("C-x B" . ido-switch-buffer-other-window))
+  :bind (("C-M-<tab>" . ido-switch-buffer)
+         ("C-x b" . ido-switch-buffer-other-window))
   :preface
   (eval-when-compile
     (defvar ido-require-match)
@@ -484,8 +501,7 @@
   :functions (yas-guess-snippet-directories yas-table-name)
   :defines (yas-guessed-modes)
   :mode ("/\\.emacs\\.d/snippets/" . snippet-mode)
-  :bind (("<backtab>" . yas-expand)
-         ("C-c y TAB" . yas-expand)
+  :bind (("C-c y TAB" . yas-expand)
          ("C-c y s"   . yas-insert-snippet)
          ("C-c y n"   . yas-new-snippet)
          ("C-c y v"   . yas-visit-snippet-file))
@@ -574,17 +590,15 @@
   (use-package hl-line+))
 
 (use-package ggtags
-  :disabled t
   :commands ggtags-mode
   :diminish ggtags-mode)
 
 (use-package etags
-  :commands (etags-select-find-tag-at-point)
-  :bind ("M-?" . etags-select-find-tag)
+  :disabled t
+  :bind* ("M-." . etags-select-find-tag-at-point)
+  :bind  ("M-?" . etags-select-find-tag)
   :config
-  (bind-key* "M-." 'etags-select-find-tag-at-point)
-  (bind-key* "M-p R" 'my-regenerate-tags)
-
+  ;; (bind-key* "M-p R" 'my-regenerate-tags)
   (defun my-regenerate-tags (dir)
     "Create tags file."
     (interactive (list (replace-regexp-in-string "/$" ""
@@ -604,3 +618,596 @@
   (use-package etags-select)
   (use-package etags-table))
 
+(use-package session
+  :if (not noninteractive)
+  :preface
+  (defun remove-session-use-package-from-settings ()
+    (when (string= (file-name-nondirectory (buffer-file-name))
+                   "custom-settings.el")
+      (save-excursion
+        (goto-char (point-min))
+        (when (re-search-forward "^ '(session-use-package " nil t)
+          (delete-region (line-beginning-position)
+                         (1+ (line-end-position)))))))
+
+  ;; expanded folded secitons as required
+  (defun le::maybe-reveal ()
+    (when (and (or (memq major-mode  '(org-mode outline-mode))
+                   (and (boundp 'outline-minor-mode)
+                        outline-minor-mode))
+               (outline-invisible-p))
+      (if (eq major-mode 'org-mode)
+          (org-reveal)
+        (show-subtree))))
+
+  (defvar server-process nil)
+
+  (defun save-information ()
+    (with-temp-message "Saving Emacs information..."
+      (recentf-cleanup)
+
+      (loop for func in kill-emacs-hook
+            unless (memq func '(exit-gnus-on-exit server-force-stop))
+            do (funcall func))
+
+      (unless (or noninteractive
+                  (and server-process
+                       (eq 'listen (process-status server-process))))
+        (server-start))))
+
+  :config
+  (add-hook 'before-save-hook 'remove-session-use-package-from-settings)
+  (add-hook 'session-after-jump-to-last-change-hook 'le::maybe-reveal)
+  (run-with-idle-timer 60 t 'save-information)
+  (add-hook 'after-init-hook 'session-initialize t))
+
+
+(use-package recentf
+  :defer 10
+  :commands (recentf-mode
+             recentf-add-file
+             recentf-apply-filename-handlers)
+  :preface
+  (defun recentf-add-dired-directory ()
+    (if (and dired-directory
+             (file-directory-p dired-directory)
+             (not (string= "/" dired-directory)))
+        (let ((last-idx (1- (length dired-directory))))
+          (recentf-add-file
+           (if (= ?/ (aref dired-directory last-idx))
+               (substring dired-directory 0 last-idx)
+             dired-directory)))))
+  :init
+  (add-hook 'dired-mode-hook 'recentf-add-dired-directory)
+  :config
+  (recentf-mode 1))
+
+
+(use-package company
+  :diminish company-mode
+  :commands company-mode
+  :config
+  ;; From https://github.com/company-mode/company-mode/issues/87
+  ;; See also https://github.com/company-mode/company-mode/issues/123
+  (defadvice company-pseudo-tooltip-unless-just-one-frontend
+      (around only-show-tooltip-when-invoked activate)
+    (when (company-explicit-action-p)
+      ad-do-it)))
+
+
+(use-package hi-lock
+  :bind (("M-o l" . highlight-lines-matching-regexp)
+         ("M-o r" . highlight-regexp)
+         ("M-o w" . highlight-phrase)))
+
+(use-package hilit-chg
+  :bind ("M-o C" . highlight-changes-mode))
+
+(use-package hippie-exp
+  :bind (("M-/" . dabbrev-expand)
+         ("M-?" . hippie-expand))
+  :preface
+  (autoload 'yas-expand "yasnippet" nil t)
+
+  (defun my-yas-hippie-try-expand (first-time)
+    (if (not first-time)
+        (let ((yas-fallback-behavior 'return-nil))
+          (yas-expand))
+      (undo 1)
+      nil))
+
+  (defun my-hippie-expand-completions (&optional hippie-expand-function)
+    "Return the full list of possible completions generated by `hippie-expand'.
+   The optional argument can be generated with `make-hippie-expand-function'."
+    (let ((this-command 'my-hippie-expand-completions)
+          (last-command last-command)
+          (buffer-modified (buffer-modified-p))
+          (hippie-expand-function (or hippie-expand-function 'hippie-expand)))
+      (flet ((ding))        ; avoid the (ding) when hippie-expand exhausts its
+                                        ; options.
+        (while (progn
+                 (funcall hippie-expand-function nil)
+                 (setq last-command 'my-hippie-expand-completions)
+                 (not (equal he-num -1)))))
+      ;; Evaluating the completions modifies the buffer, however we will finish
+      ;; up in the same state that we began.
+      (set-buffer-modified-p buffer-modified)
+      ;; Provide the options in the order in which they are normally generated.
+      (delete he-search-string (reverse he-tried-table))))
+
+  (defmacro my-ido-hippie-expand-with (hippie-expand-function)
+    "Generate an interactively-callable function that offers ido-based
+  completion using the specified hippie-expand function."
+    `(call-interactively
+      (lambda (&optional selection)
+        (interactive
+         (let ((options (my-hippie-expand-completions ,hippie-expand-function)))
+           (if options
+               (list
+                ;; (ido-completing-read "Completions: " options)
+                (completing-read "Completions: " options)
+                ))))
+        (if selection
+            (he-substitute-string selection t)
+          (message "No expansion found")))))
+
+  (defun my-ido-hippie-expand ()
+    "Offer ido-based completion for the word at point."
+    (interactive)
+    (my-ido-hippie-expand-with 'hippie-expand))
+
+  (defun my-try-expand-company (old)
+    (require 'company)
+    (unless company-candidates
+      (company-auto-begin))
+    (if (not old)
+        (progn
+          (he-init-string (he-lisp-symbol-beg) (point))
+          (if (not (he-string-member he-search-string he-tried-table))
+              (setq he-tried-table (cons he-search-string he-tried-table)))
+          (setq he-expand-list
+                (and (not (equal he-search-string ""))
+                     company-candidates))))
+    (while (and he-expand-list
+                (he-string-member (car he-expand-list) he-tried-table))
+      (setq he-expand-list (cdr he-expand-list)))
+    (if (null he-expand-list)
+        (progn
+          (if old (he-reset-string))
+          ())
+      (progn
+	(he-substitute-string (car he-expand-list))
+	(setq he-expand-list (cdr he-expand-list))
+	t)))
+
+  (defun he-tag-beg ()
+    (save-excursion
+      (backward-word 1)
+      (point)))
+
+  (defun tags-complete-tag (string predicate what)
+    (save-excursion
+      ;; If we need to ask for the tag table, allow that.
+      (if (eq what t)
+          (all-completions string (tags-completion-table) predicate)
+        (try-completion string (tags-completion-table) predicate))))
+
+  (defun try-expand-tag (old)
+    (when tags-table-list
+      (unless old
+        (he-init-string (he-tag-beg) (point))
+        (setq he-expand-list
+              (sort (all-completions he-search-string 'tags-complete-tag)
+                    'string-lessp)))
+      (while (and he-expand-list
+                  (he-string-member (car he-expand-list) he-tried-table))
+        (setq he-expand-list (cdr he-expand-list)))
+      (if (null he-expand-list)
+          (progn
+            (when old (he-reset-string))
+            ())
+        (he-substitute-string (car he-expand-list))
+        (setq he-expand-list (cdr he-expand-list))
+        t)))
+
+  (defun my-dabbrev-substring-search (pattern &optional reverse limit)
+    (let ((result ())
+          (regpat (cond ((not hippie-expand-dabbrev-as-symbol)
+                         (concat (regexp-quote pattern) "\\sw+"))
+                        ((eq (char-syntax (aref pattern 0)) ?_)
+                         (concat (regexp-quote pattern) "\\(\\sw\\|\\s_\\)+"))
+                        (t
+                         (concat (regexp-quote pattern)
+                                 "\\(\\sw\\|\\s_\\)+")))))
+      (while (and (not result)
+                  (if reverse
+                      (re-search-backward regpat limit t)
+                    (re-search-forward regpat limit t)))
+        (setq result (buffer-substring-no-properties
+                      (save-excursion
+                        (goto-char (match-beginning 0))
+                        (skip-syntax-backward "w_")
+                        (point))
+                      (match-end 0)))
+        (if (he-string-member result he-tried-table t)
+            (setq result nil)))     ; ignore if bad prefix or already in table
+      result))
+
+  (defun try-my-dabbrev-substring (old)
+    (let ((old-fun (symbol-function 'he-dabbrev-search)))
+      (fset 'he-dabbrev-search (symbol-function 'my-dabbrev-substring-search))
+      (unwind-protect
+          (try-expand-dabbrev old)
+        (fset 'he-dabbrev-search old-fun))))
+
+  (defun try-expand-flexible-abbrev (old)
+    "Try to complete word using flexible matching.
+  Flexible matching works by taking the search string and then
+  interspersing it with a regexp for any character. So, if you try
+  to do a flexible match for `foo' it will match the word
+  `findOtherOtter' but also `fixTheBoringOrange' and
+  `ifthisisboringstopreadingnow'.
+  The argument OLD has to be nil the first call of this function, and t
+  for subsequent calls (for further possible completions of the same
+  string).  It returns t if a new completion is found, nil otherwise."
+    (if (not old)
+        (progn
+          (he-init-string (he-lisp-symbol-beg) (point))
+          (if (not (he-string-member he-search-string he-tried-table))
+              (setq he-tried-table (cons he-search-string he-tried-table)))
+          (setq he-expand-list
+                (and (not (equal he-search-string ""))
+                     (he-flexible-abbrev-collect he-search-string)))))
+    (while (and he-expand-list
+                (he-string-member (car he-expand-list) he-tried-table))
+      (setq he-expand-list (cdr he-expand-list)))
+    (if (null he-expand-list)
+        (progn
+          (if old (he-reset-string))
+          ())
+      (progn
+	(he-substitute-string (car he-expand-list))
+	(setq he-expand-list (cdr he-expand-list))
+	t)))
+
+  (defun he-flexible-abbrev-collect (str)
+    "Find and collect all words that flex-matches STR.
+  See docstring for `try-expand-flexible-abbrev' for information
+  about what flexible matching means in this context."
+    (let ((collection nil)
+          (regexp (he-flexible-abbrev-create-regexp str)))
+      (save-excursion
+        (goto-char (point-min))
+        (while (search-forward-regexp regexp nil t)
+          ;; Is there a better or quicker way than using `thing-at-point'
+          ;; here?
+          (setq collection (cons (thing-at-point 'word) collection))))
+      collection))
+
+  (defun he-flexible-abbrev-create-regexp (str)
+    "Generate regexp for flexible matching of STR.
+  See docstring for `try-expand-flexible-abbrev' for information
+  about what flexible matching means in this context."
+    (concat "\\b" (mapconcat (lambda (x) (concat "\\w*" (list x))) str "")
+            "\\w*" "\\b"))
+
+  (defun my-try-expand-dabbrev-visible (old)
+    (save-excursion (try-expand-dabbrev-visible old)))
+
+  :config
+  (setq hippie-expand-try-functions-list
+        '(my-yas-hippie-try-expand
+          my-try-expand-company
+          try-my-dabbrev-substring
+          my-try-expand-dabbrev-visible
+          try-expand-dabbrev
+          try-expand-dabbrev-all-buffers
+          try-expand-dabbrev-from-kill
+          try-expand-tag
+          try-expand-flexible-abbrev
+          try-complete-file-name-partially
+          try-complete-file-name
+          try-expand-all-abbrevs
+          try-expand-list
+          try-expand-line
+          try-expand-line-all-buffers
+          try-complete-lisp-symbol-partially
+          try-complete-lisp-symbol))
+
+  (bind-key "M-i" 'my-ido-hippie-expand)
+
+  (defadvice he-substitute-string (after he-paredit-fix)
+    "remove extra paren when expanding line in paredit"
+    (if (and paredit-mode (equal (substring str -1) ")"))
+        (progn (backward-delete-char 1) (forward-char)))))
+
+
+(use-package backup-each-save
+  :commands backup-each-save
+  :preface
+  (defun show-backups ()
+    (interactive)
+    (require 'find-dired)
+    (let* ((file (substring (make-backup-file-name (buffer-file-name)) 0 -1))
+           (dir (file-name-directory file))
+           (args (concat "-iname '" (file-name-nondirectory file)
+                         ".~*~'"))
+           (dired-buffers dired-buffers)
+           (find-ls-option '("-print0 | xargs -0 ls -lta" . "-lta")))
+      ;; Check that it's really a directory.
+      (or (file-directory-p dir)
+          (error "Backup directory does not exist: %s" dir))
+      (with-current-buffer (get-buffer-create "*Backups*")
+        (let ((find (get-buffer-process (current-buffer))))
+          (when find
+            (if (or (not (eq (process-status find) 'run))
+                    (yes-or-no-p "A `find' process is running; kill it? "))
+                (condition-case nil
+                    (progn
+                      (interrupt-process find)
+                      (sit-for 1)
+                      (delete-process find))
+                  (error nil))
+              (error "Cannot have two processes in `%s' at once"
+                     (buffer-name)))))
+
+        (widen)
+        (kill-all-local-variables)
+        (setq buffer-read-only nil)
+        (erase-buffer)
+        (setq default-directory dir
+              args (concat
+                    find-program " . "
+                    (if (string= args "")
+                        ""
+                      (concat
+                       (shell-quote-argument "(")
+                       " " args " "
+                       (shell-quote-argument ")")
+                       " "))
+                    (if (string-match "\\`\\(.*\\) {} \\(\\\\;\\|+\\)\\'"
+                                      (car find-ls-option))
+                        (format "%s %s %s"
+                                (match-string 1 (car find-ls-option))
+                                (shell-quote-argument "{}")
+                                find-exec-terminator)
+                      (car find-ls-option))))
+        ;; Start the find process.
+        (message "Looking for backup files...")
+        (shell-command (concat args "&") (current-buffer))
+        ;; The next statement will bomb in classic dired (no optional arg
+        ;; allowed)
+        (dired-mode dir (cdr find-ls-option))
+        (let ((map (make-sparse-keymap)))
+          (set-keymap-parent map (current-local-map))
+          (define-key map "\C-c\C-k" 'kill-find)
+          (use-local-map map))
+        (make-local-variable 'dired-sort-inhibit)
+        (setq dired-sort-inhibit t)
+        (set (make-local-variable 'revert-buffer-function)
+             `(lambda (ignore-auto noconfirm)
+                (find-dired ,dir ,find-args)))
+        ;; Set subdir-alist so that Tree Dired will work:
+        (if (fboundp 'dired-simple-subdir-alist)
+            ;; will work even with nested dired format (dired-nstd.el,v 1.15
+            ;; and later)
+            (dired-simple-subdir-alist)
+          ;; else we have an ancient tree dired (or classic dired, where
+          ;; this does no harm)
+          (set (make-local-variable 'dired-subdir-alist)
+               (list (cons default-directory (point-min-marker)))))
+        (set (make-local-variable 'dired-subdir-switches)
+             find-ls-subdir-switches)
+        (setq buffer-read-only nil)
+        ;; Subdir headlerline must come first because the first marker in
+        ;; subdir-alist points there.
+        (insert "  " dir ":\n")
+        ;; Make second line a ``find'' line in analogy to the ``total'' or
+        ;; ``wildcard'' line.
+        (insert "  " args "\n")
+        (setq buffer-read-only t)
+        (let ((proc (get-buffer-process (current-buffer))))
+          (set-process-filter proc (function find-dired-filter))
+          (set-process-sentinel proc (function find-dired-sentinel))
+          ;; Initialize the process marker; it is used by the filter.
+          (move-marker (process-mark proc) 1 (current-buffer)))
+        (setq mode-line-process '(":%s")))))
+
+  (bind-key "C-x ~" 'show-backups)
+
+  :init
+  (defun my-make-backup-file-name (file)
+    (make-backup-file-name-1 (file-truename file)))
+
+  (add-hook 'after-save-hook 'backup-each-save)
+
+  :config
+  (defun backup-each-save-filter (filename)
+    (not (string-match
+          (concat "\\(^/tmp\\|\\.emacs\\.d/data\\(-alt\\)?/"
+                  "\\|\\.newsrc\\(\\.eld\\)?\\|"
+                  "\\(archive/sent/\\|recentf\\`\\)\\)")
+          filename)))
+
+  (setq backup-each-save-filter-function 'backup-each-save-filter)
+
+  (defun my-dont-backup-files-p (filename)
+    (unless (string-match filename "\\(archive/sent/\\|recentf\\`\\)")
+      (normal-backup-enable-predicate filename)))
+
+  (setq backup-enable-predicate 'my-dont-backup-files-p))
+
+(use-package flyspell
+  :bind (("C-c i b" . flyspell-buffer)
+         ("C-c i f" . flyspell-mode))
+  :init
+  (use-package ispell
+    :bind (("C-c i c" . ispell-comments-and-strings)
+           ("C-c i d" . ispell-change-dictionary)
+           ("C-c i k" . ispell-kill-ispell)
+           ("C-c i m" . ispell-message)
+           ("C-c i r" . ispell-region)))
+  :config
+  (unbind-key "C-." flyspell-mode-map))
+
+(use-package flycheck
+  :load-path "lisp/flycheck"
+  :commands (flycheck-mode global-flycheck-mode)
+  :config
+  (flycheck-add-mode 'php 'web-mode)
+  (flycheck-add-mode 'php-phpmd 'web-mode)
+  (flycheck-add-mode 'php-phpcs 'web-mode)
+
+  (defalias 'flycheck-show-error-at-point-soon 'flycheck-show-error-at-point))
+
+(use-package diff-mode
+  :commands diff-mode
+  :config
+  (add-hook 'diff-mode-hook 'smerge-mode))
+
+(use-package smerge-mode
+  :commands smerge-mode
+  :config
+  (setq smerge-command-prefix (kbd "C-. C-.")))
+
+(use-package ediff
+  :init
+  (defvar ctl-period-equals-map)
+  (define-prefix-command 'ctl-period-equals-map)
+  (bind-key "C-. =" 'ctl-period-equals-map)
+
+  :bind (("C-. = b" . ediff-buffers)
+         ("C-. = B" . ediff-buffers3)
+         ("C-. = c" . compare-windows)
+         ("C-. = =" . ediff-files)
+         ("C-. = f" . ediff-files)
+         ("C-. = F" . ediff-files3)
+         ("C-. = r" . ediff-revision)
+         ("C-. = p" . ediff-patch-file)
+         ("C-. = P" . ediff-patch-buffer)
+         ("C-. = l" . ediff-regions-linewise)
+         ("C-. = w" . ediff-regions-wordwise))
+  
+  :config
+  (use-package ediff-keep))
+
+(use-package edit-var
+  :disabled t
+  :bind ("C-c e v" . edit-variable))
+
+(use-package ascii
+  :disabled t
+  :bind ("C-c e A" . ascii-toggle)
+  :commands ascii-on
+  :functions ascii-off
+  :preface
+  (defun ascii-toggle ()
+    (interactive)
+    (if ascii-display
+        (ascii-off)
+      (ascii-on))))
+
+(use-package grep
+  :disabled t
+  :bind (("M-s d" . find-grep-dired)
+         ("M-s F" . find-grep)
+         ("M-s G" . grep))
+  :config
+  (add-hook 'grep-mode-hook #'(lambda () (use-package grep-ed)))
+
+  (grep-apply-setting 'grep-command "egrep -nH -e ")
+  (grep-apply-setting
+   'grep-find-command
+   '("find . -type f -print0 | xargs -P4 -0 egrep -nH " . 49)))
+
+(use-package info
+  :bind ("C-h C-i" . info-lookup-symbol)
+  :init
+  (remove-hook 'menu-bar-update-hook 'mac-setup-help-topics)
+  :config
+  (defadvice Info-exit (after remove-info-window activate)
+    "When info mode is quit, remove the window."
+    (if (> (length (window-list)) 1)
+        (delete-window))))
+
+(use-package mule
+  :no-require t
+  :defines x-select-request-type
+  :config
+  (prefer-coding-system 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+
+(use-package whitespace
+  :diminish (global-whitespace-mode
+             whitespace-mode
+             whitespace-newline-mode)
+  :commands (whitespace-buffer
+             whitespace-cleanup
+             whitespace-mode)
+  :defines (whitespace-auto-cleanup
+            whitespace-rescan-timer-time
+            whitespace-silent)
+  :preface
+  (defun normalize-file ()
+    (interactive)
+    (save-excursion
+      (goto-char (point-min))
+      (whitespace-cleanup)
+      (delete-trailing-whitespace)
+      (goto-char (point-max))
+      (delete-blank-lines)
+      (set-buffer-file-coding-system 'unix)
+      (goto-char (point-min))
+      (while (re-search-forward "\r$" nil t)
+        (replace-match ""))
+      (set-buffer-file-coding-system 'utf-8)
+      (let ((require-final-newline t))
+        (save-buffer))))
+
+  (defun maybe-turn-on-whitespace ()
+    "Depending on the file, maybe clean up whitespace."
+    (let ((file (expand-file-name ".clean"))
+          parent-dir)
+      (while (and (not (file-exists-p file))
+                  (progn
+                    (setq parent-dir
+                          (file-name-directory
+                           (directory-file-name
+                            (file-name-directory file))))
+                    ;; Give up if we are already at the root dir.
+                    (not (string= (file-name-directory file)
+                                  parent-dir))))
+        ;; Move up to the parent dir and try again.
+        (setq file (expand-file-name ".clean" parent-dir)))
+      ;; If we found a change log in a parent, use that.
+      (when (and (file-exists-p file)
+                 (not (file-exists-p ".noclean"))
+                 (not (and buffer-file-name
+                           (string-match "\\.texi\\'" buffer-file-name))))
+        (add-hook 'write-contents-hooks
+                  #'(lambda () (ignore (whitespace-cleanup))) nil t)
+        (whitespace-cleanup))))
+
+  :init
+  (add-hook 'find-file-hooks 'maybe-turn-on-whitespace t)
+
+  :config
+  (remove-hook 'find-file-hooks 'whitespace-buffer)
+  (remove-hook 'kill-buffer-hook 'whitespace-buffer)
+
+  ;; For some reason, having these in settings.el gets ignored if whitespace
+  ;; loads lazily.
+  (setq whitespace-auto-cleanup t
+        whitespace-line-column 80
+        whitespace-rescan-timer-time nil
+        whitespace-silent t
+        whitespace-style '(face trailing lines space-before-tab empty)))
+
+(use-package winner
+  :if (not noninteractive)
+  :defer 5
+  :bind (("M-N" . winner-redo)
+         ("M-P" . winner-undo))
+  :config
+  (winner-mode 1))
