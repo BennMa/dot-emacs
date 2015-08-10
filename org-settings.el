@@ -35,7 +35,7 @@
        (org-agenda-sorting-strategy
         (quote
          (todo-state-up priority-down category-up)))))
-     ("u" "Unscheduled tasks" tags "TODO<>\"\"&TODO<>{DONE\\|CANCELED\\|NOTE\\|PROJECT}&CATEGORY<>{Assembly}"
+     ("u" "Unscheduled tasks" tags "TODO<>\"\"&TODO<>{DONE\\|CANCELED\\|NOTE\\|PROJECT}"
       ((org-agenda-overriding-header "Unscheduled tasks: ")
        (org-agenda-skip-function
         (quote
@@ -51,7 +51,7 @@
      ("U" "Deferred tasks" tags "TODO=\"DEFERRED\""
       ((org-agenda-files
         (quote
-         ("~/Mine/Documents/TaskManagement/Actions.org")))
+         ("~/Mine/Documents/Tasks/ToDo.txt" "~/Mine/Documents/Tasks/TNC.txt")))
        (org-agenda-overriding-header "Deferred tasks:")))
      ("Y" "Someday tasks" tags "TODO=\"SOMEDAY\""
       ((org-agenda-overriding-header "Someday tasks:")))
@@ -64,14 +64,12 @@
        (org-agenda-ndays 14)
        (org-agenda-regexp-filter-preset
         (quote
-         ("+APPT")))))
-     ("Z" "MobileOrg Tasks" agenda ""
-      ((org-agenda-overriding-header "MobileOrg Tasks")
-       (org-agenda-span 14)
-       (org-agenda-ndays 14))))))
+         ("+APPT"))))))))
  '(org-agenda-deadline-leaders (quote ("!D!: " "D%02d: ")))
  '(org-agenda-default-appointment-duration 60)
- '(org-agenda-files (quote ("~/Mine/Documents/TaskManagement/Actions.org")))
+ '(org-agenda-files
+   (quote
+    ("~/Mine/Documents/Tasks/ToDo.txt" "~/Mine/Documents/Tasks/Habits.txt" "~/Mine/Documents/Tasks/Notes.txt" "~/Mine/Documents/Tasks/TNC.txt")))
  '(org-agenda-fontify-priorities t)
  '(org-agenda-include-diary t)
  '(org-agenda-inhibit-startup t)
@@ -106,30 +104,25 @@
  '(org-archive-location "TODO-archive::")
  '(org-archive-save-context-info (quote (time category itags)))
  '(org-attach-method (quote mv))
- '(org-babel-load-languages
-   (quote
-    ((emacs-lisp . t)
-     (ditaa . t)
-     (haskell . t)
-     (calc . t))))
+ '(org-babel-load-languages (quote ((emacs-lisp . t) (sh . t) (ruby . t) (python . t))))
  '(org-beamer-frame-default-options "fragile")
  '(org-capture-templates
    (quote
     (("a" "Add Task" entry
-      (file+headline "~/Mine/Documents/TaskManagement/Actions.org" "Inbox")
+      (file+headline "~/Mine/Documents/Tasks/ToDo.txt" "Inbox")
       "* TODO %?
 SCHEDULED: %t
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
 :END:" :prepend t)
      ("n" "Note" entry
-      (file "~/Mine/Documents/Collected.org")
+      (file "~/Mine/Documents/Tasks/Notes.txt")
       "* NOTE %?
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
 :END:" :prepend t)
      ("c" "Calendar" entry
-      (file+headline "~/Mine/Documents/TaskManagement/Actions.org" "Inbox")
+      (file+headline "~/Mine/Documents/Tasks/ToDo.txt" "Inbox")
       "* APPT %?
 SCHEDULED: %t
 :PROPERTIES:
@@ -153,9 +146,9 @@ SCHEDULED: %t
  '(org-crypt-disable-auto-save nil)
  '(org-cycle-global-at-bob t)
  '(org-deadline-warning-days 14)
- '(org-default-notes-file "~/Mine/Documents/TaskManagement/Actions.org")
- '(org-directory "~/Mine/Documents/TaskManagement/")
- '(org-ditaa-jar-path "~/bin/DitaaEps/DitaaEps.jar")
+ '(org-default-notes-file "~/Mine/Documents/Tasks/ToDo.txt")
+ '(org-directory "~/Mine/Documents/Tasks/")
+ '(org-ditaa-jar-path "~/bin/DitaaEps.jar")
  '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "OUT")))
  '(org-edit-src-content-indentation 0)
  '(org-enforce-todo-dependencies t)
@@ -219,11 +212,6 @@ SCHEDULED: %t
   ("" "amssymb" t)
   ("" "hyperref" nil)
   "\\tolerance=1000")))
- '(org-mobile-agendas (quote ("Z")))
- '(org-mobile-directory "~/Dropbox/Apps/MobileOrg")
- '(org-mobile-files (quote ("~/Mine/Documents/TaskManagement/Actions.org")))
- '(org-mobile-files-exclude-regexp "\\(TODO\\(-.*\\)?\\)\\'")
- '(org-mobile-inbox-for-pull "~/Mine/Documents/TaskManagement/FromMobile.org")
  '(org-modules
 (quote
  (org-gnus org-habit org-id org-info org-depend org-velocity)))
@@ -233,7 +221,8 @@ SCHEDULED: %t
   (67 :foreground "dark gray" :slant italic))))
  '(org-refile-targets
 (quote
- (("~/Mine/Documents/TaskManagement/Actions.org" :level . 1)
+ (("~/Mine/Documents/Tasks/ToDo.txt" :level . 1)
+  ("~/Mine/Documents/Tasks/TNC.txt" :level . 1)
   (org-agenda-files :todo . "PROJECT"))))
  '(org-return-follows-link t)
  '(org-reverse-note-order t)
@@ -252,16 +241,19 @@ SCHEDULED: %t
   ("DEFERRED" :foreground "dark blue" :weight bold)
   ("SOMEDAY" :foreground "dark blue" :weight bold)
   ("PROJECT" :foreground "#088e8e" :weight bold))))
+ '(org-todo-keywords
+(quote
+ ((sequence "TODO" "PROJECT" "APPT" "NOTE" "STARTED" "WAITING" "DELEGATED" "DEFERRED" "SOMEDAY" "CANCELED" "DONE"))))
  '(org-todo-repeat-to-state "TODO")
  '(org-use-property-inheritance (quote ("AREA")))
  '(org-use-speed-commands t)
  '(org-use-tag-inheritance nil)
  '(org-velocity-always-use-bucket t)
- '(org-velocity-bucket "~/Mine/Documents/Collected.org")
+ '(org-velocity-bucket "~/Mine/Documents/Tasks/Notes.txt")
  '(org-velocity-capture-templates
 (quote
  (("v" "Velocity" entry
-   (file "~/Mine/Documents/Collected.org")
+   (file "~/Mine/Documents/Tasks/Notes.txt")
    "* NOTE %:search
 %i%?
 :PROPERTIES:

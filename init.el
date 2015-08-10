@@ -11,7 +11,7 @@
        (push (expand-file-name path user-emacs-directory) load-path))
    '("site-lisp" "site-lisp/el-get" "site-lisp/use-package" "lisp" "")))
 
-;; ------ load customization settings
+;; ------ load custom settings
 (load (expand-file-name "custom-settings" user-emacs-directory))
 
 ;; ------ core packages
@@ -33,6 +33,10 @@
   (require 'use-package))
 (require 'bind-key)
 (require 'diminish nil t)
+
+;; ------ libraries
+(el-get-bundle elpa:dash)
+(el-get-bundle elpa:s)
 
 ;; ------ packages from elpa
 (el-get-bundle elpa:exec-path-from-shell)
@@ -69,7 +73,6 @@
 (el-get-bundle elpa:calfw)
 
 ;; ------ packages from others
-
 (el-get-bundle ag)
 (el-get-bundle helm-ag)
 (el-get-bundle diminish)

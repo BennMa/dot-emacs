@@ -81,6 +81,17 @@
 
 (bind-key "<C-M-backspace>" 'backward-kill-sexp)
 
+(defun copy-line (arg)
+  "Copy line in the kill ring, With prefix arg will copy whole line include spaces"
+  (interactive "P")
+  (save-excursion
+    (if arg
+        (beginning-of-line)
+      (beginning-of-line-text))
+    (kill-ring-save (point) (line-end-position)))
+  (message "the line was copied"))
+(bind-key "C-M-w" 'copy-line)
+
 ;; ====== M-
 
 (defadvice async-shell-command (before uniqify-running-shell-command activate)

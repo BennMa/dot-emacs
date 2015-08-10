@@ -1,7 +1,7 @@
 (use-package exec-path-from-shell
+  :if window-system
   :config
-  (if window-system
-    (exec-path-from-shell-initialize))
+  (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "PYTHONPATH"))
 
 (use-package helm-config
@@ -56,21 +56,7 @@
     (setq helm-projectile-fuzzy-match nil)
     (helm-projectile-on))
 
-  (use-package symfony1x
-    :load-path "lisp/symfony1x"
-    :init
-    (setq symfony1x-mode-key-prefix "C-; ;")
-    :config
-    (defun symfony1x-mode-init()
-      (when (member (projectile-project-name)
-                    '("Master_P" "Master_Beta" "Master_G" "Master_FT"))
-        (make-local-variable 'symfony1x-mode-status)
-        (symfony1x-mode t)))
-    (add-hook 'projectile-mode-hook 'symfony1x-mode-init))
-
-  (add-hook 'projectile-mode-hook #'(lambda()
-                                      (flycheck-mode 1)
-                                      (ggtags-mode 1)))
+  ;; (add-hook 'projectile-mode-hook #'(lambda()))
   
   (projectile-global-mode))
 
@@ -214,11 +200,11 @@
     (defun my-ido-hacks-execute-extended-command (&optional arg)
       (interactive "P")
       (flet ((completing-read
-              (prompt collection &optional predicate require-match
-                      initial-input hist def inherit-input-method)
-              (funcall ido-hacks-completing-read
-                       prompt collection predicate require-match
-                       initial-input hist def inherit-input-method)))
+                 (prompt collection &optional predicate require-match
+                         initial-input hist def inherit-input-method)
+                 (funcall ido-hacks-completing-read
+                          prompt collection predicate require-match
+                          initial-input hist def inherit-input-method)))
         (ido-hacks-execute-extended-command arg))))
 
   (use-package flx-ido
@@ -354,7 +340,6 @@
   (use-package initsplit))
 
 (use-package org-init
-  :commands my-org-startup
   :bind (("M-C"   . jump-to-org-agenda)
          ("M-m"   . org-smart-capture)
          ("M-M"   . org-inline-note)
@@ -363,10 +348,9 @@
          ("C-c l" . org-insert-link)
          ("C-. n" . org-velocity-read))
   :defer 30
-  :config
+  :config)
   ;; (run-with-idle-timer 300 t 'jump-to-org-agenda)
-  (my-org-startup)
-  (add-hook 'org-mode-hook #'(lambda () (yas-minor-mode 1))))
+  ;;(my-org-startup))
 
 
 (use-package dired
@@ -541,11 +525,22 @@
          ("\\.js\\'" . web-mode)
          ("\\.html?\\'" . web-mode)
          ("\\.tpl\\'" . web-mode))
-  :config
+  :config 
+  (use-package symfony1x
+    :load-path "lisp/symfony1x"
+    :commands symfony1x-mode
+    :init
+    (setq symfony1x-mode-key-prefix "C-; ;"))
+
   (defun my-web-mode-hook ()
     "Hooks for Web mode."
+    (when (string-match "\\/Master_\\(?:P\\|Beta\\|G\\|FT\\)\\/" (buffer-file-name))
+      (make-local-variable 'symfony1x-mode-status)
+      (symfony1x-mode t))
+    (flycheck-mode 1)
+    (ggtags-mode 1)
     (auto-highlight-symbol-mode 1))
-  (add-hook 'web-mode-hook '(lambda() (my-web-mode-hook))))
+  (add-hook 'web-mode-hook 'my-web-mode-hook))
 
 (use-package css-mode
   :mode "\\.css\\'")
