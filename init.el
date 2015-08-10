@@ -13,6 +13,7 @@
 
 ;; ------ load custom settings
 (load (expand-file-name "custom-settings" user-emacs-directory))
+(fset 'yes-or-no-p 'y-or-n-p)
 
 ;; ------ core packages
 (eval-and-compile
@@ -37,6 +38,7 @@
 ;; ------ libraries
 (el-get-bundle elpa:dash)
 (el-get-bundle elpa:s)
+(el-get-bundle elpa:f)
 
 ;; ------ packages from elpa
 (el-get-bundle elpa:exec-path-from-shell)
@@ -83,32 +85,6 @@
 (el-get-bundle org)
 (el-get-bundle org-magit)
 
-;; ------ utility macros and functions
-(defsubst hook-into-modes (func &rest modes)
-  (dolist (mode-hook modes) (add-hook mode-hook func)))
-
-(defun list-regex-match-p (string list)
-  (catch 'matched_ (dolist (regex list)
-                     (if (string-match regex string)
-                         (throw 'matched_ t))) nil))
-
-(defun my-split-window (number)
-  (let* ((W1 (get-buffer-window))
-         (windows (list (cons 1 W1)))
-         i W2 W3 W4 W5 W6 W7 W8 W9 W10 W11 W12
-         curr-window last-window)
-    (when (> number 1)
-      (setq W2 (split-window W1 nil 'below))
-      (add-to-list 'windows (cons 2 W2) t))
-    (loop for i from 3 upto number do
-          (setq curr-window (intern (concat "W" (int-to-string i))))
-          (setq last-window (symbol-value (intern (concat "W"
-                                                          (int-to-string (- i 2)))) ))
-          (set curr-window (split-window last-window nil 'right))
-          (add-to-list 'windows (cons i (symbol-value curr-window)) t)
-          (balance-windows) )
-    windows))
-
 ;; ------ enable disabled commands
 (put 'downcase-region  'disabled nil)   ; Let downcasing work
 (put 'erase-buffer     'disabled nil)
@@ -117,6 +93,21 @@
 (put 'narrow-to-region 'disabled nil)   ; Let narrowing work
 (put 'set-goal-column  'disabled nil)
 (put 'upcase-region    'disabled nil)   ; Let upcasing work
+
+;; ------ libraries init
+(use-package dash           :defer t)
+(use-package s              :defer t)
+(use-package f              :defer t)
+(use-package my-toolkit
+  :config
+  (when window-system
+    (let ((frame-alist
+           (list (cons 'top    emacs-min-top)
+                 (cons 'left   emacs-min-left)
+                 (cons 'height emacs-min-height)
+                 (cons 'width  emacs-min-width))))
+      (setq initial-frame-alist frame-alist))
+    (add-hook 'after-init-hook 'emacs-min)))
 
 ;; ------ keybindings init
 (load (expand-file-name "keybinding-init" user-emacs-directory))
