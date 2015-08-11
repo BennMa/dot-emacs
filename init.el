@@ -68,6 +68,8 @@
 (el-get-bundle elpa:hl-line+)
 (el-get-bundle elpa:git-messenger)
 
+(el-get-bundle elpa:erlang)
+(el-get-bundle elpa:edts)
 (el-get-bundle elpa:cmake-mode)
 (el-get-bundle elpa:web-mode)
 (el-get-bundle elpa:yaml-mode)

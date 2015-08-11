@@ -1206,3 +1206,29 @@
          ("M-P" . winner-undo))
   :config
   (winner-mode 1))
+
+(use-package erlang
+  :mode (("^\\.erlang$" . erlang-mode)
+         ("\\.app$" . erlang-mode)
+         ("\\.app.src$" . erlang-mode)
+         ("\\.erl$" . erlang-mode)
+         ("\\.es$" . erlang-mode)
+         ("\\.escript$" . erlang-mode)
+         ("\\.eterm$" . erlang-mode)
+         ("\\.script$" . erlang-mode)
+         ("\\.yaws$" . erlang-mode))
+  :config
+  (use-package edts-mode
+    :load-path "site-lisp/edts/elisp/edts"
+    :config
+    (remove-hook 'find-file-hook #'eproject-maybe-turn-on)
+    (remove-hook 'dired-mode-hook #'eproject-maybe-turn-on)
+    (remove-hook 'after-change-major-mode-hook #'eproject--after-change-major-mode-hook)
+    (remove-hook 'after-save-hook #'eproject--after-save-hook)
+
+    (defun edts-erlang-mode-hook ()
+      (when (buffer-file-name)
+        (eproject-maybe-turn-on)
+        (edts-mode t)))
+
+    (add-hook 'erlang-mode-hook 'edts-erlang-mode-hook)))

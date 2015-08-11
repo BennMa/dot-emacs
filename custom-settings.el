@@ -189,6 +189,9 @@
  '(ediff-show-clashes-only t)
  '(ediff-window-setup-function (quote ediff-setup-windows-plain))
  '(edit-server-new-frame nil)
+ '(edts-complete-inhibit nil)
+ '(edts-data-directory "/Users/benn/.emacs.d/data/edts")
+ '(edts-inhibit-package-check t)
  '(el-get-auto-update-cached-recipes nil)
  '(el-get-dir "~/.emacs.d/site-lisp")
  '(el-get-generate-autoloads nil)
@@ -598,7 +601,7 @@
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
    (quote
-    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")))
+    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")) t)
  '(recentf-max-saved-items 2000)
  '(recentf-save-file "~/.emacs.d/data/recentf")
  '(redisplay-dont-pause t t)
