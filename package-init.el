@@ -1221,6 +1221,8 @@
   (use-package edts-mode
     :load-path "site-lisp/edts/elisp/edts"
     :config
+    ;; remove eproject hooks which will effect other develop environment, here
+    ;; also can use-package eproject first, and set up the file types to nil
     (remove-hook 'find-file-hook #'eproject-maybe-turn-on)
     (remove-hook 'dired-mode-hook #'eproject-maybe-turn-on)
     (remove-hook 'after-change-major-mode-hook #'eproject--after-change-major-mode-hook)
@@ -1232,3 +1234,81 @@
         (edts-mode t)))
 
     (add-hook 'erlang-mode-hook 'edts-erlang-mode-hook)))
+
+(use-package hexcolour
+  :no-require t
+  :init
+  (defvar hexcolour-keywords
+    '(("#[a-zA-Z0-9]\\{6\\}"
+       (0 (put-text-property (match-beginning 0)
+                             (match-end 0)
+                             'face (list :background 
+                                         (match-string-no-properties 0)))))))
+  (defun hexcolour-add-to-font-lock ()
+    (font-lock-add-keywords nil hexcolour-keywords))
+  (dolist (hook '(emacs-lisp-mode-hook
+                  org-mode-hook
+                  php-mode-hook
+                  web-mode-hook
+                  erlang-mode-hook))
+    (add-hook hook #'(lambda() (hexcolour-add-to-font-lock)))))
+
+(use-package eshell
+  :commands (eshell eshell-command)
+  :preface
+  (defvar eshell-isearch-map
+    (let ((map (copy-keymap isearch-mode-map)))
+      (define-key map [(control ?m)] 'eshell-isearch-return)
+      (define-key map [return]       'eshell-isearch-return)
+      (define-key map [(control ?r)] 'eshell-isearch-repeat-backward)
+      (define-key map [(control ?s)] 'eshell-isearch-repeat-forward)
+      (define-key map [(control ?g)] 'eshell-isearch-abort)
+      (define-key map [backspace]    'eshell-isearch-delete-char)
+      (define-key map [delete]       'eshell-isearch-delete-char)
+      map)
+    "Keymap used in isearch in Eshell.")
+
+  (defun eshell-initialize ()
+    (defun eshell-spawn-external-command (beg end)
+      "Parse and expand any history references in current input."
+      (save-excursion
+        (goto-char end)
+        (when (looking-back "&!" beg)
+          (delete-region (match-beginning 0) (match-end 0))
+          (goto-char beg)
+          (insert "spawn "))))
+
+    (add-hook 'eshell-expand-input-functions 'eshell-spawn-external-command)
+
+    (defun ss (server)
+      (interactive "sServer: ")
+      (call-process "spawn" nil nil nil "ss" server))
+
+    (use-package em-unix
+      :defer t
+      :config
+      (unintern 'eshell/su nil)
+      (unintern 'eshell/sudo nil)))
+
+  :init
+  (add-hook 'eshell-first-time-mode-hook 'eshell-initialize)
+
+  (use-package esh-toggle
+    :bind ("C-x C-z" . eshell-toggle)))
+
+(use-package sh-toggle
+  :bind ("C-. C-z" . shell-toggle))
+
+(use-package sh-script
+  :defer t
+  :init
+  (defvar sh-script-initialized nil)
+  (defun initialize-sh-script ()
+    (unless sh-script-initialized
+      (setq sh-script-initialized t)
+      (info-lookup-add-help :mode 'shell-script-mode
+                            :regexp ".*"
+                            :doc-spec
+                            '(("(bash)Index")))))
+
+  (add-hook 'shell-mode-hook 'initialize-sh-script))

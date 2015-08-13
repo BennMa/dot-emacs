@@ -4,6 +4,7 @@
 (require 'use-package)
 
 (load "org-settings")
+(load "org-beautify-theme")
 
 (require 'org)
 (require 'org-agenda)
@@ -24,20 +25,20 @@
 
 (require 'calfw)
 
-
 ;; ====== Keybindings
 
 ;; ------ Org-global-keymap
 (defvar org-mode-completion-keys
-  '((?d . "DONE")
-    (?g . "DELEGATED")
-    (?n . "NOTE")
-    (?r . "DEFERRED")
-    (?s . "STARTED")
+  '(
     (?t . "TODO")
+    (?s . "STARTED")
     (?w . "WAITING")
-    (?x . "CANCELED")
+    (?r . "DEFERRED")
     (?y . "SOMEDAY")
+    (?x . "CANCELED")
+    (?d . "DONE")
+    (?n . "NOTE")
+    (?p . "PROJECT")
     ))
 
 (defvar org-todo-state-map nil)
@@ -532,8 +533,10 @@ end tell" (match-string 1))))
   ad-do-it
   (org-fit-agenda-window))
 
-
-
+;; ====== hooks
+(add-hook 'org-agenda-mode-hook 'hl-line-mode)
+(add-hook 'org-mode-hook #'(lambda ()
+                             (flycheck-mode 1)))
 
 (provide 'org-init)
 

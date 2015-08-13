@@ -30,8 +30,8 @@
           "\\=.*\\[#C\\]")))))
      ("r" "Uncategorized items" tags "CATEGORY=\"Inbox\"&LEVEL=2"
       ((org-agenda-overriding-header "Uncategorized items")))
-     ("W" "Waiting/delegated tasks" tags "TODO=\"WAITING\"|TODO=\"DELEGATED\""
-      ((org-agenda-overriding-header "Waiting/delegated tasks:")
+     ("W" "Waiting tasks" tags "TODO=\"WAITING\""
+      ((org-agenda-overriding-header "Waiting tasks:")
        (org-agenda-sorting-strategy
         (quote
          (todo-state-up priority-down category-up)))))
@@ -51,25 +51,15 @@
      ("U" "Deferred tasks" tags "TODO=\"DEFERRED\""
       ((org-agenda-files
         (quote
-         ("~/Mine/Documents/Tasks/ToDo.txt" "~/Mine/Documents/Tasks/TNC.txt")))
+         ("~/Mine/Documents/Tasks/TODO.txt" "~/Mine/Documents/Tasks/TNC.txt")))
        (org-agenda-overriding-header "Deferred tasks:")))
      ("Y" "Someday tasks" tags "TODO=\"SOMEDAY\""
-      ((org-agenda-overriding-header "Someday tasks:")))
-     ("c" "Appointment Calendar" agenda ""
-      ((org-agenda-overriding-header "Appointment Calendar")
-       (org-agenda-sorting-strategy
-        (quote
-         (time-up)))
-       (org-agenda-span 14)
-       (org-agenda-ndays 14)
-       (org-agenda-regexp-filter-preset
-        (quote
-         ("+APPT"))))))))
+      ((org-agenda-overriding-header "Someday tasks:"))))))
  '(org-agenda-deadline-leaders (quote ("!D!: " "D%02d: ")))
  '(org-agenda-default-appointment-duration 60)
  '(org-agenda-files
    (quote
-    ("~/Mine/Documents/Tasks/ToDo.txt" "~/Mine/Documents/Tasks/Habits.txt" "~/Mine/Documents/Tasks/Notes.txt" "~/Mine/Documents/Tasks/TNC.txt")))
+    ("~/Mine/Documents/Tasks/TODO.txt" "~/Mine/Documents/Tasks/Habits.txt" "~/Mine/Documents/Tasks/Notes.txt" "~/Mine/Documents/Tasks/TNC.txt")))
  '(org-agenda-fontify-priorities t)
  '(org-agenda-include-diary t)
  '(org-agenda-inhibit-startup t)
@@ -109,7 +99,14 @@
  '(org-capture-templates
    (quote
     (("a" "Add Task" entry
-      (file+headline "~/Mine/Documents/Tasks/ToDo.txt" "Inbox")
+      (file+headline "~/Mine/Documents/Tasks/TODO.txt" "Inbox")
+      "* TODO %?
+SCHEDULED: %t
+:PROPERTIES:
+:ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
+:END:" :prepend t)
+     ("w" "Add Work Task" entry
+      (file+headline "~/Mine/Documents/Tasks/TNC.txt" "Inbox")
       "* TODO %?
 SCHEDULED: %t
 :PROPERTIES:
@@ -118,13 +115,6 @@ SCHEDULED: %t
      ("n" "Note" entry
       (file "~/Mine/Documents/Tasks/Notes.txt")
       "* NOTE %?
-:PROPERTIES:
-:ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
-:END:" :prepend t)
-     ("c" "Calendar" entry
-      (file+headline "~/Mine/Documents/Tasks/ToDo.txt" "Inbox")
-      "* APPT %?
-SCHEDULED: %t
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
 :END:" :prepend t))))
@@ -146,7 +136,7 @@ SCHEDULED: %t
  '(org-crypt-disable-auto-save nil)
  '(org-cycle-global-at-bob t)
  '(org-deadline-warning-days 14)
- '(org-default-notes-file "~/Mine/Documents/Tasks/ToDo.txt")
+ '(org-default-notes-file "~/Mine/Documents/Tasks/TODO.txt")
  '(org-directory "~/Mine/Documents/Tasks/")
  '(org-ditaa-jar-path "~/bin/DitaaEps.jar")
  '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "OUT")))
@@ -221,7 +211,7 @@ SCHEDULED: %t
   (67 :foreground "dark gray" :slant italic))))
  '(org-refile-targets
 (quote
- (("~/Mine/Documents/Tasks/ToDo.txt" :level . 1)
+ (("~/Mine/Documents/Tasks/TODO.txt" :level . 1)
   ("~/Mine/Documents/Tasks/TNC.txt" :level . 1)
   (org-agenda-files :todo . "PROJECT"))))
  '(org-return-follows-link t)
@@ -232,18 +222,18 @@ SCHEDULED: %t
  '(org-time-clocksum-use-fractional t)
  '(org-todo-keyword-faces
 (quote
- (("TODO" :foreground "medium blue" :weight bold)
-  ("APPT" :foreground "medium blue" :weight bold)
-  ("NOTE" :foreground "brown" :weight bold)
+ (("TODO" :foreground "red" :weight bold)
   ("STARTED" :foreground "dark orange" :weight bold)
-  ("WAITING" :foreground "red" :weight bold)
-  ("DELEGATED" :foreground "dark violet" :weight bold)
+  ("WAITING" :foreground "medium blue" :weight bold)
   ("DEFERRED" :foreground "dark blue" :weight bold)
   ("SOMEDAY" :foreground "dark blue" :weight bold)
-  ("PROJECT" :foreground "#088e8e" :weight bold))))
+  ("CANCELED" :foreground "gray" :weight bold)
+  ("NOTE" :foreground "brown" :weight bold)
+  ("PROJECT" :foreground "#088e8e" :weight bold)
+  ("DONE" :foreground "ForestGreen" :weight bold))))
  '(org-todo-keywords
 (quote
- ((sequence "TODO" "PROJECT" "APPT" "NOTE" "STARTED" "WAITING" "DELEGATED" "DEFERRED" "SOMEDAY" "CANCELED" "DONE"))))
+ ((sequence "TODO" "STARTED" "WAITING" "DEFERRED" "SOMEDAY" "CANCELED" "DONE" "NOTE" "PROJECT"))))
  '(org-todo-repeat-to-state "TODO")
  '(org-use-property-inheritance (quote ("AREA")))
  '(org-use-speed-commands t)
@@ -281,5 +271,5 @@ SCHEDULED: %t
  '(org-habit-ready-face ((((background light)) (:background "#4df946"))))
  '(org-habit-ready-future-face ((((background light)) (:background "#acfca9"))))
  '(org-headline-done ((t nil)))
- '(org-scheduled ((((class color) (min-colors 88) (background light)) nil)))
- '(org-upcoming-deadline ((((class color) (min-colors 88) (background light)) (:foreground "Brown")))))
+ '(org-scheduled ((t (:foreground "White"))))
+ '(org-upcoming-deadline ((t (:foreground "Brown")))))

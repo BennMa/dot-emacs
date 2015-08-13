@@ -211,11 +211,13 @@ Inspired by Erik Naggum's `recursive-edit-with-single-window'."
  "
   (interactive "P")
   (let ((output_str buffer-file-name)
-        (mode-str mode-name)
-        )
+        (mode-str mode-name))
     (if (and output_str show-short-info-p)
         (setq output_str
-              (file-name-sans-extension (file-name-nondirectory output_str))))
+              (if (projectile-project-p)
+                  (replace-regexp-in-string
+                   (regexp-quote (projectile-project-p)) "" (buffer-file-name))
+                (buffer-name))))
     (cond
      ((string-prefix-p "w3m" mode-str) (setq output_str (w3m-current-title)))
      ((string-prefix-p "Dired" mode-str)

@@ -126,7 +126,7 @@
         (nth 5 xs)))))
  '(clean-buffer-list-kill-never-buffer-names
    (quote
-    ("*scratch*" "*Messages*" "*server*" "*Group*" "*Org Agenda*" "todo.txt" "&bitlbee")))
+    ("*scratch*" "*Messages*" "*server*" "*Group*" "*Org Agenda*" "TODO.txt" "&bitlbee")))
  '(clean-buffer-list-kill-never-regexps
    (quote
     ("^ \\*Minibuf-.*\\*$" "^\\*Summary" "^\\*Article" "^#")))
@@ -471,6 +471,10 @@
         (mode . js-mode)
         (mode . css-mode)
         (mode . yaml-mode)))
+      ("Erlang"
+       (or
+        (mode . erlang-mode)
+        (mode . erlang-shell-mode)))
       ("C++"
        (or
         (mode . c-mode)
@@ -581,7 +585,7 @@
  '(previous-buffer-black-list (quote ("^[	 ]*\\*.*\\*[	 ]*$" "collected.org")))
  '(previous-buffer-white-list
    (quote
-    ("\\*mu4e-\\(main\\|headers\\)\\*" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)\\*" "\\*terminal.*\\*" "\\*magit:[	 ]*.*\\*" "\\*Tail:.*" "\\*erlang.*\\*" "\\*Customize.*\\*")))
+    ("\\*mu4e-\\(main\\|headers\\)\\*" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)\\*" "\\*terminal.*\\*" "\\*magit:[	 ]*.*\\*" "\\*Tail:.*" "\\*erlang.*\\*" "\\*Customize.*\\*" "\\*eshell.*\\*")))
  '(projectile-cache-file "~/.emacs.d/data/projectile.cache")
  '(projectile-enable-caching t)
  '(projectile-globally-ignored-files (quote ("TAGS" "GPATH" "GRTAGS" "GTAGS" "ID")))
@@ -589,6 +593,9 @@
  '(projectile-project-root-files
    (quote
     (".mproject" "rebar.config" "project.clj" "SConstruct" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs")))
+ '(projectile-project-root-files-bottom-up
+   (quote
+    (".mproject" ".projectile" ".git" ".hg" ".fslckout" ".bzr" "_darcs")))
  '(projectile-switch-project-action (quote helm-projectile))
  '(ps-font-size (quote (8 . 10)))
  '(ps-footer-font-size (quote (12 . 14)))
@@ -601,7 +608,7 @@
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
    (quote
-    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")) t)
+    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")))
  '(recentf-max-saved-items 2000)
  '(recentf-save-file "~/.emacs.d/data/recentf")
  '(redisplay-dont-pause t t)

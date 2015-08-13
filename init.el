@@ -75,6 +75,7 @@
 (el-get-bundle elpa:yaml-mode)
 (el-get-bundle elpa:css-mode)
 (el-get-bundle elpa:calfw)
+(el-get-bundle elpa:org-beautify-theme)
 
 ;; ------ packages from others
 (el-get-bundle ag)
