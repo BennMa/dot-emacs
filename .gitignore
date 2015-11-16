@@ -6,7 +6,7 @@ obsolete/
 data/
 elpa/
 eshell/
-lisp/
+lisp/symfony1x/
 .backups/
 .cask/
 GPATH
