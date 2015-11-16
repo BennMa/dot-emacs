@@ -2,6 +2,10 @@
 (unless noninteractive
   (message "Loading %s..." load-file-name))
 
+(defvar my-location (let ((scselect-output
+                           (shell-command-to-string "/usr/sbin/scselect")))
+                      (string-match "\n +\\* +.*(\\(.*?\\))" scselect-output)
+                      (match-string 1 scselect-output)))
 (setq message-log-max 16384)
 
 ;; ------ set load path
@@ -9,11 +13,13 @@
   (mapc
    #'(lambda (path)
        (push (expand-file-name path user-emacs-directory) load-path))
-   '("site-lisp" "site-lisp/el-get" "site-lisp/use-package" "lisp" "")))
+   '("site-lisp" "site-lisp/el-get" "site-lisp/use-package" "lisp" "themes" "")))
 
 ;; ------ load custom settings
 (load (expand-file-name "custom-settings" user-emacs-directory))
 (fset 'yes-or-no-p 'y-or-n-p)
+(setq visible-bell nil
+      ring-bell-function 'ignore)
 
 ;; ------ core packages
 (eval-and-compile
@@ -39,6 +45,7 @@
 (el-get-bundle elpa:dash)
 (el-get-bundle elpa:s)
 (el-get-bundle elpa:f)
+(el-get-bundle elpa:popwin)
 
 ;; ------ packages from elpa
 (el-get-bundle elpa:exec-path-from-shell)
@@ -67,6 +74,15 @@
 (el-get-bundle elpa:escreen)
 (el-get-bundle elpa:hl-line+)
 (el-get-bundle elpa:git-messenger)
+(el-get-bundle elpa:maxframe)
+(el-get-bundle elpa:color-moccur)
+(el-get-bundle elpa:org-bullets)
+(el-get-bundle elpa:bbdb)
+(el-get-bundle elpa:message-x)
+(el-get-bundle elpa:gnus-alias)
+(el-get-bundle elpa:gnus-desktop-notify)
+(el-get-bundle elpa:imenu+)
+(el-get-bundle elpa:w3m)
 
 (el-get-bundle elpa:erlang)
 (el-get-bundle elpa:edts)
@@ -75,9 +91,9 @@
 (el-get-bundle elpa:yaml-mode)
 (el-get-bundle elpa:css-mode)
 (el-get-bundle elpa:calfw)
-(el-get-bundle elpa:org-beautify-theme)
 
 ;; ------ packages from others
+(el-get-bundle fetchmail-mode)
 (el-get-bundle ag)
 (el-get-bundle helm-ag)
 (el-get-bundle diminish)
@@ -87,6 +103,7 @@
 (el-get-bundle fold-this)
 (el-get-bundle org)
 (el-get-bundle org-magit)
+(el-get-bundle direx)
 
 ;; ------ enable disabled commands
 (put 'downcase-region  'disabled nil)   ; Let downcasing work
@@ -101,16 +118,8 @@
 (use-package dash           :defer t)
 (use-package s              :defer t)
 (use-package f              :defer t)
-(use-package my-toolkit
-  :config
-  (when window-system
-    (let ((frame-alist
-           (list (cons 'top    emacs-min-top)
-                 (cons 'left   emacs-min-left)
-                 (cons 'height emacs-min-height)
-                 (cons 'width  emacs-min-width))))
-      (setq initial-frame-alist frame-alist))
-    (add-hook 'after-init-hook 'emacs-min)))
+(use-package popwin         :config (popwin-mode 1))
+(use-package my-toolkit     :demand t)
 
 ;; ------ keybindings init
 (load (expand-file-name "keybinding-init" user-emacs-directory))

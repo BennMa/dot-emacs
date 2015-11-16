@@ -5,19 +5,25 @@
  ;; If there is more than one, they won't work right.
  '(org-M-RET-may-split-line (quote ((headline) (default . t))))
  '(org-adapt-indentation nil)
- '(org-agenda-auto-exclude-function (quote org-my-auto-exclude-function))
+ '(org-agenda-auto-exclude-function nil)
  '(org-agenda-custom-commands
    (quote
-    (("h" "Current Hotlist" tags "HOT&TODO=\"PROJECT\""
-      ((org-agenda-overriding-header "Current Hotlist")))
-     ("H" "Non-Hot Projects" tags "-HOT&TODO=\"PROJECT\""
-      ((org-agenda-overriding-header "Non-Hot Projects")))
+    (("h" "Projects List" tags "LEVEL=1"
+      ((org-agenda-overriding-header "Projects List")
+       (org-agenda-files
+        (quote
+         ("~/Mine/Documents/Tasks/PROJECTS.txt")))
+       (org-agenda-sorting-strategy
+        (quote
+         (priority-down)))))
      ("A" "Priority #A tasks" agenda ""
       ((org-agenda-ndays 1)
        (org-agenda-overriding-header "Today's priority #A tasks: ")
        (org-agenda-skip-function
         (quote
          (org-agenda-skip-entry-if
+          (quote regexp)
+          "\\* \\(DEFERRED\\|SOMEDAY\\)"
           (quote notregexp)
           "\\=.*\\[#A\\]")))))
      ("b" "Priority #A and #B tasks" agenda ""
@@ -27,15 +33,20 @@
         (quote
          (org-agenda-skip-entry-if
           (quote regexp)
+          "\\* \\(DEFERRED\\|SOMEDAY\\)"
+          (quote regexp)
           "\\=.*\\[#C\\]")))))
-     ("r" "Uncategorized items" tags "CATEGORY=\"Inbox\"&LEVEL=2"
-      ((org-agenda-overriding-header "Uncategorized items")))
+     ("o" "Uncategorized items" tags "LEVEL=1"
+      ((org-agenda-overriding-header "Uncategorized items")
+       (org-agenda-files
+        (quote
+         ("~/Mine/Documents/Tasks/INBOX.txt")))))
      ("W" "Waiting tasks" tags "TODO=\"WAITING\""
       ((org-agenda-overriding-header "Waiting tasks:")
        (org-agenda-sorting-strategy
         (quote
          (todo-state-up priority-down category-up)))))
-     ("u" "Unscheduled tasks" tags "TODO<>\"\"&TODO<>{DONE\\|CANCELED\\|NOTE\\|PROJECT}"
+     ("u" "Unscheduled tasks" tags "TODO<>\"\"&TODO<>{DONE\\|CANCELED\\|NOTE}"
       ((org-agenda-overriding-header "Unscheduled tasks: ")
        (org-agenda-skip-function
         (quote
@@ -49,17 +60,18 @@
         (quote
          (priority-down)))))
      ("U" "Deferred tasks" tags "TODO=\"DEFERRED\""
-      ((org-agenda-files
-        (quote
-         ("~/Mine/Documents/Tasks/TODO.txt" "~/Mine/Documents/Tasks/TNC.txt")))
-       (org-agenda-overriding-header "Deferred tasks:")))
+      ((org-agenda-overriding-header "Deferred tasks:")))
      ("Y" "Someday tasks" tags "TODO=\"SOMEDAY\""
-      ((org-agenda-overriding-header "Someday tasks:"))))))
+      ((org-agenda-overriding-header "Someday tasks:")))
+     ("r" "All Review Entries" tags ":review:"
+      ((org-agenda-files k/review-dir)
+       (org-agenda-skip-function
+        (quote m/org-agenda-skip-expired-review-entry)))))))
  '(org-agenda-deadline-leaders (quote ("!D!: " "D%02d: ")))
  '(org-agenda-default-appointment-duration 60)
  '(org-agenda-files
    (quote
-    ("~/Mine/Documents/Tasks/TODO.txt" "~/Mine/Documents/Tasks/Habits.txt" "~/Mine/Documents/Tasks/Notes.txt" "~/Mine/Documents/Tasks/TNC.txt")))
+    ("~/Mine/Documents/Tasks/INBOX.txt" "~/Mine/Documents/Tasks/PROJECTS.txt")))
  '(org-agenda-fontify-priorities t)
  '(org-agenda-include-diary t)
  '(org-agenda-inhibit-startup t)
@@ -91,7 +103,7 @@
  '(org-agenda-tags-column -100)
  '(org-agenda-text-search-extra-files (quote (agenda-archives)))
  '(org-agenda-use-time-grid nil)
- '(org-archive-location "TODO-archive::")
+ '(org-archive-location "%s_archive::datetree")
  '(org-archive-save-context-info (quote (time category itags)))
  '(org-attach-method (quote mv))
  '(org-babel-load-languages (quote ((emacs-lisp . t) (sh . t) (ruby . t) (python . t))))
@@ -99,21 +111,22 @@
  '(org-capture-templates
    (quote
     (("a" "Add Task" entry
-      (file+headline "~/Mine/Documents/Tasks/TODO.txt" "Inbox")
+      (file "~/Mine/Documents/Tasks/INBOX.txt")
       "* TODO %?
 SCHEDULED: %t
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
 :END:" :prepend t)
-     ("w" "Add Work Task" entry
-      (file+headline "~/Mine/Documents/Tasks/TNC.txt" "Inbox")
-      "* TODO %?
-SCHEDULED: %t
+     ("p" "Add Project" entry
+      (file "~/Mine/Documents/Tasks/PROJECTS.txt")
+      "* %?
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
-:END:" :prepend t)
+:END:
+** Notes
+** Tasks" :prepend t)
      ("n" "Note" entry
-      (file "~/Mine/Documents/Tasks/Notes.txt")
+      (file "~/Mine/Documents/Tasks/INBOX.txt")
       "* NOTE %?
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
@@ -136,7 +149,8 @@ SCHEDULED: %t
  '(org-crypt-disable-auto-save nil)
  '(org-cycle-global-at-bob t)
  '(org-deadline-warning-days 14)
- '(org-default-notes-file "~/Mine/Documents/Tasks/TODO.txt")
+ '(org-default-notes-file "~/Mine/Documents/Tasks/INBOX.txt")
+ '(org-default-priority 66)
  '(org-directory "~/Mine/Documents/Tasks/")
  '(org-ditaa-jar-path "~/bin/DitaaEps.jar")
  '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "OUT")))
@@ -205,20 +219,15 @@ SCHEDULED: %t
  '(org-modules
 (quote
  (org-gnus org-habit org-id org-info org-depend org-velocity)))
- '(org-priority-faces
-(quote
- ((65 :foreground "ForestGreen" :weight bold)
-  (67 :foreground "dark gray" :slant italic))))
  '(org-refile-targets
 (quote
- (("~/Mine/Documents/Tasks/TODO.txt" :level . 1)
-  ("~/Mine/Documents/Tasks/TNC.txt" :level . 1)
-  (org-agenda-files :todo . "PROJECT"))))
+ (("~/Mine/Documents/Tasks/PROJECTS.txt" :level . 1))))
  '(org-return-follows-link t)
  '(org-reverse-note-order t)
  '(org-src-fontify-natively t)
- '(org-stuck-projects (quote ("TODO=\"PROJECT\"" nil nil "SCHEDULED:")))
- '(org-tags-column -97)
+ '(org-startup-indented t)
+ '(org-stuck-projects (quote ("STUCK" nil nil "")))
+ '(org-tags-column -78)
  '(org-time-clocksum-use-fractional t)
  '(org-todo-keyword-faces
 (quote
@@ -227,23 +236,22 @@ SCHEDULED: %t
   ("WAITING" :foreground "medium blue" :weight bold)
   ("DEFERRED" :foreground "dark blue" :weight bold)
   ("SOMEDAY" :foreground "dark blue" :weight bold)
-  ("CANCELED" :foreground "gray" :weight bold)
   ("NOTE" :foreground "brown" :weight bold)
-  ("PROJECT" :foreground "#088e8e" :weight bold)
+  ("CANCELED" :foreground "gray" :weight bold)
   ("DONE" :foreground "ForestGreen" :weight bold))))
  '(org-todo-keywords
 (quote
- ((sequence "TODO" "STARTED" "WAITING" "DEFERRED" "SOMEDAY" "CANCELED" "DONE" "NOTE" "PROJECT"))))
+ ((sequence "TODO" "STARTED" "WAITING" "DEFERRED" "SOMEDAY" "NOTE" "|" "CANCELED" "DONE"))))
  '(org-todo-repeat-to-state "TODO")
  '(org-use-property-inheritance (quote ("AREA")))
  '(org-use-speed-commands t)
  '(org-use-tag-inheritance nil)
  '(org-velocity-always-use-bucket t)
- '(org-velocity-bucket "~/Mine/Documents/Tasks/Notes.txt")
+ '(org-velocity-bucket "~/Mine/Documents/Tasks/PROJECTS.txt")
  '(org-velocity-capture-templates
 (quote
  (("v" "Velocity" entry
-   (file "~/Mine/Documents/Tasks/Notes.txt")
+   (file "~/Mine/Documents/Tasks/INBOX.txt")
    "* NOTE %:search
 %i%?
 :PROPERTIES:
@@ -260,16 +268,4 @@ SCHEDULED: %t
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(org-agenda-done ((t (:foreground "ForestGreen"))))
- '(org-done ((t (:foreground "ForestGreen" :weight bold))))
- '(org-habit-alert-face ((((background light)) (:background "#f5f946"))))
- '(org-habit-alert-future-face ((((background light)) (:background "#fafca9"))))
- '(org-habit-clear-face ((((background light)) (:background "#8270f9"))))
- '(org-habit-clear-future-face ((((background light)) (:background "#d6e4fc"))))
- '(org-habit-overdue-face ((((background light)) (:background "#f9372d"))))
- '(org-habit-overdue-future-face ((((background light)) (:background "#fc9590"))))
- '(org-habit-ready-face ((((background light)) (:background "#4df946"))))
- '(org-habit-ready-future-face ((((background light)) (:background "#acfca9"))))
- '(org-headline-done ((t nil)))
- '(org-scheduled ((t (:foreground "White"))))
- '(org-upcoming-deadline ((t (:foreground "Brown")))))
+ '(org-priority ((t (:inherit nil)))))

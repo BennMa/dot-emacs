@@ -126,8 +126,6 @@
 
 (bind-key "C-c k" 'keep-lines)
 
-
-(bind-key "C-c m" 'emacs-toggle-size)
 (bind-key "C-c o" 'customize-option)
 (bind-key "C-c O" 'customize-group)
 (bind-key "C-c F" 'customize-face)
@@ -159,6 +157,7 @@
 ;; ------ ctl-period-map, C-.
 
 (bind-key "C-. m" 'kmacro-keymap)
+(bind-key "C-. s" 'my-location-switch)
 
 (bind-key "C-. C-i" 'indent-rigidly)
 
@@ -184,3 +183,4 @@
 (bind-key "C-h e s" 'scratch)
 (bind-key "C-h e v" 'find-variable)
 (bind-key "C-h e V" 'apropos-value)
+(bind-key "C-h e t" 'what-face)

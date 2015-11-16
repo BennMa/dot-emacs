@@ -52,6 +52,21 @@ Inspired by Erik Naggum's `recursive-edit-with-single-window'."
           (balance-windows) )
     windows))
 
+(defun directory-files-recursively (DIRECTORY &optional FULL MATCH NOSORT MAX-DEPTH)
+  (or MAX-DEPTH (setq MAX-DEPTH 5))
+  (if (> MAX-DEPTH 1)
+      (let ((temp-list (directory-files DIRECTORY FULL "[^\.]$" NOSORT))
+            files file)
+        (dolist (item temp-list)
+          (setq file (if FULL item (expand-file-name item DIRECTORY)))
+          (cond
+           ((file-directory-p file)
+            (setq files (append
+                         files
+                         (directory-files-recursively file FULL MATCH NOSORT (1- MAX-DEPTH)))))
+           ((or (not MATCH) (string-match-p MATCH file))
+            (add-to-list 'files item))))
+        files)))
 
 (autoload 'org-cycle "org" nil t)
 (autoload 'hippie-expand "hippie-exp" nil t)
@@ -180,21 +195,23 @@ Inspired by Erik Naggum's `recursive-edit-with-single-window'."
 
 (defun insert-separator(&optional paragraph-p)
   (let ((pos (point)))
+    (end-of-line)
+    (electric-newline-and-maybe-indent)
     (insert
      (format (if paragraph-p
-                 "%s ====== separator"
-               "%s ------ separator")
+                 "%s-----"
+               "%s--------------------------------------------------------------------------")
              (get-comment)))
-    ;;(goto-char pos)
-    (forward-char -9)))
+    (goto-char pos)
+    (next-line 2)))
 
 (defun get-comment ()
   "Get comment for different modes"
   (cond
    ((string-equal mode-name "Emacs-Lisp") ";;")
    ((string-equal mode-name "Lisp") ";;")
-   ((string-equal mode-name "PHP") "#")
-   ((string-equal mode-name "Web") "#")
+   ((string-equal mode-name "PHP") "//")
+   ((string-equal mode-name "Web") "//")
    ((string-equal mode-name "Py") "#")
    ((string-equal mode-name "Erlang") "%%")
    (t (if comment-start comment-start ""))))
@@ -354,18 +371,6 @@ Inspired by Erik Naggum's `recursive-edit-with-single-window'."
 
 
 ;; ------ font & size related
-;; (eval-when-compile
-;;   (defvar emacs-min-height)
-;;   (defvar emacs-min-width))
-
-(defvar emacs-min-top 23)
-(defvar emacs-min-left 0)
-(defvar emacs-min-width 100)
-(defvar emacs-min-height 40)
-(defvar emacs-english-fonts '("Menlo" "Courier New" "Monaco" "Inconsolata"
-                              "Anonymous Pro" "Monospace" "Courier"))
-(defvar emacs-chinese-fonts '("宋体" "黑体" "新宋体" "文泉驿等宽微米黑" "Microsoft Yahei"))
-
 (defun qiang-font-existsp (font)
   (if (null (x-list-fonts font)) nil t))
 (defun qiang-make-font-string (font-name font-size)
@@ -373,19 +378,18 @@ Inspired by Erik Naggum's `recursive-edit-with-single-window'."
            (equal ":" (string (elt font-size 0))))
       (format "%s%s" font-name font-size)
     (format "%s %s" font-name font-size)))
-(defun qiang-set-font (english-font-size
-                       chinese-font-size
-                       &optional english-fonts
+(defun qiang-set-font (english-fonts
+                       &optional
+                       english-font-size
                        chinese-fonts)
   "english-font-size could be set to \":pixelsize=18\" or a integer.
 If set/leave chinese-font-size to nil, it will follow english-font-size"
-  (or english-fonts (setq english-fonts emacs-english-fonts))
-  (or chinese-fonts (setq chinese-fonts emacs-chinese-fonts))
-  (let ((en-font (qiang-make-font-string
+  (let* ((en-font (qiang-make-font-string
                   (find-if #'qiang-font-existsp english-fonts)
                   english-font-size))
-        (zh-font (font-spec :family (find-if #'qiang-font-existsp chinese-fonts)
-                            :size chinese-font-size)))
+         (useable-zh-font (find-if #'qiang-font-existsp chinese-fonts))
+         (zh-font (font-spec :family useable-zh-font))
+         (chinese-font-size (list (cons useable-zh-font 1.2))))
     (message "Set English Font to %s" en-font)
     (set-face-attribute
      'default nil :font en-font)
@@ -393,35 +397,8 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
     (dolist (charset '(kana han symbol cjk-misc bopomofo))
       (set-fontset-font (frame-parameter nil 'font)
                         charset
-                        zh-font))))
-
-(defun emacs-min ()
-  (interactive)
-  (set-frame-parameter (selected-frame) 'fullscreen nil)
-  (set-frame-parameter (selected-frame) 'vertical-scroll-bars nil)
-  (set-frame-parameter (selected-frame) 'horizontal-scroll-bars nil)
-
-  (set-frame-parameter (selected-frame) 'top emacs-min-top)
-  (set-frame-parameter (selected-frame) 'left emacs-min-left)
-  (set-frame-parameter (selected-frame) 'height emacs-min-height)
-  (set-frame-parameter (selected-frame) 'width emacs-min-width)
-  
-  (qiang-set-font 15 16))
-
-(defun emacs-max ()
-  (interactive)
-  (set-frame-parameter (selected-frame) 'fullscreen 'fullboth)
-  (set-frame-parameter (selected-frame) 'vertical-scroll-bars nil)
-  (set-frame-parameter (selected-frame) 'horizontal-scroll-bars nil)
-  
-  (qiang-set-font 17 18))
-
-(defun emacs-toggle-size ()
-  (interactive)
-  (if (> (cdr (assq 'width (frame-parameters))) 100)
-      (emacs-min)
-    (emacs-max)))
-
+                        zh-font))
+    (setq face-font-rescale-alist chinese-font-size)))
 
 ;; ------ help related
 (defun my-switch-in-other-buffer (buf)
@@ -489,5 +466,47 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
     (if (memq current-mode lisp-modes)
         (funcall current-mode))))
 
+(defun quickping (host)
+  (= 0 (call-process "ping" nil nil nil "-c1" "-W50" "-q" host)))
+
+(defun what-face (pos)
+  (interactive "d")
+  (let ((face (or (get-char-property (point) 'read-face-name)
+                  (get-char-property (point) 'face))))
+    (if face (message "Face: %s" face) (message "No face at %d" pos))))
+
+(defun my-location-switch(&optional location)
+  (interactive)
+  (let ((target-location (or location (if (string= my-location "Home")
+                                   "Office"
+                                 "Home"))))
+    (setq my-location target-location)
+    (async-shell-command (concat "/usr/sbin/scselect " target-location))))
+
+;; ------ notification
+(defvar terminal-notifier-bin
+  "/usr/local/bin/terminal-notifier")
+(defun send-notification-for-mac (title msg &optional url command group sender activate sound)
+  (shell-command (concat terminal-notifier-bin
+                         " -message '" msg "'"
+                         " -title '" title "'"
+                         " -sound " sound
+                         " -sender " sender
+                         " -activate " activate
+                         " -group " group
+                         " -open '" url "'"
+                         " -execute '" command "'")))
+
+(defvar emacsclient-bin "/Applications/Emacs.app/Contents/MacOS/bin/emacsclient")
+(defun my-notify(msg callback-command &optional title group)
+  (interactive)
+  (let ((is_url (string-match-p "^https?\\:\\/\\/" callback-command))
+        (group (or group "Emacs"))
+        (sender "org.gnu.emacs")
+        (activate "org.gnu.emacs")
+        (sound "default"))
+    (send-notification-for-mac title msg (and is_url callback-command)
+                               (and (not is_url) (concat emacsclient-bin " -nqe \"" callback-command "\"")) ;; execute emacs code/function when click the notification
+                               group sender activate sound)))
 
 (provide 'my-toolkit)

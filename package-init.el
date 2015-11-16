@@ -1,3 +1,65 @@
+;; org faces: http://orgmode.org/worg/org-color-themes.html
+(use-package color-theme
+  :init
+  (defvar emacs-english-fonts '("Menlo" "Courier New" "Monaco" "Inconsolata"
+                                "Anonymous Pro" "Monospace" "Courier"))
+  (defvar emacs-chinese-fonts '("宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
+                                "Microsoft Yahei"))
+  (qiang-set-font emacs-english-fonts 15 emacs-chinese-fonts)
+  :config
+  (use-package my-emacs-theme
+    :commands my-emacs-theme)
+  (my-emacs-theme))
+
+(use-package maxframe
+  :if window-system
+  :commands maximize-frame
+  :bind (("C-c M" . emacs-max)
+         ("C-c m" . emacs-toggle-size))
+  :init
+  ;; (add-hook 'after-init-hook 'maximize-frame)
+  ;; (add-hook 'after-init-hook 'emacs-min)
+  
+  :config
+  (defvar emacs-min-top 23)
+  (defvar emacs-min-left 0)
+  (defvar emacs-min-width 85)
+  (defvar emacs-min-height 35)
+
+  ;; (let ((frame-alist
+  ;;        (list (cons 'top    emacs-min-top)
+  ;;              (cons 'left   emacs-min-left)
+  ;;              (cons 'height emacs-min-height)
+  ;;              (cons 'width  emacs-min-width))))
+  ;;   (setq initial-frame-alist frame-alist))
+  
+  (defun emacs-min ()
+    (interactive)
+    (set-frame-parameter (selected-frame) 'fullscreen nil)
+    (set-frame-parameter (selected-frame) 'vertical-scroll-bars nil)
+    (set-frame-parameter (selected-frame) 'horizontal-scroll-bars nil)
+
+    (set-frame-parameter (selected-frame) 'top emacs-min-top)
+    (set-frame-parameter (selected-frame) 'left emacs-min-left)
+    (set-frame-parameter (selected-frame) 'height emacs-min-height)
+    (set-frame-parameter (selected-frame) 'width emacs-min-width)
+    
+    (qiang-set-font emacs-english-fonts 15 emacs-chinese-fonts))
+  
+  (defun emacs-max ()
+    (interactive)
+    (set-frame-parameter (selected-frame) 'fullscreen 'fullboth)
+    (set-frame-parameter (selected-frame) 'vertical-scroll-bars nil)
+    (set-frame-parameter (selected-frame) 'horizontal-scroll-bars nil)
+
+    (qiang-set-font emacs-english-fonts 17 emacs-chinese-fonts))
+  
+  (defun emacs-toggle-size ()
+    (interactive)
+    (if (> (cdr (assq 'width (frame-parameters))) 100)
+        (emacs-min)
+      (maximize-frame))))
+
 (use-package exec-path-from-shell
   :if window-system
   :config
@@ -49,14 +111,27 @@
   :bind-keymap ("C-;" . projectile-command-map)
   :config
   (unbind-key "C-c p" projectile-mode-map)
-  
+
+  (use-package symfony1x
+    :load-path "lisp/symfony1x"
+    :commands symfony1x-mode
+    :init
+    (setq symfony1x-mode-key-prefix "C-; ;"))
+
+  (add-hook 'projectile-mode-hook
+            #'(lambda ()
+                (when (and (buffer-file-name)
+                           (string-match "\\/Master_\\(?:Service\\|Beta\\|Community\\|FT\\)\\/" (buffer-file-name)))
+                  (make-local-variable 'symfony1x-mode-status)
+                  (symfony1x-mode t))
+                (ggtags-mode 1)
+                (auto-highlight-symbol-mode 1)))
+
   (use-package helm-projectile
     :config
     (setq projectile-completion-system 'helm)
     (setq helm-projectile-fuzzy-match nil)
     (helm-projectile-on))
-
-  ;; (add-hook 'projectile-mode-hook #'(lambda()))
   
   (projectile-global-mode))
 
@@ -67,7 +142,7 @@
 
 (use-package magit
   :bind (("C-x g" . magit-status))
-         ;; ("C-x G" . magit-status-with-prefix))
+  ;; ("C-x G" . magit-status-with-prefix))
   :preface
   (defun magit-monitor (&optional no-display)
     "Start git-monitor in the current directory."
@@ -200,11 +275,11 @@
     (defun my-ido-hacks-execute-extended-command (&optional arg)
       (interactive "P")
       (flet ((completing-read
-                 (prompt collection &optional predicate require-match
-                         initial-input hist def inherit-input-method)
-                 (funcall ido-hacks-completing-read
-                          prompt collection predicate require-match
-                          initial-input hist def inherit-input-method)))
+              (prompt collection &optional predicate require-match
+                      initial-input hist def inherit-input-method)
+              (funcall ido-hacks-completing-read
+                       prompt collection predicate require-match
+                       initial-input hist def inherit-input-method)))
         (ido-hacks-execute-extended-command arg))))
 
   (use-package flx-ido
@@ -217,105 +292,6 @@
                 (bind-key "<return>" 'ido-smart-select-text
                           ido-file-completion-map))))
 
-(use-package color-theme
-  :config
-  (color-theme-install
-   '(nil
-     ((foreground-color . "#F8F8F2")
-      (background-color . "#1B1D1E")
-      (cursor-color . "#F8F8F0")
-      (background-mode . dark))
-     (default ((t (:foreground "#F8F8F2" :background "#1B1D1E"))))
-     (bold ((t (:weight bold))))
-     (bold-italic ((t (:weight bold :slant italic))))
-     (custom-face-tag ((t (:foreground "#66D9EF" :weight bold))))
-     (custom-state ((t (:foreground "#A6E22E"))))
-     (italic ((t (:slant italic))))
-     (region ((t (:background "#403D3D"))))
-     (underline ((t (:underline t))))
-     (css-selector ((t (:foreground "#F92672"))))
-     (css-property ((t (:foreground "#66D9EF"))))
-     (diff-added ((t (:foreground "#A6E22E" :weight bold))))
-     (diff-context ((t (:foreground "#F8F8F2"))))
-     (diff-file-header ((t (:foreground "#66D9EF" :background nil))))
-     (diff-indicator-added ((t (:foreground "#A6E22E"))))
-     (diff-indicator-removed ((t (:foreground "#F92672"))))
-     (diff-header ((t (:foreground "#F8F8F2" :background "#232526"))))
-     (diff-hunk-header ((t (:foreground "#AE81FF" :background "#232526"))))
-     (diff-removed ((t (:foreground "#F92672" :weight bold))))
-     (escape-glyph ((t (:foreground "#E6DB74"))))
-     (minibuffer-prompt ((t (:foreground "#66D9EF"))))
-     (mode-line ((t (:foreground "#F8F8F2" :background "#ff0000"
-                                 :box (:line-width 1 :color "#ff0000" :style released-button)))))
-     (mode-line-buffer-id ((t (:foreground nil :background nil :weight semi-bold))))
-     (mode-line-inactive ((t (:foreground "#BCBCBC" :background "#1E1C1B"
-                                          :box (:line-width 1 :color "#232526")))))
-     (mode-line-mousable ((t (:foreground "#BCBCBC" :background "#ff0000"))))
-     (mode-line-mousable-minor-mode ((t (:foreground "#BCBCBC" :background "#000000"))))
-     (font-lock-builtin-face ((t (:foreground "#A6E22E"))))
-     (font-lock-comment-face ((t (:foreground "#465457" :slant italic))))
-     (font-lock-comment-delimiter-face ((t (:foreground "#465457" :slant italic))))
-     (font-lock-constant-face ((t (:foreground "#AE81FF"))))
-     (font-lock-doc-face ((t (:foreground "#E6DB74" :slant italic))))
-     (font-lock-function-name-face ((t (:foreground "#57d001")))) ;; #F92672  :height 160
-     (font-lock-keyword-face ((t (:foreground "#66D9EF"))))
-     (font-lock-negation-char-face ((t (:weight bold))))
-     (font-lock-preprocessor-face ((t (:foreground "#A6E22E"))))
-     (font-lock-regexp-grouping-backslash ((t (:weight bold))))
-     (font-lock-regexp-grouping-construct ((t (:weight bold))))
-     (font-lock-string-face ((t (:foreground "#E6DB74"))))
-     (font-lock-type-face ((t (:foreground "#66D9EF")))) ;; #66D9EF
-     (font-lock-variable-name-face ((t (:foreground "#F92672"))))
-     (font-lock-warning-face ((t (:foreground "#FFFFFF"
-                                              :background "#333333"))))
-     (fringe ((t (:background "#232526"))))
-     (highlight ((t (:foreground "#000000" :background "#C4BE89"))))
-     (hl-line ((t (:background "#293739"))))
-     (icompletep-choices ((t (:foreground "#F92672"))))
-     (icompletep-determined ((t (:foreground "#A6E22E"))))
-     (icompletep-keys ((t (:foreground "#F92672"))))
-     (icompletep-nb-candidates ((t (:foreground "#AE81FF"))))
-     (isearch ((t (:foreground "#C4BE89" :background "#000000"))))
-     (isearch-fail ((t (:foreground "#FFFFFF" :background "#333333"))))
-     (lazy-highlight ((t (:foreground "#465457" :background "#000000"))))
-     (markdown-italic-face ((t (:slant italic))))
-     (markdown-bold-face ((t (:weight bold))))
-     (markdown-header-face ((t (:weight normal))))
-     (markdown-header-face-1 ((t (:foreground "#66D9EF"))))
-     (markdown-header-face-2 ((t (:foreground "#F92672"))))
-     (markdown-header-face-3 ((t (:foreground "#A6E22E"))))
-     (markdown-header-face-4 ((t (:foreground "#AE81FF"))))
-     (markdown-header-face-5 ((t (:foreground "#E6DB74"))))
-     (markdown-header-face-6 ((t (:foreground "#66D9EF"))))
-     (markdown-inline-code-face ((t (:foreground "#66D9EF"))))
-     (markdown-list-face ((t (:foreground "#A6E22E"))))
-     (markdown-blockquote-face ((t (:slant italic))))
-     (markdown-pre-face ((t (:foreground "#AE81FF"))))
-     (markdown-link-face ((t (:foreground "#66D9EF"))))
-     (markdown-reference-face ((t (:foreground "#66D9EF"))))
-     (markdown-url-face ((t (:foreground "#E6DB74"))))
-     (markdown-link-title-face ((t (:foreground "#F92672"))))
-     (markdown-comment-face ((t (:foreground "#465457"))))
-     (markdown-math-face ((t (:foreground "#AE81FF" :slant italic))))
-     (mumamo-background-chunk-major ((t (:background "#272822"))))
-     (mumamo-background-chunk-submode ((t (:background "#1B1D1E"))))
-     (outline-1 ((t (:foreground "#66D9EF"))))
-     (outline-2 ((t (:foreground "#F92672"))))
-     (outline-3 ((t (:foreground "#A6E22E"))))
-     (outline-4 ((t (:foreground "#AE81FF"))))
-     (outline-5 ((t (:foreground "#E6DB74"))))
-     (outline-6 ((t (:foreground "#66D9EF"))))
-     (outline-7 ((t (:foreground "#F92672"))))
-     (outline-8 ((t (:foreground "#A6E22E"))))
-     (secondary-selection ((t (:background "#272822"))))
-     (show-paren-match-face ((t (:foreground "#000000" :background "#FD971F"))))
-     (show-paren-mismatch-face ((t (:foreground "#960050" :background "#1E0010"))))
-     (widget-inactive-face ((t (:background "#ff0000"))))
-     (woman-addition ((t (:foreground "#AE81FF"))))
-     (woman-bold ((t (:foreground "#F92672"))))
-     (woman-italic ((t (:foreground "#A6E22E"))))
-     (woman-unknown ((t (:foreground "#66D9EF"))))
-     )))
 
 (use-package powerline
   :config
@@ -332,7 +308,11 @@
   :bind (("C-1" . ahs-backward)
          ("C-2" . ahs-forward))
   :config
-  (global-auto-highlight-symbol-mode t))
+  (global-auto-highlight-symbol-mode t)
+  (unbind-key "M-<left>" auto-highlight-symbol-mode-map)
+  (unbind-key "M-<right>" auto-highlight-symbol-mode-map)
+  (unbind-key "M-S-<left>" auto-highlight-symbol-mode-map)
+  (unbind-key "M-S-<right>" auto-highlight-symbol-mode-map))
 
 (use-package cus-edit
   :defer 5
@@ -347,11 +327,35 @@
          ("C-c S" . org-store-link)
          ("C-c l" . org-insert-link)
          ("C-. n" . org-velocity-read))
-  :defer 30
-  :config)
-  ;; (run-with-idle-timer 300 t 'jump-to-org-agenda)
-  ;;(my-org-startup))
+  ;; :defer 30
+  :config
+  (use-package org-bullets
+    :commands org-bullets-mode)
+  (add-hook 'org-mode-hook
+            #'(lambda ()
+                (setq line-spacing 0.25)
+                (buffer-face-mode 1)
+                (org-bullets-mode 1)
+                (flyspell-mode 1)))
 
+  (add-hook 'org-agenda-mode-hook
+            #'(lambda ()
+                (setq line-spacing 0.25)
+                )))
+;; (run-with-idle-timer 300 t 'jump-to-org-agenda)
+;;(my-org-startup))
+
+(use-package gnus-init
+  :bind (("M-G"   . trigger-gnus)
+         ("C-x m" . compose-mail)))
+
+(use-package fetchmail-mode
+  :commands fetchmail-mode
+  :mode ("fetchmailrc" . fetchmail-mode))
+
+(use-package nf-procmail-mode
+  :commands nf-procmail-mode
+  :mode ("procmailrc" . nf-procmail-mode))
 
 (use-package dired
   :bind ("C-c J" . dired-double-jump)
@@ -374,10 +378,10 @@
     (interactive
      (list (read-directory-name "First directory: "
                                 (expand-file-name "~")
-                                nil nil "dl/")
+                                nil nil "~/")
            (read-directory-name "Second directory: "
                                 (expand-file-name "~")
-                                nil nil "Archives/")))
+                                nil nil "~/")))
     (dired first-dir)
     (dired-other-window second-dir))
 
@@ -468,6 +472,7 @@
         (funcall dired-omit-regexp-orig)))))
 
 (use-package dired-toggle
+  :disabled t
   :load-path "site-lisp/dired-toggle"
   :bind ("C-. d" . dired-toggle)
   :preface
@@ -478,6 +483,17 @@
     (setq-local word-wrap nil))
   :config
   (add-hook 'dired-toggle-mode-hook #'my-dired-toggle-mode-hook))
+
+(use-package direx
+  :bind ("C-. d" . direx:jump-to-directory-other-window)
+  :config
+  (defadvice direx:jump-to-directory-noselect
+      (around direx:set-default-directory activate)
+    (let ((default-directory (projectile-project-root)))
+      ad-do-it))
+  :init
+  (push '(direx:direx-mode :position left :width 30 :dedicated t :stick t)
+        popwin:special-display-config))
 
 (use-package yasnippet
   :diminish yas-minor-mode
@@ -525,21 +541,13 @@
          ("\\.js\\'" . web-mode)
          ("\\.html?\\'" . web-mode)
          ("\\.tpl\\'" . web-mode))
-  :config 
-  (use-package symfony1x
-    :load-path "lisp/symfony1x"
-    :commands symfony1x-mode
-    :init
-    (setq symfony1x-mode-key-prefix "C-; ;"))
-
+  :config
+  (use-package php-doc)
+  
   (defun my-web-mode-hook ()
     "Hooks for Web mode."
-    (when (string-match "\\/Master_\\(?:P\\|Beta\\|G\\|FT\\)\\/" (buffer-file-name))
-      (make-local-variable 'symfony1x-mode-status)
-      (symfony1x-mode t))
     (flycheck-mode 1)
-    (ggtags-mode 1)
-    (auto-highlight-symbol-mode 1))
+    (local-set-key (kbd "M-D") 'php-insert-doc-block))
   (add-hook 'web-mode-hook 'my-web-mode-hook))
 
 (use-package css-mode
@@ -1294,9 +1302,11 @@
   (add-hook 'eshell-first-time-mode-hook 'eshell-initialize)
 
   (use-package esh-toggle
-    :bind ("C-x C-z" . eshell-toggle)))
+    :bind (("C-x C-z" . eshell-toggle)
+           ("C-. C-z" . eshell-toggle-cd))))
 
 (use-package sh-toggle
+  :disabled t
   :bind ("C-. C-z" . shell-toggle))
 
 (use-package sh-script
@@ -1312,3 +1322,65 @@
                             '(("(bash)Index")))))
 
   (add-hook 'shell-mode-hook 'initialize-sh-script))
+
+(use-package isearch
+  :no-require t
+  :bind (("C-M-r" . isearch-backward-other-window)
+         ("C-M-s" . isearch-forward-other-window))
+  :preface
+  (defun isearch-backward-other-window ()
+    (interactive)
+    (split-window-vertically)
+    (call-interactively 'isearch-backward))
+
+  (defun isearch-forward-other-window ()
+    (interactive)
+    (split-window-vertically)
+    (call-interactively 'isearch-forward))
+  )
+
+(use-package color-moccur
+  :commands (isearch-moccur isearch-all)
+  :bind ("M-s O" . moccur))
+
+(use-package imenu
+  :config
+  (use-package imenu+))
+
+(use-package w3m
+  :commands (w3m w3m-browse-url
+                 my-w3m-hacknews my-w3m-reddit my-w3m-wikipedia my-w3m-open-url)
+  :config
+  (defun my-w3m-hacknews ()
+    (interactive)
+    (browse-url "http://news.ycombinator.com"))
+  (defun my-w3m-reddit (reddit)
+    "Opens the REDDIT in w3m-new-session"
+    (interactive (list
+                  (read-string "Enter the reddit (default: php): " nil nil "php" nil)))
+    (browse-url (format "http://m.reddit.com/r/%s" reddit)))
+  (defun my-w3m-wikipedia (search-term)
+    "Search for SEARCH-TERM on wikipedia"
+    (interactive
+     (let ((term (if mark-active
+                     (buffer-substring (region-beginning) (region-end))
+                   (word-at-point))))
+       (list
+        (read-string
+         (format "Wikipedia (%s):" term) nil nil term)))
+     )
+    (browse-url
+     (concat
+      "http://en.m.wikipedia.org/w/index.php?search="
+      search-term
+      )))
+  (defun my-w3m-open-url (url)
+    "Opens site in new w3m session with 'http://' appended"
+    (interactive
+     (list (read-string "Enter website address(default: w3m-home):" nil nil w3m-home-page nil )))
+    (w3m-goto-url-new-session
+     (concat "http://" url))))
+
+(use-package bbdb-com
+  :commands bbdb-create
+  :bind ("M-B" . bbdb))

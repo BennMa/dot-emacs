@@ -4,7 +4,6 @@
 (require 'use-package)
 
 (load "org-settings")
-(load "org-beautify-theme")
 
 (require 'org)
 (require 'org-agenda)
@@ -24,6 +23,7 @@
 ;; (require 'ox-opml)
 
 (require 'calfw)
+(require 'org-knowledgebase)
 
 ;; ====== Keybindings
 
@@ -38,7 +38,6 @@
     (?x . "CANCELED")
     (?d . "DONE")
     (?n . "NOTE")
-    (?p . "PROJECT")
     ))
 
 (defvar org-todo-state-map nil)
@@ -217,33 +216,8 @@
 (eval-when-compile
   (defvar org-clock-current-task))
 
-(defun quickping (host)
-  (= 0 (call-process "ping" nil nil nil "-c1" "-W50" "-q" host)))
-
-
 
 ;; ------ separator
-
-(defun org-my-auto-exclude-function (tag)
-  (and (cond
-        ((string= tag "call")
-         (let ((hour (nth 2 (decode-time))))
-           (or (< hour 8) (> hour 21))))
-        ((string= tag "errand")
-         (let ((hour (nth 2 (decode-time))))
-           (or (< hour 12) (> hour 17))))
-        ((or (string= tag "home") (string= tag "nasim"))
-         (with-temp-buffer
-           (call-process "ifconfig" nil t nil "en0" "inet")
-           (call-process "ifconfig" nil t nil "en1" "inet")
-           (call-process "ifconfig" nil t nil "bond0" "inet")
-           (goto-char (point-min))
-           (not (re-search-forward "inet 192\\.168\\.9\\." nil t))))
-        ((string= tag "net")
-         (not (quickping "imap.gmail.com")))
-        ((string= tag "fun")
-         org-clock-current-task))
-       (concat "-" tag)))
 
 (defun org-my-state-after-clock-out (state)
   (if (string= state "STARTED") "TODO" state))
@@ -390,7 +364,6 @@ This can be 0 for immediate, or a floating point value.")
                 ?\n)
       (insert ":OUTPUT:\n"))))
 
-
 ;; ------ separator
 
 (defun org-get-message-link (&optional title)
@@ -440,7 +413,7 @@ end tell")))
               (string-to-multibyte "tell application \"Google Chrome\"
         URL of active tab of front window
 end tell"))))
-    (org-make-link-string (substring url 1 -1) (substring subject 1 -1))))
+    (org-make-link-string url subject)))
 
 (defun org-insert-url-link ()
   (interactive)
@@ -507,26 +480,53 @@ end tell" (match-string 1))))
     (setq subject (replace-regexp-in-string "\\`(.*?) " "" subject))
     (compose-mail-other-window author (concat "Re: " subject))))
 
+;; ------ separator
+
+(defvar my-daily-directory "~/Mine/Documents/Tasks/Daily")
+(defun archive-my-daily-jobs()
+  ;;(when (string= org-state "DONE")
+  (let* ((today (format-time-string "%Y-%m-%d"))
+         (daily-file
+          (expand-file-name (concat today ".txt")
+                            my-daily-directory)))
+    (unless (file-exists-p daily-file)
+      (with-current-buffer (find-file-noselect daily-file)
+        (insert
+         (format "Daily on %s    -*- mode: org; -*-\n#+STARTUP: overview\n" today))
+        (save-buffer)))
+    (org-refile 3 nil (list "Daily File" daily-file))))
+(add-hook 'org-after-todo-state-change-hook 'archive-my-daily-jobs)
+(add-hook 'org-clock-out-hook 'archive-my-daily-jobs)
 
 ;; ====== Advice Define
 
-(defadvice org-refile-get-location (before clear-refile-history activate)
-  "Fit the Org Agenda to its buffer."
-  (setq org-refile-history nil))
+;; (defadvice org-refile-get-location (before clear-refile-history activate)
+;;   "Fit the Org Agenda to its buffer."
+;;   (setq org-refile-history nil))
+(defadvice org-refile-get-location (around my-org-refile-target activate)
+  "Refile entry to specific category such as Notes or Tasks"
+  (let* ((it ad-do-it)
+         (file (nth 1 it))
+         (re (nth 2 it))
+         (pos (nth 3 it))
+         (target-headline (if (member (if (equal major-mode 'org-agenda-mode)
+                                          "TODO"
+                                        (org-get-todo-state))
+                                      '("NOTE" ""))
+                              "Notes"
+                            "Tasks")))
+    (message target-headline)
+    (when (string-match-p "PROJECTS.txt$" file)
+      (save-excursion
+        (with-current-buffer (find-file-noselect file)
+          (goto-char pos)
+          (re-search-forward (concat "^\\*\\* " target-headline))
+          (setcar (nthcdr 3 it) (point)))))
+    it))
 
 (defadvice org-agenda-redo (after fit-windows-for-agenda-redo activate)
   "Fit the Org Agenda to its buffer."
   (org-fit-agenda-window))
-
-
-(defadvice org-archive-subtree (before set-billcode-before-archiving activate)
-  "Before archiving a task, set its BILLCODE and TASKCODE."
-  (let ((billcode (org-entry-get (point) "BILLCODE" t))
-        (taskcode (org-entry-get (point) "TASKCODE" t))
-        (project  (org-entry-get (point) "PROJECT" t)))
-    (if billcode (org-entry-put (point) "BILLCODE" billcode))
-    (if taskcode (org-entry-put (point) "TASKCODE" taskcode))
-    (if project (org-entry-put (point) "PROJECT" project))))
 
 (defadvice org-agenda (around fit-windows-for-agenda activate)
   "Fit the Org Agenda to its buffer."
