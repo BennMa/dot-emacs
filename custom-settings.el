@@ -722,10 +722,10 @@
  '(term-bind-key-alist
    (quote
     (("C-c C-c" . term-interrupt-subjob)
-     ("C-b" . my-term-send-raw-at-prompt)
-     ("C-f" . my-term-send-raw-at-prompt)
-     ("C-a" . my-term-send-raw-at-prompt)
-     ("C-e" . my-term-send-raw-at-prompt)
+     ("C-b" . term-send-raw)
+     ("C-f" . term-send-raw)
+     ("C-a" . term-send-raw)
+     ("C-e" . term-send-raw)
      ("C-p" . previous-line)
      ("C-n" . next-line)
      ("C-s" . isearch-forward)
@@ -733,7 +733,7 @@
      ("C-m" . term-send-raw)
      ("M-f" . term-send-forward-word)
      ("M-b" . term-send-backward-word)
-     ("M->" . my-term-end-of-buffer)
+     ("M->" . term-send-end)
      ("M-o" . term-send-backspace)
      ("M-p" . term-send-up)
      ("M-n" . term-send-down)

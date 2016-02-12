@@ -5,7 +5,7 @@
                                 "Anonymous Pro" "Monospace" "Courier"))
   (defvar emacs-chinese-fonts '("宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
                                 "Microsoft Yahei"))
-  (qiang-set-font emacs-english-fonts 15 emacs-chinese-fonts)
+  (qiang-set-font emacs-english-fonts 14 emacs-chinese-fonts)
   :config
   (use-package my-emacs-theme
     :commands my-emacs-theme)
@@ -42,17 +42,15 @@
     (set-frame-parameter (selected-frame) 'top emacs-min-top)
     (set-frame-parameter (selected-frame) 'left emacs-min-left)
     (set-frame-parameter (selected-frame) 'height emacs-min-height)
-    (set-frame-parameter (selected-frame) 'width emacs-min-width)
+    (set-frame-parameter (selected-frame) 'width emacs-min-width))
     
-    (qiang-set-font emacs-english-fonts 15 emacs-chinese-fonts))
+    ;; (qiang-set-font emacs-english-fonts 15 emacs-chinese-fonts)
   
   (defun emacs-max ()
     (interactive)
     (set-frame-parameter (selected-frame) 'fullscreen 'fullboth)
     (set-frame-parameter (selected-frame) 'vertical-scroll-bars nil)
-    (set-frame-parameter (selected-frame) 'horizontal-scroll-bars nil)
-
-    (qiang-set-font emacs-english-fonts 17 emacs-chinese-fonts))
+    (set-frame-parameter (selected-frame) 'horizontal-scroll-bars nil))
   
   (defun emacs-toggle-size ()
     (interactive)
@@ -320,7 +318,7 @@
   (use-package initsplit))
 
 (use-package org-init
-  :bind (("M-C"   . jump-to-org-agenda)
+  :bind (("M-A"   . jump-to-org-agenda)
          ("M-m"   . org-smart-capture)
          ("M-M"   . org-inline-note)
          ("C-c a" . org-agenda)
