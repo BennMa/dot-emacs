@@ -108,7 +108,7 @@
 (use-package projectile
   :diminish projectile-mode
   :commands projectile-global-mode
-  :bind-keymap ("C-;" . projectile-command-map)
+  :bind-keymap ("M-p" . projectile-command-map)
   :config
   (unbind-key "C-c p" projectile-mode-map)
 
@@ -226,7 +226,7 @@
             ido-final-text
             ido-show-confirm-message)
   :bind (("C-M-<tab>" . ido-switch-buffer)
-         ("C-x b" . ido-switch-buffer-other-window))
+         ("C-x b" . ido-switch-buffer))
   :preface
   (eval-when-compile
     (defvar ido-require-match)
@@ -346,6 +346,7 @@
 ;;(my-org-startup))
 
 (use-package gnus-init
+  :disabled t
   :bind (("M-G"   . trigger-gnus)
          ("C-x m" . compose-mail)))
 
@@ -1384,3 +1385,47 @@
 (use-package bbdb-com
   :commands bbdb-create
   :bind ("M-B" . bbdb))
+
+
+;;--------------------------------------------------------------------------
+(use-package multi-term
+  :bind (("<f5>" . multi-term)
+         ("M-C-}" . multi-term-next)
+         ("M-C-{" . multi-term-prev))
+  :config
+  (when (require 'term nil t)
+  (defun term-handle-ansi-terminal-messages (message)
+    (while (string-match "\eAnSiT.+\n" message)
+      ;; Extract the command code and the argument.
+      (let* ((start (match-beginning 0))
+             (command-code (aref message (+ start 6)))
+             (argument
+              (save-match-data
+                (substring message
+                           (+ start 8)
+                           (string-match "\r?\n" message
+                                         (+ start 8))))))
+        ;; Delete this command from MESSAGE.
+        (setq message (replace-match "" t t message))
+ 
+        (cond ((= command-code ?c)
+               (setq term-ansi-at-dir argument))
+              ((= command-code ?h)
+               (setq term-ansi-at-host argument))
+              ((= command-code ?u)
+               (setq term-ansi-at-user argument))
+              ((= command-code ?e)
+               (save-excursion
+                 (find-file-other-window argument)))
+              ((= command-code ?x)
+               (save-excursion
+                 (find-file argument))))))
+ 
+    (when (and term-ansi-at-host term-ansi-at-dir term-ansi-at-user)
+      (setq buffer-file-name
+            (format "%s@%s:%s" term-ansi-at-user term-ansi-at-host term-ansi-at-dir))
+      (set-buffer-modified-p nil)
+        (setq default-directory (if (string= term-ansi-at-host (system-name))
+                                    (concatenate 'string term-ansi-at-dir "/")
+                                  (format "/%s@%s:%s/" term-ansi-at-user term-ansi-at-host term-ansi-at-dir))))
+    message)))

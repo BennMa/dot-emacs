@@ -384,21 +384,22 @@ Inspired by Erik Naggum's `recursive-edit-with-single-window'."
                        chinese-fonts)
   "english-font-size could be set to \":pixelsize=18\" or a integer.
 If set/leave chinese-font-size to nil, it will follow english-font-size"
-  (let* ((en-font (qiang-make-font-string
-                  (find-if #'qiang-font-existsp english-fonts)
-                  english-font-size))
-         (useable-zh-font (find-if #'qiang-font-existsp chinese-fonts))
-         (zh-font (font-spec :family useable-zh-font))
-         (chinese-font-size (list (cons useable-zh-font 1.2))))
-    (message "Set English Font to %s" en-font)
-    (set-face-attribute
-     'default nil :font en-font)
-    (message "Set Chinese Font to %s" zh-font)
-    (dolist (charset '(kana han symbol cjk-misc bopomofo))
-      (set-fontset-font (frame-parameter nil 'font)
-                        charset
-                        zh-font))
-    (setq face-font-rescale-alist chinese-font-size)))
+  (if window-system
+      (let* ((en-font (qiang-make-font-string
+                       (find-if #'qiang-font-existsp english-fonts)
+                       english-font-size))
+             (useable-zh-font (find-if #'qiang-font-existsp chinese-fonts))
+             (zh-font (font-spec :family useable-zh-font))
+             (chinese-font-size (list (cons useable-zh-font 1.2))))
+        (message "Set English Font to %s" en-font)
+        (set-face-attribute
+         'default nil :font en-font)
+        (message "Set Chinese Font to %s" zh-font)
+        (dolist (charset '(kana han symbol cjk-misc bopomofo))
+          (set-fontset-font (frame-parameter nil 'font)
+                            charset
+                            zh-font))
+        (setq face-font-rescale-alist chinese-font-size))))
 
 ;; ------ help related
 (defun my-switch-in-other-buffer (buf)
@@ -509,4 +510,18 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
                                (and (not is_url) (concat emacsclient-bin " -nqe \"" callback-command "\"")) ;; execute emacs code/function when click the notification
                                group sender activate sound)))
 
+;; ------ macos terminal clipboard
+(defun copy-from-osx ()
+  (shell-command-to-string "pbpaste"))
+
+(defun paste-to-osx (text &optional push)
+  (let ((process-connection-type nil))
+    (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
+      (process-send-string proc text)
+      (process-send-eof proc))))
+(unless window-system
+  (setq interprogram-cut-function 'paste-to-osx)
+  (setq interprogram-paste-function 'copy-from-osx))
+
+;; ------ export
 (provide 'my-toolkit)

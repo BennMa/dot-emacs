@@ -83,6 +83,7 @@
 (el-get-bundle elpa:gnus-desktop-notify)
 (el-get-bundle elpa:imenu+)
 (el-get-bundle elpa:w3m)
+(el-get-bundle elpa:multi-term)
 
 (el-get-bundle elpa:erlang)
 (el-get-bundle elpa:edts)

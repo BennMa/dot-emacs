@@ -2,8 +2,8 @@
 ;;
 ;;   C-x <letter>  primary map (has many defaults too)
 ;;   C-c <letter>  secondary map (not just for mode-specific)
-;;   C-. <letter>  tertiary map
-;;   C-;-<anything> projectile
+;;   C-o <letter>  tmux
+;;   M-p <letter>  projectile + personal map
 ;;
 ;;   M-g <letter>  goto map
 ;;   M-s <letter>  search map
@@ -12,36 +12,46 @@
 ;;   C-<capital letter>
 ;;   M-<capital letter>
 ;;
-;;   A-<anything>
-;;   M-A-<anything>
-;;
-;;
 ;; Single-letter bindings still available:
 ;;   C- ,'";:?<>|!#$%^&*`~ <tab>
 ;;   M- ?#
 
 ;; ====== global-map
 
-(define-key key-translation-map (kbd "A-TAB") (kbd "C-TAB"))
+;; (define-key key-translation-map (kbd "A-TAB") (kbd "C-TAB"))
 
 
 ;; ====== C-
-(bind-key "C-<tab>" 'switch-to-previous-buffer)
+;; (defvar ctl-oh-map)
+;; (define-prefix-command 'ctl-oh-map)
+;; (bind-key "C-o" 'ctl-oh-map)
+;; (bind-key "C-o C-o" 'switch-to-previous-buffer)
+;; (bind-key "C-o o" 'switch-to-previous-buffer)
 
+;; (bind-key* "<C-return>" 'other-window)
+
+;; (bind-key "C-z" 'delete-other-windows)
+
+;; deprecated
 (defvar ctl-period-map)
 (define-prefix-command 'ctl-period-map)
 (bind-key "C-." 'ctl-period-map)
 
-(bind-key* "<C-return>" 'other-window)
-(bind-key "C-z" 'delete-other-windows)
 
 ;; ------ C-M-
 (bind-key "<C-M-backspace>" 'backward-kill-sexp)
 (bind-key "C-M-w" 'copy-line)
+(bind-key "C-M-v" 'scroll-down-command)
 
 
 
 ;; ====== M-
+;; (unbind-key "C-w")
+;; (bind-key "M-x" 'kill-region)
+(unbind-key "M-w")
+(bind-key "M-c" 'kill-ring-save)
+(bind-key "M-v" 'yank)
+
 (bind-key "M-!" 'async-shell-command)
 (bind-key "M-'" 'insert-pair)
 (bind-key "M-\"" 'insert-pair)
@@ -92,7 +102,9 @@
 
 ;; ====== mode-specific-map, C-c
 
-(bind-key "C-c <tab>" 'ff-find-other-file)
+(bind-key "C-c C-c" 'switch-to-previous-buffer)
+
+(bind-key [?\C-c ?\t] 'ff-find-other-file)
 (bind-key "C-c SPC" 'just-one-space)
 
 (bind-key "C-c 0"
