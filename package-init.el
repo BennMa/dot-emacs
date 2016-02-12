@@ -1263,6 +1263,7 @@
     (add-hook hook #'(lambda() (hexcolour-add-to-font-lock)))))
 
 (use-package eshell
+  :disabled t
   :commands (eshell eshell-command)
   :preface
   (defvar eshell-isearch-map
