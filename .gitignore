@@ -12,3 +12,4 @@ lisp/symfony1x/
 GPATH
 GRTAGS
 GTAGS
+gnus-*.el
