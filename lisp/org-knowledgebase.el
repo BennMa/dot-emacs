@@ -4,7 +4,13 @@
 (require 'dash)
 (require 'helm)
 
-(defconst KB-DIR "~/Mine/Documents/KnowledgeBase")
+(defcustom my-knowledagebase-dir "~/Mine/Documents/KnowledgeBase"
+  "Personal Knowledge Base Directory"
+  :type 'string)
+(defcustom my-daily-dir "~/Mine/Documents/Tasks/Daily"
+  "Personal Daily Directory"
+  :type 'string)
+
 (defvar org-knowledgebase-map)
 (define-prefix-command 'org-knowledgebase-map)
 (bind-key "C-. k" 'org-knowledgebase-map)
@@ -19,8 +25,8 @@
   (helm :sources
         (helm-build-sync-source "Knowledge Files"
           :candidates (--map
-                       (cons (substring it (1+ (length (expand-file-name KB-DIR)))) it)
-                       (directory-files-recursively KB-DIR t "\\.org$"))
+                       (cons (substring it (1+ (length (expand-file-name my-knowledagebase-dir)))) it)
+                       (directory-files-recursively my-knowledagebase-dir t "\\.org$"))
           :action (helm-make-actions
                    "Find File" 'helm-find-file-or-marked
                    "Find file in Dired" 'helm-point-file-in-dired
@@ -29,15 +35,14 @@
         :history 'k/list-history))
 
 ;; ------ daily file list
-(defvar my-daily-directory "~/Mine/Documents/Tasks/Daily")
 (defun k/daily-list()
   "List all daily files."
   (interactive)
   (helm :sources
         (helm-build-sync-source "Daily Files"
           :candidates (--map
-                       (cons (substring it (1+ (length (expand-file-name my-daily-directory)))) it)
-                       (directory-files my-daily-directory t "\\.\\(txt\\|org\\)$" t))
+                       (cons (substring it (1+ (length (expand-file-name my-daily-dir)))) it)
+                       (directory-files my-daily-dir t "\\.\\(txt\\|org\\)$" t))
           :action (helm-make-actions
                    "Find File" 'helm-find-file-or-marked
                    "Find file in Dired" 'helm-point-file-in-dired
@@ -53,14 +58,14 @@
   (interactive)
   (if (require 'helm-grep nil  'noerror)
       (let* ((prefarg (or current-prefix-arg helm-current-prefix-arg)))
-        (helm-do-grep-1 (directory-files-recursively KB-DIR t "\\.\\(?:org\\|html?\\)$")
+        (helm-do-grep-1 (directory-files-recursively my-knowledagebase-dir t "\\.\\(?:org\\|html?\\)$")
                         prefarg))
     (error "helm-grep not available")))
 
 ;; ------ knowledge base review
 (defvar k/review-amount-tag "M_REVIEWED_AMOUNT")
 (defvar k/review-date-tag "M_REVIEWED_DATE")
-(setq k/review-dir (list (expand-file-name "Documents" KB-DIR)))
+(setq k/review-dir (list (expand-file-name "Documents" my-knowledagebase-dir)))
 (add-to-list 'org-agenda-custom-commands
              '("r" "All Review Entries" tags ":review:"
                ((org-agenda-files k/review-dir)

@@ -64,11 +64,26 @@
   (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "PYTHONPATH"))
 
+(use-package ggtags
+  :commands ggtags-mode
+  :diminish ggtags-mode)
+
+(use-package auto-highlight-symbol
+  :demand t
+  :bind (("C-1" . ahs-backward)
+         ("C-2" . ahs-forward))
+  :config
+  (global-auto-highlight-symbol-mode t)
+  (unbind-key "M-<left>" auto-highlight-symbol-mode-map)
+  (unbind-key "M-<right>" auto-highlight-symbol-mode-map)
+  (unbind-key "M-S-<left>" auto-highlight-symbol-mode-map)
+  (unbind-key "M-S-<right>" auto-highlight-symbol-mode-map))
+
 (use-package helm-config
-  :defer 5
+  :demand t
   :bind (("C-c h"   . helm-command-prefix)
          ("C-h a"   . helm-apropos)
-         ("C-x f"   . helm-multi-files)
+         ;; ("C-x f"   . helm-multi-files)
          ("M-s b"   . helm-occur)
          ("M-s n"   . my-helm-find)
          ("M-H"     . helm-resume))
@@ -104,6 +119,7 @@
     (setq helm-google-suggest-use-curl-p t)))
 
 (use-package projectile
+  :demand t
   :diminish projectile-mode
   :commands projectile-global-mode
   :bind-keymap ("M-p" . projectile-command-map)
@@ -132,7 +148,6 @@
     (helm-projectile-on))
   
   (projectile-global-mode))
-
 
 (use-package git-messenger
   :bind ("C-x G" . git-messenger:popup-message))
@@ -215,7 +230,6 @@
             #'(lambda ()
                 (ibuffer-switch-to-saved-filter-groups "default"))))
 
-
 (use-package ido
   :demand t
   :defines (ido-cur-item
@@ -224,7 +238,9 @@
             ido-final-text
             ido-show-confirm-message)
   :bind (("C-M-<tab>" . ido-switch-buffer)
-         ("C-x b" . ido-switch-buffer))
+         ("C-x b" . ido-switch-buffer)
+         ("C-x C-f" . ido-find-file)
+         ("C-x f" . ido-find-file))
   :preface
   (eval-when-compile
     (defvar ido-require-match)
@@ -301,52 +317,10 @@
   (window-number-mode)
   (window-number-meta-mode))
 
-(use-package auto-highlight-symbol
-  :demand t
-  :bind (("C-1" . ahs-backward)
-         ("C-2" . ahs-forward))
-  :config
-  (global-auto-highlight-symbol-mode t)
-  (unbind-key "M-<left>" auto-highlight-symbol-mode-map)
-  (unbind-key "M-<right>" auto-highlight-symbol-mode-map)
-  (unbind-key "M-S-<left>" auto-highlight-symbol-mode-map)
-  (unbind-key "M-S-<right>" auto-highlight-symbol-mode-map))
-
 (use-package cus-edit
   :defer 5
   :config
   (use-package initsplit))
-
-(use-package org-init
-  :bind (("M-A"   . jump-to-org-agenda)
-         ("M-m"   . org-smart-capture)
-         ("M-M"   . org-inline-note)
-         ("C-c a" . org-agenda)
-         ("C-c S" . org-store-link)
-         ("C-c l" . org-insert-link)
-         ("C-. n" . org-velocity-read))
-  ;; :defer 30
-  :config
-  (use-package org-bullets
-    :commands org-bullets-mode)
-  (add-hook 'org-mode-hook
-            #'(lambda ()
-                (setq line-spacing 0.25)
-                (buffer-face-mode 1)
-                (org-bullets-mode 1)
-                (flyspell-mode 1)))
-
-  (add-hook 'org-agenda-mode-hook
-            #'(lambda ()
-                (setq line-spacing 0.25)
-                )))
-;; (run-with-idle-timer 300 t 'jump-to-org-agenda)
-;;(my-org-startup))
-
-(use-package gnus-init
-  :disabled t
-  :bind (("M-G"   . trigger-gnus)
-         ("C-x m" . compose-mail)))
 
 (use-package fetchmail-mode
   :commands fetchmail-mode
@@ -590,10 +564,6 @@
   :bind (("M-o h" . hl-line-mode))
   :config
   (use-package hl-line+))
-
-(use-package ggtags
-  :commands ggtags-mode
-  :diminish ggtags-mode)
 
 (use-package etags
   :disabled t
@@ -1482,3 +1452,37 @@
           message)))
 
 
+;; org-mode ---
+(use-package org-init
+  :bind (("M-A"   . jump-to-org-agenda)
+         ("M-m"   . org-smart-capture)
+         ("M-M"   . org-inline-note)
+         ("C-t"   . org-collect)
+         ("C-. k" . org-knowledgebase-map)
+         ("C-c a" . org-agenda)
+         ("C-c S" . org-store-link)
+         ("C-c l" . org-insert-link)
+         ("C-. n" . org-velocity-read))
+  :config
+  (use-package org-bullets
+    :commands org-bullets-mode)
+  (add-hook 'org-mode-hook
+            #'(lambda ()
+                (setq line-spacing 0.25)
+                (buffer-face-mode 1)
+                (org-bullets-mode 1)
+                (flyspell-mode 1)))
+
+  (add-hook 'org-agenda-mode-hook
+            #'(lambda ()
+                (setq line-spacing 0.25)
+                ))
+  (push '("collector.org" :position bottom :height 15 :stick t)
+        popwin:special-display-config))
+;; (run-with-idle-timer 300 t 'jump-to-org-agenda)
+;;(my-org-startup))
+
+(use-package gnus-init
+  :disabled t
+  :bind (("M-G"   . trigger-gnus)
+         ("C-x m" . compose-mail)))

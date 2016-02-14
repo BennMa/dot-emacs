@@ -51,7 +51,7 @@
 (unbind-key "M-w")
 (unbind-key "C-y")
 (bind-key "M-c" 'kill-ring-save)
-(bind-key* "M-v" 'yank)
+(bind-key "M-v" 'yank)
 (bind-key "M-v" 'isearch-yank-kill isearch-mode-map)
 
 (bind-key "M-!" 'async-shell-command)

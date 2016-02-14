@@ -535,6 +535,38 @@ end tell" (match-string 1))))
   ad-do-it
   (org-fit-agenda-window))
 
+;; ====== collect
+(defcustom my-collector-file "~/Dropbox/PKG/Documents/collector.org"
+  "Personal Small Piece Collector"
+  :type 'string)
+(bind-key "C-t" 'org-collect)
+(defun org-collect()
+  "collect stuff to collected file"
+  (interactive)
+  (let ((collect-file (expand-file-name my-collector-file))
+        (string (if mark-active
+                    (buffer-substring (region-beginning) (region-end))
+                  ""))
+        (pnt))
+    (unless (string= (buffer-file-name) collect-file)
+      (find-file-other-window collect-file))
+    (goto-char (point-min))
+    ;; (if (string= (buffer-substring-no-properties 1 4) "* \n")
+    (if (looking-at-p "\\* +?\n")
+        (goto-char 3)
+      (progn
+        (insert "\n")
+        (goto-char (point-min))
+        (insert "* ")))
+    (save-excursion
+      (unless (string= string "")
+        (goto-char (if (search-forward-regexp "\n\\* .*\n" nil t)
+                       (match-beginning 0)
+                     (point)))
+        (insert (concat "\n" string "\n"))))
+    (save-buffer)))
+
+
 ;; ====== hooks
 (add-hook 'org-agenda-mode-hook 'hl-line-mode)
 (add-hook 'org-mode-hook #'(lambda ()
