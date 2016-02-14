@@ -1,11 +1,6 @@
 (defconst emacs-start-time (current-time))
 (unless noninteractive
   (message "Loading %s..." load-file-name))
-
-(defvar my-location (let ((scselect-output
-                           (shell-command-to-string "/usr/sbin/scselect")))
-                      (string-match "\n +\\* +.*(\\(.*?\\))" scselect-output)
-                      (match-string 1 scselect-output)))
 (setq message-log-max 16384)
 
 ;; ------ set load path
@@ -13,7 +8,7 @@
   (mapc
    #'(lambda (path)
        (push (expand-file-name path user-emacs-directory) load-path))
-   '("site-lisp" "site-lisp/el-get" "site-lisp/use-package" "lisp" "themes" "")))
+   '("site-lisp" "site-lisp/el-get" "site-lisp/use-package" "site-lisp/tabbar" "lisp" "themes" "")))
 
 ;; ------ load custom settings
 (load (expand-file-name "custom-settings" user-emacs-directory))
@@ -84,6 +79,7 @@
 (el-get-bundle elpa:imenu+)
 (el-get-bundle elpa:w3m)
 (el-get-bundle elpa:multi-term)
+(el-get-bundle elpa:tabbar)
 
 (el-get-bundle elpa:erlang)
 (el-get-bundle elpa:edts)

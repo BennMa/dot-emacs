@@ -43,8 +43,8 @@
     (set-frame-parameter (selected-frame) 'left emacs-min-left)
     (set-frame-parameter (selected-frame) 'height emacs-min-height)
     (set-frame-parameter (selected-frame) 'width emacs-min-width))
-    
-    ;; (qiang-set-font emacs-english-fonts 15 emacs-chinese-fonts)
+  
+  ;; (qiang-set-font emacs-english-fonts 15 emacs-chinese-fonts)
   
   (defun emacs-max ()
     (interactive)
@@ -1385,46 +1385,100 @@
   :commands bbdb-create
   :bind ("M-B" . bbdb))
 
+;; https://www.emacswiki.org/emacs/TabBarMode
+;; https://zhangda.wordpress.com/2012/09/21/tabbar-mode-rocks-with-customization/
+(use-package tabbar
+  :bind (("M-{" . tabbar-backward-tab)
+         ("M-}" . tabbar-forward-tab)
+         ("C-M-{" . tabbar-backward-group)
+         ("C-M-}" . tabbar-forward-group))
+  :config
+  ;; (tabbar-mode 1)
 
-;;--------------------------------------------------------------------------
+  (setq tabbar-background-color "#959A79")
+  (custom-set-faces
+   '(tabbar-default ((t (:inherit variable-pitch :background "#959A79" :foreground "black" :weight bold))))
+   '(tabbar-button ((t (:inherit tabbar-default :foreground "dark red"))))
+   '(tabbar-button-highlight ((t (:inherit tabbar-default))))
+   '(tabbar-highlight ((t (:underline t))))
+   '(tabbar-selected ((t (:inherit tabbar-default :background "#95CA59"))))
+   '(tabbar-separator ((t (:inherit tabbar-default :background "#95CA59"))))
+   '(tabbar-unselected ((t (:inherit tabbar-default)))))
+
+  (defun my-tabbar-buffer-groups ()
+    "Returns the name of the tab group names the current buffer belongs to.
+     This works at least with Emacs v24.2 using tabbar.el v1.7."
+    (list
+     (cond
+      ((string-match-p "TAGS.*" (buffer-name))
+       "Other")
+      ((memq major-mode
+             '(help-mode apropos-mode Info-mode Man-mode))
+       "Other")
+      ((eq major-mode 'term-mode)
+       "Term")      
+      ((string-match-p "\*.*\*" (buffer-name))
+       "Other")
+      ((eq major-mode 'org-mode)
+       "Org")
+      ((eq major-mode 'dired-mode)
+       "Dired")
+      ((projectile-project-p)
+       (concat "P: " (projectile-project-name)))      
+      (t "Other"))))
+  (setq tabbar-buffer-groups-function 'my-tabbar-buffer-groups))
+
+  ;; (defun my-tabbar-buffer-list ()
+  ;;   (remove-if
+  ;;    (lambda(buffer)
+  ;;      (or
+  ;;       (find (aref (buffer-name buffer) 0) " *")))
+  ;;    (buffer-list)))
+  ;; (setq tabbar-buffer-list-function 'my-tabbar-buffer-list))
+
+
+;; terminal --------------------------------------------------------------------------
 (use-package multi-term
-  :bind (("<f5>" . multi-term)
-         ("M-C-}" . multi-term-next)
-         ("M-C-{" . multi-term-prev))
+  :bind (("<f5>" . multi-term))
   :config
   (when (require 'term nil t)
-  (defun term-handle-ansi-terminal-messages (message)
-    (while (string-match "\eAnSiT.+\n" message)
-      ;; Extract the command code and the argument.
-      (let* ((start (match-beginning 0))
-             (command-code (aref message (+ start 6)))
-             (argument
-              (save-match-data
-                (substring message
-                           (+ start 8)
-                           (string-match "\r?\n" message
-                                         (+ start 8))))))
-        ;; Delete this command from MESSAGE.
-        (setq message (replace-match "" t t message))
- 
-        (cond ((= command-code ?c)
-               (setq term-ansi-at-dir argument))
-              ((= command-code ?h)
-               (setq term-ansi-at-host argument))
-              ((= command-code ?u)
-               (setq term-ansi-at-user argument))
-              ((= command-code ?e)
-               (save-excursion
-                 (find-file-other-window argument)))
-              ((= command-code ?x)
-               (save-excursion
-                 (find-file argument))))))
- 
-    (when (and term-ansi-at-host term-ansi-at-dir term-ansi-at-user)
-      (setq buffer-file-name
-            (format "%s@%s:%s" term-ansi-at-user term-ansi-at-host term-ansi-at-dir))
-      (set-buffer-modified-p nil)
-        (setq default-directory (if (string= term-ansi-at-host (system-name))
-                                    (concatenate 'string term-ansi-at-dir "/")
-                                  (format "/%s@%s:%s/" term-ansi-at-user term-ansi-at-host term-ansi-at-dir))))
-    message)))
+    (defun term-handle-ansi-terminal-messages (message)
+      (while (string-match "\eAnSiT.+\n" message)
+        ;; Extract the command code and the argument.
+        (let* ((start (match-beginning 0))
+               (command-code (aref message (+ start 6)))
+               (argument
+                (save-match-data
+                  (substring message
+                             (+ start 8)
+                             (string-match "\r?\n" message
+                                           (+ start 8))))))
+          ;; Delete this command from MESSAGE.
+          (setq message (replace-match "" t t message))
+          
+          (cond ((= command-code ?c)
+                 (setq term-ansi-at-dir argument))
+                ((= command-code ?h)
+                 (setq term-ansi-at-host argument))
+                ((= command-code ?u)
+                 (setq term-ansi-at-user argument))
+                ((= command-code ?e)
+                 (save-excursion
+                   (find-file-other-window (expand-file-name argument))))
+                ((= command-code ?x)
+                 (save-excursion
+                   (find-file argument)))
+                ((= command-code ?g)
+                 (save-excursion
+                   (magit-status argument))))
+          
+          (when (and term-ansi-at-host term-ansi-at-dir term-ansi-at-user)
+            (setq buffer-file-name
+                  (format "%s@%s:%s" term-ansi-at-user term-ansi-at-host term-ansi-at-dir))
+            (set-buffer-modified-p nil)
+            (setq default-directory (if (string= term-ansi-at-host (system-name))
+                                        (concatenate 'string term-ansi-at-dir "/")
+                                      (format "/%s@%s:%s/" term-ansi-at-user term-ansi-at-host term-ansi-at-dir))))))
+          message)))
+
+

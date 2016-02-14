@@ -25,8 +25,6 @@
 ;; (defvar ctl-oh-map)
 ;; (define-prefix-command 'ctl-oh-map)
 ;; (bind-key "C-o" 'ctl-oh-map)
-;; (bind-key "C-o C-o" 'switch-to-previous-buffer)
-;; (bind-key "C-o o" 'switch-to-previous-buffer)
 
 ;; (bind-key* "<C-return>" 'other-window)
 
@@ -48,9 +46,13 @@
 ;; ====== M-
 ;; (unbind-key "C-w")
 ;; (bind-key "M-x" 'kill-region)
+
+;; rebind copy, paste, cut
 (unbind-key "M-w")
+(unbind-key "C-y")
 (bind-key "M-c" 'kill-ring-save)
-(bind-key "M-v" 'yank)
+(bind-key* "M-v" 'yank)
+(bind-key "M-v" 'isearch-yank-kill isearch-mode-map)
 
 (bind-key "M-!" 'async-shell-command)
 (bind-key "M-'" 'insert-pair)
@@ -102,7 +104,7 @@
 
 ;; ====== mode-specific-map, C-c
 
-(bind-key "C-c C-c" 'switch-to-previous-buffer)
+(bind-key "C-<tab>" 'switch-to-previous-buffer)
 
 (bind-key [?\C-c ?\t] 'ff-find-other-file)
 (bind-key "C-c SPC" 'just-one-space)
@@ -169,8 +171,6 @@
 ;; ------ ctl-period-map, C-.
 
 (bind-key "C-. m" 'kmacro-keymap)
-(bind-key "C-. s" 'my-location-switch)
-
 (bind-key "C-. C-i" 'indent-rigidly)
 
 ;; ====== help-map

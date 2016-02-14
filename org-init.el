@@ -125,6 +125,8 @@
 
 (unbind-key "C-<tab>" org-mode-map)
 (unbind-key "M-m" org-agenda-keymap)
+(unbind-key "M-{" org-mode-map)
+(unbind-key "M-}" org-mode-map)
 
 
 ;; ====== Functions Define
