@@ -522,7 +522,7 @@ end tell" (match-string 1))))
 (defcustom my-collector-file "~/Dropbox/PKG/Document/Collector.org"
   "Personal Small Piece Collector"
   :type 'string)
-(bind-key "C-t" 'org-collect)
+(bind-key* "C-t" 'org-collect)
 (defun org-collect()
   "collect stuff to collected file"
   (interactive)
