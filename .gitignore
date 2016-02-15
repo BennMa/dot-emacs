@@ -4,6 +4,7 @@ TAGS
 site-lisp/*
 obsolete/
 data/
+el-get/
 elpa/
 eshell/
 lisp/symfony1x/

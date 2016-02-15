@@ -5,7 +5,7 @@
                                 "Anonymous Pro" "Monospace" "Courier"))
   (defvar emacs-chinese-fonts '("宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
                                 "Microsoft Yahei"))
-  (qiang-set-font emacs-english-fonts 14 emacs-chinese-fonts)
+  (qiang-set-font emacs-english-fonts 11 emacs-chinese-fonts)
   :config
   (use-package my-emacs-theme
     :commands my-emacs-theme)
@@ -1360,12 +1360,13 @@
 ;; https://www.emacswiki.org/emacs/TabBarMode
 ;; https://zhangda.wordpress.com/2012/09/21/tabbar-mode-rocks-with-customization/
 (use-package tabbar
+  :demand t
   :bind (("M-{" . tabbar-backward-tab)
          ("M-}" . tabbar-forward-tab)
          ("C-M-{" . tabbar-backward-group)
          ("C-M-}" . tabbar-forward-group))
   :config
-  ;; (tabbar-mode 1)
+  (tabbar-mode)
 
   (setq tabbar-background-color "#959A79")
   (custom-set-faces

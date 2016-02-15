@@ -219,9 +219,7 @@ SCHEDULED: %t
  '(org-modules
 (quote
  (org-gnus org-habit org-id org-info org-depend org-velocity)))
- '(org-refile-targets
-(quote
- (("~/Dropbox/PKG/Task/PROJECTS.txt" :level . 1))))
+ '(org-refile-targets (quote (("~/Dropbox/PKG/Task/PROJECTS.txt" :level . 1))))
  '(org-return-follows-link t)
  '(org-reverse-note-order t)
  '(org-src-fontify-natively t)

@@ -8,7 +8,7 @@
   (mapc
    #'(lambda (path)
        (push (expand-file-name path user-emacs-directory) load-path))
-   '("site-lisp" "site-lisp/el-get" "site-lisp/use-package" "site-lisp/tabbar" "lisp" "themes" "")))
+   '("site-lisp" "el-get/el-get" "site-lisp/el-get" "site-lisp/use-package" "lisp" "themes" "")))
 
 ;; ------ load custom settings
 (load (expand-file-name "custom-settings" user-emacs-directory))
@@ -90,7 +90,7 @@
 (el-get-bundle elpa:calfw)
 
 ;; ------ packages from others
-(el-get-bundle fetchmail-mode)
+;; (el-get-bundle fetchmail-mode)
 (el-get-bundle ag)
 (el-get-bundle helm-ag)
 (el-get-bundle diminish)
