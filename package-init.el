@@ -376,6 +376,8 @@
 
   (bind-key "M-!" 'async-shell-command dired-mode-map)
   (unbind-key "M-G" dired-mode-map)
+  (unbind-key "M-{" dired-mode-map)
+  (unbind-key "M-}" dired-mode-map)
 
   (defadvice dired-omit-startup (after diminish-dired-omit activate)
     "Make sure to remove \"Omit\" from the modeline."
@@ -1478,7 +1480,9 @@
                 (setq line-spacing 0.25)
                 ))
   (push '("collector.org" :position bottom :height 15 :stick t)
-        popwin:special-display-config))
+        popwin:special-display-config)
+
+  (unbind-key "C-y" org-mode-map))
 ;; (run-with-idle-timer 300 t 'jump-to-org-agenda)
 ;;(my-org-startup))
 
