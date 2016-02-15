@@ -568,7 +568,7 @@
  '(multi-term-program "/bin/zsh")
  '(multi-term-program-switches "-DR")
  '(multi-term-scroll-show-maximum-output t)
- '(my-knowledagebase-dir "/Users/benn/Dropbox/PKG/Documents")
+ '(my-knowledagebase-dir "/Users/benn/Dropbox/PKG/Document")
  '(next-line-add-newlines nil)
  '(ns-alternate-modifier (quote alt))
  '(ns-command-modifier (quote meta))

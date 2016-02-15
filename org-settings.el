@@ -12,7 +12,7 @@
       ((org-agenda-overriding-header "Projects List")
        (org-agenda-files
         (quote
-         ("~/Mine/Documents/Tasks/PROJECTS.txt")))
+         ("~/Dropbox/PKG/Task/PROJECTS.txt")))
        (org-agenda-sorting-strategy
         (quote
          (priority-down)))))
@@ -40,7 +40,7 @@
       ((org-agenda-overriding-header "Uncategorized items")
        (org-agenda-files
         (quote
-         ("~/Mine/Documents/Tasks/INBOX.txt")))))
+         ("~/Dropbox/PKG/Task/INBOX.txt")))))
      ("W" "Waiting tasks" tags "TODO=\"WAITING\""
       ((org-agenda-overriding-header "Waiting tasks:")
        (org-agenda-sorting-strategy
@@ -71,7 +71,7 @@
  '(org-agenda-default-appointment-duration 60)
  '(org-agenda-files
    (quote
-    ("~/Mine/Documents/Tasks/INBOX.txt" "~/Mine/Documents/Tasks/PROJECTS.txt")))
+    ("~/Dropbox/PKG/Task/INBOX.txt" "~/Dropbox/PKG/Task/PROJECTS.txt")))
  '(org-agenda-fontify-priorities t)
  '(org-agenda-include-diary t)
  '(org-agenda-inhibit-startup t)
@@ -111,14 +111,14 @@
  '(org-capture-templates
    (quote
     (("a" "Add Task" entry
-      (file "~/Mine/Documents/Tasks/INBOX.txt")
+      (file "~/Dropbox/PKG/Task/INBOX.txt")
       "* TODO %?
 SCHEDULED: %t
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
 :END:" :prepend t)
      ("p" "Add Project" entry
-      (file "~/Mine/Documents/Tasks/PROJECTS.txt")
+      (file "~/Dropbox/PKG/Task/PROJECTS.txt")
       "* %?
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
@@ -126,7 +126,7 @@ SCHEDULED: %t
 ** Notes
 ** Tasks" :prepend t)
      ("n" "Note" entry
-      (file "~/Mine/Documents/Tasks/INBOX.txt")
+      (file "~/Dropbox/PKG/Task/INBOX.txt")
       "* NOTE %?
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
@@ -149,9 +149,9 @@ SCHEDULED: %t
  '(org-crypt-disable-auto-save nil)
  '(org-cycle-global-at-bob t)
  '(org-deadline-warning-days 14)
- '(org-default-notes-file "~/Mine/Documents/Tasks/INBOX.txt")
+ '(org-default-notes-file "~/Dropbox/PKG/Task/INBOX.txt")
  '(org-default-priority 66)
- '(org-directory "~/Mine/Documents/Tasks/")
+ '(org-directory "~/Dropbox/PKG/Task/")
  '(org-ditaa-jar-path "~/bin/DitaaEps.jar")
  '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "OUT")))
  '(org-edit-src-content-indentation 0)
@@ -221,7 +221,7 @@ SCHEDULED: %t
  (org-gnus org-habit org-id org-info org-depend org-velocity)))
  '(org-refile-targets
 (quote
- (("~/Mine/Documents/Tasks/PROJECTS.txt" :level . 1))))
+ (("~/Dropbox/PKG/Task/PROJECTS.txt" :level . 1))))
  '(org-return-follows-link t)
  '(org-reverse-note-order t)
  '(org-src-fontify-natively t)
@@ -247,11 +247,11 @@ SCHEDULED: %t
  '(org-use-speed-commands t)
  '(org-use-tag-inheritance nil)
  '(org-velocity-always-use-bucket t)
- '(org-velocity-bucket "~/Mine/Documents/Tasks/PROJECTS.txt")
+ '(org-velocity-bucket "~/Dropbox/PKG/Task/PROJECTS.txt")
  '(org-velocity-capture-templates
 (quote
  (("v" "Velocity" entry
-   (file "~/Mine/Documents/Tasks/INBOX.txt")
+   (file "~/Dropbox/PKG/Task/INBOX.txt")
    "* NOTE %:search
 %i%?
 :PROPERTIES:

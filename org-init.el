@@ -482,23 +482,6 @@ end tell" (match-string 1))))
     (setq subject (replace-regexp-in-string "\\`(.*?) " "" subject))
     (compose-mail-other-window author (concat "Re: " subject))))
 
-;; ------ separator
-
-(defvar my-daily-directory "~/Mine/Documents/Tasks/Daily")
-(defun archive-my-daily-jobs()
-  ;;(when (string= org-state "DONE")
-  (let* ((today (format-time-string "%Y-%m-%d"))
-         (daily-file
-          (expand-file-name (concat today ".txt")
-                            my-daily-directory)))
-    (unless (file-exists-p daily-file)
-      (with-current-buffer (find-file-noselect daily-file)
-        (insert
-         (format "Daily on %s    -*- mode: org; -*-\n#+STARTUP: overview\n" today))
-        (save-buffer)))
-    (org-refile 3 nil (list "Daily File" daily-file))))
-(add-hook 'org-after-todo-state-change-hook 'archive-my-daily-jobs)
-(add-hook 'org-clock-out-hook 'archive-my-daily-jobs)
 
 ;; ====== Advice Define
 
@@ -536,7 +519,7 @@ end tell" (match-string 1))))
   (org-fit-agenda-window))
 
 ;; ====== collect
-(defcustom my-collector-file "~/Dropbox/PKG/Documents/collector.org"
+(defcustom my-collector-file "~/Dropbox/PKG/Document/Collector.org"
   "Personal Small Piece Collector"
   :type 'string)
 (bind-key "C-t" 'org-collect)

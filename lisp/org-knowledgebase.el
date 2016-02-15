@@ -4,10 +4,10 @@
 (require 'dash)
 (require 'helm)
 
-(defcustom my-knowledagebase-dir "~/Mine/Documents/KnowledgeBase"
+(defcustom my-knowledagebase-dir "~/Dropbox/PKG/Document"
   "Personal Knowledge Base Directory"
   :type 'string)
-(defcustom my-daily-dir "~/Mine/Documents/Tasks/Daily"
+(defcustom my-daily-dir "~/Dropbox/PKG/Task/Daily"
   "Personal Daily Directory"
   :type 'string)
 
@@ -35,6 +35,21 @@
         :history 'k/list-history))
 
 ;; ------ daily file list
+(defun archive-my-daily-jobs()
+  ;;(when (string= org-state "DONE")
+  (let* ((today (format-time-string "%Y-%m-%d"))
+         (daily-file
+          (expand-file-name (concat today ".txt")
+                            my-daily-dir)))
+    (unless (file-exists-p daily-file)
+      (with-current-buffer (find-file-noselect daily-file)
+        (insert
+         (format "Daily on %s    -*- mode: org; -*-\n#+STARTUP: overview\n" today))
+        (save-buffer)))
+    (org-refile 3 nil (list "Daily File" daily-file))))
+(add-hook 'org-after-todo-state-change-hook 'archive-my-daily-jobs)
+(add-hook 'org-clock-out-hook 'archive-my-daily-jobs)
+
 (defun k/daily-list()
   "List all daily files."
   (interactive)
@@ -65,7 +80,8 @@
 ;; ------ knowledge base review
 (defvar k/review-amount-tag "M_REVIEWED_AMOUNT")
 (defvar k/review-date-tag "M_REVIEWED_DATE")
-(setq k/review-dir (list (expand-file-name "Documents" my-knowledagebase-dir)))
+;; (setq k/review-dir (list (expand-file-name "Documents" my-knowledagebase-dir)))
+(setq k/review-dir (list my-knowledagebase-dir))
 (add-to-list 'org-agenda-custom-commands
              '("r" "All Review Entries" tags ":review:"
                ((org-agenda-files k/review-dir)
