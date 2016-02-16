@@ -35,7 +35,6 @@
 (define-prefix-command 'ctl-period-map)
 (bind-key "C-." 'ctl-period-map)
 
-
 ;; ------ C-M-
 (bind-key "<C-M-backspace>" 'backward-kill-sexp)
 (bind-key "C-M-w" 'copy-line)
@@ -50,7 +49,10 @@
 ;; rebind copy, paste, cut
 (unbind-key "M-w")
 (unbind-key "C-y")
+
 (bind-key "M-c" 'kill-ring-save)
+(bind-key "C-S-v" 'scroll-other-window)
+
 (bind-key "M-v" 'yank)
 (bind-key "M-v" 'isearch-yank-kill isearch-mode-map)
 
