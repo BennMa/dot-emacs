@@ -1,7 +1,7 @@
 ;; org faces: http://orgmode.org/worg/org-color-themes.html
 (use-package color-theme
   :init
-  (setq emacs-english-fonts '("Ubuntu Mono" "Menlo" "Courier New" "Monaco" "Inconsolata"
+  (defvar emacs-english-fonts '("Ubuntu Mono" "DejaVu Sans Mono" "Menlo" "Courier New" "Monaco" "Inconsolata"
                                 "Anonymous Pro" "Monospace" "Courier"))
   (defvar emacs-chinese-fonts '("宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
                                 "Microsoft Yahei"))
