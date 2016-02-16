@@ -113,7 +113,9 @@
   (bind-key "<tab>" 'helm-execute-persistent-action helm-map)
   (bind-key "C-i" 'helm-execute-persistent-action helm-map)
   (bind-key "C-z" 'helm-select-action helm-map)
-  (bind-key "M-v" 'helm-previous-page helm-map)
+  (unbind-key "M-v" helm-map)
+  (bind-key "C-M-v" 'helm-previous-page helm-map)
+  (bind-key "C-S-v" 'helm-scroll-other-window helm-map)
 
   (when (executable-find "curl")
     (setq helm-google-suggest-use-curl-p t)))
@@ -1452,7 +1454,13 @@
             (setq default-directory (if (string= term-ansi-at-host (system-name))
                                         (concatenate 'string term-ansi-at-dir "/")
                                       (format "/%s@%s:%s/" term-ansi-at-user term-ansi-at-host term-ansi-at-dir))))))
-          message)))
+          message)
+
+    (add-hook 'term-mode-hook
+              #'(lambda ()
+                  (projectile-mode -1)
+                  (ggtags-mode -1)
+                  (auto-highlight-symbol-mode -1)))))
 
 
 ;; org-mode ---
