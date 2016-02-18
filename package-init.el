@@ -555,6 +555,11 @@
 (use-package dedicated
   :bind ("C-. D" . dedicated-mode))
 
+(use-package sticky-windows
+  :bind (;;("C-. S" . sticky-window-keep-window-visible)
+         ("C-x 0" . sticky-window-delete-window)
+         ("C-x 1" . sticky-window-delete-other-windows)))
+
 (use-package escreen
   :bind-keymap ("C-c w" . escreen-map)
   :commands (escreen-create-screen)
