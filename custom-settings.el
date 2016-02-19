@@ -135,6 +135,7 @@
  '(company-frontends
    (quote
     (company-pseudo-tooltip-unless-just-one-frontend company-echo-metadata-frontend company-preview-frontend)))
+ '(company-idle-delay 0.2)
  '(compilation-always-kill t)
  '(compilation-ask-about-save nil)
  '(compilation-context-lines 10)
@@ -151,7 +152,7 @@
  '(coq-prog-args (quote ("-emacs" "-dont-load-proofs")))
  '(coq-prog-name "ssrcoq")
  '(current-language-environment "UTF-8")
- '(cursor-type (quote bar))
+ '(cursor-type t)
  '(custom-buffer-done-function (quote kill-buffer))
  '(custom-file "~/.emacs.d/custom-settings.el")
  '(custom-raised-buttons nil)
@@ -360,23 +361,7 @@
  '(fold-this-persistent-folds-file "~/.emacs.d/data/fold-this.el")
  '(font-lock-support-mode (quote jit-lock-mode))
  '(font-lock-verbose nil)
- '(frame-title-format
-   (quote
-    (:eval
-     (concat
-      (if buffer-file-name default-directory "%b")
-      "    "
-      (number-to-string
-       (cdr
-        (assq
-         (quote width)
-         (frame-parameters))))
-      "x"
-      (number-to-string
-       (cdr
-        (assq
-         (quote height)
-         (frame-parameters))))))) t)
+ '(frame-title-format (quote (:eval (concat "" "%b @ Emacs " emacs-version) t)) t)
  '(gc-cons-threshold 3500000)
  '(gdb-find-source-frame t)
  '(gdb-same-frame nil)
@@ -797,6 +782,7 @@
  '(wdired-use-dired-vertical-movement (quote sometimes))
  '(web-mode-code-indent-offset 2)
  '(web-mode-css-indent-offset 2)
+ '(web-mode-enable-engine-detection t)
  '(web-mode-markup-indent-offset 2)
  '(weblogger-config-alist
    (quote
@@ -835,11 +821,4 @@
  '(diff-header ((((background dark)) (:foreground "Cyan")) (t (:foreground "Red"))))
  '(diff-index ((((background dark)) (:foreground "Magenta")) (t (:foreground "Green"))))
  '(diff-nonexistent ((((background dark)) (:foreground "#FFFFFFFF7474")) (t (:foreground "DarkBlue"))))
- '(mode-line-inactive ((t (:inherit mode-line :background "grey90" :foreground "grey20" :weight normal))))
- '(tabbar-button ((t (:inherit tabbar-default :foreground "dark red"))))
- '(tabbar-button-highlight ((t (:inherit tabbar-default))))
- '(tabbar-default ((t (:inherit variable-pitch :background "#959A79" :foreground "black" :weight bold))))
- '(tabbar-highlight ((t (:underline t))))
- '(tabbar-selected ((t (:inherit tabbar-default :background "#95CA59"))))
- '(tabbar-separator ((t (:inherit tabbar-default :background "#95CA59"))))
- '(tabbar-unselected ((t (:inherit tabbar-default)))))
+ '(mode-line-inactive ((t (:inherit mode-line :background "grey90" :foreground "grey20" :weight normal)))))

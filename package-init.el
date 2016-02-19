@@ -1,7 +1,7 @@
 ;; org faces: http://orgmode.org/worg/org-color-themes.html
 (use-package color-theme
   :init
-  (defvar emacs-english-fonts '("Ubuntu Mono" "DejaVu Sans Mono" "Menlo" "Courier New" "Monaco" "Inconsolata"
+  (setq emacs-english-fonts '("Ubuntu Mono" "Monaco" "Droid Sans Mono" "Menlo" "DejaVu Sans Mono" "Courier New" "Inconsolata"
                                 "Anonymous Pro" "Monospace" "Courier"))
   (defvar emacs-chinese-fonts '("宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
                                 "Microsoft Yahei"))
@@ -9,7 +9,8 @@
   :config
   (use-package my-emacs-theme
     :commands my-emacs-theme)
-  (my-emacs-theme))
+  ;; (my-emacs-theme)
+  )
 
 (use-package maxframe
   :if window-system
@@ -119,6 +120,19 @@
 
   (when (executable-find "curl")
     (setq helm-google-suggest-use-curl-p t)))
+
+(use-package company
+  :diminish company-mode
+  ;; :commands company-mode
+  :config
+  ;; From https://github.com/company-mode/company-mode/issues/87
+  ;; See also https://github.com/company-mode/company-mode/issues/123
+  (defadvice company-pseudo-tooltip-unless-just-one-frontend
+      (around only-show-tooltip-when-invoked activate)
+    (when (company-explicit-action-p)
+      ad-do-it))
+
+  (global-company-mode))
 
 (use-package projectile
   :demand t
@@ -662,19 +676,6 @@
   (add-hook 'dired-mode-hook 'recentf-add-dired-directory)
   :config
   (recentf-mode 1))
-
-
-(use-package company
-  :diminish company-mode
-  :commands company-mode
-  :config
-  ;; From https://github.com/company-mode/company-mode/issues/87
-  ;; See also https://github.com/company-mode/company-mode/issues/123
-  (defadvice company-pseudo-tooltip-unless-just-one-frontend
-      (around only-show-tooltip-when-invoked activate)
-    (when (company-explicit-action-p)
-      ad-do-it)))
-
 
 (use-package hi-lock
   :bind (("M-o l" . highlight-lines-matching-regexp)
@@ -1375,15 +1376,15 @@
   :config
   (tabbar-mode)
 
-  (setq tabbar-background-color "#959A79")
-  (custom-set-faces
-   '(tabbar-default ((t (:inherit variable-pitch :background "#959A79" :foreground "black" :weight bold))))
-   '(tabbar-button ((t (:inherit tabbar-default :foreground "dark red"))))
-   '(tabbar-button-highlight ((t (:inherit tabbar-default))))
-   '(tabbar-highlight ((t (:underline t))))
-   '(tabbar-selected ((t (:inherit tabbar-default :background "#95CA59"))))
-   '(tabbar-separator ((t (:inherit tabbar-default :background "#95CA59"))))
-   '(tabbar-unselected ((t (:inherit tabbar-default)))))
+  ;; (setq tabbar-background-color "#959A79")
+  ;; (custom-set-faces
+  ;;  '(tabbar-default ((t (:inherit variable-pitch :background "#959A79" :foreground "black" :weight bold))))
+  ;;  '(tabbar-button ((t (:inherit tabbar-default :foreground "dark red"))))
+  ;;  '(tabbar-button-highlight ((t (:inherit tabbar-default))))
+  ;;  '(tabbar-highlight ((t (:underline t))))
+  ;;  '(tabbar-selected ((t (:inherit tabbar-default :background "#95CA59"))))
+  ;;  '(tabbar-separator ((t (:inherit tabbar-default :background "#95CA59"))))
+  ;;  '(tabbar-unselected ((t (:inherit tabbar-default)))))
 
   (defun my-tabbar-buffer-groups ()
     "Returns the name of the tab group names the current buffer belongs to.
@@ -1501,9 +1502,14 @@
     (add-hook 'term-mode-hook
               #'(lambda ()
                   (projectile-mode -1)
+                  ;; (company-mode -1)
                   (ggtags-mode -1)
                   (auto-highlight-symbol-mode -1)))))
 
+(use-package pc-select
+  :disabled t
+  :config
+  (pc-selection-mode))
 
 ;; org-mode ---
 (use-package org-init

@@ -390,7 +390,7 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
                        english-font-size))
              (useable-zh-font (find-if #'qiang-font-existsp chinese-fonts))
              (zh-font (font-spec :family useable-zh-font))
-             (chinese-font-size (list (cons useable-zh-font 1.2))))
+             (chinese-font-size (list (cons useable-zh-font 1.0))))
         (message "Set English Font to %s" en-font)
         (set-face-attribute
          'default nil :font en-font)
