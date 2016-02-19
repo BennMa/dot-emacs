@@ -555,6 +555,11 @@
 (use-package dedicated
   :bind ("C-. D" . dedicated-mode))
 
+(use-package sticky-windows
+  :bind (;;("C-. S" . sticky-window-keep-window-visible)
+         ("C-x 0" . sticky-window-delete-window)
+         ("C-x 1" . sticky-window-delete-other-windows)))
+
 (use-package escreen
   :bind-keymap ("C-c w" . escreen-map)
   :commands (escreen-create-screen)
@@ -1427,7 +1432,8 @@
                   (substring message
                              (+ start 8)
                              (string-match "\r?\n" message
-                                           (+ start 8))))))
+                                           (+ start 8)))))
+               ignore)
           ;; Delete this command from MESSAGE.
           (setq message (replace-match "" t t message))
           
@@ -1445,16 +1451,52 @@
                    (find-file argument)))
                 ((= command-code ?g)
                  (save-excursion
-                   (magit-status argument))))
+                   (magit-status argument)))
+                (t
+                 (setq ignore t)))
           
-          (when (and term-ansi-at-host term-ansi-at-dir term-ansi-at-user)
-            (setq buffer-file-name
-                  (format "%s@%s:%s" term-ansi-at-user term-ansi-at-host term-ansi-at-dir))
-            (set-buffer-modified-p nil)
-            (setq default-directory (if (string= term-ansi-at-host (system-name))
-                                        (concatenate 'string term-ansi-at-dir "/")
-                                      (format "/%s@%s:%s/" term-ansi-at-user term-ansi-at-host term-ansi-at-dir))))))
-          message)
+          ;; (when (and term-ansi-at-host term-ansi-at-dir term-ansi-at-user)
+          ;;   (setq buffer-file-name
+          ;;         (format "%s@%s:%s" term-ansi-at-user term-ansi-at-host term-ansi-at-dir))
+          ;;   (set-buffer-modified-p nil)
+          ;;   (setq default-directory (if (string= term-ansi-at-host (system-name))
+          ;;                               (concatenate 'string term-ansi-at-dir "/")
+          ;;                             (format "/%s@%s:%s/" term-ansi-at-user
+          ;;                                     term-ansi-at-host term-ansi-at-dir))))
+
+
+          ;; (message "%s=%s=%s=%s=%s"
+          ;;          term-ansi-at-host (system-name) term-ansi-at-user
+          ;;          (user-real-login-name) term-ansi-at-dir)
+          
+          (if ignore
+              nil
+            (setq default-directory
+                  (file-name-as-directory
+                   (if (and (string= term-ansi-at-host (system-name))
+                            (string= term-ansi-at-user (user-real-login-name)))
+                       (expand-file-name term-ansi-at-dir)
+                     (if (string= term-ansi-at-user (user-real-login-name))
+                         (concat "/" term-ansi-at-host ":" term-ansi-at-dir)
+                       (concat "/" term-ansi-at-user "@" term-ansi-at-host ":"
+                               term-ansi-at-dir)))))
+
+            ;; I'm not sure this is necessary,
+            ;; but it's best to be on the safe side.
+            (if (string= term-ansi-at-host (system-name))
+                (progn
+                  (setq ange-ftp-default-user term-ansi-at-save-user)
+                  (setq ange-ftp-default-password term-ansi-at-save-pwd)
+                  (setq ange-ftp-generate-anonymous-password term-ansi-at-save-anon))
+              (setq term-ansi-at-save-user ange-ftp-default-user)
+              (setq term-ansi-at-save-pwd ange-ftp-default-password)
+              (setq term-ansi-at-save-anon ange-ftp-generate-anonymous-password)
+              (setq ange-ftp-default-user nil)
+              (setq ange-ftp-default-password nil)
+              (setq ange-ftp-generate-anonymous-password nil)))
+
+          ))
+      message)
 
     (add-hook 'term-mode-hook
               #'(lambda ()
