@@ -8,70 +8,40 @@
  '(org-agenda-auto-exclude-function nil)
  '(org-agenda-custom-commands
    (quote
-    (("h" "Projects List" tags "LEVEL=1"
-      ((org-agenda-overriding-header "Projects List")
-       (org-agenda-files
+    (("h" "High Priority Tasks" todo ""
+      ((org-agenda-overriding-header "High Priority Tasks: ")
+       (org-agenda-skip-function
         (quote
-         ("~/Dropbox/PKG/Task/PROJECTS.txt")))
+         (org-agenda-skip-entry-if
+          (quote regexp)
+          "\\* SOMEDAY"
+          (quote notregexp)
+          "\\=.*\\[#\\(A\\|B\\|C\\)\\]")))
        (org-agenda-sorting-strategy
         (quote
          (priority-down)))))
-     ("A" "Priority #A tasks" agenda ""
-      ((org-agenda-ndays 1)
-       (org-agenda-overriding-header "Today's priority #A tasks: ")
-       (org-agenda-skip-function
-        (quote
-         (org-agenda-skip-entry-if
-          (quote regexp)
-          "\\* \\(DEFERRED\\|SOMEDAY\\)"
-          (quote notregexp)
-          "\\=.*\\[#A\\]")))))
-     ("b" "Priority #A and #B tasks" agenda ""
-      ((org-agenda-ndays 1)
-       (org-agenda-overriding-header "Today's priority #A and #B tasks: ")
-       (org-agenda-skip-function
-        (quote
-         (org-agenda-skip-entry-if
-          (quote regexp)
-          "\\* \\(DEFERRED\\|SOMEDAY\\)"
-          (quote regexp)
-          "\\=.*\\[#C\\]")))))
-     ("o" "Uncategorized items" tags "LEVEL=1"
-      ((org-agenda-overriding-header "Uncategorized items")
-       (org-agenda-files
-        (quote
-         ("~/Dropbox/PKG/Task/INBOX.txt")))))
-     ("W" "Waiting tasks" tags "TODO=\"WAITING\""
-      ((org-agenda-overriding-header "Waiting tasks:")
-       (org-agenda-sorting-strategy
-        (quote
-         (todo-state-up priority-down category-up)))))
-     ("u" "Unscheduled tasks" tags "TODO<>\"\"&TODO<>{DONE\\|CANCELED\\|NOTE}"
+     ("A" "All tasks" todo ""
       ((org-agenda-overriding-header "Unscheduled tasks: ")
        (org-agenda-skip-function
         (quote
          (org-agenda-skip-entry-if
-          (quote scheduled)
-          (quote deadline)
-          (quote timestamp)
           (quote regexp)
-          "\\* \\(DEFERRED\\|SOMEDAY\\)")))
+          "\\* SOMEDAY")))
        (org-agenda-sorting-strategy
         (quote
          (priority-down)))))
-     ("U" "Deferred tasks" tags "TODO=\"DEFERRED\""
-      ((org-agenda-overriding-header "Deferred tasks:")))
-     ("Y" "Someday tasks" tags "TODO=\"SOMEDAY\""
-      ((org-agenda-overriding-header "Someday tasks:")))
-     ("r" "All Review Entries" tags ":review:"
-      ((org-agenda-files k/review-dir)
-       (org-agenda-skip-function
-        (quote m/org-agenda-skip-expired-review-entry)))))))
+     ("w" "Waiting tasks" todo "WAITING"
+      ((org-agenda-overriding-header "Waiting tasks:")
+       (org-agenda-sorting-strategy
+        (quote
+         (todo-state-up priority-down category-up)))))
+     ("o" "Someday tasks" todo "SOMEDAY"
+      ((org-agenda-overriding-header "Someday tasks:"))))))
  '(org-agenda-deadline-leaders (quote ("!D!: " "D%02d: ")))
  '(org-agenda-default-appointment-duration 60)
  '(org-agenda-files
    (quote
-    ("~/Dropbox/PKG/Task/INBOX.txt" "~/Dropbox/PKG/Task/PROJECTS.txt")))
+    ("~/Dropbox/PKG/Task/INBOX.org" "~/Dropbox/PKG/Task/PROJECTS.org")))
  '(org-agenda-fontify-priorities t)
  '(org-agenda-include-diary t)
  '(org-agenda-inhibit-startup t)
@@ -111,14 +81,13 @@
  '(org-capture-templates
    (quote
     (("a" "Add Task" entry
-      (file "~/Dropbox/PKG/Task/INBOX.txt")
+      (file "~/Dropbox/PKG/Task/INBOX.org")
       "* TODO %?
-SCHEDULED: %t
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
 :END:" :prepend t)
      ("p" "Add Project" entry
-      (file "~/Dropbox/PKG/Task/PROJECTS.txt")
+      (file "~/Dropbox/PKG/Task/PROJECTS.org")
       "* %?
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
@@ -126,11 +95,11 @@ SCHEDULED: %t
 ** Notes
 ** Tasks" :prepend t)
      ("n" "Note" entry
-      (file "~/Dropbox/PKG/Task/INBOX.txt")
-      "* NOTE %?
+      (file "~/Dropbox/PKG/Document/Collector.org")
+      "* %?
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
-:END:" :prepend t))))
+:END:"))))
  '(org-clock-clocked-in-display nil)
  '(org-clock-idle-time 10)
  '(org-clock-in-resume t)
@@ -149,7 +118,7 @@ SCHEDULED: %t
  '(org-crypt-disable-auto-save nil)
  '(org-cycle-global-at-bob t)
  '(org-deadline-warning-days 14)
- '(org-default-notes-file "~/Dropbox/PKG/Task/INBOX.txt")
+ '(org-default-notes-file "~/Dropbox/PKG/Document/Collector.org")
  '(org-default-priority 66)
  '(org-directory "~/Dropbox/PKG/Task/")
  '(org-ditaa-jar-path "~/bin/DitaaEps.jar")
@@ -191,12 +160,14 @@ SCHEDULED: %t
  '(org-extend-today-until 8)
  '(org-fast-tag-selection-single-key (quote expert))
  '(org-fontify-done-headline t)
+ '(org-fontify-whole-heading-line nil)
  '(org-footnote-section nil)
  '(org-habit-preceding-days 42)
  '(org-habit-today-glyph 45)
  '(org-hide-leading-stars t)
  '(org-id-locations-file "~/.emacs.d/data/org-id-locations")
  '(org-image-actual-width (quote (800)))
+ '(org-indent-mode-turns-on-hiding-stars t)
  '(org-insert-heading-respect-content t)
  '(org-irc-link-to-logs t t)
  '(org-latex-default-packages-alist
@@ -216,10 +187,11 @@ SCHEDULED: %t
   ("" "amssymb" t)
   ("" "hyperref" nil)
   "\\tolerance=1000")))
+ '(org-log-done (quote time))
  '(org-modules
 (quote
  (org-gnus org-habit org-id org-info org-depend org-velocity)))
- '(org-refile-targets (quote (("~/Dropbox/PKG/Task/PROJECTS.txt" :level . 1))))
+ '(org-refile-targets (quote (("~/Dropbox/PKG/Task/PROJECTS.org" :level . 1))))
  '(org-return-follows-link t)
  '(org-reverse-note-order t)
  '(org-src-fontify-natively t)
@@ -232,25 +204,23 @@ SCHEDULED: %t
  (("TODO" :foreground "red" :weight bold)
   ("STARTED" :foreground "dark orange" :weight bold)
   ("WAITING" :foreground "medium blue" :weight bold)
-  ("DEFERRED" :foreground "dark blue" :weight bold)
   ("SOMEDAY" :foreground "dark blue" :weight bold)
-  ("NOTE" :foreground "brown" :weight bold)
   ("CANCELED" :foreground "gray" :weight bold)
   ("DONE" :foreground "ForestGreen" :weight bold))))
  '(org-todo-keywords
 (quote
- ((sequence "TODO" "STARTED" "WAITING" "DEFERRED" "SOMEDAY" "NOTE" "|" "CANCELED" "DONE"))))
+ ((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "SOMEDAY(o)" "|" "CANCELED(c)" "DONE(d)"))))
  '(org-todo-repeat-to-state "TODO")
  '(org-use-property-inheritance (quote ("AREA")))
  '(org-use-speed-commands t)
  '(org-use-tag-inheritance nil)
  '(org-velocity-always-use-bucket t)
- '(org-velocity-bucket "~/Dropbox/PKG/Task/PROJECTS.txt")
+ '(org-velocity-bucket "~/Dropbox/PKG/Task/PROJECTS.org")
  '(org-velocity-capture-templates
 (quote
  (("v" "Velocity" entry
-   (file "~/Dropbox/PKG/Task/INBOX.txt")
-   "* NOTE %:search
+   (file "~/Dropbox/PKG/Task/INBOX.org")
+   "* %:search
 %i%?
 :PROPERTIES:
 :ID:       %(shell-command-to-string \\\"uuidgen\\\"):CREATED:  %U

@@ -1,16 +1,16 @@
 ;; org faces: http://orgmode.org/worg/org-color-themes.html
-(use-package color-theme
+(use-package custom-theme
+  :no-require t
   :init
-  (setq emacs-english-fonts '("Ubuntu Mono" "Monaco" "Droid Sans Mono" "Menlo" "DejaVu Sans Mono" "Courier New" "Inconsolata"
-                                "Anonymous Pro" "Monospace" "Courier"))
-  (defvar emacs-chinese-fonts '("宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
-                                "Microsoft Yahei"))
-  (qiang-set-font emacs-english-fonts 12 emacs-chinese-fonts)
-  :config
-  (use-package my-emacs-theme
-    :commands my-emacs-theme)
-  ;; (my-emacs-theme)
-  )
+  (load-theme 'my-leuven t)
+
+  (defvar emacs-english-fonts  '( "Anonymous Pro" "Monaco" "Inconsolata" "Ubuntu Mono"
+                                  "Droid Sans Mono" "Menlo" "DejaVu Sans Mono" "Courier New"
+                                  "Monospace" "Courier" ))
+  (defvar emacs-chinese-fonts '( "宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
+                                 "Microsoft Yahei" ))
+  (defvar emacs-font-size 14)
+  (qiang-set-font emacs-english-fonts 14 emacs-chinese-fonts))
 
 (use-package maxframe
   :if window-system
@@ -240,11 +240,55 @@
     :commands helm-ag))
 
 (use-package ibuffer
-  :bind ("C-x C-b" . ibuffer)
-  :init
+  :bind (("C-x C-b" . my-ibuffer-startup)
+         ("C-x b" . my-ibuffer-startup))
+  :config
   (add-hook 'ibuffer-mode-hook
             #'(lambda ()
-                (ibuffer-switch-to-saved-filter-groups "default"))))
+                (ibuffer-auto-mode 1)
+                (ibuffer-switch-to-saved-filter-groups "default")))
+
+  (defun my-ibuffer-startup ()
+    "Open ibuffer with cursour pointed to most recent buffer name"
+    (interactive)
+    (let ((recent-buffer-name (buffer-name)))
+      (ibuffer)
+      (ibuffer-jump-to-buffer recent-buffer-name)))
+
+  (defun my-ibuffer-never-show-predicates (buffer)
+    (let ((name (buffer-name buffer)))
+      (and (not (or (member name '("*scratch*", "*Messages*"))
+                    (string-match-p "^\\*terminal" name)))
+           (or (string-match-p "^ ?\\*" name)
+               (string-match-p "^TAGS" name)))))
+
+  (define-ibuffer-column size-h
+    (:name "Size" :inline t)
+    (cond
+     ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
+     ((> (buffer-size) 100000) (format "%7.0fk" (/ (buffer-size) 1000.0)))
+     ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
+     (t (format "%8d" (buffer-size)))))
+
+  (use-package ibuffer-vc
+    :config
+    (add-hook 'ibuffer-hook
+              (lambda ()
+                (ibuffer-vc-set-filter-groups-by-vc-root)
+                (unless (eq ibuffer-sorting-mode 'alphabetic)
+                  (ibuffer-do-sort-by-alphabetic))))
+
+    (setq ibuffer-formats
+          '((mark modified read-only vc-status-mini " "
+                  (name 18 18 :left :elide)
+                  " "
+                  (size-h 9 -1 :right)
+                  " "
+                  (mode 16 16 :left :elide)
+                  " "
+                  (vc-status 16 16 :left)
+                  " "
+                  filename-and-process)))))
 
 (use-package ido
   :demand t
@@ -254,7 +298,7 @@
             ido-final-text
             ido-show-confirm-message)
   :bind (("C-M-<tab>" . ido-switch-buffer)
-         ("C-x b" . ido-switch-buffer)
+         ;; ("C-x b" . ido-switch-buffer)
          ("C-x C-f" . ido-find-file)
          ("C-x f" . ido-find-file))
   :preface
@@ -331,7 +375,8 @@
   :config
   (unbind-key "C-x C-j" window-number-mode-map)
   (window-number-mode)
-  (window-number-meta-mode))
+  (window-number-meta-mode)
+  (custom-set-faces '(window-number-face ((t nil)) t)))
 
 (use-package cus-edit
   :defer 5
@@ -476,15 +521,21 @@
   (add-hook 'dired-toggle-mode-hook #'my-dired-toggle-mode-hook))
 
 (use-package direx
-  :bind ("C-. d" . direx:jump-to-directory-other-window)
+  :bind ("C-. d" . my-direx:jump-to-directory-other-window)
+  :init
+  (push '(direx:direx-mode :position left :width 30 :dedicated t :stick t)
+        popwin:special-display-config)
   :config
+  (defun my-direx:jump-to-directory-other-window ()
+    (interactive)
+    (switch-to-buffer-other-window (direx:jump-to-directory-noselect))
+    (set-window-dedicated-p (selected-window) t))
+  
+  (bind-key "TAB" 'direx:maybe-find-item direx:direx-mode-map)
   (defadvice direx:jump-to-directory-noselect
       (around direx:set-default-directory activate)
     (let ((default-directory (projectile-project-root)))
-      ad-do-it))
-  :init
-  (push '(direx:direx-mode :position left :width 30 :dedicated t :stick t)
-        popwin:special-display-config))
+      ad-do-it)))
 
 (use-package yasnippet
   :diminish yas-minor-mode
@@ -537,7 +588,6 @@
   
   (defun my-web-mode-hook ()
     "Hooks for Web mode."
-    (flycheck-mode 1)
     (local-set-key (kbd "M-D") 'php-insert-doc-block))
   (add-hook 'web-mode-hook 'my-web-mode-hook))
 
@@ -1033,14 +1083,17 @@
   (unbind-key "C-." flyspell-mode-map))
 
 (use-package flycheck
-  :load-path "lisp/flycheck"
+  :demand t
   :commands (flycheck-mode global-flycheck-mode)
   :config
   (flycheck-add-mode 'php 'web-mode)
   (flycheck-add-mode 'php-phpmd 'web-mode)
   (flycheck-add-mode 'php-phpcs 'web-mode)
 
-  (defalias 'flycheck-show-error-at-point-soon 'flycheck-show-error-at-point))
+  (defalias 'flycheck-show-error-at-point-soon
+    'flycheck-show-error-at-point)
+  
+  (global-flycheck-mode))
 
 (use-package diff-mode
   :commands diff-mode
@@ -1394,7 +1447,7 @@
       ((string-match-p "TAGS.*" (buffer-name))
        "Other")
       ((memq major-mode
-             '(help-mode apropos-mode Info-mode Man-mode))
+             '(help-mode apropos-mode Info-mode Man-mode direx:direx-mode))
        "Other")
       ((eq major-mode 'term-mode)
        "Term")      
@@ -1402,6 +1455,8 @@
        "Other")
       ((eq major-mode 'org-mode)
        "Org")
+      ((eq major-mode 'erc-mode)
+       "ERC")
       ((eq major-mode 'dired-mode)
        "Dired")
       ((projectile-project-p)
@@ -1502,47 +1557,41 @@
     (add-hook 'term-mode-hook
               #'(lambda ()
                   (projectile-mode -1)
-                  ;; (company-mode -1)
+                  (company-mode -1)
                   (ggtags-mode -1)
                   (auto-highlight-symbol-mode -1)))))
 
-(use-package pc-select
-  :disabled t
+(use-package ace-jump-mode
+  :bind ("M-j" . ace-jump-mode))
+
+(use-package electric-pair-mode
+  :no-require t
+  :init
+  (electric-pair-mode))
+
+;; https://github.com/pashky/restclient.el
+(use-package restclient
+  :commands restclient-mode)
+
+;; https://github.com/magnars/multiple-cursors.el
+(use-package multiple-cursors
+  :bind (("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C-e" . mc/mark-all-like-this)))
+
+;; https://github.com/rooney/zencoding
+(use-package zencoding-mode
+  :bind ("C-M-h" . zencoding-expand-line)
+  :commands zencoding-mode
   :config
-  (pc-selection-mode))
+  (zencoding-mode)
+  (unbind-key "C-j" zencoding-mode-keymap)
+  (unbind-key "C-<return>" zencoding-mode-keymap))
 
-;; org-mode ---
-(use-package org-init
-  :bind (("M-A"   . jump-to-org-agenda)
-         ("M-m"   . org-smart-capture)
-         ("M-M"   . org-inline-note)
-         ("C-t"   . org-collect)
-         ("C-. k" . org-knowledgebase-map)
-         ("C-c a" . org-agenda)
-         ("C-c S" . org-store-link)
-         ("C-c l" . org-insert-link)
-         ("C-. n" . org-velocity-read))
-  :config
-  (use-package org-bullets
-    :commands org-bullets-mode)
-  (add-hook 'org-mode-hook
-            #'(lambda ()
-                (setq line-spacing 0.25)
-                (buffer-face-mode 1)
-                (org-bullets-mode 1)
-                (flyspell-mode 1)))
+;; ------ org-mode
+(use-package org-init)
 
-  (add-hook 'org-agenda-mode-hook
-            #'(lambda ()
-                (setq line-spacing 0.25)
-                ))
-  (push '("collector.org" :position bottom :height 15 :stick t)
-        popwin:special-display-config)
-
-  (unbind-key "C-y" org-mode-map))
-;; (run-with-idle-timer 300 t 'jump-to-org-agenda)
-;;(my-org-startup))
-
+;; ------ gnus
 (use-package gnus-init
   :disabled t
   :bind (("M-G"   . trigger-gnus)

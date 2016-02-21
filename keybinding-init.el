@@ -63,8 +63,8 @@
 (bind-key "M-[" 'align-code)
 (bind-key "M-`" 'other-frame)
 
-(bind-key "M-j" 'delete-indentation-forward)
-(bind-key "M-J" 'delete-indentation)
+(bind-key "C-M-j" 'delete-indentation-forward)
+;; (bind-key "M-J" 'delete-indentation)
 
 (bind-key "M-W" 'mark-word)
 

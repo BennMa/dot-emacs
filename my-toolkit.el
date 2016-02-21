@@ -85,25 +85,34 @@ Inspired by Erik Naggum's `recursive-edit-with-single-window'."
 
 
 (defcustom previous-buffer-white-list '()
-  "white list for filter previous buffer which used by C-TAB"
+  "white list of last buffer switcher"
   :type '(repeat regexp))
 (defcustom previous-buffer-black-list '()
-  "bloack list for filter previous buffer which used by C-TAB"
+  "black list of last buffer switcher"
   :type '(repeat regexp))
+(defcustom previous-buffer-black-modes-list '()
+  "black list of modes of last buffer switcher"
+  :type '(repeat string))
 (defun switch-to-previous-buffer ()
   "switch to last active buffer by white list and black list"
   (interactive)
   (let ((i 1)
-        (last-buffer-name nil))
+        last-buffer
+        last-buffer-name)
     (catch 'matched_
       (while (< i 50)
-        (setq last-buffer-name (buffer-name (nth i (buffer-list))))
-        (when (or (list-regex-match-p last-buffer-name previous-buffer-white-list)
-                  (not (list-regex-match-p last-buffer-name previous-buffer-black-list)))
+        (setq last-buffer (nth i (buffer-list)))
+        (setq last-buffer-name (buffer-name last-buffer))
+        (when (or (list-regex-match-p last-buffer-name
+                                      previous-buffer-white-list)
+                  (not (or (list-regex-match-p last-buffer-name
+                                           previous-buffer-black-list)
+                           (member-ignore-case
+                            (symbol-name (buffer-local-value 'major-mode last-buffer))
+                            previous-buffer-black-modes-list))))
           (switch-to-buffer last-buffer-name)
           (throw 'matched_ t))
         (setq i (1+ i))))))
-
 
 (defun collapse-or-expand ()
   (interactive)
@@ -194,16 +203,13 @@ Inspired by Erik Naggum's `recursive-edit-with-single-window'."
 
 
 (defun insert-separator(&optional paragraph-p)
-  (let ((pos (point)))
-    (end-of-line)
-    (electric-newline-and-maybe-indent)
+  (save-excursion
     (insert
      (format (if paragraph-p
-                 "%s-----"
-               "%s--------------------------------------------------------------------------")
-             (get-comment)))
-    (goto-char pos)
-    (next-line 2)))
+                 "%s ====== "
+               "%s ------ ")
+             (get-comment))))
+  (forward-char (+ (length (get-comment)) 8)))
 
 (defun get-comment ()
   "Get comment for different modes"

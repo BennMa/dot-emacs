@@ -79,7 +79,6 @@
  '(calendar-mark-holidays-flag t)
  '(calendar-standard-time-zone-name "CST")
  '(calendar-time-zone -420)
- '(canlock-password "8d2ee9a7e4658c4ff6d863f91a3dd5340b3918ec")
  '(cc-other-file-alist
    (quote
     (("\\.hs\\'"
@@ -140,9 +139,6 @@
  '(compilation-ask-about-save nil)
  '(compilation-context-lines 10)
  '(compilation-scroll-output (quote first-error))
- '(compilation-search-path
-   (quote
-    (nil "~/src/gitlib" "~/src/gitlib/gitlib" "~/src/gitlib/gitlib-libgit2" "~/src/gitlib/gitlib-s3" "~/src/gitlib/gitlib-test" "~/src/gitlib/git-monitor" "~/src/c2hsc")))
  '(compilation-skip-threshold 2)
  '(compilation-window-height 100)
  '(coq-compile-before-require t)
@@ -156,7 +152,8 @@
  '(custom-buffer-done-function (quote kill-buffer))
  '(custom-file "~/.emacs.d/custom-settings.el")
  '(custom-raised-buttons nil)
- '(default-frame-alist (quote ((cursor-color . "#CCC"))))
+ '(custom-theme-directory "~/.emacs.d/themes/")
+ '(default-frame-alist (quote ((cursor-color . "black"))))
  '(default-major-mode (quote text-mode) t)
  '(deft-auto-save-interval 0.0)
  '(deft-directory "~/Documents/notes")
@@ -216,9 +213,7 @@
  '(enable-recursive-minibuffers t)
  '(erc-auto-query (quote window-noselect))
  '(erc-autoaway-message "I'm away (after %i seconds of idle-time)")
- '(erc-autojoin-channels-alist
-   (quote
-    (("freenode.net" "##categorytheory" "#agda" "#coq" "#idris" "#gitlib" "#haskell" "#haskell-lens" "#haskell-emacs" "#ledger" "#ChicagoHaskell" "#haskell-ops" "#nixos" "##nix-darwin" "#wigfam" "##hott" "#ghc" "#haskell-infrastructure" "#org-mode" "#haskell.org"))))
+ '(erc-autojoin-domain-only t)
  '(erc-fill-function (quote erc-fill-variable))
  '(erc-fill-static-center 12)
  '(erc-foolish-content (quote ("MichaelSnoyman" "BrendanHay")))
@@ -226,24 +221,24 @@
  '(erc-generate-log-file-name-function (quote erc-generate-log-file-name-short))
  '(erc-header-line-format nil)
  '(erc-hide-list (quote ("JOIN" "NICK" "PART" "QUIT" "MODE")))
- '(erc-keywords (quote ("wiegley" "ledger" "eshell")))
- '(erc-log-channels-directory "~/Messages/ERC")
+ '(erc-log-channels-directory "~/Dropbox/Backup/ERC")
  '(erc-log-write-after-send t)
  '(erc-modules
    (quote
-    (autojoin button completion dcc fill identd irccontrols list match menu move-to-prompt netsplit networks noncommands readonly replace ring scrolltobottom services smiley stamp track truncate highlight-nicknames)))
- '(erc-nick "johnw")
+    (autojoin button completion dcc fill identd irccontrols list match menu move-to-prompt netsplit networks noncommands readonly replace ring scrolltobottom services smiley stamp track truncate)))
+ '(erc-nick "benn")
+ '(erc-nick-uniquifier "1")
+ '(erc-nickserv-passwords nil)
  '(erc-port 6667)
  '(erc-priority-people-regexp "\\`[^#].+")
+ '(erc-prompt-for-channel-key nil)
  '(erc-prompt-for-nickserv-password nil)
  '(erc-replace-alist (quote (("</?FONT>" . ""))))
- '(erc-server "irc.freenode.net")
+ '(erc-server "sylvester.thenetcircle.lab")
  '(erc-services-mode t)
- '(erc-text-matched-hook (quote (erc-hide-fools my-erc-hook)))
+ '(erc-text-matched-hook (quote (erc-hide-fools)))
  '(erc-track-enable-keybindings t)
- '(erc-track-exclude
-   (quote
-    ("#idris" "#emacs" "#ghc" "#haskell-emacs" "#agda" "#twitter_jwiegley")))
+ '(erc-track-exclude (quote ("#emacs")))
  '(erc-track-exclude-types
    (quote
     ("JOIN" "KICK" "NICK" "PART" "QUIT" "MODE" "333" "353")))
@@ -256,6 +251,7 @@
      erc-pal-face erc-nick-msg-face erc-direct-msg-face)))
  '(erc-track-score-mode t)
  '(erc-track-showcount t)
+ '(erc-try-new-nick-p t)
  '(erc-user-full-name (quote user-full-name))
  '(erc-yank-query-before-gisting nil)
  '(eshell-directory-name "~/.emacs.d/eshell/")
@@ -284,70 +280,7 @@
     ("vi" "top" "screen" "less" "lynx" "rlogin" "telnet")))
  '(etags-table-alist nil)
  '(etags-table-search-up-depth 10)
- '(eudc-inline-expansion-format (quote ("%s <%s>" name email)))
  '(eval-expr-print-function (quote pp))
- '(eww-lnum-actions-link-alist
-   (quote
-    ("----  Link   ----"
-     (102 eww-lnum-visit "Visit")
-     (101
-      (lambda
-        (info)
-        (eww-lnum-visit info nil t))
-      "Edit URL and visit")
-     (70
-      (lambda
-        (info)
-        (eww-lnum-visit info t))
-      "Visit in new buffer")
-     (69
-      (lambda
-        (info)
-        (eww-lnum-visit info t t))
-      "Edit URL and visit in new buffer")
-     (98
-      (lambda
-        (info)
-        (eww-lnum-visit info :background))
-      "Open in background")
-     (66
-      (lambda
-        (info)
-        (eww-lnum-visit info :background t))
-      "Edit URL and open in background")
-     (100
-      (lambda
-        (info)
-        (save-excursion
-          (goto-char
-           (cadr info))
-          (eww-download)))
-      "Download")
-     (119
-      (lambda
-        (info)
-        (let
-            ((url
-              (car info)))
-          (kill-new url)
-          (message url)))
-      "Copy")
-     (38
-      (lambda
-        (info)
-        (eww-browse-with-external-browser
-         (car info)))
-      "Open in external browser")
-     (68
-      (lambda
-        (info)
-        (shell-command
-         (concat "aria2c -d ~/Downloads -x5 '"
-                 (car info)
-                 "' &")
-         "*Aria*"))
-      "Download with Aria"))))
- '(eww-search-prefix "https://startpage.com/do/m/mobilesearch?query=")
  '(fill-column 80)
  '(find-ls-option (quote ("-print0 | xargs -0 ls -ld" . "-ld")))
  '(find-ls-subdir-switches "-alh")
@@ -419,6 +352,7 @@
     (yas-hippie-try-expand try-complete-file-name-partially try-complete-file-name try-expand-all-abbrevs try-expand-list try-expand-line try-expand-dabbrev try-expand-dabbrev-all-buffers try-expand-dabbrev-from-kill try-complete-lisp-symbol-partially try-complete-lisp-symbol)))
  '(history-delete-duplicates t)
  '(history-length 200)
+ '(ibuffer-always-show-predicates nil)
  '(ibuffer-default-display-maybe-show-predicates t)
  '(ibuffer-expert t)
  '(ibuffer-formats
@@ -434,6 +368,7 @@
            (name 16 -1)
            " " filename))))
  '(ibuffer-maybe-show-regexps nil)
+ '(ibuffer-never-show-predicates (quote (my-ibuffer-never-show-predicates)) nil (ibuf-ext))
  '(ibuffer-saved-filter-groups
    (quote
     (("default"
@@ -520,7 +455,8 @@
  '(initial-major-mode (quote fundamental-mode))
  '(initsplit-customizations-alist
    (quote
-    (("\\`\\(gnus\\|nn\\|message\\|mail\\|mm-\\|smtp\\|send-mail\\|sendmail\\|check-mail\\|spam\\|sc-\\)" "~/.emacs.d/gnus-settings.el" nil nil)
+    (("\\`\\(erc-autojoin-channels-alist\\|erc-keywords\\)" "~/.emacs.d/private-settings.el" nil nil)
+     ("\\`\\(gnus\\|nn\\|message\\|mail\\|mm-\\|smtp\\|send-mail\\|sendmail\\|check-mail\\|spam\\|sc-\\)" "~/.emacs.d/gnus-settings.el" nil nil)
      ("\\`\\(org-\\)" "~/.emacs.d/org-settings.el" nil nil))))
  '(ispell-extra-args nil)
  '(kill-do-not-save-duplicates t)
@@ -577,13 +513,12 @@
  '(php-insert-doc-copyright-email "bennmsg@gmail.com")
  '(php-insert-doc-copyright-name "benn")
  '(php-insert-doc-uses-tag nil)
- '(powerline-default-separator (quote box))
- '(pp^L-^L-string
-   "                                                                              ")
- '(previous-buffer-black-list (quote ("^[	 ]*\\*.*\\*[	 ]*$" "collected.org")))
+ '(powerline-default-separator (quote zigzag))
+ '(previous-buffer-black-list (quote ("^ ?\\*" "Collector.org")))
+ '(previous-buffer-black-modes-list (quote ("direx:direx-mode" "diary-mode")))
  '(previous-buffer-white-list
    (quote
-    ("\\*mu4e-\\(main\\|headers\\)\\*" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)\\*" "\\*terminal.*\\*" "\\*magit:[	 ]*.*\\*" "\\*Tail:.*" "\\*erlang.*\\*" "\\*Customize.*\\*" "\\*eshell.*\\*")))
+    ("\\*mu4e-\\(main\\|headers\\)" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell")))
  '(projectile-cache-file "~/.emacs.d/data/projectile.cache")
  '(projectile-enable-caching t)
  '(projectile-globally-ignored-files (quote ("TAGS" "GPATH" "GRTAGS" "GTAGS" "ID")))
@@ -647,44 +582,6 @@
  '(slime-kill-without-query-p t)
  '(slime-repl-history-file "~/.emacs.d/data/slime-history.eld")
  '(slime-startup-animation nil)
- '(smart-compile-alist
-   (quote
-    (((lambda
-        (buf)
-        (let
-            ((case-fold-search t))
-          (and
-           (string-match "/ansi/"
-                         (buffer-file-name buf))
-           (string-match "/opencl"
-                         (shell-command-to-string "git symbolic-ref HEAD")))))
-      . "cd ~/Contracts/TI/src/c60_iaansi ; ~/Contracts/TI/bin/build.sh c60")
-     ((lambda
-        (buf)
-        (let
-            ((case-fold-search t))
-          (and
-           (string-match "/\\(src/ansi\\|src/.*?ansi\\)/"
-                         (buffer-file-name buf))
-           (string-match "/merge_4_2"
-                         (shell-command-to-string "git symbolic-ref HEAD")))))
-      . "cd ~/Contracts/TI/src/msp_iaansi ; ~/Contracts/TI/bin/build.sh msp")
-     ((lambda
-        (buf)
-        (string-match "/\\(\\(src\\|Projects\\)/ledger\\)/"
-                      (buffer-file-name buf)))
-      . "cd ~/src/ledger ; ~/src/ledger/tools/build.sh debug")
-     ((lambda
-        (buf)
-        (string-match "/emacs/"
-                      (buffer-file-name buf)))
-      . "emacs-build release macport opt make")
-     (emacs-lisp-mode emacs-lisp-byte-compile-and-load)
-     ((lambda
-        (buf)
-        (string-match "/\\(cree\\|EDG/Projects/edg\\)/"
-                      (buffer-file-name buf)))
-      . "cd ~/Products/cree/edg && (ninja && ctest -j$(ncpu)) & (cd ~/src/cree; mktags src ext/llvm) & wait"))))
  '(sp-highlight-pair-overlay nil)
  '(sql-sqlite-program "sqlite3")
  '(sr-attributes-display-mask (quote (nil nil t nil nil nil)))
@@ -708,7 +605,8 @@
  '(temp-buffer-resize-mode t nil (help))
  '(term-bind-key-alist
    (quote
-    (("C-c C-c" . term-interrupt-subjob)
+    (("C-c C-q" . term-send-esc)
+     ("C-c C-c" . term-interrupt-subjob)
      ("C-b" . term-send-raw)
      ("C-f" . term-send-raw)
      ("C-a" . term-send-raw)
@@ -821,4 +719,8 @@
  '(diff-header ((((background dark)) (:foreground "Cyan")) (t (:foreground "Red"))))
  '(diff-index ((((background dark)) (:foreground "Magenta")) (t (:foreground "Green"))))
  '(diff-nonexistent ((((background dark)) (:foreground "#FFFFFFFF7474")) (t (:foreground "DarkBlue"))))
- '(mode-line-inactive ((t (:inherit mode-line :background "grey90" :foreground "grey20" :weight normal)))))
+ '(powerline-active1 ((t (:inherit mode-line :background "blue1" :foreground "white"))))
+ '(powerline-active2 ((t (:inherit mode-line))))
+ '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "gray80"))))
+ '(powerline-inactive2 ((t (:inherit mode-line-inactive))))
+ '(window-number-face ((t nil)) t))

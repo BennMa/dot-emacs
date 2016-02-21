@@ -8,10 +8,12 @@
   (mapc
    #'(lambda (path)
        (push (expand-file-name path user-emacs-directory) load-path))
-   '("site-lisp" "el-get/el-get" "site-lisp/el-get" "site-lisp/use-package" "lisp" "themes" "")))
+   '("site-lisp" "el-get/el-get" "site-lisp/el-get" "site-lisp/use-package"
+     "lisp" "themes" "")))
 
 ;; ------ load custom settings
 (load (expand-file-name "custom-settings" user-emacs-directory))
+(load (expand-file-name "private-settings" user-emacs-directory))
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq visible-bell nil
       ring-bell-function 'ignore)
@@ -52,7 +54,7 @@
 (el-get-bundle elpa:ido-hacks)
 (el-get-bundle elpa:flx-ido)
 (el-get-bundle elpa:magit)
-(el-get-bundle elpa:color-theme)
+;; (el-get-bundle elpa:color-theme)
 (el-get-bundle elpa:powerline)
 (el-get-bundle elpa:window-number)
 (el-get-bundle elpa:auto-highlight-symbol)
@@ -80,6 +82,11 @@
 (el-get-bundle elpa:w3m)
 (el-get-bundle elpa:multi-term)
 (el-get-bundle elpa:tabbar)
+(el-get-bundle elpa:ace-jump-mode)
+(el-get-bundle elpa:restclient)
+(el-get-bundle elpa:multiple-cursors)
+(el-get-bundle elpa:zencoding-mode)
+(el-get-bundle elpa:flycheck)
 
 (el-get-bundle elpa:erlang)
 (el-get-bundle elpa:edts)
@@ -88,8 +95,9 @@
 (el-get-bundle elpa:yaml-mode)
 (el-get-bundle elpa:css-mode)
 (el-get-bundle elpa:calfw)
+(el-get-bundle elpa:ibuffer-vc)
 
-;; ------ packages from others
+;; ------ packages from somewhereelse
 ;; (el-get-bundle fetchmail-mode)
 (el-get-bundle ag)
 (el-get-bundle helm-ag)

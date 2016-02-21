@@ -1,8 +1,9 @@
-;;; Code
-(require 'cl)
-(require 'org)
-(require 'dash)
-(require 'helm)
+;;; Package -- Summary
+
+;;; Commentary:
+(require 'org-init)
+
+;;; Code:
 
 (defcustom my-knowledagebase-dir "~/Dropbox/PKG/Document"
   "Personal Knowledge Base Directory"
@@ -10,6 +11,13 @@
 (defcustom my-daily-dir "~/Dropbox/PKG/Task/Daily"
   "Personal Daily Directory"
   :type 'string)
+(defcustom my-collector-file "~/Dropbox/PKG/Document/Collector.org"
+  "Personal Small Piece Collector"
+  :type 'string)
+
+(setq org-agenda-files
+      (append org-agenda-files
+              (directory-files-recursively my-knowledagebase-dir t org-agenda-file-regexp)))
 
 (defvar org-knowledgebase-map)
 (define-prefix-command 'org-knowledgebase-map)
@@ -39,7 +47,7 @@
   ;;(when (string= org-state "DONE")
   (let* ((today (format-time-string "%Y-%m-%d"))
          (daily-file
-          (expand-file-name (concat today ".txt")
+          (expand-file-name (concat today ".org")
                             my-daily-dir)))
     (unless (file-exists-p daily-file)
       (with-current-buffer (find-file-noselect daily-file)
@@ -66,6 +74,7 @@
         :history 'k/list-history))
 (bind-key "d" 'k/daily-list org-knowledgebase-map)
 
+
 ;; ------ knowledge base search
 (bind-key "s" 'k/search org-knowledgebase-map)
 (defun k/search (&optional options)
@@ -77,16 +86,14 @@
                         prefarg))
     (error "helm-grep not available")))
 
+
 ;; ------ knowledge base review
 (defvar k/review-amount-tag "M_REVIEWED_AMOUNT")
 (defvar k/review-date-tag "M_REVIEWED_DATE")
-;; (setq k/review-dir (list (expand-file-name "Documents" my-knowledagebase-dir)))
-(setq k/review-dir (list my-knowledagebase-dir))
 (add-to-list 'org-agenda-custom-commands
-             '("r" "All Review Entries" tags ":review:"
-               ((org-agenda-files k/review-dir)
-                (org-agenda-skip-function
-                 'm/org-agenda-skip-expired-review-entry))) t)
+             '("q" "All Review Entries" tags ":review:" 
+               ((org-agenda-skip-function ;; (org-agenda-files (list my-knowledagebase-dir))
+                 'k/org-agenda-skip-expired-review-entry))) t)
 (defun k/org-agenda-skip-expired-review-entry()
   (let (beg end)
     (org-back-to-heading t)
@@ -100,6 +107,7 @@
        (not (k/org-review-forget-algorithm reviewed-amount
                                            (or reviewed-date closed))))
      end)))
+
 (defun k/org-review-forget-algorithm(reviewed-amount reviewed-date)
   (if (and reviewed-amount reviewed-date)
       (let ((today (date-to-day (format-time-string "%Y-%m-%d 00:00:00")))
@@ -110,8 +118,7 @@
          ((= 2 _reviewed-amount) (>= (- today lastday) 30))
          ((= 3 _reviewed-amount) (>= (- today lastday) 90))
          ((> _reviewed-amount 3) (>= (- today lastday) 180))
-         (t t))
-        )
+         (t t)))
     t))
 
 (org-defkey org-agenda-mode-map "D" 'k/org-agenda-magic-done)
@@ -139,5 +146,35 @@
       (org-agenda-redo t)
       (org-move-to-column col))))
 
+;; ------ Collector
+
+(defun org-collect()
+  "collect stuff to collected file"
+  (interactive)
+  (let ((collect-file (expand-file-name my-collector-file))
+        (string (if mark-active
+                    (buffer-substring (region-beginning) (region-end))
+                  ""))
+        (pnt))
+    (unless (string= (buffer-file-name) collect-file)
+      (find-file-other-window collect-file))
+    (goto-char (point-min))
+    ;; (if (string= (buffer-substring-no-properties 1 4) "* \n")
+    (if (looking-at-p "\\* +?\n")
+        (goto-char 3)
+      (progn
+        (insert "\n")
+        (goto-char (point-min))
+        (insert "* ")))
+    (save-excursion
+      (unless (string= string "")
+        (goto-char (if (search-forward-regexp "\n\\* .*\n" nil t)
+                       (match-beginning 0)
+                     (point)))
+        (insert (concat "\n" string "\n"))))
+    (save-buffer)))
+
 
 (provide 'org-knowledgebase)
+
+;;; org-knowledgebase.el ends here
