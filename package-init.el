@@ -9,8 +9,31 @@
                                   "Monospace" "Courier" ))
   (defvar emacs-chinese-fonts '( "宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
                                  "Microsoft Yahei" ))
-  (defvar emacs-font-size 14)
-  (qiang-set-font emacs-english-fonts 14 emacs-chinese-fonts))
+  (defvar emacs-font-size 10)
+  (qiang-set-font emacs-english-fonts emacs-font-size emacs-chinese-fonts))
+
+
+(use-package cua-mode
+  :init
+  (cua-mode 1)
+  (defun sfp-page-down (&optional arg)
+    (interactive "^P")
+    (setq this-command 'next-line)
+    (next-line
+     (- (window-text-height)
+        next-screen-context-lines)))
+  (put 'sfp-page-down 'isearch-scroll t)
+  (put 'sfp-page-down 'CUA 'move)
+  
+  (defun sfp-page-up (&optional arg)
+    (interactive "^P")
+    (setq this-command 'previous-line)
+    (previous-line
+     (- (window-text-height)
+        next-screen-context-lines)))
+  (put 'sfp-page-up 'isearch-scroll t)
+  (put 'sfp-page-up 'CUA 'move))
+  
 
 (use-package maxframe
   :if window-system
@@ -1083,6 +1106,7 @@
   (unbind-key "C-." flyspell-mode-map))
 
 (use-package flycheck
+  :disabled t
   :demand t
   :commands (flycheck-mode global-flycheck-mode)
   :config
