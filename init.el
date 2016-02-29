@@ -86,7 +86,7 @@
 (el-get-bundle elpa:restclient)
 (el-get-bundle elpa:multiple-cursors)
 (el-get-bundle elpa:zencoding-mode)
-(el-get-bundle elpa:flycheck)
+;; (el-get-bundle elpa:flycheck)
 
 ;; ------ python
 ;; (el-get-bundle elpa:python-mode)
