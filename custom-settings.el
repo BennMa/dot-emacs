@@ -281,6 +281,7 @@
  '(etags-table-alist nil)
  '(etags-table-search-up-depth 10)
  '(eval-expr-print-function (quote pp))
+ '(fci-rule-color "gray68")
  '(fill-column 80)
  '(find-ls-option (quote ("-print0 | xargs -0 ls -ld" . "-ld")))
  '(find-ls-subdir-switches "-alh")

@@ -1569,6 +1569,13 @@
   :init
   (electric-pair-mode))
 
+(use-package fill-column-indicator
+  :demand t
+  :commands fci-mode
+  :config
+  (define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
+  (global-fci-mode 1))
+
 ;; https://github.com/pashky/restclient.el
 (use-package restclient
   :commands restclient-mode)

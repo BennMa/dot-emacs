@@ -88,6 +88,9 @@
 (el-get-bundle elpa:zencoding-mode)
 (el-get-bundle elpa:flycheck)
 
+;; ------ python
+;; (el-get-bundle elpa:python-mode)
+
 (el-get-bundle elpa:erlang)
 (el-get-bundle elpa:edts)
 (el-get-bundle elpa:cmake-mode)
@@ -96,6 +99,7 @@
 (el-get-bundle elpa:css-mode)
 (el-get-bundle elpa:calfw)
 (el-get-bundle elpa:ibuffer-vc)
+(el-get-bundle elpa:fill-column-indicator)
 
 ;; ------ packages from somewhereelse
 ;; (el-get-bundle fetchmail-mode)
