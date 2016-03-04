@@ -88,6 +88,9 @@
 (el-get-bundle elpa:zencoding-mode)
 ;; (el-get-bundle elpa:flycheck)
 
+;; ------ python
+;; (el-get-bundle elpa:python-mode)
+
 (el-get-bundle elpa:erlang)
 (el-get-bundle elpa:edts)
 (el-get-bundle elpa:cmake-mode)
@@ -96,6 +99,7 @@
 (el-get-bundle elpa:css-mode)
 (el-get-bundle elpa:calfw)
 (el-get-bundle elpa:ibuffer-vc)
+(el-get-bundle elpa:fill-column-indicator)
 
 ;; ------ packages from somewhereelse
 ;; (el-get-bundle fetchmail-mode)
@@ -110,6 +114,8 @@
 (el-get-bundle org-magit)
 (el-get-bundle direx)
 ;; (el-get-bundle sticky-windows)
+(el-get-bundle symon)
+(el-get-bundle nyan-mode)
 
 ;; ------ enable disabled commands
 (put 'downcase-region  'disabled nil)   ; Let downcasing work

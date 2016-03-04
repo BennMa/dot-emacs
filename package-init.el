@@ -9,7 +9,7 @@
                                   "Monospace" "Courier" ))
   (defvar emacs-chinese-fonts '( "宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
                                  "Microsoft Yahei" ))
-  (defvar emacs-font-size 10)
+  (defvar emacs-font-size 14)
   (qiang-set-font emacs-english-fonts emacs-font-size emacs-chinese-fonts))
 
 
@@ -1501,7 +1501,8 @@
 
 ;; terminal --------------------------------------------------------------------------
 (use-package multi-term
-  :bind (("<f5>" . multi-term))
+  :bind (("C-`" . multi-term-dedicated-toggle)
+         ("M-t" . multi-term))
   :config
   (when (require 'term nil t)
     (defun term-handle-ansi-terminal-messages (message)
@@ -1580,6 +1581,26 @@
           ))
       message)
 
+    (defun get-term ()
+      "Switch to the term buffer last used, or create a new one if
+    none exists, or if the current buffer is already a term."
+      (interactive)
+      (let ((b (last-term-buffer (buffer-list))))
+        (if (or (not b) (eq 'term-mode major-mode))
+            (multi-term)
+          (switch-to-buffer b))))
+
+    (defun last-term-buffer (l)
+      "Return most recently used term buffer."
+      (when l
+        (if (eq 'term-mode (with-current-buffer (car l) major-mode))
+            (car l) (last-term-buffer (cdr l)))))
+
+    ;; (defun my-term-clear ()
+    ;;   (interactive)
+    ;;   (let ((comint-buffer-maximum-size 0))
+    ;;     (comint-truncate-buffer)))
+
     (add-hook 'term-mode-hook
               #'(lambda ()
                   (projectile-mode -1)
@@ -1595,9 +1616,20 @@
   :init
   (electric-pair-mode))
 
+(use-package fill-column-indicator
+  :demand t
+  :commands fci-mode
+  :config
+  (define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
+  (global-fci-mode 1))
+
 ;; https://github.com/pashky/restclient.el
 (use-package restclient
   :commands restclient-mode)
+
+(use-package symon
+  :config
+  (symon-mode))
 
 ;; https://github.com/magnars/multiple-cursors.el
 (use-package multiple-cursors
