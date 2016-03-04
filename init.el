@@ -114,6 +114,8 @@
 (el-get-bundle org-magit)
 (el-get-bundle direx)
 ;; (el-get-bundle sticky-windows)
+(el-get-bundle symon)
+(el-get-bundle nyan-mode)
 
 ;; ------ enable disabled commands
 (put 'downcase-region  'disabled nil)   ; Let downcasing work
