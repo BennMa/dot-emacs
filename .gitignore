@@ -15,3 +15,5 @@ GRTAGS
 GTAGS
 gnus-*.el
 /private-settings.el
+refactor/
+var/
