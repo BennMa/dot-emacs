@@ -9,7 +9,7 @@
                                   "Monospace" "Courier" ))
   (defvar emacs-chinese-fonts '( "宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
                                  "Microsoft Yahei" ))
-  (defvar emacs-font-size 14)
+  (defvar emacs-font-size 10)
   (qiang-set-font emacs-english-fonts emacs-font-size emacs-chinese-fonts))
 
 
@@ -1501,7 +1501,7 @@
 
 ;; terminal --------------------------------------------------------------------------
 (use-package multi-term
-  :bind (("C-`" . multi-term-dedicated-toggle)
+  :bind (("C-`" . my-term-toggle)
          ("M-t" . multi-term))
   :config
   (when (require 'term nil t)
@@ -1556,7 +1556,7 @@
               nil
             (setq default-directory
                   (file-name-as-directory
-                   (if (and (string= term-ansi-at-host (system-name))
+                   (if (and (string= term-ansi-at-host "localhost") ;; (string= term-ansi-at-host (system-name))
                             (string= term-ansi-at-user (user-real-login-name)))
                        (expand-file-name term-ansi-at-dir)
                      (if (string= term-ansi-at-user (user-real-login-name))
@@ -1581,20 +1581,24 @@
           ))
       message)
 
-    (defun get-term ()
+    (defun my-term-toggle ()
       "Switch to the term buffer last used, or create a new one if
     none exists, or if the current buffer is already a term."
       (interactive)
-      (let ((b (last-term-buffer (buffer-list))))
-        (if (or (not b) (eq 'term-mode major-mode))
-            (multi-term)
-          (switch-to-buffer b))))
+      (let ((b (my-term-last-buffer (buffer-list))))
+        (if (eq 'term-mode major-mode)
+            (let ((previous-buffer-white-list
+                   (remove "\\*terminal" previous-buffer-white-list)))
+              (switch-to-previous-buffer))
+            (if (not b)
+                (multi-term)
+              (switch-to-buffer b)))))
 
-    (defun last-term-buffer (l)
+    (defun my-term-last-buffer (l)
       "Return most recently used term buffer."
       (when l
         (if (eq 'term-mode (with-current-buffer (car l) major-mode))
-            (car l) (last-term-buffer (cdr l)))))
+            (car l) (my-term-last-buffer (cdr l)))))
 
     ;; (defun my-term-clear ()
     ;;   (interactive)
@@ -1628,8 +1632,9 @@
   :commands restclient-mode)
 
 (use-package symon
+  :disabled 1
   :config
-  (symon-mode))
+  (symon-mode -1))
 
 ;; https://github.com/magnars/multiple-cursors.el
 (use-package multiple-cursors

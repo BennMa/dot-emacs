@@ -64,8 +64,8 @@
  '(bmkp-bmenu-commands-file "~/.emacs.d/data/bmk-bmenu-commands.el")
  '(bmkp-bmenu-state-file "~/.emacs.d/data/bmk-bmenu-state.el")
  '(bmkp-crosshairs-flag nil)
- '(bmkp-last-as-first-bookmark-file "~/Documents/bookmarks")
- '(bookmark-default-file "~/Documents/bookmarks")
+ '(bmkp-last-as-first-bookmark-file "~/.emacs.d/data/bookmarks")
+ '(bookmark-default-file "~/.emacs.d/data/bookmarks")
  '(browse-url-browser-function (quote ((".*" . browse-url-default-macosx-browser))))
  '(byte-compile-verbose nil)
  '(c-default-style
