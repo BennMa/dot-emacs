@@ -485,6 +485,9 @@
  '(magit-use-overlays nil)
  '(make-cursor-line-fully-visible nil)
  '(menu-bar-mode nil)
+ '(minimap-minimum-width 5)
+ '(minimap-width-fraction 0.1)
+ '(minimap-window-location (quote right))
  '(moccur-following-mode-toggle nil)
  '(modelinepos-column-limit 80)
  '(mouse-avoidance-mode (quote animate) nil (avoid))
@@ -508,9 +511,11 @@
  '(olivetti-hide-mode-line t)
  '(package-archives
    (quote
-    (("gnu" . "http://elpa.gnu.org/packages/")
-     ("ELPA" . "http://tromey.com/elpa/")
-     ("Marmalade" . "http://marmalade-repo.org/packages/"))))
+    (("ELPA" . "http://tromey.com/elpa/")
+     ("Marmalade" . "http://marmalade-repo.org/packages/")
+     ("Org" . "http://orgmode.org/elpa/")
+     ("Melpa" . "http://melpa.milkbox.net/packages/")
+     ("Sunrise" . "http://joseito.republika.pl/sunrise-commander/"))))
  '(page-break-lines-modes
    (quote
     (emacs-lisp-mode compilation-mode outline-mode prog-mode haskell-mode)))

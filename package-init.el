@@ -109,7 +109,8 @@
   :bind (("C-c h"   . helm-command-prefix)
          ("C-h a"   . helm-apropos)
          ;; ("C-x f"   . helm-multi-files)
-         ("M-s b"   . helm-occur)
+         ("M-s M-s" . helm-occur)
+         ("M-s s"   . helm-occur)
          ("M-s n"   . my-helm-find)
          ("M-H"     . helm-resume))
 
@@ -128,6 +129,7 @@
     (helm-mode 1))
 
   (use-package helm-ls-git)
+  ;; (use-package helm-swoop)
 
   ;; (use-package helm-match-plugin
   ;;   :config
@@ -385,6 +387,11 @@
     :disabled t
     :config
     (flx-ido-mode 1))
+
+  (use-package smex
+    :bind (("M-x" . smex)
+           ("C-c M-x" . smex-major-mode-commands)
+           ("C-c C-c M-x" . execute-extended-command)))
 
   (add-hook 'ido-minibuffer-setup-hook
             #'(lambda ()
@@ -1267,6 +1274,7 @@
 
 (use-package winner
   :if (not noninteractive)
+  :disabled t
   :defer 5
   :bind (("M-N" . winner-redo)
          ("M-P" . winner-undo))
@@ -1615,6 +1623,30 @@
 (use-package ace-jump-mode
   :bind ("M-j" . ace-jump-mode))
 
+(use-package anzu
+  :demand t
+  :bind (("M-%" . anzu-query-replace)
+         ("C-M-%" . anzu-query-replace-regexp))
+  :config
+  (global-anzu-mode +1))
+
+(use-package minimap
+  :disabled t
+  :commands minimap)
+
+(use-package esup
+  :commands esup)
+
+(use-package buffer-move
+  :bind (("C-S-<up>" . buf-move-up)
+         ("C-S-<down>" . buf-move-down)
+         ("C-S-<left>" . buf-move-left)
+         ("C-S-<right>" . buf-move-right)))
+
+(use-package vertigo
+  :bind (("M-P" . vertigo-jump-up)
+         ("M-N" . vertigo-jump-down)))
+  
 (use-package electric-pair-mode
   :no-require t
   :init
@@ -1632,9 +1664,14 @@
   :commands restclient-mode)
 
 (use-package symon
-  :disabled 1
+  :disabled t
   :config
   (symon-mode -1))
+
+(use-package elscreen
+  :disabled t
+  :config
+  (elscreen-start))
 
 ;; https://github.com/magnars/multiple-cursors.el
 (use-package multiple-cursors
