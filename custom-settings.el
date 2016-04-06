@@ -299,7 +299,7 @@
  '(fold-this-persistent-folds-file "~/.emacs.d/data/fold-this.el")
  '(font-lock-support-mode (quote jit-lock-mode))
  '(font-lock-verbose nil)
- '(frame-title-format (quote (:eval (concat "" "%b @ Emacs " emacs-version) t)) t)
+ '(frame-title-format (quote (:eval (concat "" "%b @ BennsEmacs " emacs-version) t)) t)
  '(gc-cons-threshold 3500000)
  '(gdb-find-source-frame t)
  '(gdb-same-frame nil)

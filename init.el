@@ -38,6 +38,8 @@
 (require 'bind-key)
 (require 'diminish nil t)
 
+;; (el-get-bundle elpa:req-package)
+
 ;; ------ libraries
 (el-get-bundle elpa:dash)
 (el-get-bundle elpa:s)

@@ -4,12 +4,12 @@
   :init
   (load-theme 'my-leuven t)
 
-  (defvar emacs-english-fonts  '( "Monaco" "Anonymous Pro" "Inconsolata" "Ubuntu Mono"
+  (setq emacs-english-fonts  '( "Anonymous Pro" "Monaco" "Inconsolata" "Ubuntu Mono"
                                   "Droid Sans Mono" "Menlo" "DejaVu Sans Mono" "Courier New"
                                   "Monospace" "Courier" ))
   (defvar emacs-chinese-fonts '( "宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
                                  "Microsoft Yahei" ))
-  (defvar emacs-font-size 10)
+  (setq emacs-font-size 11)
   (qiang-set-font emacs-english-fonts emacs-font-size emacs-chinese-fonts))
 
 
@@ -120,21 +120,22 @@
     (helm-find nil))
 
   :config
-  (use-package helm-commands)
-  (use-package helm-files)
-  (use-package helm-buffers)
-  (use-package helm-mode
-    :diminish helm-mode
-    :init
-    (helm-mode 1))
+  ;; (use-package helm-commands)
+  ;; (use-package helm-files)
+  ;; (use-package helm-buffers)
+  ;; (use-package helm-mode
+  ;;   :diminish helm-mode
+  ;;   :init
+  ;;   (helm-mode 1))
 
-  (use-package helm-ls-git)
+  ;; (use-package helm-ls-git)
   ;; (use-package helm-swoop)
 
   ;; (use-package helm-match-plugin
   ;;   :config
   ;;   (helm-match-plugin-mode 1))
-
+  
+  (helm-mode 1)
   (helm-autoresize-mode 1)
 
   (bind-key "<tab>" 'helm-execute-persistent-action helm-map)
