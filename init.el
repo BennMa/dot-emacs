@@ -8,7 +8,7 @@
   (mapc
    #'(lambda (path)
        (push (expand-file-name path user-emacs-directory) load-path))
-   '("site-lisp" "el-get/el-get" "site-lisp/el-get" "site-lisp/use-package"
+   '("site-lisp" "el-get/el-get" "site-lisp/el-get" "site-lisp/use-package" "site-lisp/req-package"
      "lisp" "themes" "")))
 
 ;; ------ load custom settings
@@ -32,11 +32,24 @@
 (el-get-bundle gnus)
 
 (el-get-bundle use-package)
-(eval-and-compile
-  (defvar use-package-verbose t)
-  (require 'use-package))
-(require 'bind-key)
-(require 'diminish nil t)
+;; (eval-and-compile
+;;   (defvar use-package-verbose t)
+;;   (require 'use-package))
+;; (require 'bind-key)
+;; (require 'diminish nil t)
+(package-initialize)
+(require 'package)
+(require 'use-package)
+
+(message "== load")
+
+;; (use-package req-package
+;;   :demand t)
+(require 'req-package)
+
+(message "== load 2")
+
+;; (el-get-bundle elpa:req-package)
 
 ;; ------ libraries
 (el-get-bundle elpa:dash)
@@ -138,18 +151,18 @@
 (put 'upcase-region    'disabled nil)   ; Let upcasing work
 
 ;; ------ libraries init
-(use-package dash           :defer t)
-(use-package s              :defer t)
-(use-package f              :defer t)
-(use-package popwin         :config (popwin-mode 1))
-(use-package my-toolkit     :demand t)
+(req-package dash           :defer t)
+(req-package s              :defer t)
+(req-package f              :defer t)
+(req-package popwin         :config (popwin-mode 1))
+(req-package-force my-toolkit     :demand t)
 
 ;; ------ keybindings init
 (load (expand-file-name "keybinding-init" user-emacs-directory))
 
 ;; ------ packages init
 (load (expand-file-name "package-init" user-emacs-directory))
-
+(req-package-finish)
 ;; ------ time costing
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)

@@ -15,5 +15,8 @@ GRTAGS
 GTAGS
 gnus-*.el
 /private-settings.el
+.erc-auth
+session.*
 refactor/
 var/
+smex-items

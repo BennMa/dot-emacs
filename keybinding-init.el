@@ -48,9 +48,8 @@
 ;; (bind-key "M-x" 'kill-region)
 
 ;; rebind copy, paste, cut
-(unbind-key "M-w")
 (unbind-key "C-y")
-
+(bind-key "M-w" '(lambda() (interactive) (kill-buffer (current-buffer))))
 (bind-key "M-c" 'kill-ring-save)
 (bind-key "C-S-v" 'scroll-other-window)
 

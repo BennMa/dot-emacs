@@ -41,10 +41,9 @@
   
 
   (use-package org-smart-capture)
-
   (use-package org-velocity)
-
   (use-package org-bullets)
+  (use-package ox-mediawiki)
 
   (use-package org-knowledgebase
     :config
