@@ -445,6 +445,12 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
     ;;(switch-in-other-buffer cust-buf)
     (balance-windows)))
 
+(defun my-beginning-of-line (&optional n)
+  (interactive "p")
+  (let ((curr-point (point)))
+    (beginning-of-line-text n)
+    (if (= curr-point (point))
+        (beginning-of-line))))
 
 (defvar lisp-modes '(emacs-lisp-mode
                      inferior-emacs-lisp-mode

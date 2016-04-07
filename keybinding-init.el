@@ -34,6 +34,7 @@
 (defvar ctl-period-map)
 (define-prefix-command 'ctl-period-map)
 (bind-key "C-." 'ctl-period-map)
+(bind-key "C-a" 'my-beginning-of-line)
 
 ;; ------ C-M-
 (bind-key "<C-M-backspace>" 'backward-kill-sexp)
