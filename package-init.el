@@ -1,5 +1,5 @@
 ;; org faces: http://orgmode.org/worg/org-color-themes.html
-(use-package custom-theme
+(req-package custom-theme
   :no-require t
   :init
   (load-theme 'my-leuven t)
@@ -13,7 +13,7 @@
   (qiang-set-font emacs-english-fonts emacs-font-size emacs-chinese-fonts))
 
 
-(use-package cua-mode
+(req-package cua-mode
   :disabled t
   :init
   (cua-mode 1)
@@ -36,7 +36,7 @@
   (put 'sfp-page-up 'CUA 'move))
   
 
-(use-package maxframe
+(req-package maxframe
   :if window-system
   :commands maximize-frame
   :bind (("C-c M" . emacs-max)
@@ -83,17 +83,17 @@
         (emacs-min)
       (maximize-frame))))
 
-(use-package exec-path-from-shell
+(req-package exec-path-from-shell
   :if window-system
   :config
   (exec-path-from-shell-initialize)
   (exec-path-from-shell-copy-env "PYTHONPATH"))
 
-(use-package ggtags
+(req-package ggtags
   :commands ggtags-mode
   :diminish ggtags-mode)
 
-(use-package auto-highlight-symbol
+(req-package auto-highlight-symbol
   :demand t
   :bind (("C-1" . ahs-backward)
          ("C-2" . ahs-forward))
@@ -104,7 +104,7 @@
   (unbind-key "M-S-<left>" auto-highlight-symbol-mode-map)
   (unbind-key "M-S-<right>" auto-highlight-symbol-mode-map))
 
-(use-package helm-config
+(req-package helm-config
   :demand t
   :bind (("C-c h"   . helm-command-prefix)
          ("C-h a"   . helm-apropos)
@@ -120,18 +120,18 @@
     (helm-find nil))
 
   :config
-  ;; (use-package helm-commands)
-  ;; (use-package helm-files)
-  ;; (use-package helm-buffers)
-  ;; (use-package helm-mode
+  ;; (req-package helm-commands)
+  ;; (req-package helm-files)
+  ;; (req-package helm-buffers)
+  ;; (req-package helm-mode
   ;;   :diminish helm-mode
   ;;   :init
   ;;   (helm-mode 1))
 
-  ;; (use-package helm-ls-git)
-  ;; (use-package helm-swoop)
+  ;; (req-package helm-ls-git)
+  ;; (req-package helm-swoop)
 
-  ;; (use-package helm-match-plugin
+  ;; (req-package helm-match-plugin
   ;;   :config
   ;;   (helm-match-plugin-mode 1))
   
@@ -148,7 +148,7 @@
   (when (executable-find "curl")
     (setq helm-google-suggest-use-curl-p t)))
 
-(use-package company
+(req-package company
   :diminish company-mode
   ;; :commands company-mode
   :config
@@ -161,7 +161,7 @@
 
   (global-company-mode))
 
-(use-package projectile
+(req-package projectile
   :demand t
   :diminish projectile-mode
   :commands projectile-global-mode
@@ -169,7 +169,7 @@
   :config
   (unbind-key "C-c p" projectile-mode-map)
 
-  (use-package symfony1x
+  (req-package symfony1x
     :load-path "lisp/symfony1x"
     :commands symfony1x-mode
     :init
@@ -184,7 +184,7 @@
                 (ggtags-mode 1)
                 (auto-highlight-symbol-mode 1)))
 
-  (use-package helm-projectile
+  (req-package helm-projectile
     :config
     (setq projectile-completion-system 'helm)
     (setq helm-projectile-fuzzy-match nil)
@@ -192,11 +192,11 @@
   
   (projectile-global-mode))
 
-(use-package git-messenger
+(req-package git-messenger
   :bind ("C-x G" . git-messenger:popup-message))
 
 
-(use-package magit
+(req-package magit
   :bind (("C-x g" . magit-status)
          ("C-x G" . magit-log-buffer-file))
   ;; ("C-x G" . magit-status-with-prefix))
@@ -261,13 +261,13 @@
   (add-hook 'magit-status-mode-hook #'(lambda () (magit-monitor t))))
 
 
-(use-package ag
+(req-package ag
   :commands (ag ag-regexp)
   :init
-  (use-package helm-ag
+  (req-package helm-ag
     :commands helm-ag))
 
-(use-package ibuffer
+(req-package ibuffer
   :bind (("C-x C-b" . my-ibuffer-startup)
          ("C-x b" . my-ibuffer-startup))
   :config
@@ -298,7 +298,7 @@
      ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
      (t (format "%8d" (buffer-size)))))
 
-  (use-package ibuffer-vc
+  (req-package ibuffer-vc
     :config
     (add-hook 'ibuffer-hook
               (lambda ()
@@ -318,7 +318,7 @@
                   " "
                   filename-and-process)))))
 
-(use-package ido
+(req-package ido
   :demand t
   :defines (ido-cur-item
             ido-require-match
@@ -366,7 +366,7 @@
   :config
   (ido-mode 'buffer)
 
-  (use-package ido-hacks
+  (req-package ido-hacks
     :demand t
     :bind ("M-x" . my-ido-hacks-execute-extended-command)
     :config
@@ -384,12 +384,12 @@
                        initial-input hist def inherit-input-method)))
         (ido-hacks-execute-extended-command arg))))
 
-  (use-package flx-ido
+  (req-package flx-ido
     :disabled t
     :config
     (flx-ido-mode 1))
 
-  (use-package smex
+  (req-package smex
     :bind (("M-x" . smex)
            ("C-c M-x" . smex-major-mode-commands)
            ("C-c C-c M-x" . execute-extended-command)))
@@ -400,31 +400,31 @@
                           ido-file-completion-map))))
 
 
-(use-package powerline
+(req-package powerline
   :config
   (powerline-default-theme))
 
-(use-package window-number
+(req-package window-number
   :config
   (unbind-key "C-x C-j" window-number-mode-map)
   (window-number-mode)
   (window-number-meta-mode)
   (custom-set-faces '(window-number-face ((t nil)) t)))
 
-(use-package cus-edit
+(req-package cus-edit
   :defer 5
   :config
-  (use-package initsplit))
+  (req-package initsplit))
 
-(use-package fetchmail-mode
+(req-package fetchmail-mode
   :commands fetchmail-mode
   :mode ("fetchmailrc" . fetchmail-mode))
 
-(use-package nf-procmail-mode
+(req-package nf-procmail-mode
   :commands nf-procmail-mode
   :mode ("procmailrc" . nf-procmail-mode))
 
-(use-package dired
+(req-package dired
   :bind ("C-c J" . dired-double-jump)
   :preface
   (defvar mark-files-cache (make-hash-table :test #'equal))
@@ -453,8 +453,8 @@
     (dired-other-window second-dir))
 
   :config
-  (use-package dired-x)
-  (use-package dired+
+  (req-package dired-x)
+  (req-package dired+
     :config
     (unbind-key "M-s f" dired-mode-map))
 
@@ -540,7 +540,7 @@
                "\\)")))
         (funcall dired-omit-regexp-orig)))))
 
-(use-package dired-toggle
+(req-package dired-toggle
   :disabled t
   :load-path "site-lisp/dired-toggle"
   :bind ("C-. d" . dired-toggle)
@@ -553,7 +553,7 @@
   :config
   (add-hook 'dired-toggle-mode-hook #'my-dired-toggle-mode-hook))
 
-(use-package direx
+(req-package direx
   :bind ("C-. d" . my-direx:jump-to-directory-other-window)
   :init
   (push '(direx:direx-mode :position left :width 30 :dedicated t :stick t)
@@ -570,7 +570,7 @@
     (let ((default-directory (projectile-project-root)))
       ad-do-it)))
 
-(use-package yasnippet
+(req-package yasnippet
   :diminish yas-minor-mode
   :commands (yas-expand yas-minor-mode)
   :functions (yas-guess-snippet-directories yas-table-name)
@@ -606,58 +606,58 @@
 
   (bind-key "C-i" 'yas-next-field-or-maybe-expand yas-keymap))
 
-(use-package bookmark
+(req-package bookmark
   :defer 10
   :config
-  (use-package bookmark+))
+  (req-package bookmark+))
 
-(use-package web-mode
+(req-package web-mode
   :mode (("\\.php[0-9]?\\'" . web-mode)
          ("\\.js\\'" . web-mode)
          ("\\.html?\\'" . web-mode)
          ("\\.tpl\\'" . web-mode))
   :config
-  (use-package php-doc)
+  (req-package php-doc)
   
   (defun my-web-mode-hook ()
     "Hooks for Web mode."
     (local-set-key (kbd "M-D") 'php-insert-doc-block))
   (add-hook 'web-mode-hook 'my-web-mode-hook))
 
-(use-package css-mode
+(req-package css-mode
   :mode "\\.css\\'")
 
-(use-package yaml-mode
+(req-package yaml-mode
   :mode ("\\.ya?ml\\'" . yaml-mode))
 
-(use-package cmake-mode
+(req-package cmake-mode
   :mode (("CMakeLists\\.txt\\'" . cmake-mode)
          ("\\.cmake\\'"         . cmake-mode)))
 
-(use-package expand-region
+(req-package expand-region
   :bind ("C-=" . er/expand-region))
 
-(use-package fold-this
+(req-package fold-this
   :disabled t
   :bind (("C-c C-f" . fold-this-all)
          ("C-c C-F" . fold-this)
          ("C-c M-f" . fold-this-unfold-all)))
 
-(use-package autorevert
+(req-package autorevert
   :commands auto-revert-mode
   :diminish auto-revert-mode
   :init
   (add-hook 'find-file-hook #'(lambda () (auto-revert-mode 1))))
 
-(use-package dedicated
+(req-package dedicated
   :bind ("C-. D" . dedicated-mode))
 
-(use-package sticky-windows
+(req-package sticky-windows
   :bind (;;("C-. S" . sticky-window-keep-window-visible)
          ("C-x 0" . sticky-window-delete-window)
          ("C-x 1" . sticky-window-delete-other-windows)))
 
-(use-package escreen
+(req-package escreen
   :bind-keymap ("C-c w" . escreen-map)
   :commands (escreen-create-screen)
   :config
@@ -665,13 +665,13 @@
   (bind-key "m" 'escreen-menu escreen-map)
   (escreen-install))
 
-(use-package hl-line
+(req-package hl-line
   :commands hl-line-mode
   :bind (("M-o h" . hl-line-mode))
   :config
-  (use-package hl-line+))
+  (req-package hl-line+))
 
-(use-package etags
+(req-package etags
   :disabled t
   :bind* ("M-." . etags-select-find-tag-at-point)
   :bind  ("M-?" . etags-select-find-tag)
@@ -693,18 +693,18 @@
                (expand-file-name "TAGS" target-dir)
                etags-regex-file))))
   
-  (use-package etags-select)
-  (use-package etags-table))
+  (req-package etags-select)
+  (req-package etags-table))
 
-(use-package session
+(req-package session
   :if (not noninteractive)
   :preface
-  (defun remove-session-use-package-from-settings ()
+  (defun remove-session-req-package-from-settings ()
     (when (string= (file-name-nondirectory (buffer-file-name))
                    "custom-settings.el")
       (save-excursion
         (goto-char (point-min))
-        (when (re-search-forward "^ '(session-use-package " nil t)
+        (when (re-search-forward "^ '(session-req-package " nil t)
           (delete-region (line-beginning-position)
                          (1+ (line-end-position)))))))
 
@@ -734,13 +734,13 @@
         (server-start))))
 
   :config
-  (add-hook 'before-save-hook 'remove-session-use-package-from-settings)
+  (add-hook 'before-save-hook 'remove-session-req-package-from-settings)
   (add-hook 'session-after-jump-to-last-change-hook 'le::maybe-reveal)
   (run-with-idle-timer 60 t 'save-information)
   (add-hook 'after-init-hook 'session-initialize t))
 
 
-(use-package recentf
+(req-package recentf
   :defer 10
   :commands (recentf-mode
              recentf-add-file
@@ -760,15 +760,15 @@
   :config
   (recentf-mode 1))
 
-(use-package hi-lock
+(req-package hi-lock
   :bind (("M-o l" . highlight-lines-matching-regexp)
          ("M-o r" . highlight-regexp)
          ("M-o w" . highlight-phrase)))
 
-(use-package hilit-chg
+(req-package hilit-chg
   :bind ("M-o C" . highlight-changes-mode))
 
-(use-package hippie-exp
+(req-package hippie-exp
   :bind (("M-/" . dabbrev-expand)
          ("M-?" . hippie-expand))
   :preface
@@ -987,7 +987,7 @@
         (progn (backward-delete-char 1) (forward-char)))))
 
 
-(use-package backup-each-save
+(req-package backup-each-save
   :commands backup-each-save
   :preface
   (defun show-backups ()
@@ -1102,11 +1102,11 @@
 
   (setq backup-enable-predicate 'my-dont-backup-files-p))
 
-(use-package flyspell
+(req-package flyspell
   :bind (("C-c i b" . flyspell-buffer)
          ("C-c i f" . flyspell-mode))
   :init
-  (use-package ispell
+  (req-package ispell
     :bind (("C-c i c" . ispell-comments-and-strings)
            ("C-c i d" . ispell-change-dictionary)
            ("C-c i k" . ispell-kill-ispell)
@@ -1115,7 +1115,7 @@
   :config
   (unbind-key "C-." flyspell-mode-map))
 
-(use-package flycheck
+(req-package flycheck
   :disabled t
   :demand t
   :commands (flycheck-mode global-flycheck-mode)
@@ -1129,17 +1129,17 @@
   
   (global-flycheck-mode))
 
-(use-package diff-mode
+(req-package diff-mode
   :commands diff-mode
   :config
   (add-hook 'diff-mode-hook 'smerge-mode))
 
-(use-package smerge-mode
+(req-package smerge-mode
   :commands smerge-mode
   :config
   (setq smerge-command-prefix (kbd "C-. C-.")))
 
-(use-package ediff
+(req-package ediff
   :init
   (defvar ctl-period-equals-map)
   (define-prefix-command 'ctl-period-equals-map)
@@ -1158,13 +1158,13 @@
          ("C-. = w" . ediff-regions-wordwise))
   
   :config
-  (use-package ediff-keep))
+  (req-package ediff-keep))
 
-(use-package edit-var
+(req-package edit-var
   :disabled t
   :bind ("C-c e v" . edit-variable))
 
-(use-package ascii
+(req-package ascii
   :disabled t
   :bind ("C-c e A" . ascii-toggle)
   :commands ascii-on
@@ -1176,20 +1176,20 @@
         (ascii-off)
       (ascii-on))))
 
-(use-package grep
+(req-package grep
   :disabled t
   :bind (("M-s d" . find-grep-dired)
          ("M-s F" . find-grep)
          ("M-s G" . grep))
   :config
-  (add-hook 'grep-mode-hook #'(lambda () (use-package grep-ed)))
+  (add-hook 'grep-mode-hook #'(lambda () (req-package grep-ed)))
 
   (grep-apply-setting 'grep-command "egrep -nH -e ")
   (grep-apply-setting
    'grep-find-command
    '("find . -type f -print0 | xargs -P4 -0 egrep -nH " . 49)))
 
-(use-package info
+(req-package info
   :bind ("C-h C-i" . info-lookup-symbol)
   :init
   (remove-hook 'menu-bar-update-hook 'mac-setup-help-topics)
@@ -1199,7 +1199,7 @@
     (if (> (length (window-list)) 1)
         (delete-window))))
 
-(use-package mule
+(req-package mule
   :no-require t
   :defines x-select-request-type
   :config
@@ -1207,7 +1207,7 @@
   (set-terminal-coding-system 'utf-8)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
-(use-package whitespace
+(req-package whitespace
   :diminish (global-whitespace-mode
              whitespace-mode
              whitespace-newline-mode)
@@ -1273,7 +1273,7 @@
         whitespace-silent t
         whitespace-style '(face trailing lines space-before-tab empty)))
 
-(use-package winner
+(req-package winner
   :if (not noninteractive)
   :disabled t
   :defer 5
@@ -1282,7 +1282,7 @@
   :config
   (winner-mode 1))
 
-(use-package erlang
+(req-package erlang
   :mode (("^\\.erlang$" . erlang-mode)
          ("\\.app$" . erlang-mode)
          ("\\.app.src$" . erlang-mode)
@@ -1293,11 +1293,11 @@
          ("\\.script$" . erlang-mode)
          ("\\.yaws$" . erlang-mode))
   :config
-  (use-package edts-mode
+  (req-package edts-mode
     :load-path "site-lisp/edts/elisp/edts"
     :config
     ;; remove eproject hooks which will effect other develop environment, here
-    ;; also can use-package eproject first, and set up the file types to nil
+    ;; also can req-package eproject first, and set up the file types to nil
     (remove-hook 'find-file-hook #'eproject-maybe-turn-on)
     (remove-hook 'dired-mode-hook #'eproject-maybe-turn-on)
     (remove-hook 'after-change-major-mode-hook #'eproject--after-change-major-mode-hook)
@@ -1310,7 +1310,7 @@
 
     (add-hook 'erlang-mode-hook 'edts-erlang-mode-hook)))
 
-(use-package hexcolour
+(req-package hexcolour
   :no-require t
   :init
   (defvar hexcolour-keywords
@@ -1328,7 +1328,7 @@
                   erlang-mode-hook))
     (add-hook hook #'(lambda() (hexcolour-add-to-font-lock)))))
 
-(use-package eshell
+(req-package eshell
   :disabled t
   :commands (eshell eshell-command)
   :preface
@@ -1360,7 +1360,7 @@
       (interactive "sServer: ")
       (call-process "spawn" nil nil nil "ss" server))
 
-    (use-package em-unix
+    (req-package em-unix
       :defer t
       :config
       (unintern 'eshell/su nil)
@@ -1369,15 +1369,15 @@
   :init
   (add-hook 'eshell-first-time-mode-hook 'eshell-initialize)
 
-  (use-package esh-toggle
+  (req-package esh-toggle
     :bind (("C-x C-z" . eshell-toggle)
            ("C-. C-z" . eshell-toggle-cd))))
 
-(use-package sh-toggle
+(req-package sh-toggle
   :disabled t
   :bind ("C-. C-z" . shell-toggle))
 
-(use-package sh-script
+(req-package sh-script
   :defer t
   :init
   (defvar sh-script-initialized nil)
@@ -1391,7 +1391,7 @@
 
   (add-hook 'shell-mode-hook 'initialize-sh-script))
 
-(use-package isearch
+(req-package isearch
   :no-require t
   :bind (("C-M-r" . isearch-backward-other-window)
          ("C-M-s" . isearch-forward-other-window))
@@ -1407,15 +1407,15 @@
     (call-interactively 'isearch-forward))
   )
 
-(use-package color-moccur
+(req-package color-moccur
   :commands (isearch-moccur isearch-all)
   :bind ("M-s O" . moccur))
 
-(use-package imenu
+(req-package imenu
   :config
-  (use-package imenu+))
+  (req-package imenu+))
 
-(use-package w3m
+(req-package w3m
   :commands (w3m w3m-browse-url
                  my-w3m-hacknews my-w3m-reddit my-w3m-wikipedia my-w3m-open-url)
   :config
@@ -1449,13 +1449,13 @@
     (w3m-goto-url-new-session
      (concat "http://" url))))
 
-(use-package bbdb-com
+(req-package bbdb-com
   :commands bbdb-create
   :bind ("M-B" . bbdb))
 
 ;; https://www.emacswiki.org/emacs/TabBarMode
 ;; https://zhangda.wordpress.com/2012/09/21/tabbar-mode-rocks-with-customization/
-(use-package tabbar
+(req-package tabbar
   :demand t
   :bind (("M-{" . tabbar-backward-tab)
          ("M-}" . tabbar-forward-tab)
@@ -1509,7 +1509,7 @@
 
 
 ;; terminal --------------------------------------------------------------------------
-(use-package multi-term
+(req-package multi-term
   :bind (("C-`" . my-term-toggle)
          ("M-t" . multi-term))
   :config
@@ -1621,39 +1621,39 @@
                   (ggtags-mode -1)
                   (auto-highlight-symbol-mode -1)))))
 
-(use-package ace-jump-mode
+(req-package ace-jump-mode
   :bind ("M-j" . ace-jump-mode))
 
-(use-package anzu
+(req-package anzu
   :demand t
   :bind (("M-%" . anzu-query-replace)
          ("C-M-%" . anzu-query-replace-regexp))
   :config
   (global-anzu-mode +1))
 
-(use-package minimap
+(req-package minimap
   :disabled t
   :commands minimap)
 
-(use-package esup
+(req-package esup
   :commands esup)
 
-(use-package buffer-move
+(req-package buffer-move
   :bind (("C-S-<up>" . buf-move-up)
          ("C-S-<down>" . buf-move-down)
          ("C-S-<left>" . buf-move-left)
          ("C-S-<right>" . buf-move-right)))
 
-(use-package vertigo
+(req-package vertigo
   :bind (("M-P" . vertigo-jump-up)
          ("M-N" . vertigo-jump-down)))
   
-(use-package electric-pair-mode
+(req-package electric-pair-mode
   :no-require t
   :init
   (electric-pair-mode))
 
-(use-package fill-column-indicator
+(req-package fill-column-indicator
   :demand t
   :commands fci-mode
   :config
@@ -1661,27 +1661,27 @@
   (global-fci-mode 1))
 
 ;; https://github.com/pashky/restclient.el
-(use-package restclient
+(req-package restclient
   :commands restclient-mode)
 
-(use-package symon
+(req-package symon
   :disabled t
   :config
   (symon-mode -1))
 
-(use-package elscreen
+(req-package elscreen
   :disabled t
   :config
   (elscreen-start))
 
 ;; https://github.com/magnars/multiple-cursors.el
-(use-package multiple-cursors
+(req-package multiple-cursors
   :bind (("C->" . mc/mark-next-like-this)
          ("C-<" . mc/mark-previous-like-this)
          ("C-c C-e" . mc/mark-all-like-this)))
 
 ;; https://github.com/rooney/zencoding
-(use-package zencoding-mode
+(req-package zencoding-mode
   :bind ("C-M-h" . zencoding-expand-line)
   :commands zencoding-mode
   :config
@@ -1690,7 +1690,7 @@
   (unbind-key "C-<return>" zencoding-mode-keymap))
 
 ;; ------ mongo shell
-(use-package inf-mongo
+(req-package inf-mongo
   :commands inf-mongo
   :config
   (add-hook 'inf-mongo-mode-hook
@@ -1702,7 +1702,7 @@
                 (ansi-color-for-comint-mode-on))))
 
 ;; ------ erc
-(use-package erc
+(req-package erc
   :bind ("C-c C-r" . my-irc)
   :commands (erc erc-select)
   :config
@@ -1779,10 +1779,10 @@ command uses interactive mode if passed an argument."
         (insert previous)))))
 
 ;; ------ org-mode
-(use-package org-init)
+(req-package org-init)
 
 ;; ------ gnus
-(use-package gnus-init
+(req-package gnus-init
   :disabled t
   :bind (("M-G"   . trigger-gnus)
          ("C-x m" . compose-mail)))

@@ -19,3 +19,4 @@ gnus-*.el
 session.*
 refactor/
 var/
+smex-items
