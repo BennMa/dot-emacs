@@ -1,180 +1,67 @@
-(defconst emacs-start-time (current-time))
-(unless noninteractive
-  (message "Loading %s..." load-file-name))
-(setq message-log-max 16384)
+;; ------ Define Constants
+(defconst my-package-init-dir    (expand-file-name "init.d/" user-emacs-directory))
+(defconst my-custom-settings-dir (expand-file-name "conf.d/"
+                                                   user-emacs-directory))
 
 ;; ------ set load path
 (eval-and-compile
   (mapc
    #'(lambda (path)
        (push (expand-file-name path user-emacs-directory) load-path))
-   '("site-lisp" "el-get/el-get" "site-lisp/el-get" "site-lisp/use-package" "site-lisp/req-package"
-     "lisp" "themes" "")))
+   '("lisp" "themes" "")))
 
-;; ------ load custom settings
-(load (expand-file-name "custom-settings" user-emacs-directory))
-(load (expand-file-name "private-settings" user-emacs-directory))
+;; ------ Basic Settings
+(load (expand-file-name "custom-settings" my-custom-settings-dir))
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq visible-bell nil
       ring-bell-function 'ignore)
 
-;; ------ core packages
-(eval-and-compile
-  (require 'cl))
+;; ------ Package Manager Settings
 
-(unless (require 'el-get nil 'noerror)
-  (with-current-buffer
-      (url-retrieve-synchronously
-       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
-    (goto-char (point-max))
-    (eval-print-last-sexp)))
-
-(el-get-bundle gnus)
-
-(el-get-bundle use-package)
-;; (eval-and-compile
-;;   (defvar use-package-verbose t)
-;;   (require 'use-package))
-;; (require 'bind-key)
-;; (require 'diminish nil t)
-(package-initialize)
+(require 'cl)
 (require 'package)
-(require 'use-package)
+(setq package-enable-at-startup nil)
 
-(message "== load")
+;; (add-hook 'kill-emacs-hook (lambda () (byte-recompile-directory my-init-dir 0
+;; t)))
 
-;; (use-package req-package
-;;   :demand t)
-(require 'req-package)
+(eval-when-compile (package-initialize))
 
-(message "== load 2")
+(defun require-package (package)
+  "refresh package archives, check package presence and install if it's not installed"
+  (if (null (require package nil t))
+      (progn (let* ((ARCHIVES (if (null package-archive-contents)
+                                  (progn (package-refresh-contents)
+                                         package-archive-contents)
+                                package-archive-contents))
+                    (AVAIL (assoc package ARCHIVES)))
+               (if AVAIL
+                   (package-install package)))
+             (require package))))
 
-;; (el-get-bundle elpa:req-package)
+(require-package 'use-package)
+(require-package 'req-package)
+;; (req-package-force el-get
+;;   :load-path "el-get/el-get/"
+;;   :ensure t
+;;   :init
+;;   (add-to-list 'el-get-recipe-path (expand-file-name "el-get/el-get/recipes" user-emacs-directory))
+;;   (el-get 'sync))
 
-;; ------ libraries
-(el-get-bundle elpa:dash)
-(el-get-bundle elpa:s)
-(el-get-bundle elpa:f)
-(el-get-bundle elpa:popwin)
+;; ------ Loading
+(random t)
+(req-package-force load-dir
+  :init
+  (setq force-load-messages nil)
+  (setq load-dir-debug nil)
+  (setq load-dir-recursive t)
+  :config
 
-;; ------ packages from elpa
-(el-get-bundle elpa:exec-path-from-shell)
-(el-get-bundle elpa:projectile)
-(el-get-bundle elpa:helm)
-(el-get-bundle elpa:helm-core)
-(el-get-bundle elpa:helm-ls-git)
-(el-get-bundle elpa:helm-projectile)
-(el-get-bundle elpa:helm-swoop)
-(el-get-bundle elpa:ido-hacks)
-(el-get-bundle elpa:flx-ido)
-(el-get-bundle elpa:magit)
-;; (el-get-bundle elpa:color-theme)
-(el-get-bundle elpa:powerline)
-(el-get-bundle elpa:window-number)
-(el-get-bundle elpa:auto-highlight-symbol)
-(el-get-bundle elpa:dired+)
-(el-get-bundle elpa:dired-toggle)
-(el-get-bundle elpa:bookmark+)
-(el-get-bundle elpa:dedicated)
-(el-get-bundle elpa:ggtags)
-(el-get-bundle elpa:etags-select)
-(el-get-bundle elpa:etags-table)
-(el-get-bundle elpa:session)
-(el-get-bundle elpa:company)
-(el-get-bundle elpa:backup-each-save)
-(el-get-bundle elpa:escreen)
-(el-get-bundle elpa:hl-line+)
-(el-get-bundle elpa:git-messenger)
-(el-get-bundle elpa:maxframe)
-(el-get-bundle elpa:color-moccur)
-(el-get-bundle elpa:org-bullets)
-(el-get-bundle elpa:bbdb)
-(el-get-bundle elpa:message-x)
-(el-get-bundle elpa:gnus-alias)
-(el-get-bundle elpa:gnus-desktop-notify)
-(el-get-bundle elpa:imenu+)
-(el-get-bundle elpa:w3m)
-(el-get-bundle elpa:multi-term)
-(el-get-bundle elpa:tabbar)
-(el-get-bundle elpa:ace-jump-mode)
-(el-get-bundle elpa:restclient)
-(el-get-bundle elpa:multiple-cursors)
-(el-get-bundle elpa:zencoding-mode)
-(el-get-bundle elpa:elscreen)
-(el-get-bundle elpa:smex)
-(el-get-bundle elpa:anzu)
-(el-get-bundle elpa:minimap)
-(el-get-bundle elpa:buffer-move)
-(el-get-bundle elpa:vertigo)
-(el-get-bundle elpa:esup)
-;; (el-get-bundle elpa:modalka)
-;; (el-get-bundle elpa:sublimity)
-;; (el-get-bundle elpa:sr-speedbar)
-;; (el-get-bundle elpa:flycheck)
+  ;; ------ Loading Settings
+  (load (expand-file-name "my-toolkit" user-emacs-directory))
+  (load (expand-file-name "global-keybinding" my-custom-settings-dir))
 
-;; ------ python
-;; (el-get-bundle elpa:python-mode)
+  ;; ------ Loading Packages
+  (load-dir-one my-package-init-dir)
 
-(el-get-bundle elpa:erlang)
-(el-get-bundle elpa:edts)
-(el-get-bundle elpa:cmake-mode)
-(el-get-bundle elpa:web-mode)
-(el-get-bundle elpa:yaml-mode)
-(el-get-bundle elpa:css-mode)
-(el-get-bundle elpa:calfw)
-(el-get-bundle elpa:ibuffer-vc)
-(el-get-bundle elpa:fill-column-indicator)
-
-;; ------ packages from somewhereelse
-;; (el-get-bundle fetchmail-mode)
-(el-get-bundle ag)
-(el-get-bundle helm-ag)
-(el-get-bundle diminish)
-(el-get-bundle initsplit)
-(el-get-bundle yasnippet)
-(el-get-bundle expand-region)
-(el-get-bundle fold-this)
-(el-get-bundle org)
-(el-get-bundle org-magit)
-(el-get-bundle direx)
-;; (el-get-bundle sticky-windows)
-(el-get-bundle symon)
-(el-get-bundle nyan-mode)
-
-;; ------ enable disabled commands
-(put 'downcase-region  'disabled nil)   ; Let downcasing work
-(put 'erase-buffer     'disabled nil)
-(put 'eval-expression  'disabled nil)   ; Let ESC-ESC work
-(put 'narrow-to-page   'disabled nil)   ; Let narrowing work
-(put 'narrow-to-region 'disabled nil)   ; Let narrowing work
-(put 'set-goal-column  'disabled nil)
-(put 'upcase-region    'disabled nil)   ; Let upcasing work
-
-;; ------ libraries init
-(req-package dash           :defer t)
-(req-package s              :defer t)
-(req-package f              :defer t)
-(req-package popwin         :config (popwin-mode 1))
-(req-package-force my-toolkit     :demand t)
-
-;; ------ keybindings init
-(load (expand-file-name "keybinding-init" user-emacs-directory))
-
-;; ------ packages init
-(load (expand-file-name "package-init" user-emacs-directory))
-(req-package-finish)
-;; ------ time costing
-(when window-system
-  (let ((elapsed (float-time (time-subtract (current-time)
-                                            emacs-start-time))))
-    (message "Loading %s...done (%.3fs)" load-file-name elapsed))
-
-  (add-hook 'after-init-hook
-            `(lambda ()
-               (let ((elapsed (float-time (time-subtract (current-time)
-                                                         emacs-start-time))))
-                 (message "Loading %s...done (%.3fs) [after-init]"
-                          ,load-file-name elapsed)))
-            t))
-
-;; ====== init.el ends here
+  (req-package-finish))

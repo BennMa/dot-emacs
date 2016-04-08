@@ -1,17 +1,16 @@
 ;; org faces: http://orgmode.org/worg/org-color-themes.html
-(req-package custom-theme
+(req-package-force custom-theme
   :no-require t
   :init
   (load-theme 'my-leuven t)
 
-  (setq emacs-english-fonts  '( "Anonymous Pro" "Monaco" "Inconsolata" "Ubuntu Mono"
+  (defvar emacs-english-fonts  '( "Anonymous Pro" "Monaco" "Inconsolata" "Ubuntu Mono"
                                   "Droid Sans Mono" "Menlo" "DejaVu Sans Mono" "Courier New"
                                   "Monospace" "Courier" ))
   (defvar emacs-chinese-fonts '( "宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
                                  "Microsoft Yahei" ))
-  (setq emacs-font-size 11)
+  (defvar emacs-font-size 14)
   (qiang-set-font emacs-english-fonts emacs-font-size emacs-chinese-fonts))
-
 
 (req-package cua-mode
   :disabled t
@@ -104,8 +103,9 @@
   (unbind-key "M-S-<left>" auto-highlight-symbol-mode-map)
   (unbind-key "M-S-<right>" auto-highlight-symbol-mode-map))
 
-(req-package helm-config
-  :demand t
+(req-package helm
+  ;; :require helm
+  ;; :demand t
   :bind (("C-c h"   . helm-command-prefix)
          ("C-h a"   . helm-apropos)
          ;; ("C-x f"   . helm-multi-files)
@@ -120,6 +120,7 @@
     (helm-find nil))
 
   :config
+  (require 'helm-config)
   ;; (req-package helm-commands)
   ;; (req-package helm-files)
   ;; (req-package helm-buffers)
@@ -367,6 +368,7 @@
   (ido-mode 'buffer)
 
   (req-package ido-hacks
+    :disabled t
     :demand t
     :bind ("M-x" . my-ido-hacks-execute-extended-command)
     :config
@@ -389,10 +391,10 @@
     :config
     (flx-ido-mode 1))
 
-  (req-package smex
-    :bind (("M-x" . smex)
-           ("C-c M-x" . smex-major-mode-commands)
-           ("C-c C-c M-x" . execute-extended-command)))
+  ;; (req-package smex
+  ;;   :bind (("M-x" . smex)
+  ;;          ("C-c M-x" . smex-major-mode-commands)
+  ;;          ("C-c C-c M-x" . execute-extended-command)))
 
   (add-hook 'ido-minibuffer-setup-hook
             #'(lambda ()
@@ -554,6 +556,7 @@
   (add-hook 'dired-toggle-mode-hook #'my-dired-toggle-mode-hook))
 
 (req-package direx
+  :require popwin
   :bind ("C-. d" . my-direx:jump-to-directory-other-window)
   :init
   (push '(direx:direx-mode :position left :width 30 :dedicated t :stick t)
