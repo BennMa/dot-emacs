@@ -21,3 +21,4 @@ refactor/
 var/
 smex-items
 backup/
+*.elc
