@@ -1,5 +1,5 @@
 ;; org faces: http://orgmode.org/worg/org-color-themes.html
-(req-package-force custom-theme
+(req-package-force custom
   :no-require t
   :init
   (load-theme 'my-leuven t)
@@ -11,29 +11,6 @@
                                  "Microsoft Yahei" ))
   (defvar emacs-font-size 14)
   (qiang-set-font emacs-english-fonts emacs-font-size emacs-chinese-fonts))
-
-(req-package cua-mode
-  :disabled t
-  :init
-  (cua-mode 1)
-  (defun sfp-page-down (&optional arg)
-    (interactive "^P")
-    (setq this-command 'next-line)
-    (next-line
-     (- (window-text-height)
-        next-screen-context-lines)))
-  (put 'sfp-page-down 'isearch-scroll t)
-  (put 'sfp-page-down 'CUA 'move)
-  
-  (defun sfp-page-up (&optional arg)
-    (interactive "^P")
-    (setq this-command 'previous-line)
-    (previous-line
-     (- (window-text-height)
-        next-screen-context-lines)))
-  (put 'sfp-page-up 'isearch-scroll t)
-  (put 'sfp-page-up 'CUA 'move))
-  
 
 (req-package maxframe
   :if window-system
@@ -417,10 +394,6 @@
   :defer 5
   :config
   (req-package initsplit))
-
-(req-package fetchmail-mode
-  :commands fetchmail-mode
-  :mode ("fetchmailrc" . fetchmail-mode))
 
 (req-package nf-procmail-mode
   :commands nf-procmail-mode
@@ -1163,10 +1136,6 @@
   :config
   (req-package ediff-keep))
 
-(req-package edit-var
-  :disabled t
-  :bind ("C-c e v" . edit-variable))
-
 (req-package ascii
   :disabled t
   :bind ("C-c e A" . ascii-toggle)
@@ -1313,7 +1282,7 @@
 
     (add-hook 'erlang-mode-hook 'edts-erlang-mode-hook)))
 
-(req-package hexcolour
+(req-package-force hexcolour
   :no-require t
   :init
   (defvar hexcolour-keywords
@@ -1394,7 +1363,7 @@
 
   (add-hook 'shell-mode-hook 'initialize-sh-script))
 
-(req-package isearch
+(req-package-force isearch
   :no-require t
   :bind (("C-M-r" . isearch-backward-other-window)
          ("C-M-s" . isearch-forward-other-window))
@@ -1452,9 +1421,9 @@
     (w3m-goto-url-new-session
      (concat "http://" url))))
 
-(req-package bbdb-com
-  :commands bbdb-create
-  :bind ("M-B" . bbdb))
+;; (req-package bbdb-com
+;;   :commands bbdb-create
+;;   :bind ("M-B" . bbdb))
 
 ;; https://www.emacswiki.org/emacs/TabBarMode
 ;; https://zhangda.wordpress.com/2012/09/21/tabbar-mode-rocks-with-customization/
@@ -1651,7 +1620,7 @@
   :bind (("M-P" . vertigo-jump-up)
          ("M-N" . vertigo-jump-down)))
   
-(req-package electric-pair-mode
+(req-package-force electric-pair-mode
   :no-require t
   :init
   (electric-pair-mode))

@@ -42,8 +42,7 @@
 (require-package 'use-package)
 (require-package 'req-package)
 ;; (req-package-force el-get
-;;   :load-path "el-get/el-get/"
-;;   :ensure t
+;;   :load-path "site-lisp/el-get"
 ;;   :init
 ;;   (add-to-list 'el-get-recipe-path (expand-file-name "el-get/el-get/recipes" user-emacs-directory))
 ;;   (el-get 'sync))

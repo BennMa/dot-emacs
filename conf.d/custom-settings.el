@@ -511,11 +511,11 @@
  '(olivetti-hide-mode-line t)
  '(package-archives
    (quote
-    (("ELPA" . "http://tromey.com/elpa/")
-     ("Marmalade" . "http://marmalade-repo.org/packages/")
-     ("Org" . "http://orgmode.org/elpa/")
-     ("Melpa" . "http://melpa.milkbox.net/packages/")
-     ("Sunrise" . "http://joseito.republika.pl/sunrise-commander/"))))
+    (("melpa" . "http://melpa.org/packages/")
+     ("elpa" . "http://tromey.com/elpa/")
+     ("org" . "http://orgmode.org/elpa/")
+     ("marmalade" . "http://marmalade-repo.org/packages/") 
+     ("sunrise" . "http://joseito.republika.pl/sunrise-commander/"))))
  '(page-break-lines-modes
    (quote
     (emacs-lisp-mode compilation-mode outline-mode prog-mode haskell-mode)))
