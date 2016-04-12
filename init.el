@@ -1,9 +1,7 @@
 ;; ------ Define Constants
-(defconst my-package-init-dir    (expand-file-name "init.d/" user-emacs-directory))
-(defconst my-custom-settings-dir (expand-file-name "conf.d/"
-                                                   user-emacs-directory))
+(defconst ROOT-DIR user-emacs-directory)
 
-;; ------ set load path
+;; ------ Set basic load-path
 (eval-and-compile
   (mapc
    #'(lambda (path)
@@ -11,56 +9,44 @@
    '("lisp" "themes" "")))
 
 ;; ------ Basic Settings
-(load (expand-file-name "custom-settings" my-custom-settings-dir))
+(load (expand-file-name "conf.d/global-settings" ROOT-DIR))
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq visible-bell nil
-      ring-bell-function 'ignore)
+      ring-bell-function 'ignore
+      force-load-messages nil)
+(random t)
 
 ;; ------ Package Manager Settings
-
 (require 'cl)
 (require 'package)
-(setq package-enable-at-startup nil)
+(eval-when-compile
+  (package-initialize))
+(if (null package-archive-contents)
+    (package-refresh-contents))
 
-;; (add-hook 'kill-emacs-hook (lambda () (byte-recompile-directory my-init-dir 0
-;; t)))
+(unless (require 'use-package nil t)
+  (package-install 'use-package))
+(eval-when-compile
+  (require 'use-package))
+(require 'bind-key)
+(use-package req-package :ensure t)
+(use-package el-get      :ensure t)
 
-(eval-when-compile (package-initialize))
+;; ------ Server
+(require 'server)
+(unless (server-running-p)
+  (server-start))
 
-(defun require-package (package)
-  "refresh package archives, check package presence and install if it's not installed"
-  (if (null (require package nil t))
-      (progn (let* ((ARCHIVES (if (null package-archive-contents)
-                                  (progn (package-refresh-contents)
-                                         package-archive-contents)
-                                package-archive-contents))
-                    (AVAIL (assoc package ARCHIVES)))
-               (if AVAIL
-                   (package-install package)))
-             (require package))))
+;; ------ Basic Hooks
+(add-hook 'kill-emacs-hook
+          (lambda () (byte-recompile-directory
+                      (expand-file-name "init.d/" ROOT-DIR) 0 t)))
 
-(require-package 'use-package)
-(require-package 'req-package)
-;; (req-package-force el-get
-;;   :load-path "site-lisp/el-get"
-;;   :init
-;;   (add-to-list 'el-get-recipe-path (expand-file-name "el-get/el-get/recipes" user-emacs-directory))
-;;   (el-get 'sync))
-
-;; ------ Loading
-(random t)
-(req-package-force load-dir
-  :init
-  (setq force-load-messages nil)
-  (setq load-dir-debug nil)
-  (setq load-dir-recursive t)
+;; ------ Loading Packages
+(req-package-force my-toolkit
   :config
-
-  ;; ------ Loading Settings
-  (load (expand-file-name "my-toolkit" user-emacs-directory))
-  (load (expand-file-name "global-keybinding" my-custom-settings-dir))
-
-  ;; ------ Loading Packages
-  (load-dir-one my-package-init-dir)
-
+  (load (expand-file-name "conf.d/global-keybinding" ROOT-DIR)))
+(req-package-force load-dir
+  :config 
+  (load-dir-one (expand-file-name "init.d/" ROOT-DIR))
   (req-package-finish))

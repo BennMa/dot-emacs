@@ -150,7 +150,7 @@
  '(current-language-environment "UTF-8")
  '(cursor-type t)
  '(custom-buffer-done-function (quote kill-buffer))
- '(custom-file "~/.emacs.d/custom-settings.el")
+ '(custom-file "~/.emacs.d/conf.d/global-settings.el")
  '(custom-raised-buttons nil)
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(default-frame-alist (quote ((cursor-color . "black"))))
@@ -299,7 +299,11 @@
  '(fold-this-persistent-folds-file "~/.emacs.d/data/fold-this.el")
  '(font-lock-support-mode (quote jit-lock-mode))
  '(font-lock-verbose nil)
- '(frame-title-format (quote (:eval (concat "" "%b @ BennsEmacs " emacs-version) t)) t)
+ '(frame-title-format
+   (quote
+    (:eval
+     (concat "" "%b @ BennsEmacs " emacs-version)
+     t)) t)
  '(gc-cons-threshold 3500000)
  '(gdb-find-source-frame t)
  '(gdb-same-frame nil)
@@ -461,13 +465,15 @@
  '(initial-major-mode (quote fundamental-mode))
  '(initsplit-customizations-alist
    (quote
-    (("\\`\\(gnus\\|nn\\|message\\|mail\\|mm-\\|smtp\\|send-mail\\|sendmail\\|check-mail\\|spam\\|sc-\\)" "~/.emacs.d/gnus-settings.el" nil nil)
-     ("\\`\\(org-\\)" "~/.emacs.d/org-settings.el" nil nil))))
+    (("\\`\\(gnus\\|nn\\|message\\|mail\\|mm-\\|smtp\\|send-mail\\|sendmail\\|check-mail\\|spam\\|sc-\\)" "~/.emacs.d/conf.d/gnus-settings.el" nil nil)
+     ("\\`\\(org-\\)" "~/.emacs.d/conf.d/org-settings.el" nil nil))))
  '(ispell-extra-args nil)
  '(kill-do-not-save-duplicates t)
  '(kill-whole-line t)
  '(large-file-warning-threshold nil)
  '(line-number-mode t)
+ '(load-dir-debug nil)
+ '(load-dir-recursive t)
  '(load-prefer-newer t)
  '(mac-pass-command-to-system nil)
  '(mac-pass-control-to-system nil)
@@ -514,8 +520,10 @@
     (("melpa" . "http://melpa.org/packages/")
      ("elpa" . "http://tromey.com/elpa/")
      ("org" . "http://orgmode.org/elpa/")
-     ("marmalade" . "http://marmalade-repo.org/packages/") 
-     ("sunrise" . "http://joseito.republika.pl/sunrise-commander/"))))
+     ("marmalade" . "http://marmalade-repo.org/packages/")
+     ("sunrise" . "http://joseito.republika.pl/sunrise-commander/")
+     ("gnu" . "http://elpa.gnu.org/packages/"))))
+ '(package-enable-at-startup nil)
  '(page-break-lines-modes
    (quote
     (emacs-lisp-mode compilation-mode outline-mode prog-mode haskell-mode)))
