@@ -9,7 +9,7 @@
                                   "Monospace" "Courier" ))
   (defvar emacs-chinese-fonts '( "宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
                                  "Microsoft Yahei" ))
-  (defvar emacs-font-size 14)
+  (setq emacs-font-size 11)
   (qiang-set-font emacs-english-fonts emacs-font-size emacs-chinese-fonts))
 
 (req-package maxframe
@@ -97,22 +97,7 @@
     (helm-find nil))
 
   :config
-  (require 'helm-config)
-  ;; (req-package helm-commands)
-  ;; (req-package helm-files)
-  ;; (req-package helm-buffers)
-  ;; (req-package helm-mode
-  ;;   :diminish helm-mode
-  ;;   :init
-  ;;   (helm-mode 1))
-
-  ;; (req-package helm-ls-git)
-  ;; (req-package helm-swoop)
-
-  ;; (req-package helm-match-plugin
-  ;;   :config
-  ;;   (helm-match-plugin-mode 1))
-  
+  (require 'helm-config)  
   (helm-mode 1)
   (helm-autoresize-mode 1)
 
@@ -146,33 +131,35 @@
   :bind-keymap ("M-p" . projectile-command-map)
   :config
   (unbind-key "C-c p" projectile-mode-map)
+  (add-hook 'projectile-mode-hook
+            #'(lambda () 
+                (ggtags-mode 1)
+                (auto-highlight-symbol-mode 1)))  
+  (projectile-global-mode))
 
-  (req-package symfony1x
-    :load-path "lisp/symfony1x"
-    :commands symfony1x-mode
-    :init
-    (setq symfony1x-mode-key-prefix "C-; ;"))
-
+(req-package symfony1x
+  :require projectile
+  :load-path "lisp/symfony1x"
+  :commands symfony1x-mode
+  :init
+  (setq symfony1x-mode-key-prefix "C-; ;")
   (add-hook 'projectile-mode-hook
             #'(lambda ()
                 (when (and (buffer-file-name)
                            (string-match "\\/Master_\\(?:Service\\|Beta\\|Community\\|FT\\)\\/" (buffer-file-name)))
                   (make-local-variable 'symfony1x-mode-status)
-                  (symfony1x-mode t))
-                (ggtags-mode 1)
-                (auto-highlight-symbol-mode 1)))
+                  (symfony1x-mode t)))))
 
-  (req-package helm-projectile
-    :config
-    (setq projectile-completion-system 'helm)
-    (setq helm-projectile-fuzzy-match nil)
-    (helm-projectile-on))
-  
-  (projectile-global-mode))
+(req-package helm-projectile
+  :require projectile helm
+  :config
+  (setq projectile-completion-system 'helm)
+  (setq helm-projectile-fuzzy-match nil)
+  (helm-projectile-on))
 
 (req-package git-messenger
+  :disabled t
   :bind ("C-x G" . git-messenger:popup-message))
-
 
 (req-package magit
   :bind (("C-x g" . magit-status)
@@ -240,10 +227,11 @@
 
 
 (req-package ag
-  :commands (ag ag-regexp)
-  :init
-  (req-package helm-ag
-    :commands helm-ag))
+  :commands (ag ag-regexp))
+
+(req-package helm-ag
+  :require ag helm
+  :commands helm-ag)
 
 (req-package ibuffer
   :bind (("C-x C-b" . my-ibuffer-startup)
@@ -274,27 +262,28 @@
      ((> (buffer-size) 1000000) (format "%7.1fM" (/ (buffer-size) 1000000.0)))
      ((> (buffer-size) 100000) (format "%7.0fk" (/ (buffer-size) 1000.0)))
      ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
-     (t (format "%8d" (buffer-size)))))
+     (t (format "%8d" (buffer-size))))))
 
-  (req-package ibuffer-vc
-    :config
-    (add-hook 'ibuffer-hook
-              (lambda ()
-                (ibuffer-vc-set-filter-groups-by-vc-root)
-                (unless (eq ibuffer-sorting-mode 'alphabetic)
-                  (ibuffer-do-sort-by-alphabetic))))
+(req-package ibuffer-vc
+  :require ibuffer
+  :config
+  (add-hook 'ibuffer-hook
+            (lambda ()
+              (ibuffer-vc-set-filter-groups-by-vc-root)
+              (unless (eq ibuffer-sorting-mode 'alphabetic)
+                (ibuffer-do-sort-by-alphabetic))))
 
-    (setq ibuffer-formats
-          '((mark modified read-only vc-status-mini " "
-                  (name 18 18 :left :elide)
-                  " "
-                  (size-h 9 -1 :right)
-                  " "
-                  (mode 16 16 :left :elide)
-                  " "
-                  (vc-status 16 16 :left)
-                  " "
-                  filename-and-process)))))
+  (setq ibuffer-formats
+        '((mark modified read-only vc-status-mini " "
+                (name 18 18 :left :elide)
+                " "
+                (size-h 9 -1 :right)
+                " "
+                (mode 16 16 :left :elide)
+                " "
+                (vc-status 16 16 :left)
+                " "
+                filename-and-process))))
 
 (req-package ido
   :demand t
@@ -343,41 +332,39 @@
 
   :config
   (ido-mode 'buffer)
-
-  (req-package ido-hacks
-    :disabled t
-    :demand t
-    :bind ("M-x" . my-ido-hacks-execute-extended-command)
-    :config
-    (ido-hacks-mode 1)
-
-    (defvar ido-hacks-completing-read (symbol-function 'completing-read))
-    (fset 'completing-read ido-hacks-orgin-completing-read-function)
-    (defun my-ido-hacks-execute-extended-command (&optional arg)
-      (interactive "P")
-      (flet ((completing-read
-              (prompt collection &optional predicate require-match
-                      initial-input hist def inherit-input-method)
-              (funcall ido-hacks-completing-read
-                       prompt collection predicate require-match
-                       initial-input hist def inherit-input-method)))
-        (ido-hacks-execute-extended-command arg))))
-
-  (req-package flx-ido
-    :disabled t
-    :config
-    (flx-ido-mode 1))
-
-  ;; (req-package smex
-  ;;   :bind (("M-x" . smex)
-  ;;          ("C-c M-x" . smex-major-mode-commands)
-  ;;          ("C-c C-c M-x" . execute-extended-command)))
-
   (add-hook 'ido-minibuffer-setup-hook
             #'(lambda ()
                 (bind-key "<return>" 'ido-smart-select-text
                           ido-file-completion-map))))
 
+(req-package ido-hacks
+  :disabled t
+  :demand t
+  :bind ("M-x" . my-ido-hacks-execute-extended-command)
+  :config
+  (ido-hacks-mode 1)
+
+  (defvar ido-hacks-completing-read (symbol-function 'completing-read))
+  (fset 'completing-read ido-hacks-orgin-completing-read-function)
+  (defun my-ido-hacks-execute-extended-command (&optional arg)
+    (interactive "P")
+    (flet ((completing-read
+            (prompt collection &optional predicate require-match
+                    initial-input hist def inherit-input-method)
+            (funcall ido-hacks-completing-read
+                     prompt collection predicate require-match
+                     initial-input hist def inherit-input-method)))
+      (ido-hacks-execute-extended-command arg))))
+
+(req-package flx-ido
+  :disabled t
+  :config
+  (flx-ido-mode 1))
+
+(req-package smex
+  :bind (("M-x" . smex)
+         ("C-c M-x" . smex-major-mode-commands)
+         ("C-c C-c M-x" . execute-extended-command)))
 
 (req-package powerline
   :config
@@ -515,18 +502,9 @@
                "\\)")))
         (funcall dired-omit-regexp-orig)))))
 
-(req-package dired-toggle
-  :disabled t
-  :load-path "site-lisp/dired-toggle"
-  :bind ("C-. d" . dired-toggle)
-  :preface
-  (defun my-dired-toggle-mode-hook ()
-    (interactive)
-    (visual-line-mode 1)
-    (setq-local visual-line-fringe-indicators '(nil right-curly-arrow))
-    (setq-local word-wrap nil))
+(req-package popwin
   :config
-  (add-hook 'dired-toggle-mode-hook #'my-dired-toggle-mode-hook))
+  (popwin-mode 1))
 
 (req-package direx
   :require popwin
@@ -1376,8 +1354,7 @@
   (defun isearch-forward-other-window ()
     (interactive)
     (split-window-vertically)
-    (call-interactively 'isearch-forward))
-  )
+    (call-interactively 'isearch-forward)))
 
 (req-package color-moccur
   :commands (isearch-moccur isearch-all)
@@ -1471,13 +1448,13 @@
       (t "Other"))))
   (setq tabbar-buffer-groups-function 'my-tabbar-buffer-groups))
 
-  ;; (defun my-tabbar-buffer-list ()
-  ;;   (remove-if
-  ;;    (lambda(buffer)
-  ;;      (or
-  ;;       (find (aref (buffer-name buffer) 0) " *")))
-  ;;    (buffer-list)))
-  ;; (setq tabbar-buffer-list-function 'my-tabbar-buffer-list))
+;; (defun my-tabbar-buffer-list ()
+;;   (remove-if
+;;    (lambda(buffer)
+;;      (or
+;;       (find (aref (buffer-name buffer) 0) " *")))
+;;    (buffer-list)))
+;; (setq tabbar-buffer-list-function 'my-tabbar-buffer-list))
 
 
 ;; terminal --------------------------------------------------------------------------
@@ -1571,9 +1548,9 @@
             (let ((previous-buffer-white-list
                    (remove "\\*terminal" previous-buffer-white-list)))
               (switch-to-previous-buffer))
-            (if (not b)
-                (multi-term)
-              (switch-to-buffer b)))))
+          (if (not b)
+              (multi-term)
+            (switch-to-buffer b)))))
 
     (defun my-term-last-buffer (l)
       "Return most recently used term buffer."
@@ -1619,9 +1596,8 @@
 (req-package vertigo
   :bind (("M-P" . vertigo-jump-up)
          ("M-N" . vertigo-jump-down)))
-  
-(req-package-force electric-pair-mode
-  :no-require t
+
+(req-package elec-pair
   :init
   (electric-pair-mode))
 
@@ -1693,14 +1669,14 @@ command uses interactive mode if passed an argument."
                       ,pass))))))
   (defmacro erc-autojoin (&rest args)
     `(add-hook 'erc-after-connect
-       '(lambda (server nick)
-          (cond
-           ,@(mapcar (lambda (servers+channels)
-                       (let ((servers (car servers+channels))
-                             (channels (cdr servers+channels)))
-                         `((member erc-session-server ',servers)
-                           (mapc 'erc-join-channel ',channels))))
-                     args)))))
+               '(lambda (server nick)
+                  (cond
+                   ,@(mapcar (lambda (servers+channels)
+                               (let ((servers (car servers+channels))
+                                     (channels (cdr servers+channels)))
+                                 `((member erc-session-server ',servers)
+                                   (mapc 'erc-join-channel ',channels))))
+                             args)))))
   (load ".erc-auth") ;; this defined the erc-tnc
   (defun my-irc ()
     "Start to waste time on IRC with ERC."
