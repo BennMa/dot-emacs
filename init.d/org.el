@@ -14,7 +14,6 @@
     (bind-key "C-<return>" 'other-window map)
     (bind-key "<return>" 'org-return-indent map)
     (bind-key "C-c C-x @" 'visible-mode map)
-    (bind-key "C-c c" 'org-cleanup map)
     (unbind-key "C-<tab>" map)
     (unbind-key "M-{" map)
     (unbind-key "M-}" map)
@@ -53,49 +52,7 @@
             (goto-char pos)
             (re-search-forward (concat "^\\*\\* " target-headline))
             (setcar (nthcdr 3 it) (point)))))
-      it))
-
-
-  ;; ====== automatically clean
-  (defun org-archive-done-tasks ()
-    (interactive)
-    (save-excursion
-      (goto-char (point-min))
-      (while (re-search-forward "\* \\(DONE\\|CANCELED\\) " nil t)
-        (if (save-restriction
-              (save-excursion
-                (org-narrow-to-subtree)
-                (search-forward ":LOGBOOK:" nil t)))
-            (forward-line)
-          (org-archive-subtree)
-          (goto-char (line-beginning-position))))))
-
-  (defun org-sort-all ()
-    (interactive)
-    (save-excursion
-      (goto-char (point-min))
-      (while (re-search-forward "^\* " nil t)
-        (goto-char (match-beginning 0))
-        (condition-case err
-            (progn
-              (org-sort-entries t ?a)
-              (org-sort-entries t ?p)
-              (org-sort-entries t ?o))
-          (error nil))
-        (forward-line))
-      (goto-char (point-min))
-      (while (re-search-forward "\* PROJECT " nil t)
-        (goto-char (line-beginning-position))
-        (ignore-errors
-          (org-sort-entries t ?a)
-          (org-sort-entries t ?p)
-          (org-sort-entries t ?o))
-        (forward-line))))
-
-  (defun org-cleanup ()
-    (interactive)
-    (org-archive-done-tasks)
-    (org-sort-all)))
+      it)))
 
 (req-package org-agenda
   :bind (("M-A"   . jump-to-org-agenda)
