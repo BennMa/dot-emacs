@@ -1727,10 +1727,10 @@ command uses interactive mode if passed an argument."
         (insert previous)))))
 
 ;; ------ org-mode
-(req-package org-init)
+;; (req-package org-init)
 
 ;; ------ gnus
-(req-package gnus-init
-  :disabled t
-  :bind (("M-G"   . trigger-gnus)
-         ("C-x m" . compose-mail)))
+;; (req-package gnus-init
+;;   :disabled t
+;;   :bind (("M-G"   . trigger-gnus)
+;;          ("C-x m" . compose-mail)))

@@ -1,7 +1,6 @@
 ;;; Package -- Summary
 
 ;;; Commentary:
-(require 'org-init)
 
 ;;; Code:
 
