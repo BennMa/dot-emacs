@@ -8,6 +8,14 @@
        (push (expand-file-name path user-emacs-directory) load-path))
    '("lisp" "themes" "")))
 
+;; ------ package settings
+(require 'cl)
+(require 'package)
+(eval-when-compile
+  (package-initialize))
+(if (null package-archive-contents)
+    (package-refresh-contents))
+
 ;; ------ Basic Settings
 (load (expand-file-name "conf.d/global-settings" ROOT-DIR))
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -16,14 +24,7 @@
       force-load-messages nil)
 (random t)
 
-;; ------ Package Manager Settings
-(require 'cl)
-(require 'package)
-(eval-when-compile
-  (package-initialize))
-(if (null package-archive-contents)
-    (package-refresh-contents))
-
+;; ------ Package Manager Initilization
 (unless (require 'use-package nil t)
   (package-install 'use-package))
 (eval-when-compile
@@ -45,7 +46,18 @@
 ;; ------ Loading Packages
 (req-package-force my-toolkit
   :config
-  (load (expand-file-name "conf.d/global-keybinding" ROOT-DIR)))
+  ;; org faces: http://orgmode.org/worg/org-color-themes.html
+  (load-theme 'my-leuven t)
+  (load (expand-file-name "conf.d/global-keybinding" ROOT-DIR))
+  (defvar emacs-english-fonts
+    '( "Anonymous Pro" "Monaco" "Inconsolata" "Ubuntu Mono"
+       "Droid Sans Mono" "Menlo" "DejaVu Sans Mono" "Courier New"
+       "Monospace" "Courier" ))
+  (defvar emacs-chinese-fonts
+    '( "宋体" "黑体" "新宋体" "文泉驿等宽微米黑" "Microsoft Yahei" ))
+  (defvar emacs-font-size 11)
+  (qiang-set-font emacs-english-fonts emacs-font-size emacs-chinese-fonts))
+
 (req-package-force load-dir
   :config 
   (load-dir-one (expand-file-name "init.d/" ROOT-DIR))

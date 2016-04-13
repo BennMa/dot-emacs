@@ -1,16 +1,5 @@
-;; org faces: http://orgmode.org/worg/org-color-themes.html
-(req-package-force custom
-  :no-require t
-  :init
-  (load-theme 'my-leuven t)
-
-  (defvar emacs-english-fonts  '( "Anonymous Pro" "Monaco" "Inconsolata" "Ubuntu Mono"
-                                  "Droid Sans Mono" "Menlo" "DejaVu Sans Mono" "Courier New"
-                                  "Monospace" "Courier" ))
-  (defvar emacs-chinese-fonts '( "宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
-                                 "Microsoft Yahei" ))
-  (setq emacs-font-size 11)
-  (qiang-set-font emacs-english-fonts emacs-font-size emacs-chinese-fonts))
+(req-package cus-edit)
+(req-package initsplit)
 
 (req-package maxframe
   :if window-system
@@ -377,10 +366,6 @@
   (window-number-meta-mode)
   (custom-set-faces '(window-number-face ((t nil)) t)))
 
-(req-package cus-edit
-  :defer 5
-  :config
-  (req-package initsplit))
 
 (req-package nf-procmail-mode
   :commands nf-procmail-mode
@@ -1260,7 +1245,7 @@
 
     (add-hook 'erlang-mode-hook 'edts-erlang-mode-hook)))
 
-(req-package-force hexcolour
+(req-package hexcolour
   :no-require t
   :init
   (defvar hexcolour-keywords
@@ -1341,7 +1326,7 @@
 
   (add-hook 'shell-mode-hook 'initialize-sh-script))
 
-(req-package-force isearch
+(req-package isearch
   :no-require t
   :bind (("C-M-r" . isearch-backward-other-window)
          ("C-M-s" . isearch-forward-other-window))
