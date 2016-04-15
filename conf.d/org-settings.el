@@ -188,6 +188,8 @@
   ("" "hyperref" nil)
   "\\tolerance=1000")))
  '(org-log-done (quote time))
+ '(org-mobile-directory "~/Dropbox/PKG/MobileOrg")
+ '(org-mobile-inbox-for-pull "~/Dropbox/PKG/Task/FROM-MOBILE.org")
  '(org-modules
 (quote
  (org-gnus org-habit org-id org-info org-depend org-velocity)))

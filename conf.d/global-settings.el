@@ -521,7 +521,7 @@
     (("org" . "http://orgmode.org/elpa/")
      ("elpy" . "https://jorgenschaefer.github.io/packages/")
      ("melpa" . "http://melpa.org/packages/")
-     ("elpa" . "http://tromey.com/elpa/") 
+     ("elpa" . "http://tromey.com/elpa/")
      ("marmalade" . "http://marmalade-repo.org/packages/")
      ("sunrise" . "http://joseito.republika.pl/sunrise-commander/")
      ("gnu" . "http://elpa.gnu.org/packages/"))))

@@ -94,6 +94,8 @@
                 (hl-line-mode 1)
                 (setq line-spacing 0.25))))
 
+(req-package org-mobile)
+
 (req-package org-knowledgebase
   :bind* ("C-t"   . org-collect)
   :config
