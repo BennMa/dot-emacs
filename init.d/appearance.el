@@ -1587,7 +1587,8 @@
   (electric-pair-mode))
 
 (req-package fill-column-indicator
-  :demand t
+  :disabled t
+  :demand t  
   :commands fci-mode
   :config
   (define-globalized-minor-mode global-fci-mode fci-mode (lambda () (fci-mode 1)))
