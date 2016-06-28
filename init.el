@@ -27,11 +27,7 @@
 ;; ------ Package Manager Initilization
 (unless (require 'use-package nil t)
   (package-install 'use-package))
-(eval-when-compile
-  (require 'use-package))
 (require 'bind-key)
-(use-package req-package :ensure t)
-(use-package el-get      :ensure t)
 
 ;; ------ Server
 (require 'server)
@@ -44,7 +40,7 @@
                       (expand-file-name "init.d/" ROOT-DIR) 0 t)))
 
 ;; ------ Loading Packages
-(req-package-force my-toolkit
+(use-package my-toolkit
   :config
   ;; org faces: http://orgmode.org/worg/org-color-themes.html
   (load-theme 'my-leuven t)
@@ -55,10 +51,9 @@
        "Monospace" "Courier" ))
   (defvar emacs-chinese-fonts
     '( "宋体" "黑体" "新宋体" "文泉驿等宽微米黑" "Microsoft Yahei" ))
-  (defvar emacs-font-size 11)
+  (defvar emacs-font-size 14)
   (qiang-set-font emacs-english-fonts emacs-font-size emacs-chinese-fonts))
 
-(req-package-force load-dir
+(use-package load-dir
   :config 
-  (load-dir-one (expand-file-name "init.d/" ROOT-DIR))
-  (req-package-finish))
+  (load-dir-one (expand-file-name "init.d/" ROOT-DIR)))

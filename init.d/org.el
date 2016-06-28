@@ -2,7 +2,7 @@
 (load (expand-file-name "conf.d/org-settings" ROOT-DIR))
 
 ;; ------ org packages
-(req-package org
+(use-package org
   :bind (("C-c S" . org-store-link)
          ("C-c l" . org-insert-link))
   :commands org-mode
@@ -54,7 +54,7 @@
             (setcar (nthcdr 3 it) (point)))))
       it)))
 
-(req-package org-agenda
+(use-package org-agenda
   :bind (("M-A"   . jump-to-org-agenda)
          ("C-c a" . org-agenda))
   :config
@@ -94,20 +94,20 @@
                 (hl-line-mode 1)
                 (setq line-spacing 0.25))))
 
-(req-package org-mobile)
+(use-package org-mobile)
 
-(req-package org-knowledgebase
+(use-package org-knowledgebase
   :bind* ("C-t"   . org-collect)
   :config
   (push '("Collector.org" :position bottom :height 15 :stick t)
         popwin:special-display-config))
 
-(req-package org-smart-capture
+(use-package org-smart-capture
   :bind ("M-m"   . org-smart-capture))
 
-(req-package org-velocity
+(use-package org-velocity
   :bind ("C-. n" . org-velocity-read))
 
-(req-package org-bullets
+(use-package org-bullets
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
