@@ -7,7 +7,6 @@
   (unbind-key "C-c p" projectile-mode-map)
   (add-hook 'projectile-mode-hook
             #'(lambda () 
-                (ggtags-mode 1)
                 (auto-highlight-symbol-mode 1)))  
   (projectile-global-mode))
 

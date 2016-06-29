@@ -1,68 +1,3 @@
-(use-package eshell
-  :disabled t
-  :commands (eshell eshell-command)
-  :preface
-  (defvar eshell-isearch-map
-    (let ((map (copy-keymap isearch-mode-map)))
-      (define-key map [(control ?m)] 'eshell-isearch-return)
-      (define-key map [return]       'eshell-isearch-return)
-      (define-key map [(control ?r)] 'eshell-isearch-repeat-backward)
-      (define-key map [(control ?s)] 'eshell-isearch-repeat-forward)
-      (define-key map [(control ?g)] 'eshell-isearch-abort)
-      (define-key map [backspace]    'eshell-isearch-delete-char)
-      (define-key map [delete]       'eshell-isearch-delete-char)
-      map)
-    "Keymap used in isearch in Eshell.")
-
-  (defun eshell-initialize ()
-    (defun eshell-spawn-external-command (beg end)
-      "Parse and expand any history references in current input."
-      (save-excursion
-        (goto-char end)
-        (when (looking-back "&!" beg)
-          (delete-region (match-beginning 0) (match-end 0))
-          (goto-char beg)
-          (insert "spawn "))))
-
-    (add-hook 'eshell-expand-input-functions 'eshell-spawn-external-command)
-
-    (defun ss (server)
-      (interactive "sServer: ")
-      (call-process "spawn" nil nil nil "ss" server))
-
-    (use-package em-unix
-      :defer t
-      :config
-      (unintern 'eshell/su nil)
-      (unintern 'eshell/sudo nil)))
-
-  :init
-  (add-hook 'eshell-first-time-mode-hook 'eshell-initialize)
-
-  (use-package esh-toggle
-    :bind (("C-x C-z" . eshell-toggle)
-           ("C-. C-z" . eshell-toggle-cd))))
-
-
-(use-package sh-toggle
-  :disabled t
-  :bind ("C-. C-z" . shell-toggle))
-
-(use-package sh-script
-  :defer t
-  :init
-  (defvar sh-script-initialized nil)
-  (defun initialize-sh-script ()
-    (unless sh-script-initialized
-      (setq sh-script-initialized t)
-      (info-lookup-add-help :mode 'shell-script-mode
-                            :regexp ".*"
-                            :doc-spec
-                            '(("(bash)Index")))))
-
-  (add-hook 'shell-mode-hook 'initialize-sh-script))
-
-
 (use-package multi-term
   :bind (("C-`" . my-term-toggle)
          ("M-t" . multi-term))
@@ -172,5 +107,71 @@
               #'(lambda ()
                   (projectile-mode -1)
                   (company-mode -1)
-                  (ggtags-mode -1)
                   (auto-highlight-symbol-mode -1)))))
+
+
+;; ------ Disabled
+
+(use-package eshell
+  :disabled t
+  :commands (eshell eshell-command)
+  :preface
+  (defvar eshell-isearch-map
+    (let ((map (copy-keymap isearch-mode-map)))
+      (define-key map [(control ?m)] 'eshell-isearch-return)
+      (define-key map [return]       'eshell-isearch-return)
+      (define-key map [(control ?r)] 'eshell-isearch-repeat-backward)
+      (define-key map [(control ?s)] 'eshell-isearch-repeat-forward)
+      (define-key map [(control ?g)] 'eshell-isearch-abort)
+      (define-key map [backspace]    'eshell-isearch-delete-char)
+      (define-key map [delete]       'eshell-isearch-delete-char)
+      map)
+    "Keymap used in isearch in Eshell.")
+
+  (defun eshell-initialize ()
+    (defun eshell-spawn-external-command (beg end)
+      "Parse and expand any history references in current input."
+      (save-excursion
+        (goto-char end)
+        (when (looking-back "&!" beg)
+          (delete-region (match-beginning 0) (match-end 0))
+          (goto-char beg)
+          (insert "spawn "))))
+
+    (add-hook 'eshell-expand-input-functions 'eshell-spawn-external-command)
+
+    (defun ss (server)
+      (interactive "sServer: ")
+      (call-process "spawn" nil nil nil "ss" server))
+
+    (use-package em-unix
+      :defer t
+      :config
+      (unintern 'eshell/su nil)
+      (unintern 'eshell/sudo nil)))
+
+  :init
+  (add-hook 'eshell-first-time-mode-hook 'eshell-initialize)
+
+  (use-package esh-toggle
+    :bind (("C-x C-z" . eshell-toggle)
+           ("C-. C-z" . eshell-toggle-cd))))
+
+
+(use-package sh-toggle
+  :disabled t
+  :bind ("C-. C-z" . shell-toggle))
+
+(use-package sh-script
+  :defer t
+  :init
+  (defvar sh-script-initialized nil)
+  (defun initialize-sh-script ()
+    (unless sh-script-initialized
+      (setq sh-script-initialized t)
+      (info-lookup-add-help :mode 'shell-script-mode
+                            :regexp ".*"
+                            :doc-spec
+                            '(("(bash)Index")))))
+
+  (add-hook 'shell-mode-hook 'initialize-sh-script))

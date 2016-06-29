@@ -14,7 +14,7 @@
     (helm-find nil))
 
   :config
-  (require 'helm-config)  
+  (require 'helm-config)
   (helm-mode 1)
   (helm-autoresize-mode 1)
 
@@ -28,15 +28,48 @@
   (when (executable-find "curl")
     (setq helm-google-suggest-use-curl-p t)))
 
-(use-package ggtags
-  :commands ggtags-mode
-  :diminish ggtags-mode)
 
+(use-package ggtags
+  :config
+
+  (add-hook 'projectile-mode-hook 'ggtags-mode)
+
+  (bind-keys :map ggtags-mode-map
+             ("C-c g s" . ggtags-find-other-symbol)
+             ("C-c g h" . ggtags-view-tag-history)
+             ("C-c g r" . ggtags-find-reference)
+             ("C-c g f" . ggtags-find-file)
+             ("C-c g c" . ggtags-create-tags)
+             ("C-c g u" . ggtags-update-tags)
+             ("M-," . pop-tag-mark)))
+
+
+(use-package helm-gtags
+  :ensure t
+  :disabled t
+  :config
+  
+  (add-hook 'projectile-mode-hook 'helm-gtags-mode)
+  
+  (bind-keys :map helm-gtags-mode-map
+             ;; ("C-c g a" . helm-gtags-tags-in-this-function)
+             ;; ("C-j" . helm-gtags-select)
+             ("M-." . helm-gtags-dwim)
+             ("M-," . helm-gtags-pop-stack)
+             ("C-c <" . helm-gtags-previous-history)
+             ("C-c >" . helm-gtags-next-history)))
+
+(use-package imenu
+  :config
+  (use-package imenu+)
+
+  (setq-local imenu-create-index-function #'ggtags-build-imenu-index))
 
 (use-package ag
   :commands (ag ag-regexp))
 
 (use-package helm-ag
+  :ensure t
   :commands helm-ag)
 
 (use-package ibuffer
@@ -238,9 +271,11 @@
   :commands (isearch-moccur isearch-all)
   :bind ("M-s O" . moccur))
 
-(use-package imenu
-  :config
-  (use-package imenu+))
-
 (use-package ace-jump-mode
   :bind ("M-j" . ace-jump-mode))
+
+(use-package sr-speedbar
+  :ensure t
+  :bind (("C-. s" . sr-speedbar-toggle)
+         :map speedbar-key-map
+         ("<tab>" . speedbar-toggle-line-expansion)))

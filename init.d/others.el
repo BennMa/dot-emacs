@@ -1,6 +1,12 @@
 (use-package cus-edit)
 (use-package initsplit)
 
+(use-package nlinum
+  :disabled t
+  :ensure t
+  :config
+  (global-nlinum-mode))
+
 (use-package exec-path-from-shell
   :if window-system
   :config
@@ -121,7 +127,6 @@
             #'(lambda ()
                 (projectile-mode -1)
                 (company-mode -1)
-                (ggtags-mode -1)
                 (auto-highlight-symbol-mode -1)
                 (ansi-color-for-comint-mode-on))))
 

@@ -70,7 +70,9 @@
  '(byte-compile-verbose nil)
  '(c-default-style
    (quote
-    ((java-mode . "gnu")
+    ((c-mode . "linux")
+     (c++-mode . "linux")
+     (java-mode . "gnu")
      (awk-mode . "awk")
      (other . "gnu"))))
  '(calendar-daylight-time-zone-name "CDT")
@@ -134,6 +136,8 @@
  '(company-frontends
    (quote
     (company-pseudo-tooltip-unless-just-one-frontend company-echo-metadata-frontend company-preview-frontend)))
+ '(company-gtags-executable "/usr/local/bin/global")
+ '(company-gtags-modes (quote (projectile-mode)))
  '(company-idle-delay 0.2)
  '(compilation-always-kill t)
  '(compilation-ask-about-save nil)
@@ -352,6 +356,10 @@
  '(helm-for-files-preferred-list
    (quote
     (helm-source-files-in-current-dir helm-source-recentf helm-source-bookmarks helm-source-file-cache helm-source-buffers-list helm-source-locate helm-source-ls-git)))
+ '(helm-gtags-auto-update t)
+ '(helm-gtags-prefix-key "g")
+ '(helm-gtags-suggested-key-mapping t)
+ '(helm-gtags-use-input-at-cursor t)
  '(helm-ls-git-show-abs-or-relative (quote relative))
  '(helm-projectile-fuzzy-match nil)
  '(helm-quick-update t)
@@ -609,6 +617,7 @@
  '(slime-repl-history-file "~/.emacs.d/data/slime-history.eld")
  '(slime-startup-animation nil)
  '(sp-highlight-pair-overlay nil)
+ '(speedbar-show-unknown-files t)
  '(sql-sqlite-program "sqlite3")
  '(sr-attributes-display-mask (quote (nil nil t nil nil nil)))
  '(sr-autoload-extensions nil)
@@ -618,10 +627,15 @@
  '(sr-popviewer-style (quote single-frame))
  '(sr-show-file-attributes nil)
  '(sr-show-hidden-files t)
+ '(sr-speedbar-default-width 20)
+ '(sr-speedbar-max-width 30)
+ '(sr-speedbar-right-side nil)
+ '(sr-speedbar-skip-other-window-p t)
  '(sr-use-commander-keys nil)
  '(sr-windows-default-ratio 80)
  '(ssl-certificate-verification-policy 1)
  '(svn-status-hide-unmodified t)
+ '(tab-width 4)
  '(tabbar-cycle-scope (quote groups))
  '(tags-add-tables t)
  '(tags-apropos-verbose t)

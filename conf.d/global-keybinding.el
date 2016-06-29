@@ -107,6 +107,7 @@
 ;; ====== mode-specific-map, C-c
 
 (bind-key "C-<tab>" 'switch-to-previous-buffer)
+(bind-key "C-<return>" 'other-window)
 
 (bind-key [?\C-c ?\t] 'ff-find-other-file)
 (bind-key "C-c SPC" 'just-one-space)

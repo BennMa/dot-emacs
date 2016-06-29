@@ -35,9 +35,9 @@
   (server-start))
 
 ;; ------ Basic Hooks
-(add-hook 'kill-emacs-hook
-          (lambda () (byte-recompile-directory
-                      (expand-file-name "init.d/" ROOT-DIR) 0 t)))
+;; (add-hook 'kill-emacs-hook
+;;           (lambda () (byte-recompile-directory
+;;                       (expand-file-name "init.d/" ROOT-DIR) 0 t)))
 
 ;; ------ Loading Packages
 (use-package my-toolkit

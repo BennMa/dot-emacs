@@ -9,7 +9,22 @@
     (when (company-explicit-action-p)
       ad-do-it))
 
-  (global-company-mode))
+  (global-company-mode)
+
+  (use-package company-c-headers
+    :ensure t
+    :config
+    (add-to-list 'company-backends 'company-c-headers))
+
+  )
+
+(use-package semantic
+  :config
+  (global-semanticdb-minor-mode 1)
+  (global-semantic-idle-scheduler-mode 1)
+
+  (semantic-mode 1))
+
 
 (use-package yasnippet
   :diminish yas-minor-mode
