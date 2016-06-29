@@ -22,3 +22,4 @@ var/
 smex-items
 backup/
 *.elc
+conf.d/individual-settings.el

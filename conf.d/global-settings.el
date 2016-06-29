@@ -475,6 +475,7 @@
  '(initsplit-customizations-alist
    (quote
     (("\\`\\(gnus\\|nn\\|message\\|mail\\|mm-\\|smtp\\|send-mail\\|sendmail\\|check-mail\\|spam\\|sc-\\)" "~/.emacs.d/conf.d/gnus-settings.el" nil nil)
+     ("\\`\\(individual-\\)" "~/.emacs.d/conf.d/individual-settings.el" nil nil)
      ("\\`\\(org-\\)" "~/.emacs.d/conf.d/org-settings.el" nil nil))))
  '(ispell-extra-args nil)
  '(kill-do-not-save-duplicates t)

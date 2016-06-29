@@ -17,7 +17,6 @@
     (package-refresh-contents))
 
 ;; ------ Basic Settings
-(load (expand-file-name "conf.d/global-settings" ROOT-DIR))
 (fset 'yes-or-no-p 'y-or-n-p)
 (setq visible-bell nil
       ring-bell-function 'ignore
@@ -41,18 +40,18 @@
 
 ;; ------ Loading Packages
 (use-package my-toolkit
+  :init 
+  (defun load-conf (conf-name)
+    "load configuration file"
+    (load (expand-file-name (concat "conf.d/" conf-name) ROOT-DIR)))
+  (load-conf "global-settings")
+  (load-conf "individual-settings")
+  
   :config
+  (load-conf "global-keybinding")
   ;; org faces: http://orgmode.org/worg/org-color-themes.html
   (load-theme 'my-leuven t)
-  (load (expand-file-name "conf.d/global-keybinding" ROOT-DIR))
-  (defvar emacs-english-fonts
-    '( "Anonymous Pro" "Monaco" "Inconsolata" "Ubuntu Mono"
-       "Droid Sans Mono" "Menlo" "DejaVu Sans Mono" "Courier New"
-       "Monospace" "Courier" ))
-  (defvar emacs-chinese-fonts
-    '( "宋体" "黑体" "新宋体" "文泉驿等宽微米黑" "Microsoft Yahei" ))
-  (defvar emacs-font-size 14)
-  (qiang-set-font emacs-english-fonts emacs-font-size emacs-chinese-fonts))
+  (qiang-set-font individual-english-fonts individual-font-size individual-chinese-fonts))
 
 (use-package load-dir
   :config 

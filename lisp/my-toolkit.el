@@ -377,6 +377,16 @@ Inspired by Erik Naggum's `recursive-edit-with-single-window'."
 
 
 ;; ------ font & size related
+(defcustom individual-english-fonts '()
+  "english fonts of emacs"
+  :type '(repeat string))
+(defcustom individual-chinese-fonts '()
+  "chinese fonts of emacs"
+  :type '(repeat string))
+(defcustom individual-font-size 14
+  "font-size of emacs"
+  :type 'integer)
+
 (defun qiang-font-existsp (font)
   (if (null (x-list-fonts font)) nil t))
 (defun qiang-make-font-string (font-name font-size)
