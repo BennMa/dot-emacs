@@ -65,6 +65,10 @@
 
   (setq-local imenu-create-index-function #'ggtags-build-imenu-index))
 
+(use-package imenu-anywhere
+  :ensure t
+  :bind ("C-. i" . helm-imenu-anywhere))
+
 (use-package ag
   :commands (ag ag-regexp))
 
