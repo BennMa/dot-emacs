@@ -13,6 +13,7 @@
  '(ac-trigger-key "<tab>")
  '(ac-use-fuzzy nil)
  '(ace-isearch-submode (quote ace-jump-char-mode))
+ '(ace-popup-menu-show-pane-header t)
  '(ad-redefinition-action (quote accept))
  '(after-save-hook
    (quote

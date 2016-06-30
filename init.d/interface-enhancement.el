@@ -664,3 +664,8 @@
 (use-package powerline
   :config
   (powerline-default-theme))
+
+(use-package ace-popup-menu
+  :ensure t
+  :config
+  (ace-popup-menu-mode 1))
