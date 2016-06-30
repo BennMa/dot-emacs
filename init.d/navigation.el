@@ -278,4 +278,5 @@
   :ensure t
   :bind (("C-. s" . sr-speedbar-toggle)
          :map speedbar-key-map
-         ("<tab>" . speedbar-toggle-line-expansion)))
+         ("<tab>" . speedbar-toggle-line-expansion)
+         ("q" . sr-speedbar-close)))
