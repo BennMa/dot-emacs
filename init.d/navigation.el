@@ -61,13 +61,21 @@
 
 (use-package imenu
   :config
-  (use-package imenu+)
-
+  (use-package imenu+ :ensure t)
   (setq-local imenu-create-index-function #'ggtags-build-imenu-index))
 
-(use-package imenu-anywhere
+(use-package imenu-list
   :ensure t
-  :bind ("C-. i" . helm-imenu-anywhere))
+  :bind ("C-. i" . imenu-list-minor-mode)
+  :config
+  (setq imenu-list-focus-after-activation t)
+  (setq imenu-list-auto-resize t))
+
+(use-package imenu-anywhere
+  :disabled t
+  :ensure t
+  :init
+  (setq imenu-anywhere-delimiter " / "))
 
 (use-package ag
   :commands (ag ag-regexp))
@@ -276,7 +284,11 @@
   :bind ("M-s O" . moccur))
 
 (use-package ace-jump-mode
-  :bind ("M-j" . ace-jump-mode))
+  :bind (("M-j" . ace-jump-mode)
+         :map function-args-mode-map
+         ("M-j" . ace-jump-mode)
+         :map js2-mode-map
+         ("M-j" . ace-jump-mode)))
 
 (use-package sr-speedbar
   :ensure t
@@ -284,3 +296,8 @@
          :map speedbar-key-map
          ("<tab>" . speedbar-toggle-line-expansion)
          ("q" . sr-speedbar-close)))
+
+(use-package function-args
+  :ensure t
+  :config
+  (fa-config-default))

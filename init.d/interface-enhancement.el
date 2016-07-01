@@ -275,7 +275,7 @@
 (use-package bookmark
   :defer 10
   :config
-  (use-package bookmark+))
+  (use-package bookmark+ :ensure t))
 
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
@@ -666,6 +666,7 @@
   (powerline-default-theme))
 
 (use-package ace-popup-menu
+  :disabled t
   :ensure t
   :config
   (ace-popup-menu-mode 1))

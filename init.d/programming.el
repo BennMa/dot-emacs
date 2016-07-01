@@ -15,17 +15,20 @@
 
 ;; ------ PHP
 (use-package web-mode
-  :mode (("\\.php[0-9]?\\'" . web-mode)
-         ("\\.js\\'" . web-mode)
-         ("\\.html?\\'" . web-mode)
-         ("\\.tpl\\'" . web-mode))
+  :mode (("\\.html?\\'" . web-mode)
+         ("\\.tpl\\'" . web-mode)))
+
+(use-package php-mode
+  :ensure t
+  :mode (("\\.php[0-9]?\\'" . php-mode))
   :config
-  (use-package php-doc)
   
-  (defun my-web-mode-hook ()
-    "Hooks for Web mode."
-    (local-set-key (kbd "M-D") 'php-insert-doc-block))
-  (add-hook 'web-mode-hook 'my-web-mode-hook))
+  (use-package php-doc
+    :config
+    (bind-key "C-c C-d" 'php-insert-doc-block php-mode-map))
+  
+  (unbind-key "C-." php-mode-map))
+
 
 (use-package symfony1x
   :load-path "lisp/symfony1x"
@@ -38,6 +41,28 @@
                            (string-match "\\/Master_\\(?:Service\\|Beta\\|Community\\|FT\\)\\/" (buffer-file-name)))
                   (make-local-variable 'symfony1x-mode-status)
                   (symfony1x-mode t)))))
+
+(use-package js2-mode
+  :ensure t
+  :mode (("\\.js\\'" . js2-mode))
+  :config
+  )
+
+(use-package js2-refactor
+  :ensure t
+  :config
+  (add-hook 'js2-mode-hook #'js2-refactor-mode)
+  (js2r-add-keybindings-with-prefix "C-c C-m")
+  ;; (js2r-add-keybindings-with-modifier "C-s-")
+  )
+
+(use-package simple-httpd :ensure t)
+(use-package skewer-mode :ensure t
+  :config
+  (add-hook 'js2-mode-hook 'skewer-mode)
+  (add-hook 'css-mode-hook 'skewer-css-mode)
+  (add-hook 'web-mode-hook 'skewer-html-mode)
+  (add-hook 'html-mode-hook 'skewer-html-mode))
 
 (use-package css-mode
   :mode "\\.css\\'")
