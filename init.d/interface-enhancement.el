@@ -670,3 +670,45 @@
   :ensure t
   :config
   (ace-popup-menu-mode 1))
+
+(use-package hideshow
+  :bind (("C-c C-h" . my-toggle-hideshow-all)
+         ("C-c C-t" . hs-toggle-hiding))
+  :config
+  (defvar my-hs-hide nil "Current state of hideshow for toggling all.")
+  (defun my-toggle-hideshow-all ()
+    "Toggle hideshow all."
+    (interactive)
+    (setq my-hs-hide (not my-hs-hide))
+    (if my-hs-hide
+        (hs-hide-all)
+      (hs-show-all)))
+
+  (add-hook 'js2-mode-hook 'hs-minor-mode)
+  (add-hook 'web-mode-hook 'hs-minor-mode)
+  (add-hook 'php-mode-hook 'hs-minor-mode)
+  (add-hook 'c-mode-hook 'hs-minor-mode)
+  
+  ;; (add-hook 'projectile-mode-hook 'hs-minor-mode)
+  )
+
+
+;; ------ Releated to Key Guideline
+
+(use-package discover
+  :ensure t
+  :config
+  (global-discover-mode 1))
+
+(use-package discover-my-major
+  :bind (("C-h C-m" . discover-my-major)
+         ("C-h M-m" . discover-my-mode))
+  :ensure t)
+
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode)
+  (which-key-setup-side-window-bottom)
+  ;; (which-key-setup-minibuffer)
+  )
