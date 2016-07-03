@@ -30,6 +30,7 @@
 
 
 (use-package symfony1x
+  :ensure nil
   :load-path "lisp/symfony1x"
   :commands symfony1x-mode
   :init

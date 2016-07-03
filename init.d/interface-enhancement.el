@@ -47,6 +47,7 @@
 
 (use-package dired
   :bind ("C-c J" . dired-double-jump)
+  :ensure nil
   :preface
   (defvar mark-files-cache (make-hash-table :test #'equal))
 
@@ -74,7 +75,7 @@
     (dired-other-window second-dir))
 
   :config
-  (use-package dired-x)
+  (use-package dired-x :disabled t)
   (use-package dired+
     :config
     (unbind-key "M-s f" dired-mode-map))
@@ -296,6 +297,7 @@
   :bind ("C-. D" . dedicated-mode))
 
 (use-package sticky-windows
+  :ensure nil
   :bind (;;("C-. S" . sticky-window-keep-window-visible)
          ("C-x 0" . sticky-window-delete-window)
          ("C-x 1" . sticky-window-delete-other-windows)))
@@ -494,6 +496,7 @@
 
 (use-package mule
   :no-require t
+  :ensure nil
   :defines x-select-request-type
   :config
   (prefer-coding-system 'utf-8)
@@ -577,6 +580,7 @@
 
 (use-package hexcolour
   :no-require t
+  :ensure nil
   :init
   (defvar hexcolour-keywords
     '(("#[a-zA-Z0-9]\\{6\\}"

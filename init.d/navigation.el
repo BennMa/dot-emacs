@@ -266,6 +266,7 @@
 
 (use-package isearch
   :no-require t
+  :ensure nil
   :bind (("C-M-r" . isearch-backward-other-window)
          ("C-M-s" . isearch-forward-other-window))
   :preface

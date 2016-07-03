@@ -55,6 +55,7 @@
       it)))
 
 (use-package org-agenda
+  :ensure nil
   :bind (("M-A"   . jump-to-org-agenda)
          ("C-c a" . org-agenda))
   :config
@@ -94,20 +95,24 @@
                 (hl-line-mode 1)
                 (setq line-spacing 0.25))))
 
-(use-package org-mobile)
+(use-package org-mobile :ensure nil)
 
 (use-package org-knowledgebase
+  :ensure nil
   :bind* ("C-t"   . org-collect)
   :config
   (push '("Collector.org" :position bottom :height 15 :stick t)
         popwin:special-display-config))
 
 (use-package org-smart-capture
+  :ensure nil
   :bind ("M-m"   . org-smart-capture))
 
 (use-package org-velocity
+  :ensure nil
   :bind ("C-. n" . org-velocity-read))
 
 (use-package org-bullets
+  :ensure nil
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))

@@ -1,5 +1,5 @@
-(use-package cus-edit)
-(use-package initsplit)
+(use-package cus-edit :ensure nil)
+(use-package initsplit :ensure nil)
 
 (use-package nlinum
   :disabled t
@@ -16,6 +16,7 @@
 
 
 (use-package nf-procmail-mode
+  :disabled t
   :commands nf-procmail-mode
   :mode ("procmailrc" . nf-procmail-mode))
 
