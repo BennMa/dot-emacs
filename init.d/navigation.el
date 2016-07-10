@@ -3,16 +3,11 @@
   :bind (("C-c h"   . helm-command-prefix)
          ("C-h a"   . helm-apropos)
          ;; ("C-x f"   . helm-multi-files)
-         ("M-s M-s" . helm-occur)
-         ("M-s s"   . helm-occur)
-         ("M-s n"   . my-helm-find)
-         ("M-H"     . helm-resume))
-
-  :preface
-  (defun my-helm-find ()
-    (interactive)
-    (helm-find nil))
-
+         ("M-H"     . helm-resume)
+         ("M-r"     . helm-mini)
+         ("M-i"     . helm-semantic-or-imenu)
+         ("M-s M-o" . helm-occur))
+  
   :config
   (require 'helm-config)
   (helm-mode 1)
@@ -28,8 +23,29 @@
   (when (executable-find "curl")
     (setq helm-google-suggest-use-curl-p t)))
 
+(use-package helm-gtags
+  :config
+  
+  (add-hook 'projectile-mode-hook #'(lambda ()
+                                      (helm-gtags-mode 1)
+                                      (setq-local imenu-create-index-function #'ggtags-build-imenu-index)))
+  
+  (bind-keys :map helm-gtags-mode-map
+             ("C-c g a" . helm-gtags-tags-in-this-function)
+             ("C-c g c" . helm-gtags-create-tags)
+             ("C-c g u" . helm-gtags-update-tags)
+             ("C-c g r" . helm-gtags-find-rtags)
+             ("C-c g s" . helm-gtags-find-symbol)
+             ("C-c g h" . helm-gtags-show-stack)
+             ("M-." . helm-gtags-dwim)
+             ("M-," . helm-gtags-pop-stack)
+             ("M-?" . helm-gtags-select)
+             ("C-c <" . helm-gtags-previous-history)
+             ("C-c >" . helm-gtags-next-history)))
+
 
 (use-package ggtags
+  :disabled t
   :config
 
   (add-hook 'projectile-mode-hook 'ggtags-mode)
@@ -44,28 +60,11 @@
              ("M-," . pop-tag-mark)))
 
 
-(use-package helm-gtags
-  :ensure t
-  :disabled t
-  :config
-  
-  (add-hook 'projectile-mode-hook 'helm-gtags-mode)
-  
-  (bind-keys :map helm-gtags-mode-map
-             ;; ("C-c g a" . helm-gtags-tags-in-this-function)
-             ;; ("C-j" . helm-gtags-select)
-             ("M-." . helm-gtags-dwim)
-             ("M-," . helm-gtags-pop-stack)
-             ("C-c <" . helm-gtags-previous-history)
-             ("C-c >" . helm-gtags-next-history)))
-
 (use-package imenu
   :config
-  (use-package imenu+ :ensure t)
-  (setq-local imenu-create-index-function #'ggtags-build-imenu-index))
+  (use-package imenu+))
 
 (use-package imenu-list
-  :ensure t
   :bind ("C-. i" . imenu-list-minor-mode)
   :config
   (setq imenu-list-focus-after-activation t)
@@ -73,7 +72,6 @@
 
 (use-package imenu-anywhere
   :disabled t
-  :ensure t
   :init
   (setq imenu-anywhere-delimiter " / "))
 
@@ -81,7 +79,6 @@
   :commands (ag ag-regexp))
 
 (use-package helm-ag
-  :ensure t
   :commands helm-ag)
 
 (use-package ibuffer
@@ -294,13 +291,15 @@
          ("M-j" . ace-jump-mode)))
 
 (use-package sr-speedbar
-  :ensure t
   :bind (("C-. s" . sr-speedbar-toggle)
          :map speedbar-key-map
          ("<tab>" . speedbar-toggle-line-expansion)
          ("q" . sr-speedbar-close)))
 
 (use-package function-args
-  :ensure t
+  :disabled t
   :config
+  (unbind-key "M-i" function-args-mode-map)
+  (unbind-key "M-u" function-args-mode-map)
+  
   (fa-config-default))

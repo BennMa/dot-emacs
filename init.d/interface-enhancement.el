@@ -677,7 +677,9 @@
 
 (use-package hideshow
   :bind (("C-c C-h" . my-toggle-hideshow-all)
-         ("C-c C-t" . hs-toggle-hiding))
+         ("C-c C-t" . hs-toggle-hiding)
+         ("C-x n d" . narrow-to-defun)
+         ("C-x n w" . widen))
   :config
   (defvar my-hs-hide nil "Current state of hideshow for toggling all.")
   (defun my-toggle-hideshow-all ()
@@ -701,6 +703,7 @@
 
 (use-package discover
   :ensure t
+  :disabled t
   :config
   (global-discover-mode 1))
 

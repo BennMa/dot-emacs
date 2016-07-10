@@ -18,13 +18,6 @@
 
   )
 
-(use-package semantic
-  :config
-  (global-semanticdb-minor-mode 1)
-  (global-semantic-idle-scheduler-mode 1)
-
-  (semantic-mode 1))
-
 
 (use-package yasnippet
   :diminish yas-minor-mode
@@ -273,7 +266,7 @@
           try-complete-lisp-symbol-partially
           try-complete-lisp-symbol))
 
-  (bind-key "M-i" 'my-ido-hippie-expand)
+  ;; (bind-key "M-i" 'my-ido-hippie-expand)
 
   (defadvice he-substitute-string (after he-paredit-fix)
     "remove extra paren when expanding line in paredit"
