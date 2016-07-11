@@ -23,6 +23,7 @@
   :config
   
   (use-package php-doc
+    :disabled t
     :config
     (bind-key "C-c C-d" 'php-insert-doc-block php-mode-map))
   
@@ -101,6 +102,19 @@
 
 ;; ------ C/C++
 
+(use-package cc-mode
+  :bind (:map c-mode-map
+         ("<return>" . newline-and-indent))
+  :config
+
+  (setq-default c-electric-flag nil)
+
+  ;; (defun my-make-CR-do-indent ()
+  ;;   (define-key c-mode-base-map "<return>" 'newline-and-indent))
+  ;; (add-hook 'c-initialization-hook 'my-make-CR-do-indent)
+  
+  )
+
 ;; ------ Javascript
 
 (use-package js2-mode
@@ -158,3 +172,31 @@
                               (local-set-key "\C-cb" 'nodejs-repl-send-buffer)
                               (local-set-key "\C-c\C-b" 'nodejs-repl-send-buffer-and-go)
                               (local-set-key "\C-cl" 'nodejs-repl-load-file-and-go))))
+
+;; ------ CEDET
+
+(use-package semantic
+  :config
+  (global-semanticdb-minor-mode 1)
+  (global-semantic-idle-scheduler-mode 1)
+  (set-default 'semantic-case-fold t)
+  (semantic-mode 1)
+  
+  ;; (semantic-add-system-include "/usr/include/boost" 'c++-mode)
+
+
+  ;; You can add this to improve the parse of macro-heavy code:
+  ;; (require 'semantic/bovine/c)
+  ;; (add-to-list 'semantic-lex-c-preprocessor-symbol-file
+  ;;              "/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h")
+  )
+
+(use-package semantic-php
+  :ensure nil
+  :load-path "lisp/semantic-php"
+  :init
+  (load "semantic-php/loaddefs"))
+
+(use-package dtrt-indent
+  :config
+  (dtrt-indent-mode 1))

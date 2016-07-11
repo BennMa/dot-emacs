@@ -24,3 +24,5 @@ backup/
 *.elc
 conf.d/individual-settings.el
 .mc-lists.el
+lisp/ede-php-autoload/
+lisp/semantic-php/
