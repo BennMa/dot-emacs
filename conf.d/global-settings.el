@@ -714,6 +714,7 @@
  '(url-configuration-directory "~/.emacs.d/data/url/")
  '(url-irc-function (quote url-irc-erc))
  '(use-package-always-ensure t)
+ '(use-package-verbose (quote debug))
  '(user-full-name "benn")
  '(user-mail-address "sjembn@gmail.com")
  '(vc-command-messages t)

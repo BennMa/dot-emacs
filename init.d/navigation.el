@@ -282,13 +282,7 @@
   :bind ("M-s O" . moccur))
 
 (use-package ace-jump-mode
-  :bind (("M-j" . ace-jump-mode)
-         :map function-args-mode-map
-         ("M-j" . ace-jump-mode)
-         :map js2-mode-map
-         ("M-j" . ace-jump-mode)
-         :map js3-mode-map
-         ("M-j" . ace-jump-mode)))
+  :bind (("M-j" . ace-jump-mode)))
 
 (use-package sr-speedbar
   :bind (("C-. s" . sr-speedbar-toggle)
