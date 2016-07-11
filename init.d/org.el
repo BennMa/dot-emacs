@@ -101,8 +101,9 @@
   :ensure nil
   :bind* ("C-t"   . org-collect)
   :config
-  (push '("Collector.org" :position bottom :height 15 :stick t)
-        popwin:special-display-config))
+  ;; (push '("Collector.org" :position bottom :height 15 :stick t)
+  ;;       popwin:special-display-config)
+  )
 
 (use-package org-smart-capture
   :ensure nil
