@@ -2,7 +2,7 @@
 (use-package initsplit :ensure nil)
 
 (use-package nlinum
-  :disabled t
+  ;; :disabled t
   :ensure t
   :config
   (global-nlinum-mode))

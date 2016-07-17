@@ -15,3 +15,9 @@
   (setq projectile-completion-system 'helm)
   (setq helm-projectile-fuzzy-match nil)
   (helm-projectile-on))
+
+(use-package perspective
+  :disabled t
+  :config
+  (persp-mode)
+  (use-package persp-projectile))
