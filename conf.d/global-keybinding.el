@@ -139,8 +139,6 @@
 (bind-key "C-c f" 'flush-lines)
 
 (bind-key "C-c g" 'goto-line)
-(global-set-key [remap goto-line] 'goto-line-with-feedback)
-
 (bind-key "C-c k" 'keep-lines)
 
 (bind-key "C-c o" 'customize-option)
