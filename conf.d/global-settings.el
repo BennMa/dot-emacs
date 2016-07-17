@@ -161,7 +161,7 @@
  '(custom-file "~/.emacs.d/conf.d/global-settings.el")
  '(custom-raised-buttons nil)
  '(custom-theme-directory "~/.emacs.d/themes/")
- '(default-frame-alist (quote ((cursor-color . "black"))))
+ '(default-frame-alist (quote ((cursor-color . "white"))))
  '(default-major-mode (quote text-mode) t)
  '(deft-auto-save-interval 0.0)
  '(deft-directory "~/Documents/notes")
@@ -368,7 +368,7 @@
  '(helm-gtags-suggested-key-mapping t)
  '(helm-gtags-use-input-at-cursor t)
  '(helm-ls-git-show-abs-or-relative (quote relative))
- '(helm-projectile-fuzzy-match nil)
+ '(helm-projectile-fuzzy-match t)
  '(helm-quick-update t)
  '(helm-recentf-fuzzy-match t)
  '(helm-split-window-default-side (quote right))
@@ -461,7 +461,7 @@
     ("{" "}" "," ",..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
  '(ido-enable-flex-matching t)
  '(ido-enable-last-directory-history nil)
- '(ido-enable-tramp-completion nil)
+ '(ido-enable-tramp-completion t)
  '(ido-enter-matching-directory (quote only))
  '(ido-ignore-files
    (quote
@@ -599,6 +599,9 @@
  '(projectile-project-root-files-bottom-up
    (quote
     (".mproject" ".projectile" ".git" ".hg" ".fslckout" ".bzr" "_darcs")))
+ '(projectile-project-root-files-functions
+   (quote
+    (projectile-root-local projectile-root-top-down projectile-root-bottom-up projectile-root-top-down-recurring)))
  '(projectile-switch-project-action (quote helm-projectile))
  '(ps-font-size (quote (8 . 10)))
  '(ps-footer-font-size (quote (12 . 14)))
@@ -721,6 +724,7 @@
  '(tramp-default-method-alist
    (quote
     (("\\`\\(127\\.0\\.0\\.1\\|::1\\|localhost6?\\)\\'" "\\`root\\'" "sudo"))))
+ '(tramp-encoding-shell "/bin/sh")
  '(tramp-persistency-file-name "~/.emacs.d/data/tramp")
  '(trash-directory "~/.Trash")
  '(undo-limit 800000)

@@ -49,10 +49,14 @@
   
   :config
   (load-conf "global-keybinding")
+  
   ;; org faces: http://orgmode.org/worg/org-color-themes.html
-  (load-theme 'my-leuven t)
+  ;; (load-theme 'my-leuven t)
+  (load-theme 'my-custom t)
+  
   (qiang-set-font individual-english-fonts individual-font-size individual-chinese-fonts))
 
-(use-package load-dir
-  :config 
-  (load-dir-one (expand-file-name "init.d/" ROOT-DIR)))
+(mapc
+   #'(lambda (file)
+       (load-file file))
+   (directory-files (expand-file-name "init.d/" ROOT-DIR) t ".*\\.el" t))

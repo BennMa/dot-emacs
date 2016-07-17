@@ -14,7 +14,7 @@
   (custom-theme-set-faces
    'my-custom
    `(default ((t (:foreground "#F8F8F2" :background "#1B1D1E")))) ;; #F8F8F2
-   `(cursor ((,class (:background "white"))))   
+   `(cursor ((t (:foreground "white" :background "white"))))
    `(bold ((t (:weight bold))))
    `(bold-italic ((t (:weight bold :slant italic))))
    `(custom-face-tag ((t (:foreground "#66D9EF" :weight bold))))

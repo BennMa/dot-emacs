@@ -25,7 +25,6 @@
 
 (use-package helm-gtags
   :config
-  
   (add-hook 'projectile-mode-hook #'(lambda ()
                                       (helm-gtags-mode 1)
                                       (setq-local imenu-create-index-function #'ggtags-build-imenu-index)))
