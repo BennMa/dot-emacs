@@ -13,7 +13,7 @@
 (let ((class '((class color) (min-colors 89))))
   (custom-theme-set-faces
    'my-custom
-   `(default ((t (:foreground "#F8F8F2" :background "#1B1D1E")))) ;; #F8F8F2
+   `(default ((t (:foreground "white" :background "#1B1D1E")))) ;; #F8F8F2
    `(cursor ((t (:foreground "white" :background "white"))))
    `(bold ((t (:weight bold))))
    `(bold-italic ((t (:weight bold :slant italic))))

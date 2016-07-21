@@ -29,6 +29,13 @@
   
   (unbind-key "C-." php-mode-map))
 
+(use-package phpunit
+  ;; :mode (("\\.php$" . phpunit-mode))
+  :bind (:map php-mode-map
+              ("C-c t t" . phpunit-current-test)
+              ("C-c t c" . phpunit-current-class)
+              ("C-c t p" . phpunit-current-project)))
+
 
 (use-package symfony1x
   :ensure nil
@@ -117,36 +124,37 @@
 
 ;; ------ Javascript
 
-(use-package js2-mode
-  :disabled t  
-  :mode (("\\.js\\'" . js2-mode))
-  :config
-  )
-
-(use-package js2-refactor
-  :disabled t  
-  :config
-  (add-hook 'js2-mode-hook #'js2-refactor-mode)
-  (js2r-add-keybindings-with-prefix "C-c C-m")
-  ;; (js2r-add-keybindings-with-modifier "C-s-")
-  )
-
 (use-package simple-httpd)
-(use-package skewer-mode
-  :disabled t
-  :config
-  (skewer-setup)
-  (add-hook 'web-mode-hook 'skewer-mode))
 
-(use-package js-comint
-  :disabled t
-  :config
-  (add-hook 'js2-mode-hook '(lambda ()
-                              (local-set-key "\C-x\C-e" 'js-send-last-sexp)
-                              (local-set-key "\C-\M-x" 'js-send-last-sexp-and-go)
-                              (local-set-key "\C-cb" 'js-send-buffer)
-                              (local-set-key "\C-c\C-b" 'js-send-buffer-and-go)
-                              (local-set-key "\C-cl" 'js-load-file-and-go))))
+;; (use-package js2-mode
+;;   :disabled t  
+;;   :mode (("\\.js\\'" . js2-mode))
+;;   :config
+;;   )
+
+;; (use-package js2-refactor
+;;   :disabled t  
+;;   :config
+;;   (add-hook 'js2-mode-hook #'js2-refactor-mode)
+;;   (js2r-add-keybindings-with-prefix "C-c C-m")
+;;   ;; (js2r-add-keybindings-with-modifier "C-s-")
+;;   )
+
+;; (use-package skewer-mode
+;;   :disabled t
+;;   :config
+;;   (skewer-setup)
+;;   (add-hook 'web-mode-hook 'skewer-mode))
+
+;; (use-package js-comint
+;;   :disabled t
+;;   :config
+;;   (add-hook 'js2-mode-hook '(lambda ()
+;;                               (local-set-key "\C-x\C-e" 'js-send-last-sexp)
+;;                               (local-set-key "\C-\M-x" 'js-send-last-sexp-and-go)
+;;                               (local-set-key "\C-cb" 'js-send-buffer)
+;;                               (local-set-key "\C-c\C-b" 'js-send-buffer-and-go)
+;;                               (local-set-key "\C-cl" 'js-load-file-and-go))))
 
 (use-package js3-mode
   :mode (("\\.js\\'" . js3-mode)
@@ -168,10 +176,10 @@
   :config
   (add-hook 'js3-mode-hook '(lambda ()
                               (local-set-key "\C-x\C-e" 'nodejs-repl-send-last-sexp)
-                              (local-set-key "\C-\M-x" 'nodejs-repl-send-last-sexp-and-go)
-                              (local-set-key "\C-cb" 'nodejs-repl-send-buffer)
-                              (local-set-key "\C-c\C-b" 'nodejs-repl-send-buffer-and-go)
-                              (local-set-key "\C-cl" 'nodejs-repl-load-file-and-go))))
+                              (local-set-key "\C-c\C-b" 'nodejs-repl-send-buffer)
+                              (local-set-key "\C-c\C-r" 'nodejs-repl-send-region)
+                              (local-set-key "\C-c\C-l" 'nodejs-repl-load-file)
+                              (local-set-key "\C-c\'" 'nodejs-repl-switch-to-repl))))
 
 ;; ------ CEDET
 

@@ -42,7 +42,7 @@
      ("~/Mine/Emacs/" . "~/Mine/Emacs/.backups")
      ("~/Mine/Documents/" . "~/Mine/Documents/.backups")
      ("~/Mine/Projects/" . "~/Mine/Projects/.backups")
-     ("\\(recentf\\|archive/sent\\)" . "/tmp")
+     ("\\(recentf\\|archive/sent\\)" . "/tmp/emacs-backup")
      (".*" . "~/.backups"))))
  '(backward-delete-char-untabify-method (quote untabify))
  '(bbdb-default-country "")
@@ -146,9 +146,10 @@
  '(compilation-always-kill t)
  '(compilation-ask-about-save nil)
  '(compilation-context-lines 10)
+ '(compilation-read-command nil)
  '(compilation-scroll-output (quote first-error))
  '(compilation-skip-threshold 2)
- '(compilation-window-height 100)
+ '(compilation-window-height nil)
  '(coq-compile-before-require t)
  '(coq-holes-minor-mode nil)
  '(coq-maths-menu-enable t)
@@ -156,7 +157,7 @@
  '(coq-prog-args (quote ("-emacs" "-dont-load-proofs")))
  '(coq-prog-name "ssrcoq")
  '(current-language-environment "UTF-8")
- '(cursor-type t)
+ '(cursor-type (quote bar))
  '(custom-buffer-done-function (quote kill-buffer))
  '(custom-file "~/.emacs.d/conf.d/global-settings.el")
  '(custom-raised-buttons nil)
@@ -564,6 +565,7 @@
  '(php-insert-doc-copyright-email "bennmsg@gmail.com")
  '(php-insert-doc-copyright-name "benn")
  '(php-insert-doc-uses-tag nil)
+ '(phpunit-program "/usr/bin/php56 /home/benn/.composer/vendor/bin/phpunit")
  '(popwin:special-display-config
    (quote
     (("*Miniedit Help*" :noselect t)
@@ -595,13 +597,10 @@
  '(projectile-known-projects-file "~/.emacs.d/data/projectile-bookmarks.eld")
  '(projectile-project-root-files
    (quote
-    (".mproject" "rebar.config" "project.clj" "SConstruct" "pom.xml" "build.sbt" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs")))
- '(projectile-project-root-files-bottom-up
-   (quote
-    (".mproject" ".projectile" ".git" ".hg" ".fslckout" ".bzr" "_darcs")))
+    ("CMakeLists.txt" "Makefile" "rebar.config" "project.clj" "build.boot" "SConstruct" "pom.xml" "build.sbt" "gradlew" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "TAGS" "GTAGS")))
  '(projectile-project-root-files-functions
    (quote
-    (projectile-root-local projectile-root-top-down projectile-root-bottom-up projectile-root-top-down-recurring)))
+    (projectile-root-local projectile-root-top-down projectile-root-top-down-recurring projectile-root-bottom-up)))
  '(projectile-switch-project-action (quote helm-projectile))
  '(ps-font-size (quote (8 . 10)))
  '(ps-footer-font-size (quote (12 . 14)))
