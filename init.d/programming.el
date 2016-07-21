@@ -124,28 +124,6 @@
 
 ;; ------ Javascript
 
-(use-package simple-httpd)
-
-;; (use-package js2-mode
-;;   :disabled t  
-;;   :mode (("\\.js\\'" . js2-mode))
-;;   :config
-;;   )
-
-;; (use-package js2-refactor
-;;   :disabled t  
-;;   :config
-;;   (add-hook 'js2-mode-hook #'js2-refactor-mode)
-;;   (js2r-add-keybindings-with-prefix "C-c C-m")
-;;   ;; (js2r-add-keybindings-with-modifier "C-s-")
-;;   )
-
-;; (use-package skewer-mode
-;;   :disabled t
-;;   :config
-;;   (skewer-setup)
-;;   (add-hook 'web-mode-hook 'skewer-mode))
-
 ;; (use-package js-comint
 ;;   :disabled t
 ;;   :config
@@ -157,12 +135,35 @@
 ;;                               (local-set-key "\C-cl" 'js-load-file-and-go))))
 
 (use-package js3-mode
+  :disabled t
   :mode (("\\.js\\'" . js3-mode)
          ("\\.json\\'" . js3-mode)))
 
+
+(use-package js2-mode
+  :mode (("\\.js\\'" . js2-mode)
+         ("\\.json\\'" . js3-mode))
+  :bind (:map js2-mode-map
+         ("<return>" . newline-and-indent))
+  :config
+  (use-package js2-refactor
+    :config
+    (add-hook 'js2-mode-hook #'js2-refactor-mode)
+    (js2r-add-keybindings-with-prefix "C-c C-m")
+    ;; (js2r-add-keybindings-with-modifier "C-s-")
+    )
+
+  (use-package skewer-mode
+    :init
+    (use-package simple-httpd)
+    :config
+    (skewer-setup)
+    (add-hook 'js2-mode-hook 'skewer-mode)
+    (add-hook 'web-mode-hook 'skewer-mode)))
+
 (use-package tern
   :config
-  (add-hook 'js3-mode-hook (lambda () (tern-mode t)))
+  (add-hook 'js2-mode-hook (lambda () (tern-mode t))))
 
   (use-package company-tern
     :config
@@ -173,13 +174,16 @@
     ))
 
 (use-package nodejs-repl
+  :disabled t
   :config
-  (add-hook 'js3-mode-hook '(lambda ()
-                              (local-set-key "\C-x\C-e" 'nodejs-repl-send-last-sexp)
-                              (local-set-key "\C-c\C-b" 'nodejs-repl-send-buffer)
-                              (local-set-key "\C-c\C-r" 'nodejs-repl-send-region)
-                              (local-set-key "\C-c\C-l" 'nodejs-repl-load-file)
-                              (local-set-key "\C-c\'" 'nodejs-repl-switch-to-repl))))
+  (defun my-nodejs-repl-hook()
+    (local-set-key "\C-x\C-e" 'nodejs-repl-send-last-sexp)
+    (local-set-key "\C-\M-x" 'nodejs-repl-send-last-sexp-and-go)
+    (local-set-key "\C-cb" 'nodejs-repl-send-buffer)
+    (local-set-key "\C-c\C-b" 'nodejs-repl-send-buffer-and-go)
+    (local-set-key "\C-cl" 'nodejs-repl-load-file-and-go))
+
+  (add-hook 'js2-mode-hook 'my-nodejs-repl-hook))
 
 ;; ------ CEDET
 
