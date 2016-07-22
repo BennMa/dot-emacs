@@ -163,7 +163,7 @@
 
 (use-package tern
   :config
-  (add-hook 'js2-mode-hook (lambda () (tern-mode t))))
+  (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
 
   (use-package company-tern
     :config
