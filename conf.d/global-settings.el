@@ -142,6 +142,7 @@
  '(company-gtags-modes (quote (projectile-mode)))
  '(company-idle-delay 0.1)
  '(company-minimum-prefix-length 1)
+ '(company-tooltip-align-annotations t)
  '(company-transformers (quote (company-sort-by-backend-importance)))
  '(compilation-always-kill t)
  '(compilation-ask-about-save nil)
@@ -298,9 +299,6 @@
  '(find-ls-option (quote ("-print0 | xargs -0 ls -ld" . "-ld")))
  '(find-ls-subdir-switches "-alh")
  '(flx-ido-use-faces nil)
- '(flycheck-checkers
-   (quote
-    (ada-gnat asciidoc c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint d-dmd elixir emacs-lisp erlang eruby-erubis fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck haml handlebars haskell-ghc haskell-hlint html-tidy javascript-jshint javascript-eslint javascript-gjslint json-jsonlint less luacheck lua perl perl-perlcritic php php-phpmd php-phpcs puppet-parser puppet-lint python-flake8 python-pylint python-pycompile r-lintr racket rpm-rpmlint rst rst-sphinx ruby-rubocop ruby-rubylint ruby ruby-jruby rust sass scala scala-scalastyle scss-lint scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim tex-chktex tex-lacheck texinfo verilog-verilator xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby)))
  '(flycheck-display-errors-delay 0.0)
  '(flycheck-standard-error-navigation nil)
  '(flymake-compilation-prevents-syntax-check nil)

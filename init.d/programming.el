@@ -1,8 +1,6 @@
 ;; ------ Common
 (use-package flycheck
-  :disabled t
-  :demand t
-  :commands (flycheck-mode global-flycheck-mode)
+  ;; :commands (flycheck-mode global-flycheck-mode)
   :config
   (flycheck-add-mode 'php 'web-mode)
   (flycheck-add-mode 'php-phpmd 'web-mode)
@@ -16,7 +14,9 @@
 ;; ------ PHP
 (use-package web-mode
   :mode (("\\.html?\\'" . web-mode)
-         ("\\.tpl\\'" . web-mode)))
+         ("\\.tpl\\'" . web-mode)
+         ("\\.tsx\\'" . web-mode)
+         ("\\.jsx\\'" . web-mode)))
 
 (use-package php-mode
   :mode (("\\.php[0-9]?\\'" . php-mode))
@@ -184,6 +184,29 @@
     (local-set-key "\C-cl" 'nodejs-repl-load-file-and-go))
 
   (add-hook 'js2-mode-hook 'my-nodejs-repl-hook))
+
+;; https://github.com/ananthakumaran/tide
+(use-package tide
+  :config
+  (defun setup-tide-mode ()
+    (interactive)
+    (tide-setup)
+    (flycheck-mode +1)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode +1)
+    (company-mode +1))
+
+  (add-hook 'before-save-hook 'tide-format-before-save)
+  (add-hook 'typescript-mode-hook #'setup-tide-mode)  
+  (setq tide-format-options
+        '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions t
+          :placeOpenBraceOnNewLineForFunctions nil))
+
+  (add-hook 'web-mode-hook
+          (lambda ()
+            (when (member (file-name-extension buffer-file-name) '("tsx", "jsx"))
+              (setup-tide-mode))))
+  (add-hook 'js2-mode-hook #'setup-tide-mode))
 
 ;; ------ CEDET
 
