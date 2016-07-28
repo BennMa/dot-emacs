@@ -18,10 +18,9 @@
 
   )
 
-
 (use-package yasnippet
-  :diminish yas-minor-mode
-  :commands (yas-expand yas-minor-mode)
+  ;; :diminish yas-minor-mode
+  ;; :commands (yas-expand yas-minor-mode)
   :functions (yas-guess-snippet-directories yas-table-name)
   :defines (yas-guessed-modes)
   :mode ("/\\.emacs\\.d/snippets/" . snippet-mode)
@@ -52,8 +51,12 @@
 
   :config
   (yas-load-directory "~/.emacs.d/snippets/")
-
   (bind-key "C-i" 'yas-next-field-or-maybe-expand yas-keymap))
+
+(use-package auto-yasnippet
+  :bind (("H-w" . aya-create)
+         ("H-y" . aya-expand)
+         ("C-o" . aya-open-line)))
 
 (use-package hippie-exp
   :bind (("M-/" . dabbrev-expand)
