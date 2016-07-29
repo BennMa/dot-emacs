@@ -59,6 +59,21 @@
 (use-package yaml-mode
   :mode ("\\.ya?ml\\'" . yaml-mode))
 
+;; very powerful tool
+;; https://github.com/smihica/emmet-mode
+(use-package emmet-mode
+  :config
+  (add-hook 'web-mode-hook 'emmet-mode)
+  (add-hook 'sgml-mode-hook 'emmet-mode)
+  (add-hook 'css-mode-hook  'emmet-mode)
+  (add-hook 'emmet-mode-hook (lambda ()
+                               (setq emmet-indent-after-insert nil)
+                               ;; (setq emmet-indentation 2)
+                               ))
+  (setq emmet-move-cursor-between-quotes t)
+  (setq emmet-expand-jsx-className? t)
+  (setq emmet-self-closing-tag-style " /"))
+
 
 ;; ------ C/C++
 (use-package cmake-mode

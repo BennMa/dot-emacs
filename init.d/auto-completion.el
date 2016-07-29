@@ -54,8 +54,8 @@
   (bind-key "C-i" 'yas-next-field-or-maybe-expand yas-keymap))
 
 (use-package auto-yasnippet
-  :bind (("H-w" . aya-create)
-         ("H-y" . aya-expand)
+  :bind (("C-c y c" . aya-create)
+         ("C-c y y" . aya-expand)
          ("C-o" . aya-open-line)))
 
 (use-package hippie-exp
