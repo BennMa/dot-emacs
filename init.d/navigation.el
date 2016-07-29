@@ -7,6 +7,11 @@
          ("M-r"     . helm-mini)
          ("M-i"     . helm-semantic-or-imenu)
          ("M-s M-o" . helm-occur))
+
+  :init
+  ;; issue about helm take long time to initialization
+  ;; https://github.com/emacs-helm/helm/issues/1000
+  (setq tramp-verbose 6)
   
   :config
   (require 'helm-config)
