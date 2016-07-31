@@ -719,3 +719,16 @@
   (which-key-setup-side-window-bottom)
   ;; (which-key-setup-minibuffer)
   )
+
+
+(use-package aggressive-indent
+  :config
+  ;; (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
+  (global-aggressive-indent-mode 1)
+  ;; (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
+  )
+
+(use-package indent-guide
+  :config
+  ;; (set-face-background 'indent-guide-face "dimgray")
+  (indent-guide-global-mode))

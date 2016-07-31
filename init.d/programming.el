@@ -8,8 +8,8 @@
 
   (defalias 'flycheck-show-error-at-point-soon
     'flycheck-show-error-at-point)
-  
-  (global-flycheck-mode))
+
+  (add-hook 'after-init-hook #'global-flycheck-mode))
 
 ;; ------ PHP
 (use-package web-mode

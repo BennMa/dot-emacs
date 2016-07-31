@@ -76,7 +76,16 @@
  '(org-archive-location "%s_archive::datetree")
  '(org-archive-save-context-info (quote (time category itags)))
  '(org-attach-method (quote mv))
- '(org-babel-load-languages (quote ((emacs-lisp . t) (sh . t) (ruby . t) (python . t))))
+ '(org-babel-load-languages
+   (quote
+    ((emacs-lisp . t)
+     (shell . t)
+     (ruby . t)
+     (python . t)
+     (C . t)
+     (css . t)
+     (java . t)
+     (js . t))))
  '(org-beamer-frame-default-options "fragile")
  '(org-capture-templates
    (quote
@@ -113,6 +122,7 @@
  '(org-clock-persist-file "~/.emacs.d/data/org-clock-save.el")
  '(org-clock-resolve-expert t)
  '(org-completion-use-ido t)
+ '(org-confirm-babel-evaluate nil)
  '(org-confirm-elisp-link-function nil)
  '(org-confirm-shell-link-function nil)
  '(org-crypt-disable-auto-save nil)
@@ -190,7 +200,7 @@
  '(org-log-done (quote time))
  '(org-mobile-directory "~/Dropbox/PKG/MobileOrg")
  '(org-mobile-inbox-for-pull "~/Dropbox/PKG/Task/FROM-MOBILE.org")
- '(org-modules
+'(org-modules
 (quote
  (org-gnus org-habit org-id org-info org-depend org-velocity)))
  '(org-refile-targets (quote (("~/Dropbox/PKG/Task/PROJECTS.org" :level . 1))))
@@ -201,7 +211,7 @@
  '(org-stuck-projects (quote ("STUCK" nil nil "")))
  '(org-tags-column -78)
  '(org-time-clocksum-use-fractional t)
- '(org-todo-keyword-faces
+'(org-todo-keyword-faces
 (quote
  (("TODO" :foreground "red" :weight bold)
   ("STARTED" :foreground "dark orange" :weight bold)
@@ -209,7 +219,7 @@
   ("SOMEDAY" :foreground "dark blue" :weight bold)
   ("CANCELED" :foreground "gray" :weight bold)
   ("DONE" :foreground "ForestGreen" :weight bold))))
- '(org-todo-keywords
+'(org-todo-keywords
 (quote
  ((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "SOMEDAY(o)" "|" "CANCELED(c)" "DONE(d)"))))
  '(org-todo-repeat-to-state "TODO")
@@ -218,7 +228,7 @@
  '(org-use-tag-inheritance nil)
  '(org-velocity-always-use-bucket t)
  '(org-velocity-bucket "~/Dropbox/PKG/Task/PROJECTS.org")
- '(org-velocity-capture-templates
+'(org-velocity-capture-templates
 (quote
  (("v" "Velocity" entry
    (file "~/Dropbox/PKG/Task/INBOX.org")
@@ -227,12 +237,12 @@
 :PROPERTIES:
 :ID:       %(shell-command-to-string \\\"uuidgen\\\"):CREATED:  %U
 :END:" :prepend t))))
- '(org-velocity-exit-on-match t)
- '(org-velocity-force-new t)
- '(org-velocity-search-method (quote regexp))
- '(org-x-backends (quote (ox-org ox-redmine)))
- '(org-x-redmine-title-prefix-function (quote org-x-redmine-title-prefix))
- '(org-x-redmine-title-prefix-match-function (quote org-x-redmine-title-prefix-match)))
+'(org-velocity-exit-on-match t)
+'(org-velocity-force-new t)
+'(org-velocity-search-method (quote regexp))
+'(org-x-backends (quote (ox-org ox-redmine)))
+'(org-x-redmine-title-prefix-function (quote org-x-redmine-title-prefix))
+'(org-x-redmine-title-prefix-match-function (quote org-x-redmine-title-prefix-match)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

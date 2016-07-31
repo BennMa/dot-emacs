@@ -2,6 +2,10 @@
 (load (expand-file-name "conf.d/org-settings" ROOT-DIR))
 
 ;; ------ org packages
+
+;; Easy Template
+;; http://emacs.stackexchange.com/questions/12841/quickly-insert-source-blocks-in-org-mode
+;; http://orgmode.org/worg/org-contrib/babel/header-args.html
 (use-package org
   :bind (("C-c S" . org-store-link)
          ("C-c l" . org-insert-link))
@@ -52,7 +56,8 @@
             (goto-char pos)
             (re-search-forward (concat "^\\*\\* " target-headline))
             (setcar (nthcdr 3 it) (point)))))
-      it)))
+      it))  
+  )
 
 (use-package org-agenda
   :ensure nil
@@ -117,3 +122,10 @@
   :ensure nil
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+
+;; http://orgmode.org/guide/Working-With-Source-Code.html
+(use-package ob-typescript
+  :config
+  (add-to-list 'org-babel-load-languages '(typescript . t))
+  (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))

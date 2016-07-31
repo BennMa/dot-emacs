@@ -79,8 +79,6 @@
 (use-package esup
   :commands esup)
 
-
-
 (use-package vertigo
   :bind (("M-P" . vertigo-jump-up)
          ("M-N" . vertigo-jump-down)))
