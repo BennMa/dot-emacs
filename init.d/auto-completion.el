@@ -19,16 +19,13 @@
   )
 
 (use-package yasnippet
-  ;; :diminish yas-minor-mode
-  ;; :commands (yas-expand yas-minor-mode)
-  :functions (yas-guess-snippet-directories yas-table-name)
-  :defines (yas-guessed-modes)
+  :demand t
   :mode ("/\\.emacs\\.d/snippets/" . snippet-mode)
   :bind (("C-c y TAB" . yas-expand)
-         ("C-c y s"   . yas-insert-snippet)
          ("C-c y n"   . yas-new-snippet)
+         ("C-c y s"   . yas-insert-snippet)         
          ("C-c y v"   . yas-visit-snippet-file))
-  :preface
+  :config
   (defun yas-new-snippet (&optional choose-instead-of-guess)
     (interactive "P")
     (let ((guessed-directories (yas-guess-snippet-directories)))
@@ -48,8 +45,7 @@
                  "# name: $1\n"
                  "# --\n"
                  "$0\n")))))
-
-  :config
+  
   (yas-load-directory "~/.emacs.d/snippets/")
   (bind-key "C-i" 'yas-next-field-or-maybe-expand yas-keymap))
 
