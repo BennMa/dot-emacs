@@ -6,6 +6,7 @@
 ;; Easy Template
 ;; http://emacs.stackexchange.com/questions/12841/quickly-insert-source-blocks-in-org-mode
 ;; http://orgmode.org/worg/org-contrib/babel/header-args.html
+;; http://ehneilsen.net/notebook/orgExamples/org-examples.html#sec-2-1
 (use-package org
   :bind (("C-c S" . org-store-link)
          ("C-c l" . org-insert-link))
