@@ -79,7 +79,7 @@
  '(org-babel-load-languages
    (quote
     ((emacs-lisp . t)
-     (shell . t)
+     (sh . t)
      (ruby . t)
      (python . t)
      (C . t)
