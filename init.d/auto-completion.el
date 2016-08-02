@@ -47,7 +47,9 @@
                  "$0\n")))))
   
   (yas-load-directory "~/.emacs.d/snippets/")
-  (bind-key "C-i" 'yas-next-field-or-maybe-expand yas-keymap))
+  (bind-key "C-i" 'yas-next-field-or-maybe-expand yas-keymap)
+  (yas-global-mode)  
+  )
 
 (use-package auto-yasnippet
   :bind (("C-c y c" . aya-create)

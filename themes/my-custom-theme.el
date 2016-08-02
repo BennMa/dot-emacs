@@ -35,10 +35,10 @@
    `(escape-glyph ((t (:foreground "#E6DB74"))))
    `(minibuffer-prompt ((t (:foreground "#66D9EF"))))
    `(mode-line ((t (:foreground "#F8F8F2" :background "#ff0000"
-                               :box (:line-width 1 :color "#ff0000" :style released-button)))))
+                                :box (:line-width 1 :color "#ff0000" :style released-button)))))
    `(mode-line-buffer-id ((t (:foreground nil :background nil :weight semi-bold))))
    `(mode-line-inactive ((t (:foreground "#BCBCBC" :background "#1E1C1B"
-                                        :box (:line-width 1 :color "#232526")))))
+                                         :box (:line-width 1 :color "#232526")))))
    `(mode-line-mousable ((t (:foreground "#BCBCBC" :background "#ff0000"))))
    `(mode-line-mousable-minor-mode ((t (:foreground "#BCBCBC" :background "#000000"))))
    `(font-lock-builtin-face ((t (:foreground "#A6E22E"))))
@@ -56,7 +56,7 @@
    `(font-lock-type-face ((t (:foreground "#66D9EF")))) ;; #66D9EF
    `(font-lock-variable-name-face ((t (:foreground "#F92672"))))
    `(font-lock-warning-face ((t (:foreground "#FFFFFF"
-                                            :background "#333333"))))
+                                             :background "#333333"))))
    `(fringe ((t (:background "#232526"))))
    `(highlight ((t (:foreground "#000000" :background "#C4BE89"))))
    `(hl-line ((t (:background "#293739"))))
@@ -120,8 +120,8 @@
    `(org-verbatim ((t (:foreground "#eeeeec" :underline t :slant italic))))
    `(org-block ((t (:foreground "#bbbbbc" :box nil))))
    `(org-checkbox ((t (:foreground "#000000", :background "#93a1a1" :box
-                                  (:color "#93a1a1" :style "released-button")))))
-   `(org-headline-done ((t (:strike-through t))))
+                                   (:color "#93a1a1" :style "released-button")))))
+   ;; `(org-headline-done ((t nil))) ;; (:strike-through t)
    `(org-quote ((t (:inherit org-block :slant italic))))
    `(org-verse ((t (:inherit org-block :slant italic))))
    `(org-todo ((t (:bold t :foreground "Red"))))
@@ -135,7 +135,7 @@
    `(org-habit-overdue-future-face ((((background light)) (:background "#fc9590"))))
    `(org-habit-ready-face ((((background light)) (:background "#4df946"))))
    `(org-habit-ready-future-face ((((background light)) (:background
-   '                                                     "#acfca9"))))
+                                                         '                                                     "#acfca9"))))
    `(org-agenda-structure ((t (:inherit default :height 1.2 :underline nil :foreground "tomato"))))
    `(org-agenda-date ((t (:foreground "#6ac214" :height 1.3))))
    `(org-agenda-date-weekend ((t (:foreground "dodger blue" :height 1.3))))

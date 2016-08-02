@@ -26,7 +26,7 @@
 
   (add-hook 'org-mode-hook
             #'(lambda ()
-                (setq line-spacing 0.25)
+                ;; (setq line-spacing 0.25)
                 (buffer-face-mode 1) 
                 (flyspell-mode 1)))
   
@@ -99,12 +99,14 @@
   (add-hook 'org-agenda-mode-hook
             #'(lambda ()
                 (hl-line-mode 1)
-                (setq line-spacing 0.25))))
+                ;; (setq line-spacing 0.25)
+                )))
 
 (use-package org-mobile :ensure nil)
 
 (use-package org-knowledgebase
   :ensure nil
+  :demand t
   :bind* ("C-t"   . org-collect)
   :config
   ;; (push '("Collector.org" :position bottom :height 15 :stick t)

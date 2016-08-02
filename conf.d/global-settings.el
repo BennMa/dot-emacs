@@ -135,6 +135,7 @@
     ("^ \\*Minibuf-.*\\*$" "^\\*Summary" "^\\*Article" "^#")))
  '(clean-buffer-list-kill-regexps (quote (".*")))
  '(column-number-mode t)
+ '(company-dabbrev-downcase nil)
  '(company-frontends
    (quote
     (company-pseudo-tooltip-unless-just-one-frontend company-echo-metadata-frontend company-preview-frontend)))
@@ -463,12 +464,16 @@
  '(ido-enable-last-directory-history nil)
  '(ido-enable-tramp-completion t)
  '(ido-enter-matching-directory (quote only))
+ '(ido-grid-mode-always-show-min-rows nil)
+ '(ido-grid-mode-max-rows 5)
+ '(ido-grid-mode-min-rows 1)
  '(ido-ignore-files
    (quote
     ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "\\`\\.DS_Store" "\\`\\.localized" "\\.sparsebundle/" "\\.dmg\\'")))
  '(ido-save-directory-list-file "~/.emacs.d/data/ido.last")
  '(ido-use-virtual-buffers t)
  '(ido-use-virtual-buffers-automatically t)
+ '(ido-vertical-show-count t)
  '(idris-interpreter-flags (quote ("-p" "effects")))
  '(image-dired-dir "~/.emacs.d/data/image-dired/")
  '(imenu-auto-rescan t)
@@ -497,6 +502,7 @@
  '(kill-whole-line t)
  '(large-file-warning-threshold nil)
  '(line-number-mode t)
+ '(line-spacing 0.5)
  '(load-dir-debug nil)
  '(load-dir-recursive t)
  '(load-prefer-newer t)
@@ -784,6 +790,7 @@
  '(x-stretch-cursor t)
  '(yaoddmuse-browse-function (quote w3m-browse-url))
  '(yaoddmuse-directory "~/.emacs.d/doc")
+ '(yas-global-mode t nil (yasnippet))
  '(yas-prompt-functions
    (quote
     (yas-ido-prompt yas-completing-prompt yas-no-prompt)))
@@ -803,6 +810,9 @@
  '(diff-header ((((background dark)) (:foreground "Cyan")) (t (:foreground "Red"))))
  '(diff-index ((((background dark)) (:foreground "Magenta")) (t (:foreground "Green"))))
  '(diff-nonexistent ((((background dark)) (:foreground "#FFFFFFFF7474")) (t (:foreground "DarkBlue"))))
+ '(ido-first-match ((t (:background "blue3" :foreground "gray100" :weight bold))))
+ '(ido-grid-mode-common-match ((t (:inherit shadow))))
+ '(ido-grid-mode-match ((t (:foreground "light green" :underline t))))
  '(powerline-active1 ((t (:inherit mode-line :background "blue1" :foreground "white"))))
  '(powerline-active2 ((t (:inherit mode-line))))
  '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "gray80"))))

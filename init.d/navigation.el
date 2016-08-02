@@ -138,55 +138,84 @@
 
 (use-package ido
   :demand t
-  :defines (ido-cur-item
-            ido-require-match
-            ido-selected
-            ido-final-text
-            ido-show-confirm-message)
+  ;; :defines (ido-cur-item
+  ;;           ido-require-match
+  ;;           ido-selected
+  ;;           ido-final-text
+  ;;           ido-show-confirm-message)
   :bind (("C-M-<tab>" . ido-switch-buffer)
          ;; ("C-x b" . ido-switch-buffer)
-         ("C-x C-f" . ido-find-file)
-         ("C-x f" . ido-find-file))
-  :preface
-  (eval-when-compile
-    (defvar ido-require-match)
-    (defvar ido-cur-item)
-    (defvar ido-show-confirm-message)
-    (defvar ido-selected)
-    (defvar ido-final-text))
+         ;; ("C-x C-f" . ido-find-file)
+         ;; ("C-x f" . ido-find-file)
+         )
+  ;; :preface
+  ;; (eval-when-compile
+  ;;   (defvar ido-require-match)
+  ;;   (defvar ido-cur-item)
+  ;;   (defvar ido-show-confirm-message)
+  ;;   (defvar ido-selected)
+  ;;   (defvar ido-final-text))
 
-  (defun ido-smart-select-text ()
-    "Select the current completed item.  Do NOT descend into directories."
-    (interactive)
-    (when (and (or (not ido-require-match)
-                   (if (memq ido-require-match
-                             '(confirm confirm-after-completion))
-                       (if (or (eq ido-cur-item 'dir)
-                               (eq last-command this-command))
-                           t
-                         (setq ido-show-confirm-message t)
-                         nil))
-                   (ido-existing-item-p))
-               (not ido-incomplete-regexp))
-      (when ido-current-directory
-        (setq ido-exit 'takeprompt)
-        (unless (and ido-text (= 0 (length ido-text)))
-          (let ((match (ido-name (car ido-matches))))
-            (throw 'ido
-                   (setq ido-selected
-                         (if match
-                             (replace-regexp-in-string "/\\'" "" match)
-                           ido-text)
-                         ido-text ido-selected
-                         ido-final-text ido-text)))))
-      (exit-minibuffer)))
+  ;; (defun ido-smart-select-text ()
+  ;;   "Select the current completed item.  Do NOT descend into directories."
+  ;;   (interactive)
+  ;;   (when (and (or (not ido-require-match)
+  ;;                  (if (memq ido-require-match
+  ;;                            '(confirm confirm-after-completion))
+  ;;                      (if (or (eq ido-cur-item 'dir)
+  ;;                              (eq last-command this-command))
+  ;;                          t
+  ;;                        (setq ido-show-confirm-message t)
+  ;;                        nil))
+  ;;                  (ido-existing-item-p))
+  ;;              (not ido-incomplete-regexp))
+  ;;     (when ido-current-directory
+  ;;       (setq ido-exit 'takeprompt)
+  ;;       (unless (and ido-text (= 0 (length ido-text)))
+  ;;         (let ((match (ido-name (car ido-matches))))
+  ;;           (throw 'ido
+  ;;                  (setq ido-selected
+  ;;                        (if match
+  ;;                            (replace-regexp-in-string "/\\'" "" match)
+  ;;                          ido-text)
+  ;;                        ido-text ido-selected
+  ;;                        ido-final-text ido-text)))))
+  ;;     (exit-minibuffer)))
 
   :config
-  (ido-mode 'buffer)
-  (add-hook 'ido-minibuffer-setup-hook
-            #'(lambda ()
-                (bind-key "<return>" 'ido-smart-select-text
-                          ido-file-completion-map))))
+  ;; (ido-mode 'buffer)
+  ;; (add-hook 'ido-minibuffer-setup-hook
+  ;;           #'(lambda ()
+  ;;               (bind-key "<return>" 'ido-smart-select-text
+  ;;                         ido-file-completion-map)))
+  (ido-mode 1)
+  (ido-everywhere 1)
+
+  (use-package ido-ubiquitous
+    :config
+    (ido-ubiquitous-mode 1))
+
+  (use-package ido-yes-or-no
+    :config
+    (ido-yes-or-no-mode 1))
+  
+  (use-package ido-grid-mode
+    :bind* (:map ido-completion-map
+                 ("<tab>" . ido-complete))
+    :config
+    (ido-grid-mode 1))
+
+  (use-package ido-vertical-mode
+    :disabled t
+    :config
+    (ido-vertical-mode 1)
+    (setq ido-vertical-define-keys 'C-n-and-C-p-only))
+
+  (use-package smex
+    :bind (("M-x" . smex)
+           ("C-c M-x" . smex-major-mode-commands)
+           ("C-c C-c M-x" . execute-extended-command)))
+  )
 
 (use-package ido-hacks
   :disabled t
@@ -211,11 +240,6 @@
   :disabled t
   :config
   (flx-ido-mode 1))
-
-(use-package smex
-  :bind (("M-x" . smex)
-         ("C-c M-x" . smex-major-mode-commands)
-         ("C-c C-c M-x" . execute-extended-command)))
 
 
 (use-package window-number
