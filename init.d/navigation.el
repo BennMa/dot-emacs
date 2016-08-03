@@ -200,6 +200,7 @@
     (ido-yes-or-no-mode 1))
   
   (use-package ido-grid-mode
+    :demand t
     :bind* (:map ido-completion-map
                  ("<tab>" . ido-complete))
     :config
