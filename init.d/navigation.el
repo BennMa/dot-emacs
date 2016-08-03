@@ -201,8 +201,8 @@
   
   (use-package ido-grid-mode
     :demand t
-    :bind* (:map ido-completion-map
-                 ("<tab>" . ido-complete))
+    :bind (:map ido-completion-map
+                ("<tab>" . ido-complete))
     :config
     (ido-grid-mode 1))
 
