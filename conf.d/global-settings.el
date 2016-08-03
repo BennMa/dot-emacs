@@ -488,7 +488,7 @@
  '(initsplit-customizations-alist
    (quote
     (("\\`\\(gnus\\|nn\\|message\\|mail\\|mm-\\|smtp\\|send-mail\\|sendmail\\|check-mail\\|spam\\|sc-\\)" "~/.emacs.d/conf.d/gnus-settings.el" nil nil)
-     ("\\`\\(individual-\\)" "~/.emacs.d/conf.d/individual-settings.el" nil nil)
+     ("\\`\\(individual-\\|line-spacing\\)" "~/.emacs.d/conf.d/individual-settings.el" nil nil)
      ("\\`\\(org-\\)" "~/.emacs.d/conf.d/org-settings.el" nil nil))))
  '(ispell-extra-args nil)
  '(js3-enter-indents-newline t)
@@ -502,7 +502,6 @@
  '(kill-whole-line t)
  '(large-file-warning-threshold nil)
  '(line-number-mode t)
- '(line-spacing 0.5)
  '(load-dir-debug nil)
  '(load-dir-recursive t)
  '(load-prefer-newer t)
