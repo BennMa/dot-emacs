@@ -456,7 +456,7 @@
  '(icicle-max-candidates 100)
  '(ido-auto-merge-work-directories-length 0)
  '(ido-cannot-complete-command (quote ido-exit-minibuffer))
- '(ido-confirm-unique-completion t)
+ '(ido-confirm-unique-completion nil)
  '(ido-decorations
    (quote
     ("{" "}" "," ",..." "[" "]" " [No match]" " [Matched]" " [Not readable]" " [Too big]" " [Confirm]")))
@@ -465,6 +465,7 @@
  '(ido-enable-tramp-completion t)
  '(ido-enter-matching-directory (quote only))
  '(ido-grid-mode-always-show-min-rows nil)
+ '(ido-grid-mode-keys (quote (tab backtab up down left right C-n C-p C-s C-r)))
  '(ido-grid-mode-max-rows 5)
  '(ido-grid-mode-min-rows 1)
  '(ido-ignore-files

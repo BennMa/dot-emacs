@@ -1,3 +1,6 @@
 [submodule "snippets"]
 	path = snippets
 	url = git@github.com:BennMa/yasnippet-snippets.git
+[submodule "lisp/ido-match-modes"]
+	path = lisp/ido-match-modes
+	url = https://github.com/larkery/ido-match-modes.el.git

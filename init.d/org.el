@@ -1,5 +1,5 @@
 ;; ------ load settings
-(load (expand-file-name "conf.d/org-settings" ROOT-DIR))
+(load-conf "org-settings")
 
 ;; ------ org packages
 
@@ -102,8 +102,6 @@
                 ;; (setq line-spacing 0.25)
                 )))
 
-(use-package org-mobile :ensure nil)
-
 (use-package org-knowledgebase
   :ensure nil
   :demand t
@@ -112,6 +110,8 @@
   ;; (push '("Collector.org" :position bottom :height 15 :stick t)
   ;;       popwin:special-display-config)
   )
+
+(use-package org-mobile :ensure nil)
 
 (use-package org-smart-capture
   :ensure nil
@@ -125,7 +125,6 @@
   :ensure nil
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-
 
 ;; http://orgmode.org/guide/Working-With-Source-Code.html
 (use-package ob-typescript

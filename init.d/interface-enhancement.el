@@ -732,3 +732,9 @@
   :config
   ;; (set-face-background 'indent-guide-face "dimgray")
   (indent-guide-global-mode))
+
+(use-package pdf-tools
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :config
+  (pdf-tools-install)
+  )

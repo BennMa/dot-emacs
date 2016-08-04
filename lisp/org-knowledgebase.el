@@ -1,18 +1,18 @@
-;;; Package -- Summary
-
-;;; Commentary:
-
-;;; Code:
+(require 'org)
+(require 'org-agenda)
 
 (defcustom my-knowledagebase-dir "~/Dropbox/PKG/Document"
   "Personal Knowledge Base Directory"
-  :type 'string)
+  :type 'string
+  :group 'org-knowledgebase)
 (defcustom my-daily-dir "~/Dropbox/PKG/Task/Daily"
   "Personal Daily Directory"
-  :type 'string)
+  :type 'string
+  :group 'org-knowledgebase)
 (defcustom my-collector-file "~/Dropbox/PKG/Document/Collector.org"
   "Personal Small Piece Collector"
-  :type 'string)
+  :type 'string
+  :group 'org-knowledgebase)
 
 (setq org-agenda-files
       (append org-agenda-files
@@ -111,7 +111,7 @@
   (if (and reviewed-amount reviewed-date)
       (let ((today (date-to-day (format-time-string "%Y-%m-%d 00:00:00")))
             (lastday (date-to-day reviewed-date))
-            (_reviewed-amount (string-to-int reviewed-amount)))
+            (_reviewed-amount (string-to-number reviewed-amount)))
         (cond
          ((= 1 _reviewed-amount) (>= (- today lastday) 7))
          ((= 2 _reviewed-amount) (>= (- today lastday) 30))
@@ -125,10 +125,10 @@
   "set current entry done review, and update statistics."
   (interactive "P")
   (let* ((col (current-column))
-	 (marker (or (org-get-at-bol 'org-marker)
-		     (org-agenda-error)))
-	 (buffer (marker-buffer marker))
-	 (pos    (marker-position marker)))
+         (marker (or (org-get-at-bol 'org-marker)
+                     (org-agenda-error)))
+         (buffer (marker-buffer marker))
+         (pos    (marker-position marker)))
     (org-with-remote-undo buffer
       (with-current-buffer buffer
         (widen)
@@ -137,7 +137,7 @@
         ;; review entry
         (let* ((reviewed-amount (org-entry-get (point) k/review-amount-tag))
                (reviewed-amount (int-to-string (if reviewed-amount
-                                                   (1+ (string-to-int reviewed-amount))
+                                                   (1+ (string-to-number reviewed-amount))
                                                  1)))
                (reviewed-date   (concat "[" (format-time-string "%Y-%m-%d %a %H:%M") "]")))
           (org-entry-put (point) k/review-amount-tag reviewed-amount)

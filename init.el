@@ -39,11 +39,12 @@
 ;;                       (expand-file-name "init.d/" ROOT-DIR) 0 t)))
 
 ;; ------ Loading Packages
+(defun load-conf (conf-name)
+  "load configuration file"
+  (load (expand-file-name (concat "conf.d/" conf-name) ROOT-DIR)))
+
 (use-package my-toolkit
   :init 
-  (defun load-conf (conf-name)
-    "load configuration file"
-    (load (expand-file-name (concat "conf.d/" conf-name) ROOT-DIR)))
   (load-conf "global-settings")
   (load-conf "individual-settings")
   
