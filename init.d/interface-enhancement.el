@@ -438,7 +438,8 @@
            ("C-c i m" . ispell-message)
            ("C-c i r" . ispell-region)))
   :config
-  (unbind-key "C-." flyspell-mode-map))
+  (unbind-key "C-." flyspell-mode-map)
+  (unbind-key "C-c $" flyspell-mode-map))
 
 (use-package diff-mode
   :commands diff-mode

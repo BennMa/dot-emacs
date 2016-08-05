@@ -159,7 +159,7 @@
   :mode (("\\.js\\'" . js2-mode)
          ("\\.json\\'" . js3-mode))
   :bind (:map js2-mode-map
-         ("<return>" . newline-and-indent))
+              ("<return>" . newline-and-indent))
   :config
   (use-package js2-refactor
     :config
@@ -174,7 +174,8 @@
     :config
     (skewer-setup)
     (add-hook 'js2-mode-hook 'skewer-mode)
-    (add-hook 'web-mode-hook 'skewer-mode)))
+    (add-hook 'web-mode-hook 'skewer-mode))
+  )
 
 (use-package tern
   :config
@@ -215,12 +216,12 @@
   (add-hook 'typescript-mode-hook #'setup-tide-mode)  
   (setq tide-format-options
         '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions t
-          :placeOpenBraceOnNewLineForFunctions nil))
+                                                                :placeOpenBraceOnNewLineForFunctions nil))
 
   (add-hook 'web-mode-hook
-          (lambda ()
-            (when (member (file-name-extension buffer-file-name) '("tsx", "jsx"))
-              (setup-tide-mode))))
+            (lambda ()
+              (when (member (file-name-extension buffer-file-name) '("tsx", "jsx"))
+                (setup-tide-mode))))
   (add-hook 'js2-mode-hook (lambda() (setup-tide-mode))))
 
 ;; ------ CEDET
