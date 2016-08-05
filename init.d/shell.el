@@ -107,7 +107,8 @@
               #'(lambda ()
                   (projectile-mode -1)
                   (company-mode -1)
-                  (auto-highlight-symbol-mode -1)))))
+                  (auto-highlight-symbol-mode -1)
+                  (yas-minor-mode -1)))))
 
 
 ;; ------ Disabled

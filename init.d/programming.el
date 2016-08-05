@@ -63,6 +63,11 @@
 ;; https://github.com/smihica/emmet-mode
 (use-package emmet-mode
   :config
+  
+  (unbind-key "C-<return>" emmet-mode-keymap)
+  (unbind-key "C-j" emmet-mode-keymap)
+  (bind-key "<backtab>" 'emmet-expand-line emmet-mode-keymap)
+  
   (add-hook 'web-mode-hook 'emmet-mode)
   (add-hook 'sgml-mode-hook 'emmet-mode)
   (add-hook 'css-mode-hook  'emmet-mode)
@@ -161,6 +166,9 @@
   :bind (:map js2-mode-map
               ("<return>" . newline-and-indent))
   :config
+
+  (unbind-key "M-j" js2-mode-map)
+
   (use-package js2-refactor
     :config
     (add-hook 'js2-mode-hook #'js2-refactor-mode)
@@ -244,6 +252,7 @@
 
 (use-package semantic-php
   :ensure nil
+  :if (file-exists-p (concat ROOT-DIR "lisp/semantic-php/loaddefs.el"))
   :load-path "lisp/semantic-php"
   :init
   (load "semantic-php/loaddefs"))

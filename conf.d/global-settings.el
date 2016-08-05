@@ -164,7 +164,7 @@
  '(custom-file "~/.emacs.d/conf.d/global-settings.el")
  '(custom-raised-buttons nil)
  '(custom-theme-directory "~/.emacs.d/themes/")
- '(default-frame-alist (quote ((cursor-color . "white"))))
+ '(default-frame-alist (quote ((cursor-color . "black"))))
  '(default-major-mode (quote text-mode) t)
  '(deft-auto-save-interval 0.0)
  '(deft-directory "~/Documents/notes")

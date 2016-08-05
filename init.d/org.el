@@ -134,6 +134,7 @@
   :bind ("M-m"   . org-smart-capture))
 
 (use-package org-velocity
+  :disabled
   :ensure nil
   :bind ("C-. n" . org-velocity-read))
 

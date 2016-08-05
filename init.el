@@ -52,8 +52,8 @@
   (load-conf "global-keybinding")
   
   ;; org faces: http://orgmode.org/worg/org-color-themes.html
-  ;; (load-theme 'my-leuven t)
-  (load-theme 'my-custom t)
+  (load-theme 'my-leuven t)
+  ;; (load-theme 'my-custom t)
   
   (qiang-set-font individual-english-fonts individual-font-size individual-chinese-fonts))
 
