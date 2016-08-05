@@ -541,7 +541,6 @@
  '(multi-term-scroll-to-bottom-on-output t)
  '(multi-term-switch-after-close nil)
  '(multi-term-try-create nil)
- '(my-knowledagebase-dir "~/Dropbox/PKG/Document")
  '(next-line-add-newlines nil)
  '(ns-alternate-modifier (quote alt))
  '(ns-command-modifier (quote meta))

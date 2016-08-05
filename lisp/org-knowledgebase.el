@@ -1,22 +1,22 @@
 (require 'org)
 (require 'org-agenda)
 
-(defcustom my-knowledagebase-dir "~/Dropbox/PKG/Document"
+(defcustom org-my-knowledgebase-dir "~/Dropbox/PKG/Document"
   "Personal Knowledge Base Directory"
   :type 'string
-  :group 'org-knowledgebase)
-(defcustom my-daily-dir "~/Dropbox/PKG/Task/Daily"
+  :group 'org-mine)
+(defcustom org-my-daily-dir "~/Dropbox/PKG/Task/Daily"
   "Personal Daily Directory"
   :type 'string
-  :group 'org-knowledgebase)
-(defcustom my-collector-file "~/Dropbox/PKG/Document/Collector.org"
+  :group 'org-mine)
+(defcustom org-my-collector-file "~/Dropbox/PKG/Document/Collector.org"
   "Personal Small Piece Collector"
   :type 'string
-  :group 'org-knowledgebase)
+  :group 'org-mine)
 
 (setq org-agenda-files
       (append org-agenda-files
-              (directory-files-recursively my-knowledagebase-dir t org-agenda-file-regexp)))
+              (directory-files-recursively org-my-knowledgebase-dir t org-agenda-file-regexp)))
 
 (defvar org-knowledgebase-map)
 (define-prefix-command 'org-knowledgebase-map)
@@ -32,8 +32,8 @@
   (helm :sources
         (helm-build-sync-source "Knowledge Files"
           :candidates (--map
-                       (cons (substring it (1+ (length (expand-file-name my-knowledagebase-dir)))) it)
-                       (directory-files-recursively my-knowledagebase-dir t "\\.org$"))
+                       (cons (substring it (1+ (length (expand-file-name org-my-knowledgebase-dir)))) it)
+                       (directory-files-recursively org-my-knowledgebase-dir t "\\.org$"))
           :action (helm-make-actions
                    "Find File" 'helm-find-file-or-marked
                    "Find file in Dired" 'helm-point-file-in-dired
@@ -47,7 +47,7 @@
   (let* ((today (format-time-string "%Y-%m-%d"))
          (daily-file
           (expand-file-name (concat today ".org")
-                            my-daily-dir)))
+                            org-my-daily-dir)))
     (unless (file-exists-p daily-file)
       (with-current-buffer (find-file-noselect daily-file)
         (insert
@@ -63,8 +63,8 @@
   (helm :sources
         (helm-build-sync-source "Daily Files"
           :candidates (--map
-                       (cons (substring it (1+ (length (expand-file-name my-daily-dir)))) it)
-                       (directory-files my-daily-dir t "\\.\\(txt\\|org\\)$" t))
+                       (cons (substring it (1+ (length (expand-file-name org-my-daily-dir)))) it)
+                       (directory-files org-my-daily-dir t "\\.\\(txt\\|org\\)$" t))
           :action (helm-make-actions
                    "Find File" 'helm-find-file-or-marked
                    "Find file in Dired" 'helm-point-file-in-dired
@@ -81,7 +81,7 @@
   (interactive)
   (if (require 'helm-grep nil  'noerror)
       (let* ((prefarg (or current-prefix-arg helm-current-prefix-arg)))
-        (helm-do-grep-1 (directory-files-recursively my-knowledagebase-dir t "\\.\\(?:org\\|html?\\)$")
+        (helm-do-grep-1 (directory-files-recursively org-my-knowledgebase-dir t "\\.\\(?:org\\|html?\\)$")
                         prefarg))
     (error "helm-grep not available")))
 
@@ -91,7 +91,7 @@
 (defvar k/review-date-tag "M_REVIEWED_DATE")
 (add-to-list 'org-agenda-custom-commands
              '("q" "All Review Entries" tags ":review:" 
-               ((org-agenda-skip-function ;; (org-agenda-files (list my-knowledagebase-dir))
+               ((org-agenda-skip-function ;; (org-agenda-files (list org-my-knowledgebase-dir))
                  'k/org-agenda-skip-expired-review-entry))) t)
 (defun k/org-agenda-skip-expired-review-entry()
   (let (beg end)
@@ -150,7 +150,7 @@
 (defun org-collect()
   "collect stuff to collected file"
   (interactive)
-  (let ((collect-file (expand-file-name my-collector-file))
+  (let ((collect-file (expand-file-name org-my-collector-file))
         (string (if mark-active
                     (buffer-substring (region-beginning) (region-end))
                   ""))

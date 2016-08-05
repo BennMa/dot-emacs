@@ -167,6 +167,7 @@
       ("\\subsection{%s}" . "\\subsection*{%s}")
       ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
      ("beamer" "\\documentclass{beamer}" org-beamer-sectioning))))
+ '(org-export-with-todo-keywords nil)
  '(org-extend-today-until 8)
  '(org-fast-tag-selection-single-key (quote expert))
  '(org-fontify-done-headline t)
@@ -203,6 +204,9 @@
 '(org-modules
 (quote
  (org-gnus org-habit org-id org-info org-depend org-velocity)))
+'(org-publish-project-alist
+(quote
+ (("document" :base-directory "~/Dropbox/PKG/Document/" :base-extension "org" :publishing-directory "~/Dropbox/PKG/Publish/" :recursive t :publishing-function org-html-publish-to-html))))
  '(org-refile-targets (quote (("~/Dropbox/PKG/Task/PROJECTS.org" :level . 1))))
  '(org-return-follows-link t)
  '(org-reverse-note-order t)

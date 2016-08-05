@@ -7,6 +7,10 @@
 ;; http://emacs.stackexchange.com/questions/12841/quickly-insert-source-blocks-in-org-mode
 ;; http://orgmode.org/worg/org-contrib/babel/header-args.html
 ;; http://ehneilsen.net/notebook/orgExamples/org-examples.html#sec-2-1
+
+;; export
+;; http://rwx.io/blog/2016/03/11/Org-Export-Configurations/
+
 (use-package org
   :bind (("C-c S" . org-store-link)
          ("C-c l" . org-insert-link))
@@ -57,7 +61,19 @@
             (goto-char pos)
             (re-search-forward (concat "^\\*\\* " target-headline))
             (setcar (nthcdr 3 it) (point)))))
-      it))  
+      it))
+
+  ;; (defcustom org-my-export-output-directory-prefix "~/Dropbox/PKG/Publish/export_"
+  ;;   "prefix of directory used for org-mode export"
+  ;;   :type 'string
+  ;;   :group 'org-mine)
+
+  ;; (defadvice org-export-output-file-name (before org-add-export-dir activate)
+  ;;   "Modifies org-export to place exported files in a different directory"
+  ;;   (when (not pub-dir)
+  ;;     (setq pub-dir (concat org-my-export-output-directory-prefix (substring extension 1)))
+  ;;     (when (not (file-directory-p pub-dir))
+  ;;       (make-directory pub-dir))))
   )
 
 (use-package org-agenda
@@ -125,6 +141,8 @@
   :ensure nil
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+
+(use-package ox-ioslide)
 
 ;; http://orgmode.org/guide/Working-With-Source-Code.html
 (use-package ob-typescript

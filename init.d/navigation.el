@@ -173,7 +173,8 @@
       (ido-match-modes-hack-spacebar)
       (define-key ido-completion-map (kbd "C-SPC") #'ido-match-modes-cycle))
     
-    (ido-match-modes-toggle 1))
+    (ido-match-modes-toggle 1)
+    (setq ido-match-modes-mode 'words))
 
   (use-package ido-vertical-mode
     :disabled t
