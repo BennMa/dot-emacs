@@ -157,8 +157,8 @@
               #'(lambda ()
                   ;; (define-key ido-completion-map (kbd "<tab>") #'ido-grid-mode-previous)
                   (define-key ido-completion-map (kbd "<tab>") #'ido-complete)
-                  (define-key ido-completion-map (kbd "C-s")   #'ido-grid-mode-right)
-                  (define-key ido-completion-map (kbd "C-r")   #'ido-grid-mode-left)
+                  (define-key ido-completion-map (kbd "C-s")   #'ido-grid-mode-down)
+                  (define-key ido-completion-map (kbd "C-r")   #'ido-grid-mode-up)
                   ;; (define-key ido-completion-map (kbd "<backtab>") #'ido-grid-mode-left))
                   ))
     

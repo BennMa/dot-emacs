@@ -364,7 +364,7 @@
  '(helm-for-files-preferred-list
    (quote
     (helm-source-files-in-current-dir helm-source-recentf helm-source-bookmarks helm-source-file-cache helm-source-buffers-list helm-source-locate helm-source-ls-git)))
- '(helm-gtags-auto-update t)
+ '(helm-gtags-auto-update nil)
  '(helm-gtags-prefix-key "g")
  '(helm-gtags-suggested-key-mapping t)
  '(helm-gtags-use-input-at-cursor t)
@@ -602,10 +602,13 @@
  '(projectile-known-projects-file "~/.emacs.d/data/projectile-bookmarks.eld")
  '(projectile-project-root-files
    (quote
-    ("CMakeLists.txt" "Makefile" "rebar.config" "project.clj" "build.boot" "SConstruct" "pom.xml" "build.sbt" "gradlew" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "TAGS" "GTAGS")))
+    ("CMakeLists.txt" "Makefile" "rebar.config" "project.clj" "build.boot" "SConstruct" "pom.xml" "build.sbt" "gradlew" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "TAGS")))
+ '(projectile-project-root-files-bottom-up
+   (quote
+    ("symfony" ".projectile" ".git" ".hg" ".fslckout" ".bzr" "_darcs")))
  '(projectile-project-root-files-functions
    (quote
-    (projectile-root-local projectile-root-top-down projectile-root-top-down-recurring projectile-root-bottom-up)))
+    (projectile-root-local projectile-root-bottom-up projectile-root-top-down projectile-root-top-down-recurring)))
  '(projectile-switch-project-action (quote helm-projectile))
  '(ps-font-size (quote (8 . 10)))
  '(ps-footer-font-size (quote (12 . 14)))
