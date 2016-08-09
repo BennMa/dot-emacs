@@ -468,6 +468,7 @@
  '(ido-grid-mode-keys (quote (tab backtab up down left right C-n C-p C-s C-r)))
  '(ido-grid-mode-max-rows 5)
  '(ido-grid-mode-min-rows 1)
+ '(ido-grid-mode-order nil)
  '(ido-ignore-files
    (quote
     ("\\`CVS/" "\\`#" "\\`.#" "\\`\\.\\./" "\\`\\./" "\\`\\.DS_Store" "\\`\\.localized" "\\.sparsebundle/" "\\.dmg\\'")))
@@ -811,7 +812,7 @@
  '(diff-nonexistent ((((background dark)) (:foreground "#FFFFFFFF7474")) (t (:foreground "DarkBlue"))))
  '(ido-first-match ((t (:background "blue3" :foreground "gray100" :weight bold))))
  '(ido-grid-mode-common-match ((t (:inherit shadow))))
- '(ido-grid-mode-match ((t (:foreground "light green" :underline t))))
+ '(ido-grid-mode-match ((t (:foreground "dark orange" :underline t))))
  '(powerline-active1 ((t (:inherit mode-line :background "blue1" :foreground "white"))))
  '(powerline-active2 ((t (:inherit mode-line))))
  '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "gray80"))))

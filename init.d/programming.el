@@ -124,7 +124,9 @@
 
 (use-package elpy
   :config
-  (elpy-enable))
+  (elpy-enable)
+  (unbind-key "C-<return>" elpy-mode-map)
+  )
 
 
 ;; ------ C/C++
