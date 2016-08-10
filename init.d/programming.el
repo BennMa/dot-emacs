@@ -243,6 +243,9 @@
   (set-default 'semantic-case-fold t)
   (semantic-mode 1)
   
+  ;; (add-to-list 'semantic-inhibit-functions
+  ;;              (lambda () (member major-mode '(org-mode))))
+  
   ;; (semantic-add-system-include "/usr/include/boost" 'c++-mode)
 
 

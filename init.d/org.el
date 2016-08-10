@@ -32,7 +32,9 @@
             #'(lambda ()
                 ;; (setq line-spacing 0.25)
                 (buffer-face-mode 1) 
-                (flyspell-mode 1)))
+                (flyspell-mode 1)
+                (set (make-local-variable 'semantic-mode) nil)
+                ))
   
   (defun save-org-mode-files ()
     (dolist (buf (buffer-list))

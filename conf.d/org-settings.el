@@ -198,25 +198,25 @@
   ("" "amssymb" t)
   ("" "hyperref" nil)
   "\\tolerance=1000")))
-'(org-log-done (quote time))
-'(org-mobile-directory "~/Dropbox/PKG/MobileOrg")
-'(org-mobile-inbox-for-pull "~/Dropbox/PKG/Task/FROM-MOBILE.org")
+ '(org-log-done (quote time))
+ '(org-mobile-directory "~/Dropbox/PKG/MobileOrg")
+ '(org-mobile-inbox-for-pull "~/Dropbox/PKG/Task/FROM-MOBILE.org")
 '(org-modules
 (quote
  (org-gnus org-habit org-id org-info org-depend org-velocity)))
 '(org-publish-project-alist
 (quote
  (("document" :base-directory "~/Dropbox/PKG/Document/" :base-extension "org" :publishing-directory "~/Dropbox/PKG/Publish/" :recursive t :publishing-function org-html-publish-to-html))))
-'(org-refile-targets (quote (("~/Dropbox/PKG/Task/PROJECTS.org" :level . 1))))
-'(org-return-follows-link t)
-'(org-reverse-note-order t)
-'(org-src-fontify-natively t)
-'(org-src-preserve-indentation nil)
-'(org-src-tab-acts-natively nil)
-'(org-startup-indented t)
-'(org-stuck-projects (quote ("STUCK" nil nil "")))
-'(org-tags-column -78)
-'(org-time-clocksum-use-fractional t)
+ '(org-refile-targets (quote (("~/Dropbox/PKG/Task/PROJECTS.org" :level . 1))))
+ '(org-return-follows-link t)
+ '(org-reverse-note-order t)
+ '(org-src-fontify-natively t)
+ '(org-src-preserve-indentation nil)
+ '(org-src-tab-acts-natively nil)
+ '(org-startup-indented t)
+ '(org-stuck-projects (quote ("STUCK" nil nil "")))
+ '(org-tags-column -78)
+ '(org-time-clocksum-use-fractional t)
 '(org-todo-keyword-faces
 (quote
  (("TODO" :foreground "red" :weight bold)
@@ -228,12 +228,12 @@
 '(org-todo-keywords
 (quote
  ((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "SOMEDAY(o)" "|" "CANCELED(c)" "DONE(d)"))))
-'(org-todo-repeat-to-state "TODO")
-'(org-use-property-inheritance (quote ("AREA")))
-'(org-use-speed-commands t)
-'(org-use-tag-inheritance nil)
-'(org-velocity-always-use-bucket t)
-'(org-velocity-bucket "~/Dropbox/PKG/Task/PROJECTS.org")
+ '(org-todo-repeat-to-state "TODO")
+ '(org-use-property-inheritance (quote ("AREA")))
+ '(org-use-speed-commands t)
+ '(org-use-tag-inheritance nil)
+ '(org-velocity-always-use-bucket t)
+ '(org-velocity-bucket "~/Dropbox/PKG/Task/PROJECTS.org")
 '(org-velocity-capture-templates
 (quote
  (("v" "Velocity" entry
