@@ -9,7 +9,7 @@
   "Personal Daily Directory"
   :type 'string
   :group 'org-mine)
-(defcustom org-my-collector-file "~/Dropbox/PKG/Document/Collector.org"
+(defcustom org-my-collector-file "~/Dropbox/PKG/Task/Collector.org"
   "Personal Small Piece Collector"
   :type 'string
   :group 'org-mine)

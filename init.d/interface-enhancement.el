@@ -724,8 +724,10 @@
 
 (use-package aggressive-indent
   :config
-  ;; (add-hook 'emacs-lisp-mode-hook #'aggressive-indent-mode)
-  (global-aggressive-indent-mode 1)
+  (dolist (hook '(emacs-lisp-mode-hook
+                  js2-mode-hook))
+    (add-hook hook #'aggressive-indent-mode))
+  ;; (global-aggressive-indent-mode 1)
   ;; (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
   )
 
@@ -733,6 +735,11 @@
   :config
   ;; (set-face-background 'indent-guide-face "dimgray")
   (indent-guide-global-mode))
+
+(use-package dtrt-indent
+  :disabled t
+  :config
+  (dtrt-indent-mode 1))
 
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-view-mode)

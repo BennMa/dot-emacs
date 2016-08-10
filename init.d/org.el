@@ -51,7 +51,7 @@
            (target-headline (if (member (if (equal major-mode 'org-agenda-mode)
                                             "TODO"
                                           (org-get-todo-state))
-                                        '("NOTE" ""))
+                                        '("NOTE" "" nil))
                                 "Notes"
                               "Tasks")))
       (message target-headline)
