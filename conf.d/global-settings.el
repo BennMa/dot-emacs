@@ -164,7 +164,6 @@
  '(custom-file "~/.emacs.d/conf.d/global-settings.el")
  '(custom-raised-buttons nil)
  '(custom-theme-directory "~/.emacs.d/themes/")
- '(default-frame-alist (quote ((cursor-color . "black"))))
  '(default-major-mode (quote text-mode) t)
  '(deft-auto-save-interval 0.0)
  '(deft-directory "~/Documents/notes")
@@ -591,7 +590,7 @@
      (sldb-mode :stick t)
      (slime-repl-mode)
      (slime-connection-list-mode))))
- '(powerline-default-separator (quote zigzag))
+ '(powerline-default-separator (quote arrow))
  '(previous-buffer-black-list (quote ("^ ?\\*" "Collector.org")))
  '(previous-buffer-black-modes-list (quote ("direx:direx-mode" "diary-mode")))
  '(previous-buffer-white-list

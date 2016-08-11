@@ -34,11 +34,9 @@
    `(diff-removed ((t (:foreground "#F92672" :weight bold))))
    `(escape-glyph ((t (:foreground "#E6DB74"))))
    `(minibuffer-prompt ((t (:foreground "#66D9EF"))))
-   `(mode-line ((t (:foreground "#F8F8F2" :background "#ff0000"
-                                :box (:line-width 1 :color "#ff0000" :style released-button)))))
-   `(mode-line-buffer-id ((t (:foreground nil :background nil :weight semi-bold))))
-   `(mode-line-inactive ((t (:foreground "#BCBCBC" :background "#1E1C1B"
-                                         :box (:line-width 1 :color "#232526")))))
+   `(mode-line ((t (:foreground "#F8F8F2" :background "#ff0000")))) ;; :box (:line-width 1 :color "#ff0000" :style released-button)
+   `(mode-line-buffer-id ((t (:foreground nil :background nil)))) ;;  :weight semi-bold
+   `(mode-line-inactive ((t (:foreground "#BCBCBC" :background "#1E1C1B")))) ;; :box (:line-width 1 :color "#232526")
    `(mode-line-mousable ((t (:foreground "#BCBCBC" :background "#ff0000"))))
    `(mode-line-mousable-minor-mode ((t (:foreground "#BCBCBC" :background "#000000"))))
    `(font-lock-builtin-face ((t (:foreground "#A6E22E"))))
