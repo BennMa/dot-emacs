@@ -94,6 +94,7 @@
   (unbind-key "M-G" dired-mode-map)
   (unbind-key "M-{" dired-mode-map)
   (unbind-key "M-}" dired-mode-map)
+  (unbind-key "M-p" dired-mode-map)
 
   (defadvice dired-omit-startup (after diminish-dired-omit activate)
     "Make sure to remove \"Omit\" from the modeline."

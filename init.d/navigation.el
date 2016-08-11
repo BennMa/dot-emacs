@@ -1,12 +1,18 @@
 (use-package helm
   ;; :demand t
-  :bind (("C-c h"   . helm-command-prefix)
+  :bind (
+         ("C-c h"   . helm-command-prefix)
          ("C-h a"   . helm-apropos)
+         ("C-c C-i"     . helm-semantic-or-imenu)
          ;; ("C-x f"   . helm-multi-files)
          ("M-H"     . helm-resume)
-         ("M-r"     . helm-mini)
-         ("M-i"     . helm-semantic-or-imenu)
-         ("M-s M-o" . helm-occur))
+         ("M-r"     . helm-mini)         
+         ("M-s M-o" . helm-occur)         
+         ("M-i"     . helm-swoop)
+         ("C-M-i"     . helm-swoop-back-to-last-point)
+         ("C-c M-i" . helm-multi-swoop)
+         ("C-x M-i" . helm-multi-swoop-all)
+         )
 
   :init
   ;; issue about helm take long time to initialization
@@ -26,7 +32,18 @@
   (bind-key "C-S-v" 'helm-scroll-other-window helm-map)
 
   (when (executable-find "curl")
-    (setq helm-google-suggest-use-curl-p t)))
+    (setq helm-google-suggest-use-curl-p t))
+
+  (use-package helm-swoop
+    :config
+    (bind-key "M-i" 'helm-swoop-from-isearch isearch-mode-map)
+    (bind-key "M-i" 'helm-multi-swoop-all-from-helm-swoop helm-swoop-map)
+    ;; (bind-key "M-m" 'helm-multi-swoop-current-mode-from-helm-swoop helm-swoop-map)
+    (bind-key (kbd "C-r") 'helm-previous-line helm-swoop-map)
+    (bind-key (kbd "C-s") 'helm-next-line helm-swoop-map)
+    (bind-key (kbd "C-r") 'helm-previous-line helm-multi-swoop-map)
+    (bind-key (kbd "C-s") 'helm-next-line helm-multi-swoop-map))
+  )
 
 (use-package helm-gtags
   :config
@@ -157,8 +174,8 @@
               #'(lambda ()
                   ;; (define-key ido-completion-map (kbd "<tab>") #'ido-grid-mode-previous)
                   (define-key ido-completion-map (kbd "<tab>") #'ido-complete)
-                  (define-key ido-completion-map (kbd "C-s")   #'ido-grid-mode-down)
-                  (define-key ido-completion-map (kbd "C-r")   #'ido-grid-mode-up)
+                  ;; (define-key ido-completion-map (kbd "C-s")   #'ido-grid-mode-down)
+                  ;; (define-key ido-completion-map (kbd "C-r")   #'ido-grid-mode-up)
                   ;; (define-key ido-completion-map (kbd "<backtab>") #'ido-grid-mode-left))
                   ))
     

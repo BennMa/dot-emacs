@@ -140,21 +140,41 @@ more...")
    `(success ((,class (:foreground "green"))))
 
    ;; Font lock faces.
-   `(font-lock-builtin-face ((,class (:foreground "#006FE0"))))
-   `(font-lock-comment-delimiter-face ((,class (:foreground "#8D8D84")))) ; #696969
-   `(font-lock-comment-face ((,class (:slant italic :foreground "#8D8D84")))) ; #696969
-   `(font-lock-constant-face ((,class (:foreground "#D0372D"))))
-   `(font-lock-doc-face ((,class (:foreground "#036A07"))))
-   ;; `(font-lock-doc-string-face ((,class (:foreground "#008000")))) ; XEmacs only, but is used for HTML exports from org2html (and not interactively)
-   `(font-lock-function-name-face ((,class (:weight normal :foreground "#006699"))))
-   `(font-lock-keyword-face ((,class (:bold nil :foreground "#0000FF")))) ; #3654DC
-   `(font-lock-preprocessor-face ((,class (:foreground "#808080"))))
-   `(font-lock-regexp-grouping-backslash ((,class (:weight bold :inherit nil))))
-   `(font-lock-regexp-grouping-construct ((,class (:weight bold :inherit nil))))
-   `(font-lock-string-face ((,class ,string)))
-   `(font-lock-type-face ((,class (:weight normal :foreground "#6434A3"))))
-   `(font-lock-variable-name-face ((,class (:weight normal :foreground "#BA36A5")))) ; #800080
-   `(font-lock-warning-face ((,class (:weight bold :foreground "red"))))
+   ;; `(font-lock-builtin-face ((,class (:foreground "#006FE0"))))
+   ;; `(font-lock-comment-delimiter-face ((,class (:foreground "#8D8D84")))) ; #696969
+   ;; `(font-lock-comment-face ((,class (:slant italic :foreground "#8D8D84")))) ; #696969
+   ;; `(font-lock-constant-face ((,class (:foreground "#D0372D"))))
+   ;; `(font-lock-doc-face ((,class (:foreground "#036A07"))))
+   ;; ;; `(font-lock-doc-string-face ((,class (:foreground "#008000")))) ; XEmacs only, but is used for HTML exports from org2html (and not interactively)
+   ;; `(font-lock-function-name-face ((,class (:weight normal :foreground "#006699"))))
+   ;; `(font-lock-keyword-face ((,class (:bold nil :foreground "#0000FF")))) ; #3654DC
+   ;; `(font-lock-negation-char-face ((,class (:foreground "#eab700" :weight bold))))
+   ;; `(font-lock-preprocessor-face ((,class (:foreground "#0076c1"))))
+   ;; `(font-lock-regexp-grouping-backslash ((,class (:weight bold :inherit nil))))
+   ;; `(font-lock-regexp-grouping-construct ((,class (:weight bold :inherit nil))))
+   ;; `(font-lock-string-face ((,class ,string)))
+   ;; `(font-lock-type-face ((,class (:weight normal :foreground "#6434A3"))))
+   ;; `(font-lock-variable-name-face ((,class (:weight normal :foreground "#0076c1"))))
+   ;; `(font-lock-warning-face ((,class (:weight bold :foreground "red"))))
+   ;; `(c-annotation-face ((,class (:inherit font-lock-constant-face))))
+   
+   `(font-lock-builtin-face ((,class)))
+   `(font-lock-comment-face ((,class (:foreground "#808080" :slant italic))))
+   `(font-lock-comment-delimiter-face ((,class (:foreground "#808080" :slant italic))))
+   `(font-lock-constant-face ((,class (:foreground "#660E7A" :bold t))))
+   `(font-lock-doc-face ((,class (:foreground "#527c00"))))
+   ;; `(font-lock-doc-string-face ((,class (:foreground "#527c00")))) ; XEmacs only, but is used for HTML exports from org2html (and not interactively)
+   `(font-lock-function-name-face ((,class (:foreground "#000000"))))
+   `(font-lock-keyword-face ((,class (:foreground "#000080" :bold t))))
+   `(font-lock-negation-char-face ((,class (:foreground "#204A87"))))
+   `(font-lock-preprocessor-face ((,class (:foreground "#000080" :bold t))))
+   `(font-lock-regexp-grouping-backslash ((,class (:foreground "#555753"))))
+   `(font-lock-regexp-grouping-construct ((,class (:foreground "#888a85"))))
+   `(font-lock-string-face ((,class (:foreground "#008000"))))
+   `(font-lock-type-face ((,class (:weight normal :foreground "#000000"))))
+   `(font-lock-variable-name-face ((,class (:weight normal :foreground "#660000"))))
+   `(font-lock-warning-face ((,class (:bold t :foreground "#ff0000"))))
+   `(c-annotation-face ((,class (:inherit font-lock-constant-face))))
 
    ;; Button and link faces.
    `(link ((,class ,link)))

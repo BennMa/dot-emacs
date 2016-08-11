@@ -373,6 +373,7 @@
  '(helm-quick-update t)
  '(helm-recentf-fuzzy-match t)
  '(helm-split-window-default-side (quote right))
+ '(helm-swoop-split-direction (quote split-window-horizontally))
  '(hippie-expand-try-functions-list
    (quote
     (yas-hippie-try-expand try-complete-file-name-partially try-complete-file-name try-expand-all-abbrevs try-expand-list try-expand-line try-expand-dabbrev try-expand-dabbrev-all-buffers try-expand-dabbrev-from-kill try-complete-lisp-symbol-partially try-complete-lisp-symbol)))

@@ -47,7 +47,8 @@
                  "$0\n")))))
   
   (yas-load-directory "~/.emacs.d/snippets/")
-  (bind-key "C-i" 'yas-next-field-or-maybe-expand yas-keymap)
+  (unbind-key "C-i" yas-minor-mode-map)
+  ;; (bind-key "C-i" 'yas-next-field-or-maybe-expand yas-keymap)
   (yas-global-mode)  
   )
 

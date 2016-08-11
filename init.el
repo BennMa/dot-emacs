@@ -58,6 +58,6 @@
   (qiang-set-font individual-english-fonts individual-font-size individual-chinese-fonts))
 
 (mapc
-   #'(lambda (file)
-       (load-file file))
-   (directory-files (expand-file-name "init.d/" ROOT-DIR) t ".*\\.el" t))
+ #'(lambda (file)
+     (load-file file))
+ (directory-files (expand-file-name "init.d/" ROOT-DIR) t ".*\\.el" t))

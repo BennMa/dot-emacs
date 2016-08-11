@@ -14,7 +14,10 @@
 ;; ------ PHP
 (use-package web-mode
   :mode (("\\.html?\\'" . web-mode)
+         ("\\.html\\.twig\\'" . web-mode)
+         ("\\.phtml\\'" . web-mode)
          ("\\.tpl\\'" . web-mode)
+         ("\\.tpl\\.php\\'" . web-mode)
          ("\\.tsx\\'" . web-mode)
          ("\\.jsx\\'" . web-mode)))
 
@@ -38,6 +41,7 @@
 
 
 (use-package symfony1x
+  :disabled t  
   :ensure nil
   :load-path "lisp/symfony1x"
   :commands symfony1x-mode
@@ -268,3 +272,5 @@
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
+
+(use-package quickrun)
