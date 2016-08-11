@@ -3,8 +3,6 @@
 #+EMAIL: bennmsg@gmail.com
 #+BABEL: :session *R* :cache yes :results output graphics :exports both :tangle yes 
 #+STARTUP: overview
------
-
 
 * About
 This is my emacs configuration files, I've been using it for more then 5 years.
@@ -13,16 +11,18 @@ packages from everywhere. Then changed to use el-get for package manager. Now
 I'm using use-package which is amazing for code organizing and lazy loading.
 
 * Structure
-- conf.d/	    includes all setting files, like customize-settings.
-- init.d/	    includes all major configuration files.
-- lisp/	    includes some custom libraries or packages which can not be installed by package-manager.
-- scripts/	some personal scripts
-- snippets/   yassnippet snippets
-- themes/	    my personal themes
-init.el       the entrypoint
+| file/folder | description                                                                                |
+|-------------+---------------------------------------------------------------------------------------------------|
+| conf.d/	 | includes all setting files, like customize-settings.                                              |
+| init.d/	 | includes all major configuration files.                                                           |
+| lisp/       | 	    includes some custom libraries or packages which can not be installed by package-manager. |
+| scripts/    | 	some personal scripts                                                                         |
+| snippets/   | yassnippet snippets                                                                               |
+| themes/     | 	    my personal themes                                                                        |
+| init.el     | the entrypoint                                                                                    |
 
 * How to install?
-Just clone the repository to somewhere, And create a soft link to ~/.emacs.d
+Just clone the repository to somewhere, And create a soft link to ~/.emacs.d,
 Then open your emacs, It will automaticlly install all required packages.
 
 I'm using this configuration on Mac & ArchLinux.
