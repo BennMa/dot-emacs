@@ -25,3 +25,4 @@ backup/
 conf.d/individual-settings.el
 .mc-lists.el
 lisp/ede-php-autoload/
+snippets-backup/

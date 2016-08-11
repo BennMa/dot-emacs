@@ -1,4 +1,0 @@
-# name: f
-# key: f
-# --
-fun ($1) -> $0 end
