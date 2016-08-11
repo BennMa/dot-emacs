@@ -7,8 +7,9 @@
 * About
 This is my emacs configuration files, I've been using it for more then 5 years.
 Before I was using a couple of different files for different functions, And
-packages from everywhere. Then changed to use el-get for package manager. Now
-I'm using use-package which is amazing for code organizing and lazy loading.
+libraries from everywhere which is not easy to maintain and reading.
+Then changed to el-get for package-manager.
+Now I'm using use-package which is amazing for code organizing and lazy loading.
 
 * Structure
 | file/folder | description                                                                                |
