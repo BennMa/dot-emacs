@@ -764,3 +764,8 @@
 
 (use-package dockerfile-mode
   :mode ("Dockerfile\\'" . dockerfile-mode))
+
+(use-package google-this
+  :config
+  ;; (global-set-key (kbd "C-x g") 'google-this-mode-submap)
+  (google-this-mode 1))

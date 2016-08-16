@@ -8,7 +8,12 @@
   (add-hook 'projectile-mode-hook
             #'(lambda () 
                 (auto-highlight-symbol-mode 1)))  
-  (projectile-global-mode))
+  (projectile-global-mode)
+
+  ;; https://github.com/sabof/project-explorer
+  (use-package project-explorer
+    :bind ("M-p w" . project-explorer-toggle))
+  )
 
 (use-package helm-projectile
   :config
@@ -22,6 +27,3 @@
   (persp-mode)
   (use-package persp-projectile))
 
-;; https://github.com/sabof/project-explorer
-(use-package project-explorer
-  :bind ("M-p w" . project-explorer-toggle))
