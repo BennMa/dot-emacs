@@ -378,6 +378,7 @@
     (yas-hippie-try-expand try-complete-file-name-partially try-complete-file-name try-expand-all-abbrevs try-expand-list try-expand-line try-expand-dabbrev try-expand-dabbrev-all-buffers try-expand-dabbrev-from-kill try-complete-lisp-symbol-partially try-complete-lisp-symbol)))
  '(history-delete-duplicates t)
  '(history-length 200)
+ '(httpd-host nil)
  '(ibuffer-always-show-predicates nil)
  '(ibuffer-default-display-maybe-show-predicates t)
  '(ibuffer-expert t)
@@ -548,6 +549,12 @@
  '(nxml-sexp-element-flag t)
  '(nxml-slash-auto-complete-flag t)
  '(olivetti-hide-mode-line t)
+ '(op/personal-github-link "https://github.com/BennMa")
+ '(op/repository-directory "/Users/benn/Mine/Projects/Personal/bennma.github.io")
+ '(op/site-domain "https://bennma.github.io/")
+ '(op/site-main-title "Brainstorming")
+ '(op/site-sub-title "personal knowledge output")
+ '(op/theme (quote emacs_love))
  '(package-archives
    (quote
     (("org" . "http://orgmode.org/elpa/")
@@ -563,6 +570,7 @@
     (emacs-lisp-mode compilation-mode outline-mode prog-mode haskell-mode)))
  '(parens-require-spaces t)
  '(pcomplete-compare-entries-function (quote file-newer-than-file-p))
+ '(pe/cache-directory "~/.emacs.d/data/project-explorer-cache/")
  '(persistent-scratch-file-name "~/.emacs.d/data/persistent-scratch")
  '(php-insert-doc-access-tag nil)
  '(php-insert-doc-attribute-tags nil)

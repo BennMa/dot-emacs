@@ -21,3 +21,7 @@
   :config
   (persp-mode)
   (use-package persp-projectile))
+
+;; https://github.com/sabof/project-explorer
+(use-package project-explorer
+  :bind ("M-p w" . project-explorer-toggle))

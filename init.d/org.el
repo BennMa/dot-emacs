@@ -76,6 +76,8 @@
   ;;     (setq pub-dir (concat org-my-export-output-directory-prefix (substring extension 1)))
   ;;     (when (not (file-directory-p pub-dir))
   ;;       (make-directory pub-dir))))
+
+  (use-package org-page)
   )
 
 (use-package org-agenda

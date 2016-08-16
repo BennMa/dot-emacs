@@ -1,6 +1,6 @@
 (use-package maxframe
   :if window-system
-  :commands maximize-frame
+  :commands maximize-frame 
   :bind (("C-c M" . emacs-max)
          ("C-c m" . emacs-toggle-size))
   :init
@@ -743,7 +743,17 @@
   (dtrt-indent-mode 1))
 
 (use-package pdf-tools
-  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :mode ("\\.pdf\\'" . pdf-view-mode) 
   :config
   (pdf-tools-install)
   )
+
+(use-package back-button
+  :config
+  (back-button-mode 1)
+  )
+
+(use-package vimish-fold
+  :disabled t
+  :config
+  (vimish-fold-global-mode 1))
