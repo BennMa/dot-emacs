@@ -571,6 +571,7 @@
  '(parens-require-spaces t)
  '(pcomplete-compare-entries-function (quote file-newer-than-file-p))
  '(pe/cache-directory "~/.emacs.d/data/project-explorer-cache/")
+ '(pe/width 30)
  '(persistent-scratch-file-name "~/.emacs.d/data/persistent-scratch")
  '(php-insert-doc-access-tag nil)
  '(php-insert-doc-attribute-tags nil)

@@ -757,3 +757,10 @@
   :disabled t
   :config
   (vimish-fold-global-mode 1))
+
+(use-package docker
+  :config
+  (docker-global-mode))
+
+(use-package dockerfile-mode
+  :mode ("Dockerfile\\'" . dockerfile-mode))
