@@ -10,9 +10,7 @@
                 (auto-highlight-symbol-mode 1)))  
   (projectile-global-mode)
 
-  ;; https://github.com/sabof/project-explorer
-  (use-package project-explorer
-    :bind ("M-p w" . project-explorer-toggle))
+  
   )
 
 (use-package helm-projectile
@@ -27,3 +25,8 @@
   (persp-mode)
   (use-package persp-projectile))
 
+;; https://github.com/sabof/project-explorer
+(use-package project-explorer
+  :after projectile
+  :config
+  (bind-key "w" 'project-explorer-toggle projectile-command-map))
