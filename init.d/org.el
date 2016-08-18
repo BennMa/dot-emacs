@@ -98,7 +98,9 @@
                 (display-buffer buf))))
         ;;(org-fit-window-to-buffer))
         (progn
-          (call-interactively 'org-agenda-list)))))
+          (call-interactively '(lambda (&optional arg)
+                                 (interactive "P")
+                                 (org-agenda arg "A")))))))
 
   (let ((map org-agenda-mode-map))
     (bind-key "\C-n" 'next-line map)

@@ -8,19 +8,22 @@
  '(org-agenda-auto-exclude-function nil)
  '(org-agenda-custom-commands
    (quote
-    (("h" "High Priority Tasks" todo ""
-      ((org-agenda-overriding-header "High Priority Tasks: ")
-       (org-agenda-skip-function
-        (quote
-         (org-agenda-skip-entry-if
-          (quote regexp)
-          "\\* SOMEDAY"
-          (quote notregexp)
-          "\\=.*\\[#\\(A\\|B\\|C\\)\\]")))
-       (org-agenda-sorting-strategy
-        (quote
-         (priority-down)))))
-     ("A" "All tasks" todo ""
+    (("A" "Agenda & High Priority Tasks"
+      ((agenda "" nil)
+       (todo ""
+             ((org-agenda-overriding-header "High Priority Tasks: ")
+              (org-agenda-skip-function
+               (quote
+                (org-agenda-skip-entry-if
+                 (quote regexp)
+                 "\\* SOMEDAY"
+                 (quote notregexp)
+                 "\\=.*\\[#\\(A\\|B\\)\\]")))
+              (org-agenda-sorting-strategy
+               (quote
+                (priority-down))))))
+      nil)
+     ("l" "All tasks" todo ""
       ((org-agenda-overriding-header "Unscheduled tasks: ")
        (org-agenda-skip-function
         (quote
@@ -36,7 +39,10 @@
         (quote
          (todo-state-up priority-down category-up)))))
      ("o" "Someday tasks" todo "SOMEDAY"
-      ((org-agenda-overriding-header "Someday tasks:"))))))
+      ((org-agenda-overriding-header "Someday tasks:")))
+     ("r" "All Review Entries" tags ":review:"
+      ((org-agenda-skip-function
+        (quote k/org-agenda-skip-expired-review-entry)))))))
  '(org-agenda-deadline-leaders (quote ("!D!: " "D%02d: ")))
  '(org-agenda-default-appointment-duration 60)
  '(org-agenda-files
@@ -129,7 +135,7 @@
  '(org-cycle-global-at-bob t)
  '(org-deadline-warning-days 14)
  '(org-default-notes-file "~/Dropbox/PKG/Task/Collector.org")
- '(org-default-priority 66)
+ '(org-default-priority 67)
  '(org-directory "~/Dropbox/PKG/Task/")
  '(org-ditaa-jar-path "~/bin/DitaaEps.jar")
  '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "OUT")))
