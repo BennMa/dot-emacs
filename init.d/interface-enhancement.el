@@ -639,6 +639,8 @@
        "Org")
       ((eq major-mode 'erc-mode)
        "ERC")
+      ((memq major-mode '(circe-query-mode circe-server-mode circe-channel-mode circe-chat-mode))
+       "IRC")
       ((eq major-mode 'dired-mode)
        "Dired")
       ((projectile-project-p)

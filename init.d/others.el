@@ -207,6 +207,19 @@ command uses interactive mode if passed an argument."
         (set-text-properties 0 (length previous) nil previous)
         (insert previous)))))
 
+
+;; https://github.com/jorgenschaefer/circe
+;; https://github.com/jorgenschaefer/circe/wiki/Commands
+(use-package circe
+  :config
+  (load "lui-logging" nil t)
+  (enable-lui-logging-globally))
+
+(use-package circe-notifications
+  :commands (enable-circe-notifications)
+  :init
+  (add-hook 'circe-server-connected-hook 'enable-circe-notifications))
+
 ;; ------ org-mode
 ;; (use-package org-init)
 

@@ -127,6 +127,13 @@
         (nth 4 xs)
         (nth 3 xs)
         (nth 5 xs)))))
+ '(circe-network-options
+   (quote
+    (("TNC" :host "sh.thenetcircle.com" :port 6697 :pass "b3RUn" :use-tls t :nick "benn" :channels
+      ("#Poppen-Dev" "#Poppen-Prod" "#Service-Team" "#Gays-Prod" "Gays-Dev" "#tnc" "#fetisch" "#Flirten" "#Kaufmich")))))
+ '(circe-notifications-wait-for 1)
+ '(circe-notifications-watch-strings (quote ("ttt" "benn")))
+ '(circe-reduce-lurker-spam nil)
  '(clean-buffer-list-kill-never-buffer-names
    (quote
     ("*scratch*" "*Messages*" "*server*" "*Group*" "*Org Agenda*" "TODO.txt" "&bitlbee")))
@@ -508,6 +515,7 @@
  '(load-dir-debug nil)
  '(load-dir-recursive t)
  '(load-prefer-newer t)
+ '(lui-logging-directory "~/Dropbox/Backup/IRC")
  '(mac-pass-command-to-system nil)
  '(mac-pass-control-to-system nil)
  '(mac-wheel-button-is-mouse-2 nil)
