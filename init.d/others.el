@@ -212,8 +212,20 @@ command uses interactive mode if passed an argument."
 ;; https://github.com/jorgenschaefer/circe/wiki/Commands
 (use-package circe
   :config
+  (setq circe-mode-list '(circe-query-mode circe-server-mode circe-channel-mode circe-chat-mode))
+  
   (load "lui-logging" nil t)
-  (enable-lui-logging-globally))
+  (enable-lui-logging-globally)
+
+  (defun my-toggle-circe ()
+    (interactive)
+    (if (memq major-mode circe-mode-list)
+        (let ((previous-buffer-black-modes-list circe-mode-list))
+          (call-interactively 'switch-to-previous-buffer))
+      (let ((previous-buffer-white-list '())
+            (previous-buffer-white-modes-list circe-mode-list))
+        (call-interactively 'switch-to-previous-buffer))
+      )))
 
 (use-package circe-notifications
   :commands (enable-circe-notifications)

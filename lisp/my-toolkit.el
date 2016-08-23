@@ -87,6 +87,9 @@ Inspired by Erik Naggum's `recursive-edit-with-single-window'."
 (defcustom previous-buffer-white-list '()
   "white list of last buffer switcher"
   :type '(repeat regexp))
+(defcustom previous-buffer-white-modes-list '()
+  "white list of modes of last buffer switcher"
+  :type '(repeat string))
 (defcustom previous-buffer-black-list '()
   "black list of last buffer switcher"
   :type '(repeat regexp))
@@ -98,18 +101,21 @@ Inspired by Erik Naggum's `recursive-edit-with-single-window'."
   (interactive)
   (let ((i 1)
         last-buffer
-        last-buffer-name)
+        last-buffer-name
+        last-buffer-mode)
     (catch 'matched_
       (while (< i 50)
         (setq last-buffer (nth i (buffer-list)))
         (setq last-buffer-name (buffer-name last-buffer))
+        (setq last-buffer-mode (symbol-name (buffer-local-value 'major-mode last-buffer)))
         (when (or (list-regex-match-p last-buffer-name
                                       previous-buffer-white-list)
+                  (member-ignore-case last-buffer-mode
+                                      previous-buffer-white-modes-list)
                   (not (or (list-regex-match-p last-buffer-name
-                                           previous-buffer-black-list)
-                           (member-ignore-case
-                            (symbol-name (buffer-local-value 'major-mode last-buffer))
-                            previous-buffer-black-modes-list))))
+                                               previous-buffer-black-list)
+                           (member-ignore-case last-buffer-mode
+                                               previous-buffer-black-modes-list))))
           (switch-to-buffer last-buffer-name)
           (throw 'matched_ t))
         (setq i (1+ i))))))
