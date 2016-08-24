@@ -610,7 +610,9 @@
      (slime-connection-list-mode))))
  '(powerline-default-separator (quote arrow))
  '(previous-buffer-black-list (quote ("^ ?\\*" "Collector.org")))
- '(previous-buffer-black-modes-list (quote ("direx:direx-mode" "diary-mode")))
+ '(previous-buffer-black-modes-list
+   (quote
+    ("direx:direx-mode" "diary-mode" "circe-query-mode" "circe-server-mode" "circe-channel-mode" "circe-chat-mode")))
  '(previous-buffer-white-list
    (quote
     ("\\*mu4e-\\(main\\|headers\\)" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*python")))
@@ -704,6 +706,7 @@
  '(svn-status-hide-unmodified t)
  '(tab-width 4)
  '(tabbar-cycle-scope (quote groups))
+ '(tabbar-use-images t)
  '(tags-add-tables t)
  '(tags-apropos-verbose t)
  '(tags-case-fold-search nil)
