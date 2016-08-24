@@ -338,6 +338,7 @@
  '(global-auto-complete-mode t)
  '(global-font-lock-mode t nil (font-lock))
  '(global-undo-tree-mode t)
+ '(google-this-keybind "s")
  '(grep-find-command (quote ("ag --noheading --column --ignore branches " . 43)))
  '(grep-find-ignored-directories
    (quote
