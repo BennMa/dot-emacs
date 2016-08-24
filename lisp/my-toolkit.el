@@ -107,7 +107,9 @@ Inspired by Erik Naggum's `recursive-edit-with-single-window'."
       (while (< i 50)
         (setq last-buffer (nth i (buffer-list)))
         (setq last-buffer-name (buffer-name last-buffer))
-        (setq last-buffer-mode (symbol-name (buffer-local-value 'major-mode last-buffer)))
+        (setq last-buffer-mode (if last-buffer 
+                                   (symbol-name (buffer-local-value 'major-mode last-buffer))
+                                 ""))
         (when (or (list-regex-match-p last-buffer-name
                                       previous-buffer-white-list)
                   (member-ignore-case last-buffer-mode
@@ -118,7 +120,9 @@ Inspired by Erik Naggum's `recursive-edit-with-single-window'."
                                                previous-buffer-black-modes-list))))
           (switch-to-buffer last-buffer-name)
           (throw 'matched_ t))
-        (setq i (1+ i))))))
+        (setq i (1+ i))
+        nil)
+      )))
 
 (defun collapse-or-expand ()
   (interactive)

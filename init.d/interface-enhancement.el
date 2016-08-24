@@ -611,6 +611,8 @@
   :config
   (tabbar-mode)
 
+  (load "tabbar-tweak")
+
   ;; (setq tabbar-background-color "#959A79")
   ;; (custom-set-faces
   ;;  '(tabbar-default ((t (:inherit variable-pitch :background "#959A79" :foreground "black" :weight bold))))
