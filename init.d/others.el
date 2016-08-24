@@ -105,7 +105,6 @@
   (symon-mode -1))
 
 (use-package elscreen
-  :disabled t
   :config
   (elscreen-start))
 

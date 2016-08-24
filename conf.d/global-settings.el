@@ -213,6 +213,7 @@
  '(el-get-generate-autoloads nil)
  '(el-get-use-autoloads nil)
  '(electric-indent-mode nil)
+ '(elscreen-display-tab nil)
  '(emacs-lisp-mode-hook
    (quote
     (turn-on-auto-fill
@@ -706,6 +707,7 @@
  '(svn-status-hide-unmodified t)
  '(tab-width 4)
  '(tabbar-cycle-scope (quote groups))
+ '(tabbar-separator (quote (0.5)))
  '(tabbar-use-images t)
  '(tags-add-tables t)
  '(tags-apropos-verbose t)
