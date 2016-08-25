@@ -213,6 +213,7 @@
  '(el-get-generate-autoloads nil)
  '(el-get-use-autoloads nil)
  '(electric-indent-mode nil)
+ '(elscreen-display-tab nil)
  '(emacs-lisp-mode-hook
    (quote
     (turn-on-auto-fill
@@ -338,6 +339,7 @@
  '(global-auto-complete-mode t)
  '(global-font-lock-mode t nil (font-lock))
  '(global-undo-tree-mode t)
+ '(google-this-keybind "s")
  '(grep-find-command (quote ("ag --noheading --column --ignore branches " . 43)))
  '(grep-find-ignored-directories
    (quote
@@ -705,6 +707,7 @@
  '(svn-status-hide-unmodified t)
  '(tab-width 4)
  '(tabbar-cycle-scope (quote groups))
+ '(tabbar-separator (quote (0.5)))
  '(tabbar-use-images t)
  '(tags-add-tables t)
  '(tags-apropos-verbose t)
