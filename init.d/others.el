@@ -233,6 +233,12 @@ command uses interactive mode if passed an argument."
   :init
   (add-hook 'circe-server-connected-hook 'enable-circe-notifications))
 
+(use-package hiwin
+  :disabled t
+  :config
+  (hiwin-activate)
+  (set-face-background 'hiwin-face "gray18"))
+
 ;; ------ org-mode
 ;; (use-package org-init)
 
