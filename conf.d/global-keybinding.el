@@ -95,6 +95,7 @@
 (bind-key "C-x C-d" 'duplicate-line)
 (bind-key "C-x C-e" 'pp-eval-last-sexp)
 (bind-key "C-x C-n" 'next-line)
+(bind-key "C-x C-o" 'kill-other-buffers)
 
 (bind-key "C-x C-v" 'find-alternate-file-with-sudo)
 
@@ -111,6 +112,8 @@
 
 (bind-key [?\C-c ?\t] 'ff-find-other-file)
 (bind-key "C-c SPC" 'just-one-space)
+
+(bind-key "C-c C-f" 'my-code-format)
 
 (bind-key "C-c 0"
           (recursive-edit-preserving-window-config (delete-window)))

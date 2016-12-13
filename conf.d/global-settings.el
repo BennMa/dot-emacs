@@ -130,7 +130,7 @@
  '(circe-network-options
    (quote
     (("TNC" :host "sh.thenetcircle.com" :port 6697 :pass "b3RUn" :use-tls t :nick "benn" :channels
-      ("#Poppen-Dev" "#Poppen-Prod" "#Service-Team" "#Gays-Prod" "Gays-Dev" "#tnc" "#fetisch" "#Flirten" "#Kaufmich")))))
+      ("#Poppen-Dev" "#Poppen-Prod" "#Service-Team" "#Gays-Prod" "#Gays-Dev" "#tnc" "#fetisch" "#Flirten" "#Kaufmich")))))
  '(circe-notifications-wait-for 1)
  '(circe-notifications-watch-strings (quote ("ttt" "benn")))
  '(circe-reduce-lurker-spam nil)
@@ -517,7 +517,7 @@
  '(load-dir-debug nil)
  '(load-dir-recursive t)
  '(load-prefer-newer t)
- '(lui-logging-directory "~/Dropbox/Backup/IRC")
+ '(lui-logging-directory "~/Data/IRC")
  '(mac-pass-command-to-system nil)
  '(mac-pass-control-to-system nil)
  '(mac-wheel-button-is-mouse-2 nil)
@@ -688,6 +688,8 @@
  '(slime-startup-animation nil)
  '(sp-highlight-pair-overlay nil)
  '(speedbar-show-unknown-files t)
+ '(split-height-threshold nil)
+ '(split-width-threshold nil)
  '(sql-sqlite-program "sqlite3")
  '(sr-attributes-display-mask (quote (nil nil t nil nil nil)))
  '(sr-autoload-extensions nil)

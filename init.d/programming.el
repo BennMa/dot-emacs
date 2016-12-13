@@ -174,6 +174,7 @@
   :config
 
   (unbind-key "M-j" js2-mode-map)
+  (unbind-key "C-c C-f" js2-mode-map)
 
   (use-package js2-refactor
     :config
@@ -226,7 +227,7 @@
     (eldoc-mode +1)
     (company-mode +1))
 
-  (add-hook 'before-save-hook 'tide-format-before-save)
+  ;; (add-hook 'before-save-hook 'tide-format-before-save)
   (add-hook 'typescript-mode-hook #'setup-tide-mode)  
   (setq tide-format-options
         '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions t
@@ -276,4 +277,8 @@
   (unbind-key "M-p" markdown-mode-map))
 
 (use-package quickrun
+  :bind (("C-x x" . quickrun))
   :commands (quickrun))
+
+(use-package lua-mode
+  :mode ("\\.lua$\\'" . web-mode))

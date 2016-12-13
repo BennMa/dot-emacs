@@ -597,6 +597,25 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
                                (and (not is_url) (concat emacsclient-bin " -nqe \"" callback-command "\"")) ;; execute emacs code/function when click the notification
                                group sender activate sound)))
 
+(defun my-code-format()
+  (interactive)
+  (cond
+   ((string-equal mode-name "Emacs-Lisp") ";;")
+   ((string-equal mode-name "Lisp") ";;")
+   ((string-equal mode-name "PHP") "//")
+   ((string-equal mode-name "Web") "//")
+   ((string-equal mode-name "Py") "#")
+   ((string-equal mode-name "Erlang") "%%")
+   ((string-equal mode-name "Javascript-IDE") (tide-format))
+   (t nil)))
+
+(defun kill-other-buffers ()
+    "Kill all other buffers."
+    (interactive)
+    (mapc 'kill-buffer 
+          (delq (current-buffer) 
+                (remove-if-not 'buffer-file-name (buffer-list)))))
+
 ;; ------ macos terminal clipboard
 (defun copy-from-osx ()
   (shell-command-to-string "pbpaste"))

@@ -167,15 +167,21 @@
   :config
   (popwin-mode 1))
 
+(use-package shackle
+  :config
+  (shackle-mode))
+
 (use-package direx
   :bind ("C-. d" . my-direx:jump-to-directory-other-window)
   :init
-  (push '(direx:direx-mode :position left :width 30 :dedicated t :stick t)
-        popwin:special-display-config)
+  ;; (push '(direx:direx-mode :position left :width 30 :dedicated t :stick t)
+  ;;       popwin:special-display-config)
+  (push '(direx:direx-mode :align left :select t :size 30) shackle-rules)
   :config
   (defun my-direx:jump-to-directory-other-window ()
     (interactive)
-    (switch-to-buffer-other-window (direx:jump-to-directory-noselect))
+    ;; (switch-to-buffer-other-window (direx:jump-to-directory-noselect))
+    (direx:jump-to-directory-other-window)
     (set-window-dedicated-p (selected-window) t))
   
   (bind-key "TAB" 'direx:maybe-find-item direx:direx-mode-map)
@@ -284,7 +290,7 @@
 
 (use-package fold-this
   :disabled t
-  :bind (("C-c C-f" . fold-this-all)
+  :bind (;; ("C-c C-f" . fold-this-all)
          ("C-c C-F" . fold-this)
          ("C-c M-f" . fold-this-unfold-all)))
 
@@ -728,6 +734,7 @@
 
 
 (use-package aggressive-indent
+  :disabled t
   :config
   (dolist (hook '(emacs-lisp-mode-hook
                   js2-mode-hook))
