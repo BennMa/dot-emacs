@@ -606,7 +606,7 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
    ((string-equal mode-name "Web") "//")
    ((string-equal mode-name "Py") "#")
    ((string-equal mode-name "Erlang") "%%")
-   ((string-equal mode-name "Javascript-IDE") (tide-format))
+   ((string-match "^Javascript-IDE" mode-name) (tide-format))
    (t nil)))
 
 (defun kill-other-buffers ()
