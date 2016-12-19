@@ -197,6 +197,10 @@
  '(diredful-init-file "~/.emacs.d/data/diredful-conf.el")
  '(doc-view-resolution 300)
  '(dtrt-indent-verbosity 1)
+ '(eclim-eclipse-dirs
+   (quote
+    ("/usr/bin/eclipse" "/Applications/eclipse" "/usr/lib/eclipse" "/usr/local/lib/eclipse" "/usr/share/eclipse")))
+ '(eclimd-default-workspace "~/Workspace")
  '(ediff-combination-pattern
    (quote
     ("<<<<<<< A: HEAD" A "||||||| Ancestor" Ancestor "=======" B ">>>>>>> B: Incoming")))
@@ -542,6 +546,9 @@
  '(moo-do-includes t)
  '(moo-select-method (quote ivy))
  '(mouse-avoidance-mode (quote animate) nil (avoid))
+ '(mouse-wheel-follow-mouse t)
+ '(mouse-wheel-progressive-speed nil)
+ '(mouse-wheel-scroll-amount (quote (2 ((shift) . 1) ((control)))))
  '(mudel-mode-hook (quote (mudel-add-scroll-to-bottom)))
  '(mudel-output-filter-functions (quote (ansi-color-process-output)))
  '(multi-term-dedicated-close-back-to-open-buffer-p t)
@@ -660,6 +667,7 @@
  '(scroll-bar-mode nil)
  '(scroll-conservatively 10000)
  '(scroll-margin 0)
+ '(scroll-step 1)
  '(semantic-imenu-index-directory t)
  '(semantic-which-function-use-color t)
  '(semanticdb-default-save-directory "~/.emacs.d/data/semanticdb")

@@ -84,6 +84,9 @@
 (bind-key "C-x F" 'set-fill-column)
 (bind-key "C-x t" 'toggle-truncate-lines)
 
+(bind-key "C-x _" 'split-window-below)
+(bind-key "C-x |" 'split-window-right)
+
 (bind-key "C-x K" 'delete-current-buffer-file)
 
 (bind-key "C-x y" '(lambda() (interactive) (insert-separator nil)))
@@ -108,7 +111,7 @@
 ;; ====== mode-specific-map, C-c
 
 (bind-key "C-<tab>" 'switch-to-previous-buffer)
-(bind-key "C-<return>" 'other-window)
+(bind-key "C-<return>" 'my-other-window)
 
 (bind-key [?\C-c ?\t] 'ff-find-other-file)
 (bind-key "C-c SPC" 'just-one-space)

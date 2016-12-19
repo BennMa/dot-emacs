@@ -282,3 +282,15 @@
 
 (use-package lua-mode
   :mode ("\\.lua$\\'" . web-mode))
+
+;; https://github.com/senny/emacs-eclim
+;; Integrating Eclipse features into Emacs
+(use-package eclim
+  :config
+  (global-eclim-mode)
+  (require 'eclimd)
+
+  (use-package company-emacs-eclim
+    :config
+    (company-emacs-eclim-setup))
+  )

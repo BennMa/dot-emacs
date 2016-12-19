@@ -182,13 +182,35 @@
     (interactive)
     ;; (switch-to-buffer-other-window (direx:jump-to-directory-noselect))
     (direx:jump-to-directory-other-window)
+    (nlinum-mode -1)
     (set-window-dedicated-p (selected-window) t))
   
   (bind-key "TAB" 'direx:maybe-find-item direx:direx-mode-map)
   (defadvice direx:jump-to-directory-noselect
       (around direx:set-default-directory activate)
     (let ((default-directory (projectile-project-root)))
-      ad-do-it)))
+      ad-do-it))
+
+  (defun direx:do-rename-file ()
+    (interactive)
+    (let* ((item (direx:item-at-point!))
+           (file (direx:item-tree item))
+           (to (read-file-name (format "Rename %s to " (direx:tree-name file))
+                               (direx:directory-dirname (direx:file-full-name file)))))
+      (dired-rename-file (direx:file-full-name file) to nil)
+      (direx:item-refresh-parent item)
+      (direx:move-to-item-name-part item)))
+
+  (defun direx:do-copy-files ()
+    (interactive)
+    (let* ((item (direx:item-at-point!))
+           (file (direx:item-tree item))
+           (to (read-directory-name (format "Copy %s to " (direx:tree-name file))
+                                    (direx:directory-dirname (direx:file-full-name file)))))
+      (dired-copy-file (direx:file-full-name file) to nil)
+      (direx:item-refresh-parent item)
+      (direx:move-to-item-name-part item)))
+  )
 
 (use-package auto-highlight-symbol
   :demand t

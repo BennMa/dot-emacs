@@ -96,6 +96,7 @@ Inspired by Erik Naggum's `recursive-edit-with-single-window'."
 (defcustom previous-buffer-black-modes-list '()
   "black list of modes of last buffer switcher"
   :type '(repeat string))
+
 (defun switch-to-previous-buffer ()
   "switch to last active buffer by white list and black list"
   (interactive)
@@ -123,6 +124,16 @@ Inspired by Erik Naggum's `recursive-edit-with-single-window'."
         (setq i (1+ i))
         nil)
       )))
+
+(defun my-other-window (count &optional all-frames)
+  (interactive "p")
+  (let ((i 1))
+    (catch 'matched_
+      (while (< i 6)
+        (other-window count all-frames)
+        (when (not (member major-mode '(direx:direx-mode project-explorer-mode)))
+                   (throw 'matched_ t))
+        (setq i (1+ i))))))
 
 (defun collapse-or-expand ()
   (interactive)
