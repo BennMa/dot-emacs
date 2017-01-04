@@ -35,6 +35,7 @@
                 (flyspell-mode 1)
                 (set (make-local-variable 'semantic-mode) nil)
                 (turn-off-auto-fill)
+                (company-mode -1)
                 ))
   
   (defun save-org-mode-files ()

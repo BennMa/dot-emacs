@@ -31,5 +31,5 @@
   :config
   (bind-key "w" 'project-explorer-toggle projectile-command-map)
   (bind-key "o" 'pe/find-file project-explorer-mode-map)
-  (add-hook 'project-explorer-mode-hook (lambda () (nlinum-mode -1)))
+  ;; (add-hook 'project-explorer-mode-hook (lambda () (nlinum-mode -1)))
   )
