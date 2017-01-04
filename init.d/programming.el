@@ -345,4 +345,8 @@
   :interpreter
   ("scala" . scala-mode))
 
-(use-package ensime)
+(use-package ensime
+  :pin melpa-stable
+  :config
+  (setq ensime-startup-notification nil)
+  (setq ensime-startup-snapshot-notification nil))

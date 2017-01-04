@@ -234,6 +234,7 @@
         [(control 109)]
         (quote newline-and-indent))))))
  '(enable-recursive-minibuffers t)
+ '(ensime-sbt-command "/usr/local/bin/sbt")
  '(erc-auto-query (quote window-noselect))
  '(erc-autoaway-message "I'm away (after %i seconds of idle-time)")
  '(erc-autojoin-domain-only t)
@@ -580,7 +581,8 @@
      ("elpa" . "http://tromey.com/elpa/")
      ("marmalade" . "http://marmalade-repo.org/packages/")
      ("sunrise" . "http://joseito.republika.pl/sunrise-commander/")
-     ("gnu" . "http://elpa.gnu.org/packages/"))))
+     ("gnu" . "http://elpa.gnu.org/packages/")
+     ("melpa-stable" . "http://stable.melpa.org/packages/"))))
  '(package-enable-at-startup nil)
  '(page-break-lines-modes
    (quote
