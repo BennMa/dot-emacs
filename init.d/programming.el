@@ -216,7 +216,9 @@
     (c-toggle-hungry-state 1)
     (set (make-local-variable 'indent-line-function) 'my-js2-indent-function)
     (if (featurep 'js2-highlight-vars)
-        (js2-highlight-vars-mode)))
+        (js2-highlight-vars-mode))
+    (nlinum-mode 1)
+    )
 
   (add-hook 'js2-mode-hook 'my-js2-mode-hook)
 
@@ -339,3 +341,11 @@
     :config
     (company-emacs-eclim-setup))
   )
+
+(use-package nxml
+  :no-require t
+  :init
+  (require 'nxml-mode)
+  (unbind-key "C-<tab>" nxml-mode-map)
+  (unbind-key "M-}" nxml-mode-map)
+  (unbind-key "M-{" nxml-mode-map))

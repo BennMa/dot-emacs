@@ -2,10 +2,29 @@
 (use-package initsplit :ensure nil)
 
 (use-package nlinum
-  ;; :disabled t
-  :ensure t
   :config
-  (global-nlinum-mode))
+  
+  (dolist (hook '(verilog-mode-hook
+                  emacs-lisp-mode-hook
+                  cperl-mode-hook
+                  c-mode-hook
+                  python-mode-hook
+                  matlab-mode-hook
+                  sh-mode-hook
+                  web-mode-hook
+                  html-mode-hook
+                  css-mode-hook
+                  makefile-gmake-mode-hook
+                  tcl-mode-hook
+                  conf-space-mode-hook
+                  d-mode-hook
+                  ;; nxml-mode-map
+                  ;; js2-mode-map
+                  sml-mode-hook
+                  java-mode-hook))
+    (add-hook hook #'nlinum-mode))
+  ;; (global-nlinum-mode)
+  )
 
 (use-package exec-path-from-shell
   :if window-system

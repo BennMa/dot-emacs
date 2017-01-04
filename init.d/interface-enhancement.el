@@ -182,7 +182,6 @@
     (interactive)
     ;; (switch-to-buffer-other-window (direx:jump-to-directory-noselect))
     (direx:jump-to-directory-other-window)
-    (nlinum-mode -1)
     (set-window-dedicated-p (selected-window) t))
   
   (bind-key "TAB" 'direx:maybe-find-item direx:direx-mode-map)
