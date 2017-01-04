@@ -339,3 +339,10 @@
     :config
     (company-emacs-eclim-setup))
   )
+
+;; --- Scala
+(use-package scala-mode
+  :interpreter
+  ("scala" . scala-mode))
+
+(use-package ensime)
