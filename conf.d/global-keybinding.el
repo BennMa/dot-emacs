@@ -60,6 +60,8 @@
 (bind-key "M-'" 'insert-pair)
 (bind-key "M-\"" 'insert-pair)
 
+(bind-key "<M-backspace>" 'contextual-backspace)
+
 (bind-key "M-[" 'align-code)
 (bind-key "M-`" 'other-frame)
 

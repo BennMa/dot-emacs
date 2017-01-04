@@ -349,3 +349,10 @@
   (unbind-key "C-<tab>" nxml-mode-map)
   (unbind-key "M-}" nxml-mode-map)
   (unbind-key "M-{" nxml-mode-map))
+
+;; --- Scala
+(use-package scala-mode
+  :interpreter
+  ("scala" . scala-mode))
+
+(use-package ensime)
