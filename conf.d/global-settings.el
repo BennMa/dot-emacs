@@ -625,7 +625,7 @@
     ("direx:direx-mode" "diary-mode" "circe-query-mode" "circe-server-mode" "circe-channel-mode" "circe-chat-mode")))
  '(previous-buffer-white-list
    (quote
-    ("\\*mu4e-\\(main\\|headers\\)" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python")))
+    ("\\*mu4e-\\(main\\|headers\\)" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python" "\\*sbt\\*")))
  '(projectile-cache-file "~/.emacs.d/data/projectile.cache")
  '(projectile-enable-caching t)
  '(projectile-globally-ignored-files (quote ("TAGS" "GPATH" "GRTAGS" "GTAGS" "ID")))

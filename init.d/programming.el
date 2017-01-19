@@ -16,6 +16,8 @@
   :mode (("\\.html?\\'" . web-mode)
          ("\\.html\\.twig\\'" . web-mode)
          ("\\.phtml\\'" . web-mode)
+         ("\\.ejs\\'" . web-mode)
+         ("\\.swig\\'" . web-mode)
          ("\\.tpl\\'" . web-mode)
          ("\\.tpl\\.php\\'" . web-mode)
          ("\\.tsx\\'" . web-mode)
@@ -360,3 +362,6 @@
   :config
   (setq ensime-startup-notification nil)
   (setq ensime-startup-snapshot-notification nil))
+
+(use-package sml-mode
+  :mode ("\\.\\(sml\\|sig\\)\\'" . sml-mode))

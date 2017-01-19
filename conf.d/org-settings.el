@@ -182,6 +182,7 @@
  '(org-habit-preceding-days 42)
  '(org-habit-today-glyph 45)
  '(org-hide-leading-stars t)
+ '(org-html-validation-link nil)
  '(org-id-locations-file "~/.emacs.d/data/org-id-locations")
  '(org-image-actual-width (quote (800)))
  '(org-indent-mode-turns-on-hiding-stars t)
