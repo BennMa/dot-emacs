@@ -311,7 +311,7 @@
 
 (use-package semantic-php
   :ensure nil
-  :if (file-exists-p (concat ROOT-DIR "lisp/semantic-php/loaddefs.el"))
+  :if (file-exists-p (concat user-emacs-directory "lisp/semantic-php/loaddefs.el"))
   :load-path "lisp/semantic-php"
   :init
   (load "semantic-php/loaddefs"))

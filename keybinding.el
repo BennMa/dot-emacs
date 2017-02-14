@@ -205,3 +205,5 @@
 (bind-key "C-h e v" 'find-variable)
 (bind-key "C-h e V" 'apropos-value)
 (bind-key "C-h e t" 'what-face)
+
+(provide 'keybinding)

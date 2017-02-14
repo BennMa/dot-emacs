@@ -168,7 +168,7 @@
  '(current-language-environment "UTF-8")
  '(cursor-type (quote bar))
  '(custom-buffer-done-function (quote kill-buffer))
- '(custom-file "~/.emacs.d/conf.d/global-settings.el")
+ '(custom-file "~/.emacs.d/conf.d/global-customization.el")
  '(custom-raised-buttons nil)
  '(custom-theme-directory "~/.emacs.d/themes/")
  '(default-major-mode (quote text-mode) t)
@@ -504,9 +504,9 @@
  '(initial-major-mode (quote fundamental-mode))
  '(initsplit-customizations-alist
    (quote
-    (("\\`\\(gnus\\|nn\\|message\\|mail\\|mm-\\|smtp\\|send-mail\\|sendmail\\|check-mail\\|spam\\|sc-\\)" "~/.emacs.d/conf.d/gnus-settings.el" nil nil)
-     ("\\`\\(individual-\\|line-spacing\\)" "~/.emacs.d/conf.d/individual-settings.el" nil nil)
-     ("\\`\\(org-\\)" "~/.emacs.d/conf.d/org-settings.el" nil nil))))
+    (("\\`\\(gnus\\|nn\\|message\\|mail\\|mm-\\|smtp\\|send-mail\\|sendmail\\|check-mail\\|spam\\|sc-\\)" "~/.emacs.d/conf.d/gnus-customization.el" nil nil)
+     ("\\`\\(individual-\\|line-spacing\\)" "~/.emacs.d/conf.d/individual-customization.el" nil nil)
+     ("\\`\\(org-\\)" "~/.emacs.d/conf.d/org-customization.el" nil nil))))
  '(ispell-extra-args nil)
  '(js3-enter-indents-newline t)
  '(js3-expr-indent-offset 2)
@@ -519,6 +519,7 @@
  '(kill-whole-line t)
  '(large-file-warning-threshold nil)
  '(line-number-mode t)
+ '(line-spacing 0.3)
  '(load-dir-debug nil)
  '(load-dir-recursive t)
  '(load-prefer-newer t)
@@ -573,20 +574,263 @@
  '(op/site-main-title "Brainstorming")
  '(op/site-sub-title "personal knowledge output")
  '(op/theme (quote emacs_love))
- '(package-archives
+ '(org-M-RET-may-split-line (quote ((headline) (default . t))))
+ '(org-adapt-indentation nil)
+ '(org-agenda-auto-exclude-function nil)
+ '(org-agenda-custom-commands
    (quote
-    (("org" . "http://orgmode.org/elpa/")
-     ("elpy" . "https://jorgenschaefer.github.io/packages/")
-     ("melpa" . "http://melpa.org/packages/")
-     ("elpa" . "http://tromey.com/elpa/")
-     ("marmalade" . "http://marmalade-repo.org/packages/")
-     ("sunrise" . "http://joseito.republika.pl/sunrise-commander/")
-     ("gnu" . "http://elpa.gnu.org/packages/")
-     ("melpa-stable" . "http://stable.melpa.org/packages/"))))
- '(package-enable-at-startup nil)
+    (("A" "Agenda & High Priority Tasks"
+      ((agenda "" nil)
+       (todo ""
+             ((org-agenda-overriding-header "High Priority Tasks: ")
+              (org-agenda-skip-function
+               (quote
+                (org-agenda-skip-entry-if
+                 (quote regexp)
+                 "\\* SOMEDAY"
+                 (quote notregexp)
+                 "\\=.*\\[#\\(A\\|B\\)\\]")))
+              (org-agenda-sorting-strategy
+               (quote
+                (priority-down))))))
+      nil)
+     ("l" "All tasks" todo ""
+      ((org-agenda-overriding-header "Unscheduled tasks: ")
+       (org-agenda-skip-function
+        (quote
+         (org-agenda-skip-entry-if
+          (quote regexp)
+          "\\* SOMEDAY")))
+       (org-agenda-sorting-strategy
+        (quote
+         (priority-down)))))
+     ("w" "Waiting tasks" todo "WAITING"
+      ((org-agenda-overriding-header "Waiting tasks:")
+       (org-agenda-sorting-strategy
+        (quote
+         (todo-state-up priority-down category-up)))))
+     ("o" "Someday tasks" todo "SOMEDAY"
+      ((org-agenda-overriding-header "Someday tasks:")))
+     ("r" "All Review Entries" tags ":review:"
+      ((org-agenda-skip-function
+        (quote k/org-agenda-skip-expired-review-entry)))))))
+ '(org-agenda-deadline-leaders (quote ("!D!: " "D%02d: ")))
+ '(org-agenda-default-appointment-duration 60)
+ '(org-agenda-files
+   (quote
+    ("~/Dropbox/PKG/Task/INBOX.org" "~/Dropbox/PKG/Task/Collector.org" "~/Dropbox/PKG/Task/PROJECTS.org")))
+ '(org-agenda-fontify-priorities t)
+ '(org-agenda-include-diary t)
+ '(org-agenda-inhibit-startup t)
+ '(org-agenda-log-mode-items (quote (closed clock state)))
+ '(org-agenda-ndays 1)
+ '(org-agenda-persistent-filter t)
+ '(org-agenda-prefix-format
+   (quote
+    ((agenda . "  %-11c%?-12t% s")
+     (timeline . "  % s")
+     (todo . "  %-11c")
+     (tags . "  %-11c"))))
+ '(org-agenda-scheduled-leaders (quote ("" "S%d: ")))
+ '(org-agenda-scheduled-relative-text "S%d: ")
+ '(org-agenda-scheduled-text "")
+ '(org-agenda-show-all-dates t)
+ '(org-agenda-skip-deadline-if-done t)
+ '(org-agenda-skip-scheduled-if-deadline-is-shown t)
+ '(org-agenda-skip-scheduled-if-done t)
+ '(org-agenda-skip-unavailable-files t)
+ '(org-agenda-sorting-strategy
+   (quote
+    ((agenda habit-down time-up todo-state-up priority-down user-defined-down)
+     (todo priority-down category-keep)
+     (tags priority-down category-keep)
+     (search category-keep))))
+ '(org-agenda-start-on-weekday nil)
+ '(org-agenda-start-with-log-mode nil)
+ '(org-agenda-tags-column -100)
+ '(org-agenda-text-search-extra-files (quote (agenda-archives)))
+ '(org-agenda-use-time-grid nil)
+ '(org-archive-location "%s_archive::datetree")
+ '(org-archive-save-context-info (quote (time category itags)))
+ '(org-attach-method (quote mv))
+ '(org-babel-load-languages
+   (quote
+    ((emacs-lisp . t)
+     (sh . t)
+     (ruby . t)
+     (python . t)
+     (scala . t)
+     (C . t)
+     (css . t)
+     (java . t)
+     (js . t))))
+ '(org-beamer-frame-default-options "fragile")
+ '(org-capture-templates
+   (quote
+    (("a" "Add Task" entry
+      (file "~/Dropbox/PKG/Task/Collector.org")
+      "* TODO %?
+:PROPERTIES:
+:ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
+:END:" :prepend t)
+     ("p" "Add Project" entry
+      (file "~/Dropbox/PKG/Task/PROJECTS.org")
+      "* %?
+:PROPERTIES:
+:ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
+:END:
+** Notes
+** Tasks" :prepend t)
+     ("n" "Note" entry
+      (file "~/Dropbox/PKG/Task/Collector.org")
+      "* %?
+:PROPERTIES:
+:ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
+:END:"))))
+ '(org-clock-clocked-in-display nil)
+ '(org-clock-idle-time 10)
+ '(org-clock-in-resume t)
+ '(org-clock-in-switch-to-state "STARTED")
+ '(org-clock-into-drawer "LOGBOOK")
+ '(org-clock-mode-line-total (quote current))
+ '(org-clock-modeline-total (quote current))
+ '(org-clock-out-remove-zero-time-clocks t)
+ '(org-clock-out-switch-to-state nil)
+ '(org-clock-persist t)
+ '(org-clock-persist-file "~/.emacs.d/data/org-clock-save.el")
+ '(org-clock-resolve-expert t)
+ '(org-completion-use-ido t)
+ '(org-confirm-babel-evaluate nil)
+ '(org-confirm-elisp-link-function nil)
+ '(org-confirm-shell-link-function nil)
+ '(org-crypt-disable-auto-save nil)
+ '(org-cycle-global-at-bob t)
+ '(org-deadline-warning-days 14)
+ '(org-default-notes-file "~/Dropbox/PKG/Task/Collector.org")
+ '(org-default-priority 67)
+ '(org-directory "~/Dropbox/PKG/Task/")
+ '(org-ditaa-jar-path "~/bin/DitaaEps.jar")
+ '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "OUT")))
+ '(org-edit-src-content-indentation 0)
+ '(org-enforce-todo-dependencies t)
+ '(org-export-babel-evaluate nil)
+ '(org-export-latex-classes
+   (quote
+    (("article" "\\documentclass[11pt]{article}"
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+     ("linalg" "\\documentclass{article}
+\\usepackage{linalgjh}
+[DEFAULT-PACKAGES]
+[EXTRA]
+[PACKAGES]"
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+      ("\\paragraph{%s}" . "\\paragraph*{%s}")
+      ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+     ("report" "\\documentclass[11pt]{report}"
+      ("\\part{%s}" . "\\part*{%s}")
+      ("\\chapter{%s}" . "\\chapter*{%s}")
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+     ("book" "\\documentclass[11pt]{book}"
+      ("\\part{%s}" . "\\part*{%s}")
+      ("\\chapter{%s}" . "\\chapter*{%s}")
+      ("\\section{%s}" . "\\section*{%s}")
+      ("\\subsection{%s}" . "\\subsection*{%s}")
+      ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+     ("beamer" "\\documentclass{beamer}" org-beamer-sectioning))))
+ '(org-export-with-todo-keywords nil)
+ '(org-extend-today-until 8)
+ '(org-fast-tag-selection-single-key (quote expert))
+ '(org-fontify-done-headline t)
+ '(org-fontify-whole-heading-line nil)
+ '(org-footnote-section nil)
+ '(org-habit-preceding-days 42)
+ '(org-habit-today-glyph 45)
+ '(org-hide-leading-stars t)
+ '(org-html-validation-link nil)
+ '(org-id-locations-file "~/.emacs.d/data/org-id-locations")
+ '(org-image-actual-width (quote (800)))
+ '(org-indent-mode-turns-on-hiding-stars t)
+ '(org-insert-heading-respect-content t)
+ '(org-irc-link-to-logs t t)
+ '(org-latex-default-packages-alist
+(quote
+ (("T1" "fontenc" t)
+  ("" "fixltx2e" nil)
+  ("" "graphicx" t)
+  ("" "longtable" nil)
+  ("" "float" nil)
+  ("" "wrapfig" nil)
+  ("" "rotating" nil)
+  ("normalem" "ulem" t)
+  ("" "amsmath" t)
+  ("" "textcomp" t)
+  ("" "marvosym" t)
+  ("" "wasysym" t)
+  ("" "amssymb" t)
+  ("" "hyperref" nil)
+  "\\tolerance=1000")))
+ '(org-log-done (quote time))
+ '(org-mobile-directory "~/Dropbox/PKG/MobileOrg")
+ '(org-mobile-inbox-for-pull "~/Dropbox/PKG/Task/FROM-MOBILE.org")
+ '(org-modules
+(quote
+ (org-gnus org-habit org-id org-info org-depend org-velocity)))
+ '(org-publish-project-alist
+(quote
+ (("document" :base-directory "~/Dropbox/PKG/Document/" :base-extension "org" :publishing-directory "~/Dropbox/PKG/Publish/" :recursive t :publishing-function org-html-publish-to-html))))
+ '(org-refile-targets (quote (("~/Dropbox/PKG/Task/PROJECTS.org" :level . 1))))
+ '(org-return-follows-link t)
+ '(org-reverse-note-order t)
+ '(org-src-fontify-natively t)
+ '(org-src-preserve-indentation nil)
+ '(org-src-tab-acts-natively nil)
+ '(org-startup-indented t)
+ '(org-stuck-projects (quote ("STUCK" nil nil "")))
+ '(org-tags-column -78)
+ '(org-time-clocksum-use-fractional t)
+ '(org-todo-keyword-faces
+(quote
+ (("TODO" :foreground "red" :weight bold)
+  ("STARTED" :foreground "dark orange" :weight bold)
+  ("WAITING" :foreground "medium blue" :weight bold)
+  ("SOMEDAY" :foreground "dark blue" :weight bold)
+  ("CANCELED" :foreground "gray" :weight bold)
+  ("DONE" :foreground "ForestGreen" :weight bold))))
+ '(org-todo-keywords
+(quote
+ ((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "SOMEDAY(o)" "|" "CANCELED(c)" "DONE(d)"))))
+ '(org-todo-repeat-to-state "TODO")
+ '(org-use-property-inheritance (quote ("AREA")))
+ '(org-use-speed-commands t)
+ '(org-use-tag-inheritance nil)
+ '(org-velocity-always-use-bucket t)
+ '(org-velocity-bucket "~/Dropbox/PKG/Task/PROJECTS.org")
+ '(org-velocity-capture-templates
+(quote
+ (("v" "Velocity" entry
+   (file "~/Dropbox/PKG/Task/INBOX.org")
+   "* %:search
+%i%?
+:PROPERTIES:
+:ID:       %(shell-command-to-string \\\"uuidgen\\\"):CREATED:  %U
+:END:" :prepend t))))
+ '(org-velocity-exit-on-match t)
+ '(org-velocity-force-new t)
+ '(org-velocity-search-method (quote regexp))
+ '(org-x-backends (quote (ox-org ox-redmine)))
+ '(org-x-redmine-title-prefix-function (quote org-x-redmine-title-prefix))
+ '(org-x-redmine-title-prefix-match-function (quote org-x-redmine-title-prefix-match))
  '(page-break-lines-modes
-   (quote
-    (emacs-lisp-mode compilation-mode outline-mode prog-mode haskell-mode)))
+(quote
+ (emacs-lisp-mode compilation-mode outline-mode prog-mode haskell-mode)))
  '(parens-require-spaces t)
  '(pcomplete-compare-entries-function (quote file-newer-than-file-p))
  '(pe/cache-directory "~/.emacs.d/data/project-explorer-cache/")
@@ -600,45 +844,45 @@
  '(php-insert-doc-uses-tag nil)
  '(phpunit-program "/usr/bin/php56 /home/benn/.composer/vendor/bin/phpunit")
  '(popwin:special-display-config
-   (quote
-    (("*Miniedit Help*" :noselect t)
-     (completion-list-mode :noselect t)
-     (compilation-mode :noselect t)
-     ("*Pp Macroexpand Output*" :noselect t)
-     ("*Shell Command Output*")
-     ("*vc-diff*")
-     ("*vc-change-log*")
-     (" *undo-tree*" :width 60 :position right)
-     ("^\\*anything.*\\*$" :regexp t)
-     ("*slime-apropos*")
-     ("*slime-macroexpansion*")
-     ("*slime-description*")
-     ("*slime-compilation*" :noselect t)
-     ("*slime-xref*")
-     (sldb-mode :stick t)
-     (slime-repl-mode)
-     (slime-connection-list-mode))))
- '(powerline-default-separator (quote arrow))
+(quote
+ (("*Miniedit Help*" :noselect t)
+  (completion-list-mode :noselect t)
+  (compilation-mode :noselect t)
+  ("*Pp Macroexpand Output*" :noselect t)
+  ("*Shell Command Output*")
+  ("*vc-diff*")
+  ("*vc-change-log*")
+  (" *undo-tree*" :width 60 :position right)
+  ("^\\*anything.*\\*$" :regexp t)
+  ("*slime-apropos*")
+  ("*slime-macroexpansion*")
+  ("*slime-description*")
+  ("*slime-compilation*" :noselect t)
+  ("*slime-xref*")
+  (sldb-mode :stick t)
+  (slime-repl-mode)
+  (slime-connection-list-mode))))
+ '(powerline-default-separator (quote zigzag))
  '(previous-buffer-black-list (quote ("^ ?\\*" "Collector.org")))
  '(previous-buffer-black-modes-list
-   (quote
-    ("direx:direx-mode" "diary-mode" "circe-query-mode" "circe-server-mode" "circe-channel-mode" "circe-chat-mode")))
+(quote
+ ("direx:direx-mode" "diary-mode" "circe-query-mode" "circe-server-mode" "circe-channel-mode" "circe-chat-mode")))
  '(previous-buffer-white-list
-   (quote
-    ("\\*mu4e-\\(main\\|headers\\)" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python" "\\*sbt\\*")))
+(quote
+ ("\\*mu4e-\\(main\\|headers\\)" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python" "\\*sbt\\*")))
  '(projectile-cache-file "~/.emacs.d/data/projectile.cache")
  '(projectile-enable-caching t)
  '(projectile-globally-ignored-files (quote ("TAGS" "GPATH" "GRTAGS" "GTAGS" "ID")))
  '(projectile-known-projects-file "~/.emacs.d/data/projectile-bookmarks.eld")
  '(projectile-project-root-files
-   (quote
-    ("CMakeLists.txt" "Makefile" "rebar.config" "project.clj" "build.boot" "SConstruct" "pom.xml" "build.sbt" "gradlew" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "TAGS")))
+(quote
+ ("CMakeLists.txt" "Makefile" "rebar.config" "project.clj" "build.boot" "SConstruct" "pom.xml" "build.sbt" "gradlew" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "TAGS")))
  '(projectile-project-root-files-bottom-up
-   (quote
-    ("symfony" ".projectile" ".git" ".hg" ".fslckout" ".bzr" "_darcs")))
+(quote
+ ("symfony" ".projectile" ".git" ".hg" ".fslckout" ".bzr" "_darcs")))
  '(projectile-project-root-files-functions
-   (quote
-    (projectile-root-local projectile-root-bottom-up projectile-root-top-down projectile-root-top-down-recurring)))
+(quote
+ (projectile-root-local projectile-root-bottom-up projectile-root-top-down projectile-root-top-down-recurring)))
  '(projectile-switch-project-action (quote helm-projectile))
  '(ps-font-size (quote (8 . 10)))
  '(ps-footer-font-size (quote (12 . 14)))
@@ -650,8 +894,8 @@
  '(read-buffer-function (quote ido-read-buffer))
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
-   (quote
-    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")))
+(quote
+ ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")) t)
  '(recentf-max-saved-items 2000)
  '(recentf-save-file "~/.emacs.d/data/recentf")
  '(redisplay-dont-pause t t)
@@ -661,8 +905,8 @@
  '(sage-view-margin (quote (20 . 20)))
  '(sage-view-scale 2.0)
  '(same-window-buffer-names
-   (quote
-    ("*eshell*" "*shell*" "*mail*" "*inferior-lisp*" "*ielm*" "*scheme*")))
+(quote
+ ("*eshell*" "*shell*" "*mail*" "*inferior-lisp*" "*ielm*" "*scheme*")))
  '(save-abbrevs (quote silently))
  '(save-interprogram-paste-before-kill t)
  '(save-kill-file-name "~/.emacs.d/data/kill-ring-saved.el")
@@ -670,17 +914,18 @@
  '(scroll-conservatively 10000)
  '(scroll-margin 0)
  '(scroll-step 1)
+ '(select-enable-clipboard t)
  '(semantic-imenu-index-directory t)
  '(semantic-which-function-use-color t)
  '(semanticdb-default-save-directory "~/.emacs.d/data/semanticdb")
  '(sentence-end-double-space nil)
  '(session-globals-exclude (quote (load-history flyspell-auto-correct-ring)))
  '(session-globals-include
-   (quote
-    ((kill-ring 10 nil)
-     (session-file-alist 200 t)
-     (file-name-history 200 nil)
-     search-ring regexp-search-ring sr-history-registry)))
+(quote
+ ((kill-ring 10 nil)
+  (session-file-alist 200 t)
+  (file-name-history 200 nil)
+  search-ring regexp-search-ring sr-history-registry)))
  '(session-initialize (quote (session places keys)))
  '(session-name-disable-regexp "\\(\\`/tmp\\|COMMIT_EDITMSG\\)")
  '(session-registers (quote (t (0 . 127))))
@@ -691,7 +936,6 @@
  '(shm-use-hdevtools t)
  '(shm-use-presentation-mode t)
  '(show-paren-delay 0)
- '(show-paren-mode t)
  '(show-paren-style (quote parentheses))
  '(slime-kill-without-query-p t)
  '(slime-repl-history-file "~/.emacs.d/data/slime-history.eld")
@@ -726,46 +970,44 @@
  '(tags-case-fold-search nil)
  '(tail-max-size 25)
  '(tail-volatile nil)
- '(temp-buffer-resize-mode t nil (help))
  '(term-bind-key-alist
-   (quote
-    (("C-c C-q" . term-send-esc)
-     ("C-c C-c" . term-interrupt-subjob)
-     ("C-b" . term-send-raw)
-     ("C-f" . term-send-raw)
-     ("C-a" . term-send-raw)
-     ("C-e" . term-send-raw)
-     ("C-s" . isearch-forward)
-     ("C-r" . isearch-backward)
-     ("C-m" . term-send-raw)
-     ("M-f" . term-send-forward-word)
-     ("M-b" . term-send-backward-word)
-     ("M->" . term-send-end)
-     ("M-o" . term-send-backspace)
-     ("C-p" . term-send-up)
-     ("C-n" . term-send-down)
-     ("M-d" . term-send-forward-kill-word)
-     ("M-DEL" . term-send-backward-kill-word)
-     ("M-r" . term-send-reverse-search-history)
-     ("M-," . term-send-input)
-     ("M-." . comint-dynamic-complete)
-     ("M-v" . term-paste))))
+(quote
+ (("C-c C-q" . term-send-esc)
+  ("C-c C-c" . term-interrupt-subjob)
+  ("C-b" . term-send-raw)
+  ("C-f" . term-send-raw)
+  ("C-a" . term-send-raw)
+  ("C-e" . term-send-raw)
+  ("C-s" . isearch-forward)
+  ("C-r" . isearch-backward)
+  ("C-m" . term-send-raw)
+  ("M-f" . term-send-forward-word)
+  ("M-b" . term-send-backward-word)
+  ("M->" . term-send-end)
+  ("M-o" . term-send-backspace)
+  ("C-p" . term-send-up)
+  ("C-n" . term-send-down)
+  ("M-d" . term-send-forward-kill-word)
+  ("M-DEL" . term-send-backward-kill-word)
+  ("M-r" . term-send-reverse-search-history)
+  ("M-," . term-send-input)
+  ("M-." . comint-dynamic-complete)
+  ("M-v" . term-paste))))
  '(term-buffer-maximum-size 0)
  '(term-scroll-show-maximum-output t)
  '(term-unbind-key-list (quote ("C-z" "C-x" "C-c" "C-h" "C-y" "<ESC>" "M-v")))
  '(text-mode-hook
-   (quote
-    (turn-on-auto-fill
-     (lambda nil
-       (ignore-errors
-         (diminish
-          (quote auto-fill-function)))))))
- '(tool-bar-mode nil)
+(quote
+ (turn-on-auto-fill
+  (lambda nil
+    (ignore-errors
+      (diminish
+       (quote auto-fill-function)))))))
  '(tramp-auto-save-directory "~/.backups")
  '(tramp-default-method "ssh")
  '(tramp-default-method-alist
-   (quote
-    (("\\`\\(127\\.0\\.0\\.1\\|::1\\|localhost6?\\)\\'" "\\`root\\'" "sudo"))))
+(quote
+ (("\\`\\(127\\.0\\.0\\.1\\|::1\\|localhost6?\\)\\'" "\\`root\\'" "sudo"))))
  '(tramp-encoding-shell "/bin/sh")
  '(tramp-persistency-file-name "~/.emacs.d/data/tramp")
  '(trash-directory "~/.Trash")
@@ -774,13 +1016,9 @@
  '(undo-tree-history-directory-alist (quote ((".*" . "~/.backups"))))
  '(undo-tree-mode-lighter "")
  '(undo-tree-visualizer-timestamps t)
- '(uniquify-buffer-name-style (quote post-forward-angle-brackets) nil (uniquify))
  '(url-cache-directory "~/.emacs.d/data/url/cache")
  '(url-configuration-directory "~/.emacs.d/data/url/")
  '(url-irc-function (quote url-irc-erc))
- '(use-package-always-ensure t)
- '(use-package-debug nil)
- '(use-package-verbose (quote debug))
  '(user-full-name "benn")
  '(user-mail-address "sjembn@gmail.com")
  '(vc-command-messages t)
@@ -803,7 +1041,7 @@
  '(w3m-use-tab-menubar nil)
  '(w3m-use-toolbar nil)
  '(w3m-user-agent
-   "Mozilla/5.0 (Linux; U; Android 2.3.3; zh-tw; HTC_Pyramid Build/GRI40) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.")
+"Mozilla/5.0 (Linux; U; Android 2.3.3; zh-tw; HTC_Pyramid Build/GRI40) AppleWebKit/533.1 (KHTML, like Gecko) Version/4.0 Mobile Safari/533.")
  '(warning-minimum-log-level :error)
  '(wdired-use-dired-vertical-movement (quote sometimes))
  '(web-mode-code-indent-offset 4)
@@ -811,8 +1049,8 @@
  '(web-mode-enable-engine-detection t)
  '(web-mode-markup-indent-offset 2)
  '(weblogger-config-alist
-   (quote
-    (("newartisans" "http://www.newartisans.com/xmlrpc.php" "johnw" "" "5"))))
+(quote
+ (("newartisans" "http://www.newartisans.com/xmlrpc.php" "johnw" "" "5"))))
  '(wg-mode-line-on nil)
  '(wg-morph-on nil)
  '(wg-prefix-key "")
@@ -825,14 +1063,12 @@
  '(whitespace-silent t t)
  '(whitespace-style (quote (face trailing lines space-before-tab empty)))
  '(workgroups-mode nil)
- '(x-select-enable-clipboard t)
  '(x-stretch-cursor t)
  '(yaoddmuse-browse-function (quote w3m-browse-url))
  '(yaoddmuse-directory "~/.emacs.d/doc")
- '(yas-global-mode t nil (yasnippet))
  '(yas-prompt-functions
-   (quote
-    (yas-ido-prompt yas-completing-prompt yas-no-prompt)))
+(quote
+ (yas-ido-prompt yas-completing-prompt yas-no-prompt)))
  '(yas-triggers-in-field t)
  '(yas-wrap-around-region t)
  '(zencoding-preview-default nil))
@@ -842,18 +1078,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(diff-added ((((background dark)) (:foreground "#FFFF9B9BFFFF")) (t (:foreground "DarkGreen"))))
- '(diff-changed ((((background dark)) (:foreground "Yellow")) (t (:foreground "MediumBlue"))))
- '(diff-context ((((background dark)) (:foreground "White")) (t (:foreground "Black"))))
- '(diff-file-header ((((background dark)) (:foreground "Cyan" :background "Black")) (t (:foreground "Red" :background "White"))))
- '(diff-header ((((background dark)) (:foreground "Cyan")) (t (:foreground "Red"))))
- '(diff-index ((((background dark)) (:foreground "Magenta")) (t (:foreground "Green"))))
- '(diff-nonexistent ((((background dark)) (:foreground "#FFFFFFFF7474")) (t (:foreground "DarkBlue"))))
- '(ido-first-match ((t (:background "blue3" :foreground "gray100" :weight bold))))
- '(ido-grid-mode-common-match ((t (:inherit shadow))))
- '(ido-grid-mode-match ((t (:foreground "dark orange" :underline t))))
- '(powerline-active1 ((t (:inherit mode-line :background "blue1" :foreground "white"))))
- '(powerline-active2 ((t (:inherit mode-line))))
- '(powerline-inactive1 ((t (:inherit mode-line-inactive :background "gray80"))))
- '(powerline-inactive2 ((t (:inherit mode-line-inactive))))
+ '(org-priority ((t (:inherit nil))))
  '(window-number-face ((t nil)) t))

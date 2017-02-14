@@ -1,4 +1,0 @@
-{php}/^[ \t]*\(?:\(?:private\|public\|protected\|static\)[ \t]+\)*function[ \t]+\([A-Za-z0-9_]+\)[ \t]*(/\1/
-{php}/^[ \t]*\(?:\(?:private\|public\|protected\|static\)[ \t]+\)+\$\([A-Za-z0-9_]+\)[ \t]*/\1/
-{php}/^[ \t]*\(const\)[ \t]+\([A-Za-z0-9_]+\)[ \t]*/\2/
-{php}/^[ \t]*\(?:abstract\)[ \t]*class[ \t]+\([A-Za-z0-9_]+\)[ \t]*/\1/

@@ -88,6 +88,7 @@
      (sh . t)
      (ruby . t)
      (python . t)
+     (scala . t)
      (C . t)
      (css . t)
      (java . t)

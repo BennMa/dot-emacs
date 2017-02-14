@@ -1,6 +1,3 @@
-;; ------ load settings
-(load-conf "org-settings")
-
 ;; ------ org packages
 
 ;; Easy Template
@@ -16,7 +13,7 @@
          ("C-c l" . org-insert-link))
   :commands org-mode
   :config
-  (require 'ox-mediawiki)
+  ;; (require 'ox-mediawiki)
 
   (let ((map org-mode-map))
     (bind-key "C-M-<return>" 'org-insert-heading-after-current map)
