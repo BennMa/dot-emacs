@@ -45,7 +45,7 @@
      (scroll-bar-mode -1))
 
 (random t)
-(print-cost-time "before define constant")
+
 ;; --- define constant
 ;; refer https://github.com/thomasf/dotfiles-thomasf-emacs/blob/master/emacs.d/init.el
 (defconst user-emacs-directory
@@ -75,7 +75,7 @@ See also `locate-user-emacs-file'.")
        user-themes-directory
        user-lisp-directory
        user-site-lisp-directory))
-(print-cost-time "after load-path")
+
 ;; ------ package settings
 (require 'package)
 (setq
@@ -104,7 +104,7 @@ See also `locate-user-emacs-file'.")
 
 (eval-when-compile
   (require 'use-package))
-(print-cost-time "after use-package")
+
 ;; ------ packages
 (require 'cl)
 (use-package bind-key  :ensure t)
@@ -119,7 +119,7 @@ See also `locate-user-emacs-file'.")
        "customization"
        "customization-individual"
        "customization-org"))
-(print-cost-time "after customization")
+
 (require 'my-toolkit)
 (load (expand-file-name "keybinding" user-emacs-directory))
 
@@ -129,7 +129,7 @@ See also `locate-user-emacs-file'.")
 (qiang-set-font individual-english-fonts
                 individual-font-size
                 individual-chinese-fonts)
-(print-cost-time "after theme")
+
 ;; (byte-recompile-directory user-package-settings-directory 0)
 (mapc #'(lambda (file)
           (load (substring file 0 -3)))

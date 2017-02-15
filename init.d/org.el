@@ -9,7 +9,8 @@
 ;; http://rwx.io/blog/2016/03/11/Org-Export-Configurations/
 
 (use-package org
-  :bind (("C-c S" . org-store-link)
+  :bind (("C-c c" . org-capture)
+         ("C-c S" . org-store-link)
          ("C-c l" . org-insert-link))
   :commands org-mode
   :config
@@ -29,7 +30,7 @@
             #'(lambda ()
                 ;; (setq line-spacing 0.25)
                 (buffer-face-mode 1) 
-                (flyspell-mode 1)
+                ;; (flyspell-mode 1)
                 (set (make-local-variable 'semantic-mode) nil)
                 (turn-off-auto-fill)
                 (company-mode -1)
@@ -135,8 +136,18 @@
 (use-package org-mobile :ensure nil)
 
 (use-package org-smart-capture
+  :disabled t
   :ensure nil
   :bind ("M-m"   . org-smart-capture))
+
+(use-package org-projectile
+  :bind (("C-c n p" . org-projectile:project-todo-completing-read))
+  :config
+  (progn
+    ;; (setq org-projectile:projects-file "~/Dropbox/PKG/Task/PROJECTS_TODO.org")
+    (org-projectile:per-repo)
+    (setq org-agenda-files (append org-agenda-files (org-projectile:todo-files)))
+    (add-to-list 'org-capture-templates (org-projectile:project-todo-entry "p"))))
 
 (use-package org-velocity
   :disabled
