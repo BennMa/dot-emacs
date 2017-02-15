@@ -19,7 +19,7 @@
   )
 
 (use-package yasnippet
-  :demand t
+  ;; :demand t
   :mode ("/\\.emacs\\.d/snippets/" . snippet-mode)
   :bind (("C-c y TAB" . yas-expand)
          ("C-c y n"   . yas-new-snippet)

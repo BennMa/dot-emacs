@@ -3,7 +3,8 @@
 TAGS
 site-lisp/*
 obsolete/
-data/
+.data/
+.cache/
 el-get/
 elpa/
 eshell/
@@ -27,3 +28,5 @@ conf.d/individual-settings.el
 lisp/ede-php-autoload/
 snippets-backup/
 ensime/
+.hl-save
+network-security.data

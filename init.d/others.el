@@ -30,9 +30,8 @@
   :if window-system
   :config
   (exec-path-from-shell-initialize)
-  (exec-path-from-shell-copy-env "PYTHONPATH"))
-
-
+  ;; (exec-path-from-shell-copy-env "PYTHONPATH")
+  )
 
 (use-package nf-procmail-mode
   :disabled t
@@ -267,6 +266,7 @@ command uses interactive mode if passed an argument."
 ;;          ("C-x m" . compose-mail)))
 
 (use-package blog-admin
+  :disabled t
   :init
   (progn
     (setq blog-admin-backend-path "~/Mine/Projects/Personal/Blog")

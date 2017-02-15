@@ -291,6 +291,7 @@
 ;; ------ CEDET
 
 (use-package semantic
+  :commands (semantic-mode global-semanticdb-minor-mode)
   :config
   (global-semanticdb-minor-mode 1)
   (global-semantic-idle-scheduler-mode 1)
@@ -335,6 +336,7 @@
 ;; https://github.com/senny/emacs-eclim
 ;; Integrating Eclipse features into Emacs
 (use-package eclim
+  :disabled t
   :config
   (global-eclim-mode)
   (require 'eclimd)

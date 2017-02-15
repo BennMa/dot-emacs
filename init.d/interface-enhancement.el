@@ -223,10 +223,23 @@
   (unbind-key "M-S-<right>" auto-highlight-symbol-mode-map))
 
 (use-package hl-line
+  :demand t
+  :diminish "ⓗ"
   :commands hl-line-mode
-  :bind (("M-o h" . hl-line-mode))
+  :bind (("M-o h" . hl-line-mode))  
   :config
-  (use-package hl-line+))
+  ;; (use-package hl-line+)
+  (global-hl-line-mode))
+
+(use-package hl-anything
+  :disabled
+  :config
+  (hl-highlight-thingatpt-global))
+
+(use-package highlight-parentheses
+  :diminish ""
+  :config
+  (global-highlight-parentheses-mode))
 
 (use-package session
   :if (not noninteractive)
@@ -764,6 +777,9 @@
   ;; (add-to-list 'aggressive-indent-excluded-modes 'html-mode)
   )
 
+(use-package clean-aindent-mode
+  :config (clean-aindent-mode))
+
 (use-package indent-guide
   :config
   ;; (set-face-background 'indent-guide-face "dimgray")
@@ -781,8 +797,9 @@
   )
 
 (use-package back-button
-  :config
-  (back-button-mode 1)
+  :commands back-button-mode
+  ;; :config
+  ;; (back-button-mode 1)
   )
 
 (use-package vimish-fold
@@ -791,6 +808,7 @@
   (vimish-fold-global-mode 1))
 
 (use-package docker
+  :defer t
   :config
   (docker-global-mode))
 
@@ -798,6 +816,7 @@
   :mode ("Dockerfile\\'" . dockerfile-mode))
 
 (use-package google-this
+  :defer t
   :config
   ;; (global-set-key (kbd "C-x g") 'google-this-mode-submap)
   (google-this-mode 1))
