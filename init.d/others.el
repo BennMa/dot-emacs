@@ -1,5 +1,4 @@
-(use-package cus-edit :ensure nil)
-(use-package initsplit :ensure nil)
+
 
 (use-package nlinum
   :config

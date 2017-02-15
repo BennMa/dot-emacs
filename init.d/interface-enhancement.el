@@ -246,7 +246,7 @@
   :preface
   (defun remove-session-use-package-from-settings ()
     (when (string= (file-name-nondirectory (buffer-file-name))
-                   "custom-settings.el")
+                   "customization.el")
       (save-excursion
         (goto-char (point-min))
         (when (re-search-forward "^ '(session-use-package " nil t)
