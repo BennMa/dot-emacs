@@ -23,10 +23,10 @@ var/
 smex-items
 backup/
 *.elc
-conf.d/individual-settings.el
 .mc-lists.el
 lisp/ede-php-autoload/
 snippets-backup/
 ensime/
 .hl-save
 network-security.data
+customization-individual.el

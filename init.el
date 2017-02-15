@@ -109,6 +109,7 @@ See also `locate-user-emacs-file'.")
 (require 'cl)
 (use-package bind-key :ensure t)
 (use-package diminish :ensure t)
+(use-package session :ensure t)
 
 (mapc #'(lambda (file)
           (load (expand-file-name file user-emacs-directory)))

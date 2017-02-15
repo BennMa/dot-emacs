@@ -791,6 +791,7 @@
   (dtrt-indent-mode 1))
 
 (use-package pdf-tools
+  :disabled t
   :mode ("\\.pdf\\'" . pdf-view-mode) 
   :config
   (pdf-tools-install)
