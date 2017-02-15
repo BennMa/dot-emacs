@@ -14,7 +14,6 @@
   )
 
 (use-package helm-projectile
-  :defer 10
   :config
   (setq projectile-completion-system 'helm)
   (setq helm-projectile-fuzzy-match nil)
