@@ -1,9 +1,3 @@
 [submodule "snippets"]
 	path = snippets
 	url = git@github.com:BennMa/yasnippet-snippets.git
-[submodule "lisp/ido-match-modes"]
-	path = lisp/ido-match-modes
-	url = https://github.com/larkery/ido-match-modes.el.git
-[submodule "lisp/semantic-php"]
-	path = lisp/semantic-php
-	url = https://github.com/jorissteyn/semantic-php.git
