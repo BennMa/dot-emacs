@@ -168,9 +168,14 @@
  '(current-language-environment "UTF-8")
  '(cursor-type (quote bar))
  '(custom-buffer-done-function (quote kill-buffer))
- '(custom-file "~/.emacs.d/customization.el")
+ '(custom-file "~/.emacs.d/settings.el")
  '(custom-raised-buttons nil)
  '(custom-theme-directory "~/.emacs.d/themes/")
+ '(default-frame-alist
+    (quote
+     ((menu-bar-lines . 0)
+      (tool-bar-lines . 0)
+      (fullscreen))))
  '(default-major-mode (quote text-mode) t)
  '(deft-auto-save-interval 0.0)
  '(deft-directory "~/Documents/notes")
@@ -504,10 +509,11 @@
  '(initial-major-mode (quote fundamental-mode))
  '(initsplit-customizations-alist
    (quote
-    (("\\`\\(gnus\\|nn\\|message\\|mail\\|mm-\\|smtp\\|send-mail\\|sendmail\\|check-mail\\|spam\\|sc-\\)" "~/.emacs.d/customization-gnus.el" nil nil)
-     ("\\`\\(individual-\\|line-spacing\\)" "~/.emacs.d/customization-individual.el" nil nil)
-     ("\\`\\(org-\\)" "~/.emacs.d/customization-org.el" nil nil))))
+    (("\\`\\(org-\\)" "~/.emacs.d/org-settings.el" nil nil))))
  '(ispell-extra-args nil)
+ '(ivy-count-format "(%d/%d) ")
+ '(ivy-use-ignore-default (quote always))
+ '(ivy-use-virtual-buffers t)
  '(js3-enter-indents-newline t)
  '(js3-expr-indent-offset 2)
  '(js3-indent-on-enter-key t)
@@ -519,6 +525,7 @@
  '(kill-whole-line t)
  '(large-file-warning-threshold nil)
  '(line-number-mode t)
+ '(line-spacing 0.3)
  '(load-dir-debug nil)
  '(load-dir-recursive t)
  '(load-prefer-newer t)
@@ -539,6 +546,7 @@
  '(magit-use-overlays nil)
  '(make-cursor-line-fully-visible nil)
  '(menu-bar-mode nil)
+ '(message-log-max 16384)
  '(minimap-minimum-width 5)
  '(minimap-width-fraction 0.1)
  '(minimap-window-location (quote right))
@@ -619,6 +627,7 @@
    (quote
     ("\\*mu4e-\\(main\\|headers\\)" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python" "\\*sbt\\*")))
  '(projectile-cache-file "~/.emacs.d/.data/projectile.cache")
+ '(projectile-completion-system (quote ivy))
  '(projectile-enable-caching t)
  '(projectile-globally-ignored-files (quote ("TAGS" "GPATH" "GRTAGS" "GTAGS" "ID")))
  '(projectile-known-projects-file "~/.emacs.d/.data/projectile-bookmarks.eld")
@@ -631,7 +640,6 @@
  '(projectile-project-root-files-functions
    (quote
     (projectile-root-local projectile-root-bottom-up projectile-root-top-down projectile-root-top-down-recurring)))
- '(projectile-switch-project-action (quote helm-projectile))
  '(ps-font-size (quote (8 . 10)))
  '(ps-footer-font-size (quote (12 . 14)))
  '(ps-header-font-size (quote (12 . 14)))
@@ -678,6 +686,7 @@
  '(session-name-disable-regexp "\\(\\`/tmp\\|COMMIT_EDITMSG\\)")
  '(session-registers (quote (t (0 . 127))))
  '(session-save-file "~/.emacs.d/.data/session")
+ '(session-use-package t nil (session))
  '(shm-auto-insert-bangs nil)
  '(shm-indent-spaces 4)
  '(shm-use-hdevtools t)

@@ -220,7 +220,7 @@
  '(org-reverse-note-order t)
  '(org-src-fontify-natively t)
  '(org-src-preserve-indentation nil)
- '(org-src-tab-acts-natively nil)
+ '(org-src-tab-acts-natively t)
  '(org-startup-indented t)
  '(org-stuck-projects (quote ("STUCK" nil nil "")))
  '(org-tags-column -78)

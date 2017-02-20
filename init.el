@@ -6,7 +6,7 @@
 
 ;; ------ set emacs start time
 (defconst emacs-start-time (current-time))
-(defun print-cost-time (title)
+(defun blaine//emacs-load-time (title)
     (let ((elapsed (float-time (time-subtract (current-time)
                                               emacs-start-time))))
       (message "Loading %s...done (%.3fs)" title elapsed)))
@@ -20,128 +20,102 @@
  (warn "Use a newer version of Emacs for a full featured environment!"))
 
 ;; ------ some early settings
-;; (setq-default gc-cons-threshold (* 20 1204 1204)
-;;               gc-cons-percentage 0.5) ;; alloc.c
-(setq default-frame-alist '((vertical-scroll-bars . nil)
-                            (tool-bar-lines . 0)
-                            (menu-bar-lines . 0)
-                            (fullscreen . nil))
-      message-log-max 16384
-      visible-bell nil
+(defvar blaine--debug t "if print debug info")
+
+(setq gc-cons-threshold 8000000 ; augmente la taille du garbage collector
       ring-bell-function 'ignore
       force-load-messages nil)
-
-(fset 'yes-or-no-p 'y-or-n-p)
-
-(and (fboundp 'menu-bar-mode)
-     menu-bar-mode
-     (not (eq system-type 'darwin))
-     (menu-bar-mode -1))
-(and (fboundp 'tool-bar-mode)
-     tool-bar-mode
-     (tool-bar-mode -1))
-(and (fboundp 'scroll-bar-mode)
-     scroll-bar-mode
-     (scroll-bar-mode -1))
-
-(random t)
+(defalias 'yes-or-no-p 'y-or-n-p)
+(and (fboundp 'menu-bar-mode) menu-bar-mode
+     (not (eq system-type 'darwin)) (menu-bar-mode -1))
+(and (fboundp 'tool-bar-mode) tool-bar-mode (tool-bar-mode -1))
+(and (fboundp 'tooltip-mode) tooltip-mode (tooltip-mode -1))
+(and (fboundp 'scroll-bar-mode) scroll-bar-mode (scroll-bar-mode -1))
+;; (random t)
 
 ;; --- define constant
 ;; refer https://github.com/thomasf/dotfiles-thomasf-emacs/blob/master/emacs.d/init.el
-(defconst user-emacs-directory
-  "~/.emacs.d/"
+(defconst user-emacs-directory "~/.emacs.d/"
   "Directory beneath which additional per-user Emacs-specific files are placed.
 Various programs in Emacs store information in this directory.
 Note that this should end with a directory separator.
 See also `locate-user-emacs-file'.")
-(defconst user-init-directory
-  (expand-file-name "init.d/" user-emacs-directory))
-(defconst user-lisp-directory
-  (expand-file-name "lisp" user-emacs-directory))
-(defconst user-site-lisp-directory
-  (expand-file-name "site-lisp" user-emacs-directory))
-(defconst user-themes-directory
-  (expand-file-name "themes" user-emacs-directory))
-
-;; create data folder
 (make-directory (expand-file-name ".data" user-emacs-directory) t)
 
-;; ------ load-path
-(mapc #'(lambda (path)
-          (add-to-list 'load-path path)          
-          (let ((default-directory path))
-            (normal-top-level-add-subdirs-to-load-path)))
-      (list
-       user-themes-directory
-       user-lisp-directory
-       user-site-lisp-directory))
-
 ;; ------ package settings
+(require 'cl)
 (require 'package)
 (setq
    package-enable-at-startup nil
    ;; package-load-list '((use-package t))
+   package-check-signature nil
    package-archives
    '(("melpa-stable" . "https://stable.melpa.org/packages/")
      ("melpa" . "https://melpa.org/packages/")
      ("marmalade"   . "https://marmalade-repo.org/packages/")
      ("org"         . "http://orgmode.org/elpa/")
      ("gnu"         . "https://elpa.gnu.org/packages/")))
-(package-initialize)
+(package-initialize t)
+
+;; load-path
+(add-to-list 'custom-theme-load-path
+             (expand-file-name "themes" user-emacs-directory))
+(mapc #'(lambda (dir)
+          (let ((path (expand-file-name dir user-emacs-directory)))
+            (add-to-list 'load-path path)
+            (let ((default-directory path))
+              (normal-top-level-add-subdirs-to-load-path))))
+      '("lisp" "site-lisp"))
+(let ((default-directory (expand-file-name "elpa" user-emacs-directory)))
+  (normal-top-level-add-subdirs-to-load-path))
+
+(setq use-package-verbose blaine--debug
+      use-package-minimum-reported-time 0.01)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-
-(defvar my-log-verbose t)
-  (if my-log-verbose
-      (setq byte-compile-verbose t)
-    (setq ad-redefinition-action 'accept))
-  (setq use-package-verbose my-log-verbose
-        use-package-debug nil
-        use-package-enable-imenu-support t
-        use-package-minimum-reported-time 0.01
-        use-package-always-ensure t)
-
 (eval-when-compile
   (require 'use-package))
 
 ;; ------ packages
-(require 'cl)
-(use-package bind-key  :ensure t)
-(use-package diminish  :ensure t)
-(use-package session   :ensure t)
-(use-package cus-edit  :ensure nil)
-(use-package initsplit :ensure t)
-
-(mapc #'(lambda (file)
-          (load (expand-file-name file user-emacs-directory)))
-      (list 
-       "customization"
-       "customization-individual"
-       "customization-org"))
-
-(require 'my-toolkit)
+(load (expand-file-name "functions"  user-emacs-directory))
 (load (expand-file-name "keybinding" user-emacs-directory))
 
 ;; org faces: http://orgmode.org/worg/org-color-themes.html
   ;; (load-theme 'my-leuven t)
 (load-theme 'my-custom t)
-(qiang-set-font individual-english-fonts
-                individual-font-size
-                individual-chinese-fonts)
+
+(defvar blaine--english-fonts '("Inconsolata" "Source Code Pro" "Anonymous Pro" "Monaco"
+                                "Ubuntu Mono" "Droid Sans Mono"
+                                "Menlo" "DejaVu Sans Mono" "Courier New"
+                                "Monospace" "Courier" "Iosevka Light"))
+(defvar blaine--chinese-fonts '("宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
+                                "Microsoft Yahei"))
+(defvar blaine--font-size 11)
+(qiang-set-font blaine--english-fonts blaine--font-size blaine--chinese-fonts)
+
+;; (use-package cus-edit  :ensure nil)
+(use-package initsplit :ensure t)
+(load (expand-file-name "settings" user-emacs-directory))
+
+(defun blaine//load-feature (feature-name)
+  (load (expand-file-name (concat "features/" feature-name) user-emacs-directory)))
+(blaine//load-feature "base")
+(mapc 'blaine//load-feature
+      '("visual"
+        "editing"))
 
 ;; (byte-recompile-directory user-package-settings-directory 0)
-(mapc #'(lambda (file)
-          (load (substring file 0 -3)))
-      (directory-files user-init-directory t ".*\\.el" t))
+;; (mapc #'(lambda (file)
+;;           (load (substring file 0 -3)))
+;;       (directory-files user-init-directory t ".*\\.el" t))
 
 ;; ------ post initialization
-(when t ;; window-system
-  (print-cost-time load-file-name)
-
+(when blaine--debug
+  (blaine//emacs-load-time load-file-name)
   (add-hook 'after-init-hook
             `(lambda ()
-               (print-cost-time (concat ,load-file-name " [after-init]")))
+               (blaine//emacs-load-time (concat ,load-file-name " [after-init]")))
             t))
 
 ;;; init.el ends here

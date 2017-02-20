@@ -821,3 +821,5 @@
   :config
   ;; (global-set-key (kbd "C-x g") 'google-this-mode-submap)
   (google-this-mode 1))
+
+(use-package restart-emacs)
