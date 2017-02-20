@@ -70,7 +70,8 @@ See also `locate-user-emacs-file'.")
   (normal-top-level-add-subdirs-to-load-path))
 
 (setq use-package-verbose blaine--debug
-      use-package-minimum-reported-time 0.01)
+      use-package-minimum-reported-time 0.01
+      use-package-always-ensure nil)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -79,7 +80,7 @@ See also `locate-user-emacs-file'.")
 
 ;; ------ packages
 (load (expand-file-name "functions"  user-emacs-directory))
-(load (expand-file-name "keybinding" user-emacs-directory))
+;; (load (expand-file-name "keybinding" user-emacs-directory))
 
 ;; org faces: http://orgmode.org/worg/org-color-themes.html
   ;; (load-theme 'my-leuven t)
@@ -91,7 +92,7 @@ See also `locate-user-emacs-file'.")
                                 "Monospace" "Courier" "Iosevka Light"))
 (defvar blaine--chinese-fonts '("宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
                                 "Microsoft Yahei"))
-(defvar blaine--font-size 11)
+(defvar blaine--font-size (if (eq system-type 'darwin) 13 11))
 (qiang-set-font blaine--english-fonts blaine--font-size blaine--chinese-fonts)
 
 ;; (use-package cus-edit  :ensure nil)
@@ -101,6 +102,8 @@ See also `locate-user-emacs-file'.")
 (defun blaine//load-feature (feature-name)
   (load (expand-file-name (concat "features/" feature-name) user-emacs-directory)))
 (blaine//load-feature "base")
+(when (eq system-type 'darwin) ; mac specific bindings
+  (blaine//load-feature "osx"))
 (mapc 'blaine//load-feature
       '("visual"
         "editing"))
