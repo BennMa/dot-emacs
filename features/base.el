@@ -19,7 +19,6 @@
 
   (use-package ivy :demand t
     :diminish (ivy-mode . "")
-    :bind     ("C-c C-r" . ivy-resume)
     :config   (ivy-mode 1))
 
   (use-package swiper :bind ("C-s" . swiper))
@@ -39,6 +38,12 @@
      ;; ("<f2> u"  . counsel-unicode-char)
      ))
 
+  (use-package anzu
+    :diminish (anzu-mode . "")
+    :bind (("M-%" . anzu-query-replace)
+           ("C-M-%" . anzu-query-replace-regexp))
+    :config (global-anzu-mode 1))
+
   (use-package projectile
     :diminish (projectile-mode . " ⓟ")
     :commands (projectile-global-mode
@@ -46,9 +51,9 @@
                hydra-projectile/body
                hydra-projectile-if-projectile-p
                projectile-project-root
-               projectile-project-p)
-    :bind (("s-p" . hydra-projectile/body)
-           ("s-b" . counsel-projectile-switch-to-buffer))
+               projectile-project-p
+               counsel-projectile-switch-to-buffer)
+    :bind (("M-p" . hydra-projectile/body))
     :config
     (progn 
       (projectile-global-mode 1)
@@ -56,26 +61,25 @@
       ;; https://github.com/ericdanan/counsel-projectile
       (use-package counsel-projectile :config (counsel-projectile-on))
 
-      (defhydra hydra-projectile
-        (:color teal :hint nil :pre (projectile-mode))
+      (defhydra hydra-projectile (:color teal :hint nil)
         "
      PROJECTILE: %(projectile-project-root)
     ^FIND FILE^        ^SEARCH/TAGS^        ^BUFFERS^       ^CACHE^                    ^PROJECT^
-    _f_: file          _a_: ag              _i_: Ibuffer    _c_: cache clear           _p_: switch proj
+    _f_: file          _s_: ag              _i_: Ibuffer    _c_: cache clear           _p_: switch proj
     _F_: file dwim     _g_: update gtags    _b_: switch to  _x_: remove known project
   _C-f_: file pwd      _o_: multi-occur   _s-k_: Kill all   _X_: cleanup non-existing
     _r_: recent file   ^ ^                  ^ ^             _z_: cache current
     _d_: dir
 "
-        ("a"   counsel-projectile-ag)
+        ("s"   counsel-projectile-ag)
         ("b"   counsel-projectile-switch-to-buffer)
         ("c"   projectile-invalidate-cache)
         ("d"   counsel-projectile-find-dir)
         ("f"   counsel-projectile-find-file)
         ("F"   projectile-find-file-dwim)
         ("C-f" projectile-find-file-in-directory)
-        ("g"   ggtags-update-tags)
-        ("s-g" ggtags-update-tags)
+        ;; ("g"   ggtags-update-tags)
+        ;; ("s-g" ggtags-update-tags)
         ("i"   projectile-ibuffer)
         ("K"   projectile-kill-buffers)
         ("s-k" projectile-kill-buffers)
@@ -103,24 +107,21 @@
 
   ) ;; let ends here
 
+
 ;; ------ global keybindings
 ;; C-
-(general-define-key "C-a" 'my-beginning-of-line
-                    "C-M-j" 'delete-indentation-forward
-                    "C-<tab>" 'switch-to-previous-buffer
-                    "C-<return>" 'my-other-window
+(general-define-key "C-a" 'blaine/beginning-of-line
+                    "C-M-j" '(lambda() (interactive) (delete-indentation t))
                     "C-. m" 'kmacro-keymap
-                    "C-. C-i" 'indent-rigidly)
+                    "C-. C-i" 'indent-rigidly
+                    "C-c C-r" 'ivy-resume)
 
 ;; M-
 (general-define-key "M-!" 'async-shell-command
                     "M-'" 'insert-pair
-                    "<M-backspace>" 'contextual-backspace
-                    "M-[" 'align-code
+                    "<M-backspace>" 'blaine/contextual-backspace
                     "M-`" 'other-frame
                     "M-W" 'mark-word
-                    "M-L" 'mark-line
-                    "M-S" 'mark-sentence
                     "M-X" 'mark-sexp
                     "M-D" 'mark-defun
                     "M-g c" 'goto-char
@@ -133,29 +134,21 @@
                     "t" 'toggle-truncate-lines
                     "_" 'split-window-below
                     "|" 'split-window-right
-                    "K" 'delete-current-buffer-file
-                    "y" '(lambda() (interactive) (insert-separator nil))
-                    "Y" '(lambda() (interactive) (insert-separator t))
-                    "v" 'show-magic-info
+                    "y" '(lambda() (interactive) (blaine/insert-separator nil))
+                    "Y" '(lambda() (interactive) (blaine/insert-separator t))
+                    "v" 'blaine/buffer-info
                     ;; ------ C-x C-
-                    "C-d" 'duplicate-line
+                    "C-d" 'blaine/duplicate-line
+                    "C-j" 'dired-jump
                     "C-e" 'pp-eval-last-sexp
                     "C-n" 'next-line
-                    "C-o" 'kill-other-buffers
-                    "C-v" 'find-alternate-file-with-sudo
-                    "M-n" 'set-goal-column
-                    "M-q" 'refill-paragraph)
+                    "C-o" 'blaine/kill-other-buffers
+                    "M-n" 'set-goal-column)
 
 ;; C-c-
 (general-define-key :prefix "C-c"
                     "SPC" 'just-one-space
-                    "C-f" 'my-code-format
-                    "0" (recursive-edit-preserving-window-config
-                         (delete-window))
-                    "1" (recursive-edit-preserving-window-config
-                         (if (one-window-p 'ignore-minibuffer)
-                             (error "Current window is the only window in its frame")
-                           (delete-other-windows)))
+                    "C-f" 'blaine/format-buffer
                     "f" 'flush-lines
                     "g" 'goto-line
                     "k" 'keep-lines
@@ -167,28 +160,23 @@
                     "s" 'replace-string
                     "u" 'rename-uniquely
                     "v" 'ffap
-                    "V" 'view-clipboard
                     "z" 'clean-buffer-list
                     "[" 'align-regexp
                     "=" 'count-matches
-                    ";" 'comment-or-uncomment-region
-                    "C-z" 'delete-to-end-of-buffer
-                    "M-q" 'unfill-paragraph)
+                    ";" 'comment-or-uncomment-region)
 
 (general-define-key :prefix "C-c e"
                     "E" 'elint-current-buffer
-                    "b" 'do-eval-buffer
-                    "c" 'cancel-debug-on-entry
+                    "b" '(lambda () (interactive) (call-interactively 'eval-buffer))
+                    "C" 'cancel-debug-on-entry
                     "d" 'debug-on-entry
                     "e" 'toggle-debug-on-error
                     "f" 'emacs-lisp-byte-compile-and-load
                     "j" 'emacs-lisp-mode
                     "l" 'find-library
-                    "r" 'do-eval-region
-                    "s" 'scratch
+                    "r" '(lambda () (interactive) (call-interactively 'eval-region))
                     "z" 'byte-recompile-directory)
 ;; C-h e -
-(defvar blaise--lisp-find-map)
 (define-prefix-command 'blaine--lisp-find-map)
 (bind-key "C-h e" 'blaine--lisp-find-map)
 (general-define-key :keymaps 'blaine--lisp-find-map
@@ -196,11 +184,10 @@
                     "e" 'view-echo-area-messages
                     "f" 'find-function
                     "F" 'find-face-definition
-                    "d" 'my-describe-symbol
                     "i" 'info-apropos
                     "k" 'find-function-on-key
                     "l" 'find-library
-                    "s" 'scratch
+                    "s" 'blaine/scratch
                     "v" 'find-variable
                     "V" 'apropos-value
-                    "t" 'what-face)
+                    "t" 'blaine/what-face)

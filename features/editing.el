@@ -1,3 +1,6 @@
+(general-define-key (general-chord "zz") 'hydra-zoom/body)
+
+;; ------ packages
 (use-package clean-aindent-mode :config (clean-aindent-mode))
 (use-package expand-region :bind ("C-=" . er/expand-region))
 (use-package hilit-chg :bind ("M-o C" . highlight-changes-mode))
@@ -14,7 +17,7 @@
          ("C-x 1" . sticky-window-delete-other-windows)))
 
 (use-package escreen
-  :bind-keymap ("C-c w" . escreen-map)
+  ;; :bind-keymap ("C-c w" . escreen-map)
   :commands (escreen-create-screen)
   :config
   (bind-key "e" 'escreen-goto-last-screen escreen-map)
@@ -34,6 +37,18 @@
   :config
   (unbind-key "C-." flyspell-mode-map)
   (unbind-key "C-c $" flyspell-mode-map))
+
+(use-package flycheck
+  ;; :commands (flycheck-mode global-flycheck-mode)
+  :config
+  (flycheck-add-mode 'php       'web-mode)
+  (flycheck-add-mode 'php-phpmd 'web-mode)
+  (flycheck-add-mode 'php-phpcs 'web-mode)
+
+  (defalias 'flycheck-show-error-at-point-soon
+    'flycheck-show-error-at-point)
+
+  (add-hook 'after-init-hook #'global-flycheck-mode))
 
 (use-package auto-highlight-symbol
   :demand t
@@ -73,3 +88,79 @@
   
   ;; (add-hook 'projectile-mode-hook 'hs-minor-mode)
   )
+
+(use-package counsel-gtags
+  :bind (("M-." . counsel-gtags-find-definition)
+         ;; counsel-gtags-find-reference
+         ;; counsel-gtags-find-symbol
+         ;; ("M-," . counsel-gtags-pop-stack)
+         ))
+
+(use-package magit
+  :bind (("C-x g" . magit-status)
+         ("C-x G" . magit-log-buffer-file))
+  :commands (magit-status-with-prefix)
+  :config
+  (progn 
+    (add-hook 'magit-mode-hook 'hl-line-mode)
+    (setenv "GIT_PAGER" "")
+
+    (unbind-key "M-h" magit-mode-map)
+    (unbind-key "M-s" magit-mode-map)
+    (unbind-key "M-m" magit-mode-map)
+    (unbind-key "M-w" magit-mode-map)
+    (unbind-key "C-<return>" magit-file-section-map)
+
+    ;; (bind-key "M-H" #'magit-show-level-2-all magit-mode-map)
+    ;; (bind-key "M-S" #'magit-show-level-4-all magit-mode-map)
+    (bind-key "U" #'magit-unstage-all magit-mode-map)
+
+    (add-hook 'magit-log-edit-mode-hook
+              #'(lambda ()
+                  (set-fill-column 72)
+                  (flyspell-mode)))
+
+    (defun magit-monitor (&optional no-display)
+      "Start git-monitor in the current directory."
+      (interactive)
+      (when (string-match "\\*magit: \\(.+?\\)\\*" (buffer-name))
+        (let ((name (format "*git-monitor: %s*"
+                            (match-string 1 (buffer-name)))))
+          (or (get-buffer name)
+              (let ((buf (get-buffer-create name)))
+                (ignore-errors
+                  (start-process "*git-monitor*" buf "git-monitor"
+                                 "-d" (expand-file-name default-directory)))
+                buf)))))
+    (add-hook 'magit-status-mode-hook #'(lambda () (magit-monitor t)))
+
+    (defun magit-status-with-prefix ()
+      (interactive)
+      (let ((current-prefix-arg '(4)))
+        (call-interactively 'magit-status)))
+
+    (defun eshell/git (&rest args)
+      (cond
+       ((or (null args)
+            (and (string= (car args) "status") (null (cdr args))))
+        (magit-status-internal default-directory))
+       ((and (string= (car args) "log") (null (cdr args)))
+        (magit-log "HEAD"))
+       (t (throw 'eshell-replace-command
+                 (eshell-parse-command
+                  "*git"
+                  (eshell-stringify-list (eshell-flatten-list args)))))))))
+
+;; ------ hydra
+(defhydra hydra-zoom (:hint nil)
+  "
+^BUFFER^   ^FRAME^    ^ACTION^
+_t_: +     _T_: +     _0_: reset
+_s_: -     _S_: -     _q_: quit
+"
+  ("t" zoom-in )
+  ("s" zoom-out )
+  ("T" zoom-frm-in )
+  ("S" zoom-frm-out )
+  ("0" zoom-frm-unzoom)
+  ("q" nil :color blue))

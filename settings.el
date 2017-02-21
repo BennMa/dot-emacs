@@ -61,6 +61,13 @@
  '(bbdb/mail-auto-create-p nil)
  '(bc-bookmark-file "~/.emacs.d/.data/breadcrumb")
  '(bind-key-segregation-regexp "\\`\\(\\(C-[chx.] \\|M-[gso] \\)\\([CM]-\\)?\\|.+-\\)")
+ '(blaine--buffermode-blacklist
+   (quote
+    ("direx:direx-mode" "diary-mode" "circe-query-mode" "circe-server-mode" "circe-channel-mode" "circe-chat-mode")))
+ '(blaine--buffername-blacklist (quote ("^ ?\\*" "Collector.org")))
+ '(blaine--buffername-whitelist
+   (quote
+    ("\\*mu4e-\\(main\\|headers\\)" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python" "\\*sbt\\*")))
  '(bm-highlight-style (quote bm-highlight-only-fringe))
  '(bmkp-bmenu-commands-file "~/.emacs.d/.data/bmk-bmenu-commands.el")
  '(bmkp-bmenu-state-file "~/.emacs.d/.data/bmk-bmenu-state.el")
@@ -414,7 +421,7 @@
            (name 16 -1)
            " " filename))))
  '(ibuffer-maybe-show-regexps nil)
- '(ibuffer-never-show-predicates (quote (my-ibuffer-never-show-predicates)) nil (ibuf-ext))
+ '(ibuffer-never-show-predicates (quote (blaine/ibuffer-never-show-predicates)) nil (ibuf-ext))
  '(ibuffer-saved-filter-groups
    (quote
     (("default"
@@ -514,6 +521,8 @@
  '(ivy-count-format "(%d/%d) ")
  '(ivy-use-ignore-default (quote always))
  '(ivy-use-virtual-buffers t)
+ '(js-doc-author "benn")
+ '(js-doc-mail-address "benn@thenetcircle.com")
  '(js3-enter-indents-newline t)
  '(js3-expr-indent-offset 2)
  '(js3-indent-on-enter-key t)
@@ -619,13 +628,6 @@
      (slime-repl-mode)
      (slime-connection-list-mode))))
  '(powerline-default-separator (quote zigzag))
- '(previous-buffer-black-list (quote ("^ ?\\*" "Collector.org")))
- '(previous-buffer-black-modes-list
-   (quote
-    ("direx:direx-mode" "diary-mode" "circe-query-mode" "circe-server-mode" "circe-channel-mode" "circe-chat-mode")))
- '(previous-buffer-white-list
-   (quote
-    ("\\*mu4e-\\(main\\|headers\\)" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python" "\\*sbt\\*")))
  '(projectile-cache-file "~/.emacs.d/.data/projectile.cache")
  '(projectile-completion-system (quote ivy))
  '(projectile-enable-caching t)

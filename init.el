@@ -1,10 +1,10 @@
-;;; init.el --- Thomas Frössman emacs init
+;;; init.el
 ;;; Commentary:
 ;;
 
 ;;; Code:
 
-;; ------ set emacs start time
+;; ------ Set emacs start time
 (defconst emacs-start-time (current-time))
 (defun blaine//emacs-load-time (title)
     (let ((elapsed (float-time (time-subtract (current-time)
@@ -31,6 +31,8 @@
 (and (fboundp 'tool-bar-mode) tool-bar-mode (tool-bar-mode -1))
 (and (fboundp 'tooltip-mode) tooltip-mode (tooltip-mode -1))
 (and (fboundp 'scroll-bar-mode) scroll-bar-mode (scroll-bar-mode -1))
+(and (fboundp 'show-paren-mode) (not show-paren-mode) (show-paren-mode 1))
+(global-linum-mode 1)
 ;; (random t)
 
 ;; --- define constant
@@ -106,7 +108,10 @@ See also `locate-user-emacs-file'.")
   (blaine//load-feature "osx"))
 (mapc 'blaine//load-feature
       '("visual"
-        "editing"))
+        "nav"
+        "editing"
+        "completion"
+        "lang/javascript"))
 
 ;; (byte-recompile-directory user-package-settings-directory 0)
 ;; (mapc #'(lambda (file)
