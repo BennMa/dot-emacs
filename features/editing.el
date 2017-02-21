@@ -25,6 +25,7 @@
   (escreen-install))
 
 (use-package flyspell
+  :diminish (flyspell-mode . "ⓢ")
   :bind (("C-c i b" . flyspell-buffer)
          ("C-c i f" . flyspell-mode))
   :init
@@ -39,6 +40,7 @@
   (unbind-key "C-c $" flyspell-mode-map))
 
 (use-package flycheck
+  :diminish (flycheck-mode . " ⓒ")
   ;; :commands (flycheck-mode global-flycheck-mode)
   :config
   (flycheck-add-mode 'php       'web-mode)
@@ -52,6 +54,7 @@
 
 (use-package auto-highlight-symbol
   :demand t
+  :diminish (auto-highlight-symbol-mode . "")
   :bind (("C-1" . ahs-backward)
          ("C-2" . ahs-forward))
   :config
@@ -102,14 +105,14 @@
   :commands (magit-status-with-prefix)
   :config
   (progn 
-    (add-hook 'magit-mode-hook 'hl-line-mode)
     (setenv "GIT_PAGER" "")
+    (add-hook 'magit-mode-hook 'hl-line-mode)
 
-    (unbind-key "M-h" magit-mode-map)
-    (unbind-key "M-s" magit-mode-map)
-    (unbind-key "M-m" magit-mode-map)
-    (unbind-key "M-w" magit-mode-map)
-    (unbind-key "C-<return>" magit-file-section-map)
+    ;; (unbind-key "M-h" magit-mode-map)
+    ;; (unbind-key "M-s" magit-mode-map)
+    ;; (unbind-key "M-m" magit-mode-map)
+    ;; (unbind-key "M-w" magit-mode-map)
+    ;; (unbind-key "C-<return>" magit-file-section-map)
 
     ;; (bind-key "M-H" #'magit-show-level-2-all magit-mode-map)
     ;; (bind-key "M-S" #'magit-show-level-4-all magit-mode-map)

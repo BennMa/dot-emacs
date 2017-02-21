@@ -8,6 +8,7 @@
   (powerline-default-theme))
 
 (use-package indent-guide
+  :diminish (indent-guide-mode . "")
   :config
   ;; (set-face-background 'indent-guide-face "dimgray")
   (indent-guide-global-mode))

@@ -10,6 +10,7 @@
   (use-package session)
   (use-package hydra)
   (use-package which-key
+    :diminish (which-key-mode . " ⓦ")
     :config
     (progn
       (which-key-mode)

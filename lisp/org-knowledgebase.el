@@ -29,17 +29,23 @@
 (defun k/list()
   "List all knowledge base files."
   (interactive)
-  (helm :sources
-        (helm-build-sync-source "Knowledge Files"
-          :candidates (--map
-                       (cons (substring it (1+ (length (expand-file-name org-my-knowledgebase-dir)))) it)
-                       (directory-files-recursively org-my-knowledgebase-dir t "\\.org$"))
-          :action (helm-make-actions
-                   "Find File" 'helm-find-file-or-marked
-                   "Find file in Dired" 'helm-point-file-in-dired
-                   "Grep File(s) `C-s, C-u Recurse'" 'helm-find-files-grep))
-        :buffer "*Knowledge Files*"
-        :history 'k/list-history))
+  ;; (helm :sources
+  ;;       (helm-build-sync-source "Knowledge Files"
+  ;;         :candidates (--map
+  ;;                      (cons (substring it (1+ (length (expand-file-name org-my-knowledgebase-dir)))) it)
+  ;;                      (directory-files-recursively org-my-knowledgebase-dir t "\\.org$"))
+  ;;         :action (helm-make-actions
+  ;;                  "Find File" 'helm-find-file-or-marked
+  ;;                  "Find file in Dired" 'helm-point-file-in-dired
+  ;;                  "Grep File(s) `C-s, C-u Recurse'" 'helm-find-files-grep))
+  ;;       :buffer "*Knowledge Files*"
+  ;;       :history 'k/list-history)
+  (ivy-read "Knowledge Files: "
+            (--map (cons (substring it (1+ (length (expand-file-name org-my-knowledgebase-dir)))) it)
+                   (directory-files-recursively org-my-knowledgebase-dir t "\\.org$"))
+            :action (lambda (x) (find-file (cdr x)))
+            :history 'k/list-history)
+  )
 
 ;; ------ daily file list
 (defun archive-my-daily-jobs()
@@ -60,30 +66,37 @@
 (defun k/daily-list()
   "List all daily files."
   (interactive)
-  (helm :sources
-        (helm-build-sync-source "Daily Files"
-          :candidates (--map
-                       (cons (substring it (1+ (length (expand-file-name org-my-daily-dir)))) it)
-                       (directory-files org-my-daily-dir t "\\.\\(txt\\|org\\)$" t))
-          :action (helm-make-actions
-                   "Find File" 'helm-find-file-or-marked
-                   "Find file in Dired" 'helm-point-file-in-dired
-                   "Grep File(s) `C-s, C-u Recurse'" 'helm-find-files-grep))
-        :buffer "*Daily Files*"
-        :history 'k/list-history))
+  ;; (helm :sources
+  ;;       (helm-build-sync-source "Daily Files"
+  ;;         :candidates (--map
+  ;;                      (cons (substring it (1+ (length (expand-file-name org-my-daily-dir)))) it)
+  ;;                      (directory-files org-my-daily-dir t "\\.\\(txt\\|org\\)$" t))
+  ;;         :action (helm-make-actions
+  ;;                  "Find File" 'helm-find-file-or-marked
+  ;;                  "Find file in Dired" 'helm-point-file-in-dired
+  ;;                  "Grep File(s) `C-s, C-u Recurse'" 'helm-find-files-grep))
+  ;;       :buffer "*Daily Files*"
+  ;;       :history 'k/list-history)
+  (ivy-read "Daily Files: "
+            (--map (cons (substring it (1+ (length (expand-file-name org-my-daily-dir)))) it)
+                   (directory-files org-my-daily-dir t "\\.\\(txt\\|org\\)$" t))
+            :action (lambda (x) (find-file (cdr x)))
+            :history 'k/list-history)
+  )
 (bind-key "d" 'k/daily-list org-knowledgebase-map)
 
 
 ;; ------ knowledge base search
 (bind-key "s" 'k/search org-knowledgebase-map)
-(defun k/search (&optional options)
+(defun k/search ()
   "Search knowledge base by helm-ag."
   (interactive)
-  (if (require 'helm-grep nil  'noerror)
-      (let* ((prefarg (or current-prefix-arg helm-current-prefix-arg)))
-        (helm-do-grep-1 (directory-files-recursively org-my-knowledgebase-dir t "\\.\\(?:org\\|html?\\)$")
-                        prefarg))
-    (error "helm-grep not available")))
+  ;; (if (require 'helm-grep nil  'noerror)
+  ;;     (let* ((prefarg (or current-prefix-arg helm-current-prefix-arg)))
+  ;;       (helm-do-grep-1 (directory-files-recursively org-my-knowledgebase-dir t "\\.\\(?:org\\|html?\\)$")
+  ;;                       prefarg))
+  ;;   (error "helm-grep not available"))
+  (counsel-ag "" (concat (expand-file-name org-my-knowledgebase-dir) "/") nil "Knowledge Search: "))
 
 
 ;; ------ knowledge base review

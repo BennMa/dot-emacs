@@ -111,7 +111,8 @@ See also `locate-user-emacs-file'.")
         "nav"
         "editing"
         "completion"
-        "lang/javascript"))
+        "lang/javascript"
+        "org"))
 
 ;; (byte-recompile-directory user-package-settings-directory 0)
 ;; (mapc #'(lambda (file)
