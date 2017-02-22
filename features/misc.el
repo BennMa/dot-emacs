@@ -1,27 +1,6 @@
-(use-package highlight-parentheses
-  :diminish (highlight-parentheses-mode . "")
-  :config
-  (global-highlight-parentheses-mode))
+(general-define-key (general-chord "zz") 'hydra-zoom/body)
 
-(use-package powerline
-  :config
-  (powerline-default-theme))
-
-(use-package indent-guide
-  :diminish (indent-guide-mode . "")
-  :config
-  ;; (set-face-background 'indent-guide-face "dimgray")
-  (indent-guide-global-mode))
-
-(use-package hl-line
-  :diminish (hl-line-mode . "")
-  :commands hl-line-mode
-  :bind (("M-o h" . hl-line-mode))
-  :config
-  ;; (use-package hl-line+)
-  ;; (global-hl-line-mode)
-  )
-
+;; ------ packages
 (use-package maxframe
   :if window-system
   :commands maximize-frame 
@@ -57,3 +36,38 @@
 ;; Enforce rules for popup windows
 ;; https://github.com/wasamasa/shackle
 (use-package shackle :disabled t :config (shackle-mode))
+
+(use-package escreen
+  ;; :bind-keymap ("C-c w" . escreen-map)
+  :commands (escreen-create-screen)
+  :config
+  (bind-key "e" 'escreen-goto-last-screen escreen-map)
+  (bind-key "m" 'escreen-menu escreen-map)
+  (escreen-install))
+
+(use-package zoom-frm :ensure t
+  :commands (zoom-frm-in
+             zoom-frm-out
+             zoom-frm-unzoom
+             zoom-in
+             zoom-out
+             hydra-zoom/body)
+  :config
+  (setq zoom-frame/buffer 'buffer)
+
+  (defhydra hydra-zoom (:hint nil)
+    "
+  ^BUFFER^   ^FRAME^    ^ACTION^
+  _t_: +     _T_: +     _0_: reset
+  _s_: -     _S_: -     _q_: quit
+"
+    ("t" zoom-in )
+    ("s" zoom-out )
+    ("T" zoom-frm-in )
+    ("S" zoom-frm-out )
+    ("0" zoom-frm-unzoom)
+    ("q" nil :color blue)))
+
+(use-package powerline
+  :config
+  (powerline-default-theme))

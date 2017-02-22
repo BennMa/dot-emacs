@@ -1,6 +1,9 @@
 ;; ------ Keybindings
-(general-define-key (general-chord "bb") 'blaine/last-buffer
+(general-define-key "C-<tab>"            'blaine/last-buffer
                     (general-chord "ww") 'blaine/other-window
+                    (general-chord "jj") 'avy-goto-char
+                    (general-chord "jw") 'avy-goto-word-1
+                    (general-chord "jl") 'avy-goto-line
                     "C-c b"              'hydra-buffer/body
                     "C-c w"              'hydra-window/body)
 
@@ -120,15 +123,18 @@
     (setq aw-background t)
     (setq aw-ignore-current t)))
 
-(use-package zoom-frm :ensure t
-  :commands
-  (zoom-frm-in
-   zoom-frm-out
-   zoom-frm-unzoom
-   zoom-in
-   zoom-out)
-  :config
-  (setq zoom-frame/buffer 'buffer))
+(use-package ace-jump-mode
+  :commands (ace-jump-char-mode
+             ace-jump-word-mode
+             ace-jump-line-mode))
+
+(use-package avy
+  :commands (avy-goto-char
+             avy-goto-char-2
+             avy-goto-char-timer
+             avy-goto-line
+             avy-goto-word-1
+             avy-goto-word-0))
 
 ;; ------ Hydra
 (defhydra hydra-buffer (:color blue :columns 4 :exit t)

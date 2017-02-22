@@ -82,22 +82,21 @@ See also `locate-user-emacs-file'.")
 
 ;; ------ packages
 (load (expand-file-name "functions"  user-emacs-directory))
-;; (load (expand-file-name "keybinding" user-emacs-directory))
-
-;; org faces: http://orgmode.org/worg/org-color-themes.html
+(progn
+  ;; org faces: http://orgmode.org/worg/org-color-themes.html
   ;; (load-theme 'my-leuven t)
-(load-theme 'my-custom t)
+  (load-theme 'my-custom t)
 
-(defvar blaine--english-fonts '("Inconsolata" "Source Code Pro" "Anonymous Pro" "Monaco"
-                                "Ubuntu Mono" "Droid Sans Mono"
-                                "Menlo" "DejaVu Sans Mono" "Courier New"
-                                "Monospace" "Courier" "Iosevka Light"))
-(defvar blaine--chinese-fonts '("宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
-                                "Microsoft Yahei"))
-(defvar blaine--font-size (if (eq system-type 'darwin) 13 11))
-(qiang-set-font blaine--english-fonts blaine--font-size blaine--chinese-fonts)
+  (defvar blaine--english-fonts '("Inconsolata" "Source Code Pro" "Anonymous Pro" "Monaco"
+                                  "Ubuntu Mono" "Droid Sans Mono"
+                                  "Menlo" "DejaVu Sans Mono" "Courier New"
+                                  "Monospace" "Courier" "Iosevka Light"))
+  (defvar blaine--chinese-fonts '("宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
+                                  "Microsoft Yahei"))
+  (defvar blaine--font-size (if (eq system-type 'darwin) 13 11))
 
-;; (use-package cus-edit  :ensure nil)
+  (qiang-set-font blaine--english-fonts blaine--font-size blaine--chinese-fonts))
+
 (use-package initsplit :ensure t)
 (load (expand-file-name "settings" user-emacs-directory))
 
@@ -107,12 +106,12 @@ See also `locate-user-emacs-file'.")
 (when (eq system-type 'darwin) ; mac specific bindings
   (blaine//load-feature "osx"))
 (mapc 'blaine//load-feature
-      '("visual"
-        "nav"
+      '("nav"
         "editing"
         "completion"
         "lang/javascript"
-        "org"))
+        "org"
+        "misc"))
 
 ;; (byte-recompile-directory user-package-settings-directory 0)
 ;; (mapc #'(lambda (file)

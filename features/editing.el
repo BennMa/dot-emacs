@@ -1,28 +1,52 @@
-(general-define-key (general-chord "zz") 'hydra-zoom/body)
+
 
 ;; ------ packages
-(use-package clean-aindent-mode :config (clean-aindent-mode))
+(use-package swiper :bind ("C-s" . swiper))
+(use-package anzu
+    :diminish (anzu-mode . "")
+    :bind (("M-%" . anzu-query-replace)
+           ("C-M-%" . anzu-query-replace-regexp))
+    :config (global-anzu-mode 1))
+
 (use-package expand-region :bind ("C-=" . er/expand-region))
 (use-package hilit-chg :bind ("M-o C" . highlight-changes-mode))
 
-(use-package ace-jump-mode
-  :chords (("jj" . ace-jump-char-mode)
-           ("jk" . ace-jump-word-mode)
-           ("jl" . ace-jump-line-mode)))
+(use-package clean-aindent-mode :config (clean-aindent-mode))
+(use-package highlight-parentheses
+  :diminish (highlight-parentheses-mode . "")
+  :config
+  (global-highlight-parentheses-mode))
+(use-package indent-guide
+  :diminish (indent-guide-mode . "")
+  :config
+  ;; (set-face-background 'indent-guide-face "dimgray")
+  (indent-guide-global-mode))
+(use-package hl-line
+  :diminish (hl-line-mode . "")
+  :commands hl-line-mode
+  :bind (("M-o h" . hl-line-mode))
+  :config
+  ;; (use-package hl-line+)
+  ;; (global-hl-line-mode)
+  )
+
+(use-package auto-highlight-symbol
+  :demand t
+  :diminish (auto-highlight-symbol-mode . "")
+  :bind (("C-1" . ahs-backward)
+         ("C-2" . ahs-forward))
+  :config
+  (global-auto-highlight-symbol-mode t)
+  (unbind-key "M-<left>" auto-highlight-symbol-mode-map)
+  (unbind-key "M-<right>" auto-highlight-symbol-mode-map)
+  (unbind-key "M-S-<left>" auto-highlight-symbol-mode-map)
+  (unbind-key "M-S-<right>" auto-highlight-symbol-mode-map))
 
 (use-package dedicated :bind ("C-. D" . dedicated-mode))
 (use-package sticky-windows
   :bind (;;("C-. S" . sticky-window-keep-window-visible)
          ("C-x 0" . sticky-window-delete-window)
          ("C-x 1" . sticky-window-delete-other-windows)))
-
-(use-package escreen
-  ;; :bind-keymap ("C-c w" . escreen-map)
-  :commands (escreen-create-screen)
-  :config
-  (bind-key "e" 'escreen-goto-last-screen escreen-map)
-  (bind-key "m" 'escreen-menu escreen-map)
-  (escreen-install))
 
 (use-package flyspell
   :diminish (flyspell-mode . "ⓢ")
@@ -51,18 +75,6 @@
     'flycheck-show-error-at-point)
 
   (add-hook 'after-init-hook #'global-flycheck-mode))
-
-(use-package auto-highlight-symbol
-  :demand t
-  :diminish (auto-highlight-symbol-mode . "")
-  :bind (("C-1" . ahs-backward)
-         ("C-2" . ahs-forward))
-  :config
-  (global-auto-highlight-symbol-mode t)
-  (unbind-key "M-<left>" auto-highlight-symbol-mode-map)
-  (unbind-key "M-<right>" auto-highlight-symbol-mode-map)
-  (unbind-key "M-S-<left>" auto-highlight-symbol-mode-map)
-  (unbind-key "M-S-<right>" auto-highlight-symbol-mode-map))
 
 (use-package multiple-cursors
   :bind (("C->" . mc/mark-next-like-this)
@@ -102,7 +114,6 @@
 (use-package magit
   :bind (("C-x g" . magit-status)
          ("C-x G" . magit-log-buffer-file))
-  :commands (magit-status-with-prefix)
   :config
   (progn 
     (setenv "GIT_PAGER" "")
@@ -137,11 +148,6 @@
                 buf)))))
     (add-hook 'magit-status-mode-hook #'(lambda () (magit-monitor t)))
 
-    (defun magit-status-with-prefix ()
-      (interactive)
-      (let ((current-prefix-arg '(4)))
-        (call-interactively 'magit-status)))
-
     (defun eshell/git (&rest args)
       (cond
        ((or (null args)
@@ -153,17 +159,3 @@
                  (eshell-parse-command
                   "*git"
                   (eshell-stringify-list (eshell-flatten-list args)))))))))
-
-;; ------ hydra
-(defhydra hydra-zoom (:hint nil)
-  "
-^BUFFER^   ^FRAME^    ^ACTION^
-_t_: +     _T_: +     _0_: reset
-_s_: -     _S_: -     _q_: quit
-"
-  ("t" zoom-in )
-  ("s" zoom-out )
-  ("T" zoom-frm-in )
-  ("S" zoom-frm-out )
-  ("0" zoom-frm-unzoom)
-  ("q" nil :color blue))

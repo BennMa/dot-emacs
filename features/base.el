@@ -79,6 +79,7 @@
   (use-package server :config (unless (server-running-p) (server-start)))
   (use-package restart-emacs)
   (use-package session)
+  ;; (use-package cus-edit)
   (use-package hydra)
   (use-package which-key
     :diminish (which-key-mode . " ⓦ")
@@ -92,8 +93,6 @@
   (use-package ivy :demand t
     :diminish (ivy-mode . "")
     :config   (ivy-mode 1))
-
-  (use-package swiper :bind ("C-s" . swiper))
 
   (use-package counsel
     :bind
@@ -109,12 +108,6 @@
      ("<f2> i"  . counsel-info-lookup-symbol)
      ;; ("<f2> u"  . counsel-unicode-char)
      ))
-
-  (use-package anzu
-    :diminish (anzu-mode . "")
-    :bind (("M-%" . anzu-query-replace)
-           ("C-M-%" . anzu-query-replace-regexp))
-    :config (global-anzu-mode 1))
 
   (use-package projectile
     :diminish (projectile-mode . " ⓟ")
