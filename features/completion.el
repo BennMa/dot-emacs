@@ -49,5 +49,4 @@
 
 (use-package auto-yasnippet
   :bind (("C-c y c" . aya-create)
-         ("C-c y y" . aya-expand)
-         ("C-o" . aya-open-line)))
+         ("C-c y y" . aya-expand)))

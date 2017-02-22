@@ -1,11 +1,13 @@
 ;; ------ Keybindings
 (general-define-key "C-<tab>"            'blaine/last-buffer
-                    (general-chord "ww") 'blaine/other-window
+                    "C-y"                'ivy-switch-buffer
+                    "C-S-y"              'counsel-recentf
+                    "C-M-y"              'counsel-projectile-switch-to-buffer
+                    ;; "C-y"                'hydra-buffer/body
+                    "C-w"                'hydra-window/body
                     (general-chord "jj") 'avy-goto-char
                     (general-chord "jw") 'avy-goto-word-1
-                    (general-chord "jl") 'avy-goto-line
-                    "C-c b"              'hydra-buffer/body
-                    "C-c w"              'hydra-window/body)
+                    (general-chord "jl") 'avy-goto-line)
 
 ;; ------ Packages
 (progn ;; own functions
@@ -141,6 +143,7 @@
   "Buffers Switcher"
   ("b"   blaine/last-buffer "Last Buffer")
   ("l"   ivy-switch-buffer "All Buffers")
+  ("C-l"   ivy-switch-buffer "All Buffers")
   ("p"   counsel-projectile-switch-to-buffer "Project Buffers")
   ("s"   save-buffer "Save" :color red)
   ("k"   kill-this-buffer "Kill this buffer"  :color red)
@@ -150,13 +153,13 @@
   ("."   hydra-window/body "Windows")
   ("q"   nil "Cancel" :color blue))
 
-(defhydra hydra-window (:hint nil :color amaranth :columns 3 :pre (progn (winner-mode 1) (window-numbering-mode 1)))
+(defhydra hydra-window (:hint nil :color amaranth :columns 3 :pre (progn (winner-mode 1) (window-numbering-mode 1)) :exit t)
    "
 ^MOVE^ ^^^^   ^SPLIT^          ^SIZE^ ^^^^   ^COMMAND^   ^WINDOW^
 ^ ^ _k_ ^ ^   _-_ : split H    ^ ^ _p_ ^ ^   _d_elete    ^1^ ^2^ ^3^ ^4^
 _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
 ^ ^ _j_ ^ ^   _s_ : split H    ^ ^ _n_ ^ ^   _u_ndo      ^9^ ^0^
-^ ^ ^ ^ ^ ^   _v_ : split V    ^ ^ ^ ^ ^ ^   _R_edo
+^ ^ ^ ^ ^ ^   _v_ : split V    ^ ^ ^ ^ ^ ^   _r_edo
 "
   ("h" windmove-left :color blue)
   ("l" windmove-right :color blue)
@@ -176,7 +179,7 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
   ("v" split-window-horizontally)
 
   ("u" winner-undo)
-  ("R" winner-redo)
+  ("r" winner-redo)
   ("m" delete-other-windows)
   ("d" delete-window)
   
@@ -197,5 +200,6 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
 
   ("D" kill-buffer-and-window "Delete Buffer" :color red)
   ("w" blaine/other-window "Other Window" :color blue)
+  ("C-w" blaine/other-window "Other Window" :color blue)
   ("." hydra-buffer/body "Buffers" :color blue)
   ("q" nil "quit" :color blue))

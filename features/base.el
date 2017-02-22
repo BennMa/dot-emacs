@@ -1,24 +1,13 @@
 ;; ------ global keybindings
 (use-package general
   :config
-  (progn 
+  (progn
     (use-package key-chord :defer 1 :config (setq key-chord-two-keys-delay 0.2))
-    ;; C-
-    (general-define-key "C-a" 'blaine/beginning-of-line
-                        "C-M-j" '(lambda() (interactive) (delete-indentation t))
-                        "C-c C-r" 'ivy-resume)
-    ;; M-
-    (general-define-key "M-!" 'async-shell-command
-                        "<M-backspace>" 'blaine/contextual-backspace
-                        "M-`" 'other-frame
-                        "M-p" 'hydra-projectile/body)
     ;; C-x-
     (general-define-key :prefix "C-x"
                         "d" 'delete-whitespace-rectangle
                         "F" 'set-fill-column
                         "t" 'toggle-truncate-lines
-                        "-" 'split-window-below
-                        "|" 'split-window-right
                         "y" '(lambda() (interactive) (blaine/insert-separator nil))
                         "Y" '(lambda() (interactive) (blaine/insert-separator t))
                         "v" 'blaine/buffer-info
@@ -26,7 +15,8 @@
                         "C-d" 'blaine/duplicate-line
                         "C-j" 'dired-jump
                         "C-e" 'pp-eval-last-sexp
-                        "C-o" 'blaine/kill-other-buffers)
+                        "C-o" 'blaine/kill-other-buffers
+                        "C-f" 'counsel-find-file)
     ;; C-c-
     (general-define-key :prefix "C-c"
                         "SPC" 'just-one-space
@@ -41,6 +31,37 @@
                         "["   'align-regexp
                         "="   'count-matches
                         ";"   'comment-or-uncomment-region)
+    ;; C-
+    (general-define-key "C-a" 'blaine/beginning-of-line
+                        "C-M-j" '(lambda() (interactive) (delete-indentation t))
+                        "C-c C-r" 'ivy-resume
+                        "C-;" 'hydra-projectile/body)
+    ;; M-
+    (general-define-key "M-!" 'async-shell-command
+                        "<M-backspace>" 'blaine/contextual-backspace
+                        "M-`" 'other-frame
+                        "M-y" 'counsel-yank-pop)
+    ;; system related, like copy&paste
+    (general-define-key "M-q" 'save-buffers-kill-terminal
+                        "M-v" 'yank
+                        "M-c" 'kill-ring-save
+                        "M-x" '(lambda() (interactive)
+                                 (if (use-region-p)
+                                     (call-interactively 'kill-region)
+                                   (call-interactively 'counsel-M-x)))
+                        "M-w" 'delete-window
+                        "M-W" 'delete-frame
+                        "M-n" 'make-frame
+                        "M-z" 'undo-tree-undo
+                        "M-r" 'undo-tree-redo
+                        "M-Z" 'undo-tree-undo
+                        "M-s" (lambda () (interactive)
+                                (call-interactively (key-binding "\C-x\C-s")))
+                        "C-M-v" 'scroll-down-command)
+    (with-eval-after-load 'term
+      (define-key term-raw-map (kbd "M-v") 'term-paste))
+    ;; (unbind-key "C-y")
+    ;; (define-key 'isearch-mode-map "M-v" 'isearch-yank-kill)
     ;; C-c e -
     (general-define-key :prefix "C-c e"
                         "E" 'elint-current-buffer
@@ -95,19 +116,17 @@
     :config   (ivy-mode 1))
 
   (use-package counsel
-    :bind
-    (("M-x"     . counsel-M-x)
-     ("C-x C-f" . counsel-find-file)
-     ("C-c g"   . counsel-git)
-     ("C-c j"   . counsel-git-grep)
-     ("C-S-s"   . counsel-ag)
-     ("C-x l"   . counsel-locate)
-     ("<f1> f"  . counsel-describe-function)
-     ("<f1> v"  . counsel-describe-variable)
-     ("<f1> l"  . counsel-find-library)
-     ("<f2> i"  . counsel-info-lookup-symbol)
-     ;; ("<f2> u"  . counsel-unicode-char)
-     ))
+    :commands (counsel-M-x
+               counsel-find-file
+               counsel-git
+               counsel-git-grep
+               counsel-ag
+               counsel-locate
+               counsel-describe-function
+               counsel-describe-variable
+               counsel-find-library
+               counsel-info-lookup-symbol
+               counsel-unicode-char))
 
   (use-package projectile
     :diminish (projectile-mode . " ⓟ")
@@ -159,6 +178,11 @@
         ("X"   projectile-cleanup-known-projects)
         ("z"   projectile-cache-current-file)
         ("q"   nil "cancel" :color blue))))
+
+  (use-package undo-tree
+    :commands (undo-tree-visualize
+               undo-tree-undo
+               undo-tree-redo))
 
   (use-package exec-path-from-shell
     :defer 2

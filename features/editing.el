@@ -1,4 +1,4 @@
-
+(general-define-key "C-S-s"  'counsel-ag)
 
 ;; ------ packages
 (use-package swiper :bind ("C-s" . swiper))
@@ -110,6 +110,15 @@
          ;; counsel-gtags-find-symbol
          ;; ("M-," . counsel-gtags-pop-stack)
          ))
+
+(use-package whitespace
+  :diminish ""
+  :commands whitespace-mode
+  :init
+  (add-hook 'prog-mode-hook 'whitespace-mode)
+  :config
+  (setq whitespace-line-column 100
+        whitespace-style '(face lines-tail)))
 
 (use-package magit
   :bind (("C-x g" . magit-status)

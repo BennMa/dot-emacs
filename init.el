@@ -102,14 +102,18 @@ See also `locate-user-emacs-file'.")
 
 (defun blaine//load-feature (feature-name)
   (load (expand-file-name (concat "features/" feature-name) user-emacs-directory)))
+
+;; load base packages
 (blaine//load-feature "base")
-(when (eq system-type 'darwin) ; mac specific bindings
-  (blaine//load-feature "osx"))
+;; load operation system related packages
+;; (blaine//load-feature "system")
+;; load other packages
 (mapc 'blaine//load-feature
       '("nav"
         "editing"
         "completion"
         "lang/javascript"
+        "lang/php"
         "org"
         "misc"))
 
