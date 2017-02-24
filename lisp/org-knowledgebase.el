@@ -1,126 +1,118 @@
+;;; org-knowledgebase.el --- my knowledge base -*- lexical-binding: t -*-
+
+;; Copyright (C) 2016-02-01 blaine
+;; License: MIT
+
+;;; Commentary:
+;;
+;;
+;;
+;;; Code:
+
 (require 'org)
 (require 'org-agenda)
+(require 'ivy)
 
-(defcustom org-my-knowledgebase-dir "~/Dropbox/PKG/Document"
+(defcustom org-kb-doc-dir "~/Dropbox/PKG/Document"
   "Personal Knowledge Base Directory"
   :type 'string
-  :group 'org-mine)
-(defcustom org-my-daily-dir "~/Dropbox/PKG/Task/Daily"
+  :group 'org-knowledgebase)
+(defcustom org-kb-daily-dir "~/Dropbox/PKG/Task/Daily"
   "Personal Daily Directory"
   :type 'string
-  :group 'org-mine)
-(defcustom org-my-collector-file "~/Dropbox/PKG/Task/Collector.org"
+  :group 'org-knowledgebase)
+(defcustom org-kb-collector-file "~/Dropbox/PKG/Task/Collector.org"
   "Personal Small Piece Collector"
   :type 'string
-  :group 'org-mine)
+  :group 'org-knowledgebase)
+(defvar org-kb--history nil)
 
-(setq org-agenda-files
-      (append org-agenda-files
-              (directory-files-recursively org-my-knowledgebase-dir t org-agenda-file-regexp)))
-
-(defvar org-knowledgebase-map)
-(define-prefix-command 'org-knowledgebase-map)
-(bind-key "C-. k" 'org-knowledgebase-map)
-
-
-;; ------ knowledgebase file list
-(bind-key "l" 'k/list org-knowledgebase-map)
-(setq k/list-history nil)
-(defun k/list()
+(defun org-kb/show-all()
   "List all knowledge base files."
   (interactive)
   ;; (helm :sources
   ;;       (helm-build-sync-source "Knowledge Files"
   ;;         :candidates (--map
-  ;;                      (cons (substring it (1+ (length (expand-file-name org-my-knowledgebase-dir)))) it)
-  ;;                      (directory-files-recursively org-my-knowledgebase-dir t "\\.org$"))
+  ;;                      (cons (substring it (1+ (length (expand-file-name org-kb-doc-dir)))) it)
+  ;;                      (directory-files-recursively org-kb-doc-dir t "\\.org$"))
   ;;         :action (helm-make-actions
   ;;                  "Find File" 'helm-find-file-or-marked
   ;;                  "Find file in Dired" 'helm-point-file-in-dired
   ;;                  "Grep File(s) `C-s, C-u Recurse'" 'helm-find-files-grep))
   ;;       :buffer "*Knowledge Files*"
-  ;;       :history 'k/list-history)
+  ;;       :history 'org-kb--history)
   (ivy-read "Knowledge Files: "
-            (--map (cons (substring it (1+ (length (expand-file-name org-my-knowledgebase-dir)))) it)
-                   (directory-files-recursively org-my-knowledgebase-dir t "\\.org$"))
+            (--map (cons (substring it (1+ (length (expand-file-name org-kb-doc-dir)))) it)
+                   (directory-files-recursively org-kb-doc-dir t "\\.org$"))
             :action (lambda (x) (find-file (cdr x)))
-            :history 'k/list-history)
+            :history 'org-kb--history)
   )
 
 ;; ------ daily file list
-(defun archive-my-daily-jobs()
+(defun org-kb/archive-my-daily-jobs()
   ;;(when (string= org-state "DONE")
   (let* ((today (format-time-string "%Y-%m-%d"))
          (daily-file
           (expand-file-name (concat today ".org")
-                            org-my-daily-dir)))
+                            org-kb-daily-dir)))
     (unless (file-exists-p daily-file)
       (with-current-buffer (find-file-noselect daily-file)
         (insert
          (format "Daily on %s    -*- mode: org; -*-\n#+STARTUP: overview\n" today))
         (save-buffer)))
     (org-refile 3 nil (list "Daily File" daily-file))))
-(add-hook 'org-after-todo-state-change-hook 'archive-my-daily-jobs)
-(add-hook 'org-clock-out-hook 'archive-my-daily-jobs)
 
-(defun k/daily-list()
+(defun org-kb/show-daily()
   "List all daily files."
   (interactive)
   ;; (helm :sources
   ;;       (helm-build-sync-source "Daily Files"
   ;;         :candidates (--map
-  ;;                      (cons (substring it (1+ (length (expand-file-name org-my-daily-dir)))) it)
-  ;;                      (directory-files org-my-daily-dir t "\\.\\(txt\\|org\\)$" t))
+  ;;                      (cons (substring it (1+ (length (expand-file-name org-kb-daily-dir)))) it)
+  ;;                      (directory-files org-kb-daily-dir t "\\.\\(txt\\|org\\)$" t))
   ;;         :action (helm-make-actions
   ;;                  "Find File" 'helm-find-file-or-marked
   ;;                  "Find file in Dired" 'helm-point-file-in-dired
   ;;                  "Grep File(s) `C-s, C-u Recurse'" 'helm-find-files-grep))
   ;;       :buffer "*Daily Files*"
-  ;;       :history 'k/list-history)
+  ;;       :history 'org-kb--history)
   (ivy-read "Daily Files: "
-            (--map (cons (substring it (1+ (length (expand-file-name org-my-daily-dir)))) it)
-                   (directory-files org-my-daily-dir t "\\.\\(txt\\|org\\)$" t))
+            (--map (cons (substring it (1+ (length (expand-file-name org-kb-daily-dir)))) it)
+                   (directory-files org-kb-daily-dir t "\\.\\(txt\\|org\\)$" t))
             :action (lambda (x) (find-file (cdr x)))
-            :history 'k/list-history)
+            :history 'org-kb--history)
   )
-(bind-key "d" 'k/daily-list org-knowledgebase-map)
-
 
 ;; ------ knowledge base search
-(bind-key "s" 'k/search org-knowledgebase-map)
-(defun k/search ()
+(defun org-kb/search ()
   "Search knowledge base by helm-ag."
   (interactive)
   ;; (if (require 'helm-grep nil  'noerror)
   ;;     (let* ((prefarg (or current-prefix-arg helm-current-prefix-arg)))
-  ;;       (helm-do-grep-1 (directory-files-recursively org-my-knowledgebase-dir t "\\.\\(?:org\\|html?\\)$")
+  ;;       (helm-do-grep-1 (directory-files-recursively org-kb-doc-dir t "\\.\\(?:org\\|html?\\)$")
   ;;                       prefarg))
   ;;   (error "helm-grep not available"))
-  (counsel-ag "" (concat (expand-file-name org-my-knowledgebase-dir) "/") nil "Knowledge Search: "))
+  (counsel-ag "" (concat (expand-file-name org-kb-doc-dir) "/") nil "Knowledge Search: "))
 
 
 ;; ------ knowledge base review
-(defvar k/review-amount-tag "M_REVIEWED_AMOUNT")
-(defvar k/review-date-tag "M_REVIEWED_DATE")
-(add-to-list 'org-agenda-custom-commands
-             '("q" "All Review Entries" tags ":review:" 
-               ((org-agenda-skip-function ;; (org-agenda-files (list org-my-knowledgebase-dir))
-                 'k/org-agenda-skip-expired-review-entry))) t)
-(defun k/org-agenda-skip-expired-review-entry()
+(defvar org-kb--review-amount-tag "M_REVIEWED_AMOUNT")
+(defvar org-kb--review-date-tag "M_REVIEWED_DATE")
+(defun org-kb/org-agenda-skip-expired-review-entry()
   (let (beg end)
     (org-back-to-heading t)
     (setq beg (point)
           end (progn (outline-next-heading) (1- (point)))) ;; (progn (org-end-of-subtree t) (point))
     (goto-char beg)
     (and
-     (let ((reviewed-amount (org-entry-get beg k/review-amount-tag))
-           (reviewed-date   (org-entry-get beg k/review-date-tag))
+     (let ((reviewed-amount (org-entry-get beg org-kb--review-amount-tag))
+           (reviewed-date   (org-entry-get beg org-kb--review-date-tag))
            (closed          (org-entry-get beg "closed")))
-       (not (k/org-review-forget-algorithm reviewed-amount
+       (not (org-kb//org-review-forget-algorithm reviewed-amount
                                            (or reviewed-date closed))))
      end)))
 
-(defun k/org-review-forget-algorithm(reviewed-amount reviewed-date)
+(defun org-kb//org-review-forget-algorithm(reviewed-amount reviewed-date)
   (if (and reviewed-amount reviewed-date)
       (let ((today (date-to-day (format-time-string "%Y-%m-%d 00:00:00")))
             (lastday (date-to-day reviewed-date))
@@ -133,8 +125,7 @@
          (t t)))
     t))
 
-(org-defkey org-agenda-mode-map "D" 'k/org-agenda-magic-done)
-(defun k/org-agenda-magic-done(&optional arg)
+(defun org-kb/org-agenda-magic-done(&optional arg)
   "set current entry done review, and update statistics."
   (interactive "P")
   (let* ((col (current-column))
@@ -148,22 +139,21 @@
         (goto-char pos)
         ;; todo: do different action for different type of entry,  check this function org-agenda-skip-entry-if
         ;; review entry
-        (let* ((reviewed-amount (org-entry-get (point) k/review-amount-tag))
+        (let* ((reviewed-amount (org-entry-get (point) org-kb--review-amount-tag))
                (reviewed-amount (int-to-string (if reviewed-amount
                                                    (1+ (string-to-number reviewed-amount))
                                                  1)))
                (reviewed-date   (concat "[" (format-time-string "%Y-%m-%d %a %H:%M") "]")))
-          (org-entry-put (point) k/review-amount-tag reviewed-amount)
-          (org-entry-put (point) k/review-date-tag   reviewed-date)))
+          (org-entry-put (point) org-kb--review-amount-tag reviewed-amount)
+          (org-entry-put (point) org-kb--review-date-tag   reviewed-date)))
       (org-agenda-redo t)
       (org-move-to-column col))))
 
 ;; ------ Collector
-
-(defun org-collect()
+(defun org-kb/collect()
   "collect stuff to collected file"
   (interactive)
-  (let ((collect-file (expand-file-name org-my-collector-file))
+  (let ((collect-file (expand-file-name org-kb-collector-file))
         (string (if mark-active
                     (buffer-substring (region-beginning) (region-end))
                   ""))

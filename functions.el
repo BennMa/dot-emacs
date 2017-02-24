@@ -193,4 +193,12 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
      (t
       (backward-kill-word 1)))))
 
+(defun blaine/indent-buffer ()
+  "Indent the entire buffer."
+  (interactive)
+  (save-excursion
+    (delete-trailing-whitespace)
+    (indent-region (point-min) (point-max) nil)
+    (untabify (point-min) (point-max))))
+
 ;;; functions.el ends here

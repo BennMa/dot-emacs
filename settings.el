@@ -20,6 +20,9 @@
     (executable-make-buffer-file-executable-if-script-p)))
  '(ahs-default-range (quote ahs-range-whole-buffer))
  '(ahs-idle-interval 0.5)
+ '(ahs-modes
+   (quote
+    (actionscript-mode apache-mode bat-generic-mode c++-mode c-mode csharp-mode css-mode dos-mode emacs-lisp-mode html-mode ini-generic-mode java-mode javascript-mode js-mode js2-mode json-mode lisp-interaction-mode lua-mode latex-mode makefile-mode makefile-gmake-mode markdown-mode moccur-edit-mode nxml-mode nxhtml-mode outline-mode perl-mode cperl-mode web-mode php-mode python-mode rc-generic-mode reg-generic-mode ruby-mode sgml-mode sh-mode squirrel-mode text-mode tcl-mode visual-basic-mode)))
  '(alert-default-style (quote fringe))
  '(alert-notifier-command
    "/Applications/Misc/terminal-notifier.app/Contents/MacOS/terminal-notifier")
@@ -36,6 +39,10 @@
  '(auto-save-interval 64)
  '(auto-save-list-file-prefix "~/.emacs.d/.data/auto-save-list/.saves-")
  '(auto-save-timeout 2)
+ '(avy-keys
+   (quote
+    (97 115 100 102 103 104 106 107 108 119 101 114 116 121 117 105 111 112 120 99 118 98 110 109)))
+ '(avy-style (quote at-full))
  '(backup-directory-alist
    (quote
     (("~/.emacs.d/" . "~/.emacs.d/.backups")
@@ -141,6 +148,7 @@
  '(circe-notifications-wait-for 1)
  '(circe-notifications-watch-strings (quote ("ttt" "benn")))
  '(circe-reduce-lurker-spam nil)
+ '(clean-aindent-is-simple-indent nil)
  '(clean-buffer-list-kill-never-buffer-names
    (quote
     ("*scratch*" "*Messages*" "*server*" "*Group*" "*Org Agenda*" "TODO.txt" "&bitlbee")))
@@ -155,8 +163,8 @@
     (company-pseudo-tooltip-unless-just-one-frontend company-echo-metadata-frontend company-preview-frontend)))
  '(company-gtags-executable "/usr/local/bin/global")
  '(company-gtags-modes (quote (projectile-mode)))
- '(company-idle-delay 0.1)
- '(company-minimum-prefix-length 1)
+ '(company-idle-delay 0)
+ '(company-minimum-prefix-length 3)
  '(company-tooltip-align-annotations t)
  '(company-transformers (quote (company-sort-by-backend-importance)))
  '(compilation-always-kill t)
@@ -246,7 +254,6 @@
         [(control 109)]
         (quote newline-and-indent))))))
  '(enable-recursive-minibuffers t)
- '(ensime-sbt-command "/usr/local/bin/sbt")
  '(erc-auto-query (quote window-noselect))
  '(erc-autoaway-message "I'm away (after %i seconds of idle-time)")
  '(erc-autojoin-domain-only t)
@@ -354,6 +361,7 @@
  '(glasses-separator "-")
  '(glasses-uncapitalize-p t)
  '(global-auto-complete-mode t)
+ '(global-auto-highlight-symbol-mode t)
  '(global-font-lock-mode t nil (font-lock))
  '(global-undo-tree-mode t)
  '(google-this-keybind "s")
@@ -554,6 +562,8 @@
  '(magit-unstage-all-confirm nil)
  '(magit-use-overlays nil)
  '(make-cursor-line-fully-visible nil)
+ '(max-lisp-eval-depth 50000)
+ '(max-specpdl-size 5000)
  '(menu-bar-mode nil)
  '(message-log-max 16384)
  '(minimap-minimum-width 5)
@@ -643,6 +653,7 @@
    (quote
     (projectile-root-local projectile-root-bottom-up projectile-root-top-down projectile-root-top-down-recurring)))
  '(projectile-switch-project-action (quote projectile-dired))
+ '(projectile-tags-backend (quote auto))
  '(ps-font-size (quote (8 . 10)))
  '(ps-footer-font-size (quote (12 . 14)))
  '(ps-header-font-size (quote (12 . 14)))
@@ -654,7 +665,7 @@
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
    (quote
-    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")) t)
+    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")))
  '(recentf-max-saved-items 2000)
  '(recentf-save-file "~/.emacs.d/.data/recentf")
  '(redisplay-dont-pause t t)
@@ -815,7 +826,7 @@
  '(wg-prefix-key "")
  '(wg-query-for-save-on-emacs-exit nil)
  '(wg-query-for-save-on-workgroups-mode-exit nil)
- '(which-key-idle-delay 0.6)
+ '(which-key-idle-delay 0.5)
  '(whitespace-auto-cleanup t t)
  '(whitespace-line-column 80)
  '(whitespace-rescan-timer-time nil t)

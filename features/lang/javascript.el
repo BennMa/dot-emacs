@@ -2,10 +2,12 @@
 
 (use-package js2-mode
   :mode ("\\.js\\'"   . js2-mode)
-  :bind (:map js2-mode-map
-              ("<return>" . newline-and-indent))
   :config
-  (unbind-key "C-c C-f" js2-mode-map))
+  (progn
+    (unbind-key "C-c C-f" js2-mode-map)
+    (unbind-key "C-c C-f" js2-mode-map)))
+
+(use-package json-mode :ensure t :mode ("\\.json\\'" . json-mode))
 
 (use-package js2-refactor
     :config
@@ -22,7 +24,6 @@
 (use-package tern :config (add-hook 'js2-mode-hook (lambda () (tern-mode t))))
 (use-package company-tern :config (add-to-list 'company-backends 'company-tern))
 
-(use-package json-mode :mode ("\\.json\\'" . js2-mode))
 (use-package json-snatcher
   :config
   (progn

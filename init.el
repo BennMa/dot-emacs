@@ -110,12 +110,13 @@ See also `locate-user-emacs-file'.")
 ;; load other packages
 (mapc 'blaine//load-feature
       '("nav"
+        "misc"
+        "org"
         "editing"
         "completion"
         "lang/javascript"
         "lang/php"
-        "org"
-        "misc"))
+        "lang/scala"))
 
 ;; (byte-recompile-directory user-package-settings-directory 0)
 ;; (mapc #'(lambda (file)

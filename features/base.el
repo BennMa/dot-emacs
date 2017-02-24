@@ -3,6 +3,12 @@
   :config
   (progn
     (use-package key-chord :defer 1 :config (setq key-chord-two-keys-delay 0.2))
+    (general-define-key "RET" 'newline-and-indent)
+    ;; C-
+    (general-define-key "C-a" 'blaine/beginning-of-line
+                        "C-M-j" '(lambda() (interactive) (delete-indentation t))
+                        "C-c C-r" 'ivy-resume
+                        "C-;" 'hydra-projectile/body)
     ;; C-x-
     (general-define-key :prefix "C-x"
                         "d" 'delete-whitespace-rectangle
@@ -31,16 +37,13 @@
                         "["   'align-regexp
                         "="   'count-matches
                         ";"   'comment-or-uncomment-region)
-    ;; C-
-    (general-define-key "C-a" 'blaine/beginning-of-line
-                        "C-M-j" '(lambda() (interactive) (delete-indentation t))
-                        "C-c C-r" 'ivy-resume
-                        "C-;" 'hydra-projectile/body)
     ;; M-
     (general-define-key "M-!" 'async-shell-command
                         "<M-backspace>" 'blaine/contextual-backspace
                         "M-`" 'other-frame
-                        "M-y" 'counsel-yank-pop)
+                        "M-." 'projectile-find-tag
+                        "M-," 'pop-tag-mark
+                        "M-Y" 'counsel-yank-pop)
     ;; system related, like copy&paste
     (general-define-key "M-q" 'save-buffers-kill-terminal
                         "M-v" 'yank
@@ -49,19 +52,20 @@
                                  (if (use-region-p)
                                      (call-interactively 'kill-region)
                                    (call-interactively 'counsel-M-x)))
-                        "M-w" 'delete-window
+                        "M-w" '(lambda () (interactive) (kill-buffer (current-buffer)))
+                        "C-M-w" 'kill-buffer-and-window ;;delete-window
                         "M-W" 'delete-frame
-                        "M-n" 'make-frame
+                        ;; "M-n" 'make-frame
+                        "C-/" 'undo-tree-undo
                         "M-z" 'undo-tree-undo
                         "M-r" 'undo-tree-redo
-                        "M-Z" 'undo-tree-undo
+                        ;; "M-Z" 'undo-tree-undo
                         "M-s" (lambda () (interactive)
                                 (call-interactively (key-binding "\C-x\C-s")))
+                        "M-i" 'counsel-imenu
                         "C-M-v" 'scroll-down-command)
     (with-eval-after-load 'term
-      (define-key term-raw-map (kbd "M-v") 'term-paste))
-    ;; (unbind-key "C-y")
-    ;; (define-key 'isearch-mode-map "M-v" 'isearch-yank-kill)
+      (general-define-key :keymaps 'term-raw-map "M-v" 'term-paste))
     ;; C-c e -
     (general-define-key :prefix "C-c e"
                         "E" 'elint-current-buffer
@@ -98,7 +102,7 @@
   (use-package bind-key)
   (use-package use-package-chords :config (key-chord-mode 1))
   (use-package server :config (unless (server-running-p) (server-start)))
-  (use-package restart-emacs)
+  (use-package restart-emacs :commands restart-emacs)
   (use-package session)
   ;; (use-package cus-edit)
   (use-package hydra)
@@ -113,7 +117,24 @@
 
   (use-package ivy :demand t
     :diminish (ivy-mode . "")
-    :config   (ivy-mode 1))
+    :config
+    (progn
+      (ivy-mode 1)
+      (define-key ivy-minibuffer-map "\C-o"
+        (defhydra hydra-ivy (:hint nil :color pink :columns 4)
+          "Ivy Helper"
+          ("C-o" nil)
+          ("M-o" ivy-dispatching-done "Dispatching Done")
+          ("C-j" ivy-alt-done "Alt Done")
+          ("C-M-j" ivy-immediate-done "Immediate Done")
+          ("C-'" ivy-avy "Avy")
+          ("C-M-m" ivy-call "Call")
+          ("C-M-o" ivy-dispatching-call "Dispatching Call")
+          ("M-i" ivy-insert-current "Insert Current")
+          ("M-j" ivy-yank-word "Yank Word")
+          ("S-SPC" ivy-restrict-to-matches "Restricted Matches")
+          ("C-r" ivy-reverse-i-search "Search History")
+          ("M-w" ivy-kill-ring-save "Copy")))))
 
   (use-package counsel
     :commands (counsel-M-x
@@ -122,6 +143,7 @@
                counsel-git-grep
                counsel-ag
                counsel-locate
+               counsel-imenu
                counsel-describe-function
                counsel-describe-variable
                counsel-find-library
@@ -136,7 +158,8 @@
                hydra-projectile-if-projectile-p
                projectile-project-root
                projectile-project-p
-               counsel-projectile-switch-to-buffer)
+               projectile-find-tag
+               counsel-projectile-switch-to-buffer)    
     :config
     (progn 
       (projectile-global-mode 1)
@@ -148,14 +171,14 @@
             (hydra-projectile/body)
           (counsel-projectile)))
 
-      (defhydra hydra-projectile (:color teal :hint nil)
+      (defhydra hydra-projectile (:color teal :hint nil :idle 0.3)
         "
      PROJECTILE: %(projectile-project-root)
     ^FIND FILE^        ^SEARCH/TAGS^        ^BUFFERS^       ^CACHE^                    ^PROJECT^
     _f_: file          _s_: ag              _i_: Ibuffer    _c_: cache clear           _p_: switch proj
-    _F_: file dwim     _g_: update gtags    _b_: switch to  _x_: remove known project
-  _C-f_: file pwd      _o_: multi-occur   _s-k_: Kill all   _X_: cleanup non-existing
-    _r_: recent file   ^ ^                  ^ ^             _z_: cache current
+    _F_: file dwim     _g_: update tag      _b_: switch to  _x_: remove known project
+  _C-f_: file pwd      _._: find tag        _s-k_: Kill all   _X_: cleanup non-existing
+    _r_: recent file   _o_: multi-occur     ^ ^             _z_: cache current
     _d_: dir
 "
         ("s"   counsel-projectile-ag)
@@ -165,8 +188,8 @@
         ("f"   counsel-projectile-find-file)
         ("F"   projectile-find-file-dwim)
         ("C-f" projectile-find-file-in-directory)
-        ;; ("g"   ggtags-update-tags)
-        ;; ("s-g" ggtags-update-tags)
+        ("g"   projectile-regenerate-tags)
+        ("."   projectile-find-tag)
         ("i"   projectile-ibuffer)
         ("K"   projectile-kill-buffers)
         ("s-k" projectile-kill-buffers)
@@ -182,7 +205,8 @@
   (use-package undo-tree
     :commands (undo-tree-visualize
                undo-tree-undo
-               undo-tree-redo))
+               undo-tree-redo)
+    :config (global-undo-tree-mode))
 
   (use-package exec-path-from-shell
     :defer 2

@@ -1,0 +1,16 @@
+;;; `(buffer-name)` --- ${1:Summary} -*- lexical-binding: t -*-
+
+;; Copyright (C) `(format-time-string "%Y")` `yatemplate-owner`
+;; License: `yatemplate-license`
+
+;;; Commentary:
+;;
+;;  $2
+;;
+;;; Code:
+
+$0
+
+(provide '`(buffer-name)`)
+
+;;; `(buffer-name)` ends here

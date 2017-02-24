@@ -1,9 +1,10 @@
 ;; ------ Keybindings
-(general-define-key "C-<tab>"            'blaine/last-buffer
+(general-define-key "C-<tab>"              'blaine/last-buffer
                     "C-y"                'ivy-switch-buffer
                     "C-S-y"              'counsel-recentf
-                    "C-M-y"              'counsel-projectile-switch-to-buffer
-                    ;; "C-y"                'hydra-buffer/body
+                    "M-y"                'counsel-projectile-switch-to-buffer
+                    ;; "C-y"             'hydra-buffer/body
+                    "C-3"                'blaine/other-window
                     "C-w"                'hydra-window/body
                     (general-chord "jj") 'avy-goto-char
                     (general-chord "jw") 'avy-goto-word-1
@@ -34,7 +35,7 @@
         (while (< i 50)
           (setq last-buffer (nth i (buffer-list)))
           (setq last-buffer-name (buffer-name last-buffer))
-          (setq last-buffer-mode (if last-buffer 
+          (setq last-buffer-mode (if last-buffer
                                      (symbol-name (buffer-local-value 'major-mode last-buffer))
                                    ""))
           (when (or (list-regex-match-p last-buffer-name
@@ -64,11 +65,13 @@
           (message "File '%s' successfully removed" filename)))))
   (defun blaine/other-window (count &optional all-frames)
     (interactive "p")
-    (let ((i 1))
+    (let ((i 1)
+          (black-mode-list '(;; direx:direx-mode
+                             project-explorer-mode)))
       (catch 'matched_
         (while (< i 6)
           (other-window count all-frames)
-          (when (not (member major-mode '(direx:direx-mode project-explorer-mode)))
+          (when (not (member major-mode black-mode-list))
             (throw 'matched_ t))
           (setq i (1+ i)))))))
 
@@ -105,6 +108,7 @@
        (t (format "%8d" (buffer-size)))))))
 
 (use-package window-numbering :ensure t
+  :demand t
   :commands (window-numbering-mode
              select-window-0
              select-window-1
@@ -115,7 +119,8 @@
              select-window-6
              select-window-7
              select-window-8
-             select-window-9))
+             select-window-9)
+  :config (window-numbering-mode 1))
 
 (use-package ace-window :ensure t
   :commands (ace-window)
@@ -138,6 +143,11 @@
              avy-goto-word-1
              avy-goto-word-0))
 
+(use-package winner
+  :if (not noninteractive)
+  :commands (winner-redo winner-undo)
+  :config (winner-mode 1))
+
 ;; ------ Hydra
 (defhydra hydra-buffer (:color blue :columns 4 :exit t)
   "Buffers Switcher"
@@ -153,13 +163,13 @@
   ("."   hydra-window/body "Windows")
   ("q"   nil "Cancel" :color blue))
 
-(defhydra hydra-window (:hint nil :color amaranth :columns 3 :pre (progn (winner-mode 1) (window-numbering-mode 1)) :exit t)
+(defhydra hydra-window (:hint nil :color amaranth :columns 3 :exit t :idle 0.3)
    "
 ^MOVE^ ^^^^   ^SPLIT^          ^SIZE^ ^^^^   ^COMMAND^   ^WINDOW^
 ^ ^ _k_ ^ ^   _-_ : split H    ^ ^ _p_ ^ ^   _d_elete    ^1^ ^2^ ^3^ ^4^
 _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
 ^ ^ _j_ ^ ^   _s_ : split H    ^ ^ _n_ ^ ^   _u_ndo      ^9^ ^0^
-^ ^ ^ ^ ^ ^   _v_ : split V    ^ ^ ^ ^ ^ ^   _r_edo
+^ ^ ^ ^ ^ ^   _v_ : split V    ^ ^ ^ ^ ^ ^
 "
   ("h" windmove-left :color blue)
   ("l" windmove-right :color blue)
@@ -179,10 +189,9 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
   ("v" split-window-horizontally)
 
   ("u" winner-undo)
-  ("r" winner-redo)
-  ("m" delete-other-windows)
-  ("d" delete-window)
-  
+  ("m" sticky-window-delete-other-windows)
+  ("d" sticky-window-delete-window)
+
   ("a" ace-window)
   ("=" balance-windows)
 
@@ -200,6 +209,5 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
 
   ("D" kill-buffer-and-window "Delete Buffer" :color red)
   ("w" blaine/other-window "Other Window" :color blue)
-  ("C-w" blaine/other-window "Other Window" :color blue)
   ("." hydra-buffer/body "Buffers" :color blue)
   ("q" nil "quit" :color blue))
