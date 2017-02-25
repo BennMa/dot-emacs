@@ -93,8 +93,7 @@
      (C . t)
      (css . t)
      (java . t)
-     (js . t)
-     (php . t))))
+     (js . t))))
  '(org-beamer-frame-default-options "fragile")
  '(org-capture-templates
    (quote

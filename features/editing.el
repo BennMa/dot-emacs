@@ -122,22 +122,21 @@
          ("C-c C-e" . mc/mark-all-like-this)))
 
 (use-package hideshow
-  :bind (("C-c h a" . my-toggle-hideshow-all)
-         ("C-c h t" . hs-toggle-hiding)
+  :disabled t
+  :bind (("C-c h t" . hs-toggle-hiding)
          ("C-c h o" . narrow-to-defun)
          ("C-c h O" . widen))
   :commands hs-minor-mode
-  :init (add-hook 'prog-mode-hook 'hs-minor-mode)
-  :config
-  (progn
-    (defvar my-hs-hide nil "Current state of hideshow for toggling all.")
-    (defun my-toggle-hideshow-all ()
-      "Toggle hideshow all."
-      (interactive)
-      (setq my-hs-hide (not my-hs-hide))
-      (if my-hs-hide
-          (hs-hide-all)
-        (hs-show-all)))))
+  :init (add-hook 'prog-mode-hook 'hs-minor-mode))
+(use-package origami
+  :commands origami-mode
+  :bind (("C-c h a" . origami-toggle-all-nodes)
+         ("C-c h t" . origami-recursively-toggle-node)
+         ("C-c h f" . origami-show-only-node)
+         ("C-c h r" . origami-reset)
+         ("C-c h o" . narrow-to-defun)
+         ("C-c h O" . widen))
+  :init (add-hook 'prog-mode-hook 'origami-mode))
 
 (use-package focus
   :commands (focus-mode focus-read-only-mode)

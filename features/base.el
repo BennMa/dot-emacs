@@ -91,6 +91,9 @@
                         "v" 'find-variable
                         "V" 'apropos-value
                         "t" 'blaine/what-face)
+    (general-define-key "C-h m"   'discover-my-major
+                        "C-h M"   'discover-my-mode
+                        "C-h C-m" 'describe-mode)
     ))
 
 ;; ------ packages
@@ -220,5 +223,8 @@
                exec-path-from-shell-copy-env)
     :config
     (exec-path-from-shell-initialize))
+
+  (use-package discover-my-major
+    :commands (discover-my-major discover-my-mode))
 
   ) ;; let ends here
