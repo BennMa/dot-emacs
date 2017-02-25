@@ -5,10 +5,10 @@
 #+STARTUP: overview
 
 * Summary
-package.el for package installing
-use-package for package loading
-which-key, hydra for keybindings
-files are separated by function, and inside "features/"
+- package.el for package installing
+- use-package for package loading
+- which-key, hydra for keybindings
+- files are separated by function, and inside "features/"
 
 * Structure
 | file/folder     | description                   |
@@ -17,14 +17,18 @@ files are separated by function, and inside "features/"
 | lisp/           | private packages              |
 | site-lisp/      | public packages               |
 | snippets/       | yassnippet snippets           |
+| tempaltes/      | file templates                |
 | themes/         | themes                        |
-| init.el         | init file                     |
 | functions.el    | private helper functions      |
-| settings.el     | global customization settings |
+| init.el         | init file                     |
 | org-settings.el | org customization settings    |
+| settings.el     | global customization settings |
 
 * How to install?
 Clone this repository to somewhere, And create a soft link to ~/.emacs.d,
+
 Then open your emacs, It will automaticlly install all required packages.
+
 I'm using this configuration on Mac & Ubuntu.
+
 Any question please contact me: bennmsg@gmail.com
