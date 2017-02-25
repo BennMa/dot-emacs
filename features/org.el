@@ -10,14 +10,17 @@
 
 (load (expand-file-name "org-settings" user-emacs-directory))
 
-(general-define-key :prefix "C-."
-                    "." 'my-org-agenda-startup
-                    "a" 'org-agenda
-                    "c" 'org-capture
-                    "w" 'hydra-org-clock/body
-                    "k" 'org-kb/show-all
-                    "s" 'org-kb/search
-                    "t" 'org-kb/collect)
+(general-define-key "C-." (defhydra hydra-org (:color blue :hint nil :columns 4 :idle 0.3)
+                            "Org Helper"
+                            ("." my-org-agenda-startup "StartUp")
+                            ("a" org-agenda "Agenda")
+                            ("c" org-capture "Capture")
+                            ("w" hydra-org-clock/body "Clock")
+                            ("l" org-kb/show-all "KB")
+                            ("d" org-kb/show-daily "Daily")
+                            ("s" org-kb/search "Search Documents")
+                            ("t" org-kb/collect "Collector")
+                            ("q" nil "Quit")))
 
 (use-package org
   :mode ("\\.org\\'"   . org-mode)
@@ -42,13 +45,9 @@
       (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
     ;; ------ org-babel
-    ;; (require 'ox-mediawiki)
-    ;; (require 'ox-ioslide)
     ;; http://orgmode.org/guide/Working-With-Source-Code.html
-    (use-package ob-typescript
-      :config
-      (add-to-list 'org-babel-load-languages '(typescript . t))
-      (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+    (use-package ob-typescript)
+    (use-package ob-php)
 
     ;; ------ hydra
     (defhydra hydra-org-template (:color blue :hint nil)
@@ -80,6 +79,7 @@
       ("p" (hot-expand "<s" "php"))
       ("S" (hot-expand "<s" "scala"))
       ("P" (hot-expand "<s" "python"))
+      ("j" (hot-expand "<s" "js"))
       ("I" (hot-expand "<I"))
       ("H" (hot-expand "<H"))
       ("A" (hot-expand "<A"))
@@ -153,7 +153,7 @@ prepended to the element after the #+HEADERS: tag."
     ;;       (make-directory pub-dir))))
     ))
 
-(use-package org-agenda
+(use-package org-agenda :ensure nil
   :commands (my-org-agenda-startup org-agenda)
   :config
   (progn
@@ -223,7 +223,7 @@ prepended to the element after the #+HEADERS: tag."
 (use-package org-mobile :ensure nil)
 
 (use-package org-projectile
-  ;; :if (symbolp 'projectile)
+  :if (boundp 'projectile-mode)
   ;; :commands (org-projectile:project-todo-completing-read)
   :config
   (progn

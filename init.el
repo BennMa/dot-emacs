@@ -73,7 +73,7 @@ See also `locate-user-emacs-file'.")
 
 (setq use-package-verbose blaine--debug
       use-package-minimum-reported-time 0.01
-      use-package-always-ensure nil)
+      use-package-always-ensure t)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -93,7 +93,7 @@ See also `locate-user-emacs-file'.")
                                   "Monospace" "Courier" "Iosevka Light"))
   (defvar blaine--chinese-fonts '("宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
                                   "Microsoft Yahei"))
-  (defvar blaine--font-size (if (eq system-type 'darwin) 13 11))
+  (defvar blaine--font-size (if (eq system-type 'darwin) 14 11))
 
   (qiang-set-font blaine--english-fonts blaine--font-size blaine--chinese-fonts))
 
@@ -106,7 +106,7 @@ See also `locate-user-emacs-file'.")
 ;; load base packages
 (blaine//load-feature "base")
 ;; load operation system related packages
-;; (blaine//load-feature "system")
+(blaine//load-feature "system")
 ;; load other packages
 (mapc 'blaine//load-feature
       '("nav"

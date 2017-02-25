@@ -183,3 +183,107 @@
                   (company-mode -1)
                   ;; (auto-highlight-symbol-mode -1)
                   (yas-minor-mode -1)))))
+
+(use-package paradox :commands paradox-list-packages)
+
+(use-package dired :ensure nil
+  :config
+  (progn
+    (use-package dired-k
+      :commands (dired-k direx-k dired-k-no-revert)
+      :init
+      (progn
+        ;; always execute dired-k when dired buffer is opened
+        (add-hook 'dired-initial-position-hook 'dired-k)
+        (add-hook 'dired-after-readin-hook #'dired-k-no-revert)))
+    ))
+
+(use-package direx
+  :bind ("C-c d" . my-direx:jump-to-directory-other-window)
+  :config
+  (progn
+    ;; (add-hook 'direx:direx-mode-hook 'direx-k)
+    ;; (push '(direx:direx-mode :position left :width 30 :dedicated t :stick t)
+    ;;       popwin:special-display-config)
+    (push '(direx:direx-mode :align left :select t :size 30) shackle-rules)
+    :config
+    (defun my-direx:jump-to-directory-other-window ()
+      (interactive)
+      ;; (switch-to-buffer-other-window (direx:jump-to-directory-noselect))
+      (direx:jump-to-directory-other-window)
+      (set-window-dedicated-p (selected-window) t))
+
+    (bind-key "TAB" 'direx:maybe-find-item direx:direx-mode-map)
+    (defadvice direx:jump-to-directory-noselect
+        (around direx:set-default-directory activate)
+      (let ((default-directory (projectile-project-root)))
+        ad-do-it))
+
+    (defun direx:do-rename-file ()
+      (interactive)
+      (let* ((item (direx:item-at-point!))
+             (file (direx:item-tree item))
+             (to (read-file-name (format "Rename %s to " (direx:tree-name file))
+                                 (direx:directory-dirname (direx:file-full-name file)))))
+        (dired-rename-file (direx:file-full-name file) to nil)
+        (direx:item-refresh-parent item)
+        (direx:move-to-item-name-part item)))
+
+    (defun direx:do-copy-files ()
+      (interactive)
+      (let* ((item (direx:item-at-point!))
+             (file (direx:item-tree item))
+             (to (read-directory-name (format "Copy %s to " (direx:tree-name file))
+                                      (direx:directory-dirname (direx:file-full-name file)))))
+        (dired-copy-file (direx:file-full-name file) to nil)
+        (direx:item-refresh-parent item)
+        (direx:move-to-item-name-part item)))))
+
+(use-package magit
+  :bind (("C-x g" . magit-status)
+         ("C-x G" . magit-log-buffer-file))
+  :config
+  (progn 
+    (setenv "GIT_PAGER" "")
+    (add-hook 'magit-mode-hook 'hl-line-mode)
+
+    ;; (unbind-key "M-h" magit-mode-map)
+    ;; (unbind-key "M-s" magit-mode-map)
+    ;; (unbind-key "M-m" magit-mode-map)
+    ;; (unbind-key "M-w" magit-mode-map)
+    ;; (unbind-key "C-<return>" magit-file-section-map)
+
+    ;; (bind-key "M-H" #'magit-show-level-2-all magit-mode-map)
+    ;; (bind-key "M-S" #'magit-show-level-4-all magit-mode-map)
+    (bind-key "U" #'magit-unstage-all magit-mode-map)
+
+    (add-hook 'magit-log-edit-mode-hook
+              #'(lambda ()
+                  (set-fill-column 72)
+                  (flyspell-mode)))
+
+    (defun magit-monitor (&optional no-display)
+      "Start git-monitor in the current directory."
+      (interactive)
+      (when (string-match "\\*magit: \\(.+?\\)\\*" (buffer-name))
+        (let ((name (format "*git-monitor: %s*"
+                            (match-string 1 (buffer-name)))))
+          (or (get-buffer name)
+              (let ((buf (get-buffer-create name)))
+                (ignore-errors
+                  (start-process "*git-monitor*" buf "git-monitor"
+                                 "-d" (expand-file-name default-directory)))
+                buf)))))
+    (add-hook 'magit-status-mode-hook #'(lambda () (magit-monitor t)))
+
+    (defun eshell/git (&rest args)
+      (cond
+       ((or (null args)
+            (and (string= (car args) "status") (null (cdr args))))
+        (magit-status-internal default-directory))
+       ((and (string= (car args) "log") (null (cdr args)))
+        (magit-log "HEAD"))
+       (t (throw 'eshell-replace-command
+                 (eshell-parse-command
+                  "*git"
+                  (eshell-stringify-list (eshell-flatten-list args)))))))))

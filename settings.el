@@ -75,7 +75,10 @@
  '(blaine--buffername-whitelist
    (quote
     ("\\*mu4e-\\(main\\|headers\\)" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python" "\\*sbt\\*")))
+ '(bm-buffer-persistence t)
+ '(bm-cycle-all-buffers t)
  '(bm-highlight-style (quote bm-highlight-only-fringe))
+ '(bm-repository-file "~/.emacs.d/.data/.bm-repository")
  '(bmkp-bmenu-commands-file "~/.emacs.d/.data/bmk-bmenu-commands.el")
  '(bmkp-bmenu-state-file "~/.emacs.d/.data/bmk-bmenu-state.el")
  '(bmkp-crosshairs-flag nil)
@@ -180,6 +183,7 @@
  '(coq-one-command-per-line nil)
  '(coq-prog-args (quote ("-emacs" "-dont-load-proofs")))
  '(coq-prog-name "ssrcoq")
+ '(counsel-gtags-prefix-key "nil")
  '(current-language-environment "UTF-8")
  '(cursor-type (quote bar))
  '(custom-buffer-done-function (quote kill-buffer))
@@ -602,10 +606,11 @@
  '(op/theme (quote emacs_love))
  '(package-selected-packages
    (quote
-    (sticky-windows zoom-frm ace-window window-numbering reveal-in-osx-finder pbcopy osx-trash counsel-projectile counsel ivy swiper hydra restart-emacs use-package-chords key-chord general clean-aindent-mode highlight-parentheses hl-parentheses hl-anything edts-mode ediff-keep zencoding-mode yaml-mode window-number which-key web-mode w3m vertigo use-package tide tabbar sr-speedbar sml-mode smex skewer-mode shackle session restclient quickrun project-explorer powerline popwin phpunit php-mode pdf-tools ox-ioslide org-page ob-typescript nlinum multi-term maxframe markdown-mode magit lua-mode js2-refactor inf-mongo indent-guide imenu-list imenu+ ido-yes-or-no ido-ubiquitous ido-grid-mode ibuffer-vc hl-line+ helm-swoop helm-projectile helm-gtags helm-ag google-this expand-region exec-path-from-shell esup escreen erlang ensime emmet-mode elscreen elpy dockerfile-mode docker discover-my-major direx dired+ dedicated company-tern company-emacs-eclim company-c-headers color-moccur cmake-mode circe-notifications buffer-move bookmark+ blog-admin backup-each-save back-button auto-yasnippet auto-highlight-symbol anzu ag ace-jump-mode)))
+    (ob-php focus bm rainbow-mode tiny smartparens ranger dired-k paradox counsel-gtags phpcbf php-auto-yasnippets php-extras org-agenda undo-tree yatemplate ggtags goto-chg sticky-windows zoom-frm ace-window window-numbering reveal-in-osx-finder pbcopy osx-trash counsel-projectile counsel ivy swiper hydra restart-emacs use-package-chords key-chord general clean-aindent-mode highlight-parentheses hl-parentheses hl-anything edts-mode ediff-keep zencoding-mode yaml-mode window-number which-key web-mode w3m vertigo use-package tide tabbar sr-speedbar sml-mode smex skewer-mode shackle session restclient quickrun project-explorer powerline popwin phpunit php-mode pdf-tools ox-ioslide org-page ob-typescript nlinum multi-term maxframe markdown-mode magit lua-mode js2-refactor inf-mongo indent-guide imenu-list imenu+ ido-yes-or-no ido-ubiquitous ido-grid-mode ibuffer-vc hl-line+ helm-swoop helm-projectile helm-gtags helm-ag google-this expand-region exec-path-from-shell esup escreen erlang ensime emmet-mode elscreen elpy dockerfile-mode docker discover-my-major direx dired+ dedicated company-tern company-emacs-eclim company-c-headers color-moccur cmake-mode circe-notifications buffer-move bookmark+ blog-admin backup-each-save back-button auto-yasnippet auto-highlight-symbol anzu ag ace-jump-mode)))
  '(page-break-lines-modes
    (quote
     (emacs-lisp-mode compilation-mode outline-mode prog-mode haskell-mode)))
+ '(paradox-github-token t)
  '(parens-require-spaces t)
  '(pcomplete-compare-entries-function (quote file-newer-than-file-p))
  '(pe/cache-directory "~/.emacs.d/.data/project-explorer-cache/")

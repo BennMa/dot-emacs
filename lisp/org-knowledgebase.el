@@ -92,7 +92,7 @@
   ;;       (helm-do-grep-1 (directory-files-recursively org-kb-doc-dir t "\\.\\(?:org\\|html?\\)$")
   ;;                       prefarg))
   ;;   (error "helm-grep not available"))
-  (counsel-ag "" (concat (expand-file-name org-kb-doc-dir) "/") nil "Knowledge Search: "))
+  (counsel-ag "" (concat (expand-file-name org-kb-doc-dir) "/") nil "Knowledge Search"))
 
 
 ;; ------ knowledge base review

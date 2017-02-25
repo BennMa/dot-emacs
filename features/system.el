@@ -1,9 +1,10 @@
 (cond
  ((eq system-type 'darwin) ;; mac osx
   (progn
+    (defvar remap-mac-key nil)
     (defvar osx-use-option-as-meta t)
 
-    (when (display-graphic-p)
+    (when (and remap-mac-key (display-graphic-p))
       (setq mac-command-key-is-meta nil)
       (setq mac-command-modifier 'super)
       (when osx-use-option-as-meta
@@ -32,7 +33,7 @@
       :config (setq delete-by-moving-to-trash t))
     (use-package pbcopy :ensure t)
     (use-package reveal-in-osx-finder :ensure t
-      :bind (("s-o" . reveal-in-osx-finder)))))
+      :bind (("C-S-o" . reveal-in-osx-finder)))))
 
  ((eq system-type 'gnu/linux) ;; linux
   (progn

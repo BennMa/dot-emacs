@@ -41,20 +41,18 @@
     (general-define-key "M-!" 'async-shell-command
                         "<M-backspace>" 'blaine/contextual-backspace
                         "M-`" 'other-frame
-                        "M-." 'projectile-find-tag
-                        "M-," 'pop-tag-mark
                         "M-Y" 'counsel-yank-pop)
     ;; system related, like copy&paste
     (general-define-key "M-q" 'save-buffers-kill-terminal
                         "M-v" 'yank
                         "M-c" 'kill-ring-save
-                        "M-x" '(lambda() (interactive)
-                                 (if (use-region-p)
+                        "M-x" '(lambda(m-x-p) (interactive "P")
+                                 (if (and (use-region-p) (not m-x-p))
                                      (call-interactively 'kill-region)
                                    (call-interactively 'counsel-M-x)))
                         "M-w" '(lambda () (interactive) (kill-buffer (current-buffer)))
-                        "C-M-w" 'kill-buffer-and-window ;;delete-window
-                        "M-W" 'delete-frame
+                        "M-w" 'kill-buffer-and-window ;;delete-window
+                        "C-M-w" 'delete-frame
                         ;; "M-n" 'make-frame
                         "C-/" 'undo-tree-undo
                         "M-z" 'undo-tree-undo
@@ -120,21 +118,25 @@
     :config
     (progn
       (ivy-mode 1)
-      (define-key ivy-minibuffer-map "\C-o"
-        (defhydra hydra-ivy (:hint nil :color pink :columns 4)
-          "Ivy Helper"
-          ("C-o" nil)
-          ("M-o" ivy-dispatching-done "Dispatching Done")
-          ("C-j" ivy-alt-done "Alt Done")
-          ("C-M-j" ivy-immediate-done "Immediate Done")
-          ("C-'" ivy-avy "Avy")
-          ("C-M-m" ivy-call "Call")
-          ("C-M-o" ivy-dispatching-call "Dispatching Call")
-          ("M-i" ivy-insert-current "Insert Current")
-          ("M-j" ivy-yank-word "Yank Word")
-          ("S-SPC" ivy-restrict-to-matches "Restricted Matches")
-          ("C-r" ivy-reverse-i-search "Search History")
-          ("M-w" ivy-kill-ring-save "Copy")))))
+      (general-define-key :keymaps 'ivy-minibuffer-map
+                          "\C-o" (defhydra hydra-ivy (:hint nil :color pink :columns 4)
+                                   "Ivy Helper"
+                                   ("C-o" nil)
+                                   ("M-o" ivy-dispatching-done "Dispatching Done")
+                                   ("C-j" ivy-alt-done "Alt Done")
+                                   ("C-M-j" ivy-immediate-done "Immediate Done")
+                                   ("C-'" ivy-avy "Avy")
+                                   ("C-M-m" ivy-call "Call")
+                                   ("C-M-n" ivy-next-line-and-call "Next line and Call")
+                                   ("C-M-p" ivy-previous-line-and-call "Prev line and Call")
+                                   ("C-M-o" ivy-dispatching-call "Dispatching Call")
+                                   ("M-i" ivy-insert-current "Insert Current")
+                                   ("M-j" ivy-yank-word "Yank Word")
+                                   ("S-SPC" ivy-restrict-to-matches "Restricted Matches")
+                                   ("C-r" ivy-reverse-i-search "Search History")
+                                   ("M-w" ivy-kill-ring-save "Copy"))
+                          "M-v"   'yank
+                          "C-M-v" 'ivy-scroll-down-command)))
 
   (use-package counsel
     :commands (counsel-M-x
@@ -158,10 +160,9 @@
                hydra-projectile-if-projectile-p
                projectile-project-root
                projectile-project-p
-               projectile-find-tag
-               counsel-projectile-switch-to-buffer)    
+               counsel-projectile-switch-to-buffer)
     :config
-    (progn 
+    (progn
       (projectile-global-mode 1)
       ;; https://github.com/ericdanan/counsel-projectile
       (use-package counsel-projectile :config (counsel-projectile-on))
@@ -175,21 +176,26 @@
         "
      PROJECTILE: %(projectile-project-root)
     ^FIND FILE^        ^SEARCH/TAGS^        ^BUFFERS^       ^CACHE^                    ^PROJECT^
-    _f_: file          _s_: ag              _i_: Ibuffer    _c_: cache clear           _p_: switch proj
-    _F_: file dwim     _g_: update tag      _b_: switch to  _x_: remove known project
-  _C-f_: file pwd      _._: find tag        _s-k_: Kill all   _X_: cleanup non-existing
-    _r_: recent file   _o_: multi-occur     ^ ^             _z_: cache current
-    _d_: dir
+    _f_: file          _a_: ag              _i_: Ibuffer    _C_: cache clear           _p_: switch proj
+    _F_: file dwim     _g_: create tag      _b_: switch to  _x_: remove known project
+  _C-f_: file pwd      _c_: find definition _s-k_: Kill all _X_: cleanup non-existing
+    _r_: recent file   _u_: find reference  ^ ^             _z_: cache current
+    _d_: dir           _s_: find symbol
+    ^ ^                _o_: multi-occur
 "
-        ("s"   counsel-projectile-ag)
+        ("a"   counsel-projectile-ag)
         ("b"   counsel-projectile-switch-to-buffer)
-        ("c"   projectile-invalidate-cache)
+        ("C"   projectile-invalidate-cache)
         ("d"   counsel-projectile-find-dir)
         ("f"   counsel-projectile-find-file)
         ("F"   projectile-find-file-dwim)
         ("C-f" projectile-find-file-in-directory)
-        ("g"   projectile-regenerate-tags)
-        ("."   projectile-find-tag)
+        ;; ("g"   projectile-regenerate-tags) ;; regenerate tags by ggtags
+        ("g"   (lambda () (interactive)
+                 (counsel-gtags-create-tags (projectile-project-root) "pygments")))
+        ("c"   counsel-gtags-find-definition)
+        ("u"   counsel-gtags-find-reference)
+        ("s"   counsel-gtags-find-symbol)
         ("i"   projectile-ibuffer)
         ("K"   projectile-kill-buffers)
         ("s-k" projectile-kill-buffers)

@@ -84,7 +84,8 @@
  '(org-attach-method (quote mv))
  '(org-babel-load-languages
    (quote
-    ((emacs-lisp . t)
+    ((typescript . t)
+     (emacs-lisp . t)
      (sh . t)
      (ruby . t)
      (python . t)
@@ -92,7 +93,8 @@
      (C . t)
      (css . t)
      (java . t)
-     (js . t))))
+     (js . t)
+     (php . t))))
  '(org-beamer-frame-default-options "fragile")
  '(org-capture-templates
    (quote
@@ -140,6 +142,7 @@
  '(org-directory "~/Dropbox/PKG/Task/")
  '(org-ditaa-jar-path "~/bin/DitaaEps.jar")
  '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "OUT")))
+ '(org-edit-src-auto-save-idle-delay 0)
  '(org-edit-src-content-indentation 0)
  '(org-enforce-todo-dependencies t)
  '(org-export-babel-evaluate nil)
@@ -219,8 +222,23 @@
  '(org-return-follows-link t)
  '(org-reverse-note-order t)
  '(org-src-fontify-natively t)
+ '(org-src-lang-modes
+(quote
+ (("ocaml" . tuareg)
+  ("elisp" . emacs-lisp)
+  ("ditaa" . artist)
+  ("asymptote" . asy)
+  ("dot" . fundamental)
+  ("sqlite" . sql)
+  ("calc" . fundamental)
+  ("C" . c)
+  ("cpp" . c++)
+  ("C++" . c++)
+  ("screen" . shell-script)
+  ("js" . js2))))
  '(org-src-preserve-indentation nil)
  '(org-src-tab-acts-natively t)
+ '(org-src-window-setup (quote current-window))
  '(org-startup-indented t)
  '(org-stuck-projects (quote ("STUCK" nil nil "")))
  '(org-tags-column -78)

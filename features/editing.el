@@ -13,11 +13,27 @@
   :diminish ""
   :commands eldoc-mode)
 
-(use-package expand-region :bind ("C-=" . er/expand-region))
+(use-package expand-region
+  :bind ("C-=" . er/expand-region)
+  :config
+  (setq er/try-expand-list '(;; er/mark-word
+                             er/mark-symbol
+                             er/mark-symbol-with-prefix
+                             er/mark-next-accessor
+                             er/mark-method-call
+                             er/mark-inside-quotes
+                             ;; er/mark-outside-quotes
+                             ;; er/mark-inside-pairs
+                             er/mark-outside-pairs
+                             er/mark-comment
+                             er/mark-url
+                             er/mark-email
+                             er/mark-defun)))
+
 (use-package hilit-chg :bind ("M-o C" . highlight-changes-mode))
 
 (use-package clean-aindent-mode
-  :config 
+  :config
   (progn
     (electric-indent-mode -1)
     (clean-aindent-mode 1)))
@@ -40,8 +56,6 @@
   ;; (global-hl-line-mode)
   )
 
-(use-package elec-pair :config (electric-pair-mode 1))
-
 (use-package auto-highlight-symbol
   :demand t
   :diminish (auto-highlight-symbol-mode . "")
@@ -54,13 +68,13 @@
   (unbind-key "M-S-<left>" auto-highlight-symbol-mode-map)
   (unbind-key "M-S-<right>" auto-highlight-symbol-mode-map))
 
-(use-package dedicated :bind ("C-. D" . dedicated-mode))
-(use-package sticky-windows
+(use-package dedicated :bind ("C-c D" . dedicated-mode))
+(use-package sticky-windows :ensure nil
+  :commands (sticky-window-delete-window
+             sticky-window-delete-other-windows)
   :bind (;;("C-. S" . sticky-window-keep-window-visible)
          ("C-x 0" . sticky-window-delete-window)
-         ("C-x 1" . sticky-window-delete-other-windows))
-  :commands (sticky-window-delete-window
-             sticky-window-delete-other-windows))
+         ("C-x 1" . sticky-window-delete-other-windows)))
 
 (use-package flyspell
   :diminish (flyspell-mode . "ⓢ")
@@ -108,34 +122,73 @@
          ("C-c C-e" . mc/mark-all-like-this)))
 
 (use-package hideshow
-  :bind (("C-c C-h" . my-toggle-hideshow-all)
-         ("C-c C-t" . hs-toggle-hiding)
-         ("C-x n d" . narrow-to-defun)
-         ("C-x n w" . widen))
+  :bind (("C-c h a" . my-toggle-hideshow-all)
+         ("C-c h t" . hs-toggle-hiding)
+         ("C-c h o" . narrow-to-defun)
+         ("C-c h O" . widen))
+  :commands hs-minor-mode
+  :init (add-hook 'prog-mode-hook 'hs-minor-mode)
   :config
-  (defvar my-hs-hide nil "Current state of hideshow for toggling all.")
-  (defun my-toggle-hideshow-all ()
-    "Toggle hideshow all."
-    (interactive)
-    (setq my-hs-hide (not my-hs-hide))
-    (if my-hs-hide
-        (hs-hide-all)
-      (hs-show-all)))
+  (progn
+    (defvar my-hs-hide nil "Current state of hideshow for toggling all.")
+    (defun my-toggle-hideshow-all ()
+      "Toggle hideshow all."
+      (interactive)
+      (setq my-hs-hide (not my-hs-hide))
+      (if my-hs-hide
+          (hs-hide-all)
+        (hs-show-all)))))
 
-  (add-hook 'js2-mode-hook 'hs-minor-mode)
-  (add-hook 'web-mode-hook 'hs-minor-mode)
-  (add-hook 'php-mode-hook 'hs-minor-mode)
-  (add-hook 'c-mode-hook 'hs-minor-mode)
-  ;; (add-hook 'projectile-mode-hook 'hs-minor-mode)
-  )
+(use-package focus
+  :commands (focus-mode focus-read-only-mode)
+  :bind (("C-c h f" . focus-mode)
+         ("C-c h F" . focus-read-only-mode)))
 
-(use-package counsel-gtags
-  :disabled t
-  :bind (("M-." . counsel-gtags-find-definition)
-         ;; counsel-gtags-find-reference
-         ;; counsel-gtags-find-symbol
-         ;; ("M-," . counsel-gtags-pop-stack)
-         ))
+(use-package elec-pair :disabled t :config (electric-pair-mode 1))
+(use-package smartparens-config :ensure smartparens
+  :commands (smartparens-mode)
+  :bind (("C-M-f" . sp-forward-symbol)
+         ("C-M-b" . sp-backward-symbol)
+         ("C-M-a" . sp-backward-up-sexp)
+         ("C-M-e" . sp-up-sexp)
+         ("C-M-k" . sp-kill-sexp)
+         ("C-M-t" . sp-transpose-sexp))
+  :bind* (("M-f" . sp-forward-word)
+          ("M-b" . sp-backward-word)
+          ("<C-backspace>" . sp-backward-kill-word))
+  :init
+  (progn
+    (and (boundp 'prog-mode-hook)
+         (add-hook 'prog-mode-hook 'smartparens-mode))
+    (and (boundp 'markdown-mode-hook)
+         (add-hook 'markdown-mode-hook 'smartparens-mode))
+    (defun sp-forward-word ()
+      (interactive)
+      (sp--forward-word))
+    (defun sp-backward-word ()
+      (interactive)
+      (sp--backward-word))))
+
+(use-package rainbow-mode
+  :init (add-hook 'prog-mode-hook 'rainbow-mode))
+
+(use-package bm
+  :bind (("<f2>" . bm-next)
+         ("S-<f2>" . bm-previous)
+         ("C-<f2>" . bm-toggle))
+  :init (setq bm-restore-repository-on-load t)
+  :config
+  (progn
+    (add-hook' after-init-hook 'bm-repository-load)
+    (add-hook 'find-file-hooks 'bm-buffer-restore)
+    (add-hook 'kill-buffer-hook #'bm-buffer-save)
+    (add-hook 'kill-emacs-hook #'(lambda nil
+                                   (bm-buffer-save-all)
+                                   (bm-repository-save)))
+    (add-hook 'after-save-hook #'bm-buffer-save)
+    (add-hook 'find-file-hooks   #'bm-buffer-restore)
+    (add-hook 'after-revert-hook #'bm-buffer-restore)
+    (add-hook 'vc-before-checkin-hook #'bm-buffer-save)))
 
 (use-package whitespace
   :diminish ""
@@ -147,8 +200,7 @@
   (setq whitespace-line-column nil
         whitespace-style '(face trailing tab-mark lines-tail)
         ;; whitespace-display-mappings '((tab-mark 9 [9654 9] [92 9]))
-        )
-  )
+        ))
 
 (use-package goto-chg :ensure t
   :commands goto-last-change
@@ -157,113 +209,3 @@
   ;; and C-<space> C-<space> / C-u C-<space>
   :bind* (("C-c p" . goto-last-change)
           ("C-c n" . goto-last-change-reverse)))
-
-(use-package popup-imenu
-  :disabled t
-  :commands popup-imenu)
-
-(use-package recentf
-  :commands (recentf-mode
-             counsel-recentf)
-  :config
-  (setq recentf-max-saved-items 50))
-
-(use-package ggtags :ensure t
-  :diminish (ggtags-mode . "G")
-  :commands (ggtags-mode)
-  :init
-  ;; (add-hook 'prog-mode-hook 'ggtags-mode)
-  (add-hook 'projectile-mode-hook 'ggtags-mode)
-  :config
-  (general-define-key :keymaps 'ggtags-mode-map
-    "C-M-," 'ggtags-navigation-mode-abort
-    "C-M-." 'ggtags-find-tag-dwim))
-
-(use-package direx
-  :bind ("C-c d" . my-direx:jump-to-directory-other-window)
-  :config
-  (progn
-    ;; (push '(direx:direx-mode :position left :width 30 :dedicated t :stick t)
-    ;;       popwin:special-display-config)
-    (push '(direx:direx-mode :align left :select t :size 30) shackle-rules)
-    :config
-    (defun my-direx:jump-to-directory-other-window ()
-      (interactive)
-      ;; (switch-to-buffer-other-window (direx:jump-to-directory-noselect))
-      (direx:jump-to-directory-other-window)
-      (set-window-dedicated-p (selected-window) t))
-    
-    (bind-key "TAB" 'direx:maybe-find-item direx:direx-mode-map)
-    (defadvice direx:jump-to-directory-noselect
-        (around direx:set-default-directory activate)
-      (let ((default-directory (projectile-project-root)))
-        ad-do-it))
-
-    (defun direx:do-rename-file ()
-      (interactive)
-      (let* ((item (direx:item-at-point!))
-             (file (direx:item-tree item))
-             (to (read-file-name (format "Rename %s to " (direx:tree-name file))
-                                 (direx:directory-dirname (direx:file-full-name file)))))
-        (dired-rename-file (direx:file-full-name file) to nil)
-        (direx:item-refresh-parent item)
-        (direx:move-to-item-name-part item)))
-
-    (defun direx:do-copy-files ()
-      (interactive)
-      (let* ((item (direx:item-at-point!))
-             (file (direx:item-tree item))
-             (to (read-directory-name (format "Copy %s to " (direx:tree-name file))
-                                      (direx:directory-dirname (direx:file-full-name file)))))
-        (dired-copy-file (direx:file-full-name file) to nil)
-        (direx:item-refresh-parent item)
-        (direx:move-to-item-name-part item)))))
-
-(use-package magit
-  :bind (("C-x g" . magit-status)
-         ("C-x G" . magit-log-buffer-file))
-  :config
-  (progn 
-    (setenv "GIT_PAGER" "")
-    (add-hook 'magit-mode-hook 'hl-line-mode)
-
-    ;; (unbind-key "M-h" magit-mode-map)
-    ;; (unbind-key "M-s" magit-mode-map)
-    ;; (unbind-key "M-m" magit-mode-map)
-    ;; (unbind-key "M-w" magit-mode-map)
-    ;; (unbind-key "C-<return>" magit-file-section-map)
-
-    ;; (bind-key "M-H" #'magit-show-level-2-all magit-mode-map)
-    ;; (bind-key "M-S" #'magit-show-level-4-all magit-mode-map)
-    (bind-key "U" #'magit-unstage-all magit-mode-map)
-
-    (add-hook 'magit-log-edit-mode-hook
-              #'(lambda ()
-                  (set-fill-column 72)
-                  (flyspell-mode)))
-
-    (defun magit-monitor (&optional no-display)
-      "Start git-monitor in the current directory."
-      (interactive)
-      (when (string-match "\\*magit: \\(.+?\\)\\*" (buffer-name))
-        (let ((name (format "*git-monitor: %s*"
-                            (match-string 1 (buffer-name)))))
-          (or (get-buffer name)
-              (let ((buf (get-buffer-create name)))
-                (ignore-errors
-                  (start-process "*git-monitor*" buf "git-monitor"
-                                 "-d" (expand-file-name default-directory)))
-                buf)))))
-    (add-hook 'magit-status-mode-hook #'(lambda () (magit-monitor t)))
-
-    (defun eshell/git (&rest args)
-      (cond
-       ((or (null args)
-            (and (string= (car args) "status") (null (cdr args))))
-        (magit-status-internal default-directory))
-       ((and (string= (car args) "log") (null (cdr args)))
-        (magit-log "HEAD"))
-       (t (throw 'eshell-replace-command
-                 (eshell-parse-command
-                  "*git"
-                  (eshell-stringify-list (eshell-flatten-list args)))))))))

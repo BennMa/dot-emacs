@@ -1,5 +1,5 @@
 ;; ------ Keybindings
-(general-define-key "C-<tab>"              'blaine/last-buffer
+(general-define-key "C-<tab>"            'blaine/last-buffer
                     "C-y"                'ivy-switch-buffer
                     "C-S-y"              'counsel-recentf
                     "M-y"                'counsel-projectile-switch-to-buffer
@@ -11,6 +11,24 @@
                     (general-chord "jl") 'avy-goto-line)
 
 ;; ------ Packages
+(use-package ggtags :ensure t
+  :diminish (ggtags-mode . "ⓖ")
+  :commands (ggtags-mode
+             ggtags-find-tag-dwim
+             counsel-gtags-dwim
+             counsel-gtags-find-definition
+             counsel-gtags-find-reference
+             counsel-gtags-find-symbol
+             counsel-gtags-find-file
+             counsel-gtags-pop
+             counsel-gtags-create-tags
+             counsel-gtags-update-tags)
+  :bind* (("M-." . counsel-gtags-dwim)
+          ("M-," . counsel-gtags-pop))
+  ;; :bind* (("M-." . ggtags-find-tag-dwim)
+  ;;         ("M-," . pop-tag-mark))
+  :config (use-package counsel-gtags :ensure t))
+
 (progn ;; own functions
   (defcustom blaine--buffername-whitelist '()
     "white list of last buffer switcher"
@@ -147,6 +165,12 @@
   :if (not noninteractive)
   :commands (winner-redo winner-undo)
   :config (winner-mode 1))
+
+(use-package recentf
+  :commands (recentf-mode
+             counsel-recentf)
+  :config
+  (setq recentf-max-saved-items 50))
 
 ;; ------ Hydra
 (defhydra hydra-buffer (:color blue :columns 4 :exit t)

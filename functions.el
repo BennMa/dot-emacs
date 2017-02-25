@@ -187,7 +187,7 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
      ((and (boundp 'smartparens-strict-mode)
            smartparens-strict-mode)
       (sp-backward-kill-word 1))
-     ((and (boundp 'subword-mode) 
+     ((and (boundp 'subword-mode)
            subword-mode)
       (subword-backward-kill 1))
      (t
