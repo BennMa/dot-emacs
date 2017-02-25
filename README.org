@@ -8,7 +8,7 @@
 - package.el for package installing
 - use-package for package loading
 - which-key, hydra for keybindings
-- files are separated by function, and inside "features/"
+- packages are separated by function, and all put in "features/"
 
 * Structure
 | file/folder     | description                   |
@@ -20,7 +20,7 @@
 | tempaltes/      | file templates                |
 | themes/         | themes                        |
 | functions.el    | private helper functions      |
-| init.el         | init file                     |
+| init.el         | startup file                  |
 | org-settings.el | org customization settings    |
 | settings.el     | global customization settings |
 
