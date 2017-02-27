@@ -841,10 +841,11 @@
  '(x-stretch-cursor t)
  '(yaoddmuse-browse-function (quote w3m-browse-url))
  '(yaoddmuse-directory "~/.emacs.d/doc")
+ '(yas-expand-only-for-last-commands (quote (self-insert-command)))
  '(yas-prompt-functions
    (quote
     (yas-ido-prompt yas-completing-prompt yas-no-prompt)))
- '(yas-triggers-in-field t)
+ '(yas-triggers-in-field nil)
  '(yas-wrap-around-region t)
  '(zencoding-preview-default nil))
 

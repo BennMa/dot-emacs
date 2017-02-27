@@ -3,7 +3,7 @@
 ;; ------ packages
 (use-package maxframe
   :if window-system
-  :commands maximize-frame 
+  :commands maximize-frame
   :bind (("C-c M" . emacs-max)
          ("C-c m" . emacs-toggle-size))
   :config
@@ -11,7 +11,7 @@
     (defvar emacs-min-top 23)
     (defvar emacs-min-left 0)
     (defvar emacs-min-width 85)
-    (defvar emacs-min-height 35)    
+    (defvar emacs-min-height 35)
     (defun emacs-min ()
       (interactive)
       (set-frame-parameter (selected-frame) 'fullscreen nil)
@@ -20,12 +20,12 @@
       (set-frame-parameter (selected-frame) 'top emacs-min-top)
       (set-frame-parameter (selected-frame) 'left emacs-min-left)
       (set-frame-parameter (selected-frame) 'height emacs-min-height)
-      (set-frame-parameter (selected-frame) 'width emacs-min-width))    
+      (set-frame-parameter (selected-frame) 'width emacs-min-width))
     (defun emacs-max ()
       (interactive)
       (set-frame-parameter (selected-frame) 'fullscreen 'fullboth)
       (set-frame-parameter (selected-frame) 'vertical-scroll-bars nil)
-      (set-frame-parameter (selected-frame) 'horizontal-scroll-bars nil))    
+      (set-frame-parameter (selected-frame) 'horizontal-scroll-bars nil))
     (defun emacs-toggle-size ()
       (interactive)
       (if (> (cdr (assq 'width (frame-parameters))) 100)
@@ -35,7 +35,25 @@
 (use-package popwin :disabled t :config (popwin-mode 1))
 ;; Enforce rules for popup windows
 ;; https://github.com/wasamasa/shackle
-(use-package shackle :config (shackle-mode))
+(use-package shackle
+  :config
+  (progn
+    (setq shackle-rules
+          '((compilation-mode         :select nil)
+            ("*undo-tree*"            :size 0.25  :align right)
+            ("*eshell*"               :select t   :other t)
+            ("*Shell Command Output*" :select nil)
+            ("\\*Async Shell.*\\*"    :regexp t   :ignore t)
+            (occur-mode               :select nil :align t)
+            ("*Help*"                 :select t   :other t  :align right)
+            ("*Completions*"          :size 0.3   :align t)
+            ("*Messages*"             :select t   :other t  :align right)
+            ("\\*[Wo]*Man.*\\*"       :regexp t   :select t :inhibit-window-quit t :other t)
+            ("\\*poporg.*\\*"         :regexp t   :select t :other t)
+            ("\\`\\*helm.*?\\*\\'"    :regexp t   :size 0.3 :align t)
+            ("*Calendar*"             :select t   :size 0.3 :align below)))
+
+    (shackle-mode)))
 
 (use-package escreen
   ;; :bind-keymap ("C-c w" . escreen-map)
@@ -176,7 +194,6 @@
     ;;   (interactive)
     ;;   (let ((comint-buffer-maximum-size 0))
     ;;     (comint-truncate-buffer)))
-
     (add-hook 'term-mode-hook
               #'(lambda ()
                   ;; (projectile-mode -1)

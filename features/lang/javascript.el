@@ -1,10 +1,16 @@
+(general-define-key :keymaps 'js2-mode-map "C-," 'hydra-javascript/body)
+(defhydra hydra-javascript (:hint nil :color blue :exit t :columns 4)
+  "Javascript Helper"
+  ("f" blaine/format-buffer "abc")
+  ("q" nil "Cancel"))
+
+;; ------ packages
 (use-package web-beautify)
 
 (use-package js2-mode
   :mode ("\\.js\\'"   . js2-mode)
   :config
   (progn
-    (unbind-key "C-c C-f" js2-mode-map)
     (unbind-key "C-c C-f" js2-mode-map)))
 
 (use-package json-mode :ensure t :mode ("\\.json\\'" . json-mode))

@@ -1,11 +1,12 @@
-;; ------ Keybindings
 (general-define-key "C-<tab>"            'blaine/last-buffer
                     "C-y"                'ivy-switch-buffer
-                    "C-S-y"              'counsel-recentf
-                    "M-y"                'counsel-projectile-switch-to-buffer
+                    "C-S-y"              'counsel-projectile-switch-to-buffer
+                    "C-x C-r"            'counsel-recentf
                     ;; "C-y"             'hydra-buffer/body
                     "C-3"                'blaine/other-window
                     "C-w"                'hydra-window/body
+                    "C-x 0"              'sticky-window-delete-window
+                    "C-x 1"              'sticky-window-delete-other-windows
                     (general-chord "jj") 'avy-goto-char
                     (general-chord "jw") 'avy-goto-word-1
                     (general-chord "jl") 'avy-goto-line)
@@ -171,6 +172,11 @@
              counsel-recentf)
   :config
   (setq recentf-max-saved-items 50))
+
+(use-package sticky-windows :ensure nil
+  :commands (sticky-window-delete-window
+             sticky-window-delete-other-windows
+             sticky-window-keep-window-visible))
 
 ;; ------ Hydra
 (defhydra hydra-buffer (:color blue :columns 4 :exit t)

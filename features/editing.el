@@ -1,20 +1,66 @@
-(general-define-key "C-S-s"  'counsel-ag)
+(general-define-key "M-f" 'sp-forward-word
+                    "M-b" 'sp-backward-word
+                    "M-o C" 'highlight-changes-mode
+                    "M-o h" 'hl-line-mode
+                    "M-%" 'anzu-query-replace
+                    "C-M-%" 'anzu-query-replace-regexp
+                    "C-S-s" 'counsel-ag
+                    "C-=" 'er/expand-region
+                    "M-=" '(lambda (arg) (interactive "p")
+                             (save-excursion
+                               (er/expand-region arg)
+                               (call-interactively 'kill-ring-save)))
+                    "C-M-=" 'er/mark-defun
+                    "C-M-\\" 'sp-indent-defun
+                    "C-1" 'ahs-backward
+                    "C-2" 'ahs-forward
+                    "C->" 'mc/mark-next-like-this
+                    "C-<" 'mc/mark-previous-like-this
+                    "C-c D" 'dedicated-mode
+                    "C-c i b" 'flyspell-buffer
+                    "C-c i f" 'flyspell-mode
+                    "C-c i c" 'ispell-comments-and-strings
+                    "C-c i d" 'ispell-change-dictionary
+                    "C-c i k" 'ispell-kill-ispell
+                    "C-c i m" 'ispell-message
+                    "C-c i r" 'ispell-region
+                    "C-c C-f" 'hydra-flycheck/body
+                    "C-c C-e" 'mc/mark-all-like-this
+                    "C-c h a" 'origami-toggle-all-nodes
+                    "C-c h t" 'origami-recursively-toggle-node
+                    "C-c h f" 'origami-show-only-node
+                    "C-c h r" 'origami-reset
+                    "C-c h o" 'narrow-to-defun
+                    "C-c h O" 'widen
+                    "C-c h f" 'focus-mode
+                    "C-c h F" 'focus-read-only-mode
+                    "C-c p" 'goto-last-change
+                    "C-c n" 'goto-last-change-reverse
+                    "C-M-f" 'sp-forward-symbol ;
+                    "C-M-b" 'sp-backward-symbol
+                    "C-M-a" 'sp-backward-up-sexp
+                    "C-M-e" 'sp-up-sexp
+                    ;; "C-M-a" 'sp-beginning-of-sexp
+                    ;; "C-M-e" 'sp-end-of-sexp
+                    "C-M-k" 'sp-kill-sexp
+                    "C-M-t" 'sp-transpose-sexp
+                    "<C-backspace>" 'sp-backward-kill-word
+                    "<f2>" 'bm-next
+                    "S-<f2>" 'bm-previous
+                    "C-<f2>" 'bm-toggle)
 
 ;; ------ packages
 (use-package swiper :commands swiper)
-(use-package anzu
-    :diminish (anzu-mode . "")
-    :bind (("M-%" . anzu-query-replace)
-           ("C-M-%" . anzu-query-replace-regexp))
-    :config (global-anzu-mode 1))
+(use-package anzu :diminish ""
+  :commands (anzu-query-replace
+             anzu-query-replace-regexp)
+  :config (global-anzu-mode 1))
 
-(use-package eldoc
-  :ensure nil
-  :diminish ""
+(use-package eldoc :ensure nil :diminish ""
   :commands eldoc-mode)
 
 (use-package expand-region
-  :bind ("C-=" . er/expand-region)
+  :commands er/expand-region
   :config
   (setq er/try-expand-list '(;; er/mark-word
                              er/mark-symbol
@@ -30,7 +76,8 @@
                              er/mark-email
                              er/mark-defun)))
 
-(use-package hilit-chg :bind ("M-o C" . highlight-changes-mode))
+(use-package hilit-chg
+  :commands highlight-changes-mode)
 
 (use-package clean-aindent-mode
   :config
@@ -38,129 +85,116 @@
     (electric-indent-mode -1)
     (clean-aindent-mode 1)))
 
-(use-package highlight-parentheses
-  :diminish (highlight-parentheses-mode . "")
+(use-package highlight-parentheses :diminish ""
+  :config (global-highlight-parentheses-mode))
+
+(use-package indent-guide :diminish ""
   :config
-  (global-highlight-parentheses-mode))
-(use-package indent-guide
-  :diminish (indent-guide-mode . "")
-  :config
-  ;; (set-face-background 'indent-guide-face "dimgray")
-  (indent-guide-global-mode))
-(use-package hl-line
-  :diminish (hl-line-mode . "")
+  (progn
+    ;; (set-face-background 'indent-guide-face "dimgray")
+   (indent-guide-global-mode)))
+
+(use-package hl-line :diminish ""
   :commands hl-line-mode
-  :bind (("M-o h" . hl-line-mode))
   :config
-  ;; (use-package hl-line+)
-  ;; (global-hl-line-mode)
-  )
+  (progn
+    ;; (use-package hl-line+)
+    ;; (global-hl-line-mode)
+    ))
 
-(use-package auto-highlight-symbol
+(use-package auto-highlight-symbol :diminish ""
   :demand t
-  :diminish (auto-highlight-symbol-mode . "")
-  :bind (("C-1" . ahs-backward)
-         ("C-2" . ahs-forward))
+  :commands (ahs-backward
+             ahs-forward)
   :config
-  (global-auto-highlight-symbol-mode t)
-  (unbind-key "M-<left>" auto-highlight-symbol-mode-map)
-  (unbind-key "M-<right>" auto-highlight-symbol-mode-map)
-  (unbind-key "M-S-<left>" auto-highlight-symbol-mode-map)
-  (unbind-key "M-S-<right>" auto-highlight-symbol-mode-map))
+  (global-auto-highlight-symbol-mode t))
 
-(use-package dedicated :bind ("C-c D" . dedicated-mode))
-(use-package sticky-windows :ensure nil
-  :commands (sticky-window-delete-window
-             sticky-window-delete-other-windows)
-  :bind (;;("C-. S" . sticky-window-keep-window-visible)
-         ("C-x 0" . sticky-window-delete-window)
-         ("C-x 1" . sticky-window-delete-other-windows)))
+(use-package dedicated
+  :commands dedicated-mode)
 
-(use-package flyspell
-  :diminish (flyspell-mode . "ⓢ")
-  :bind (("C-c i b" . flyspell-buffer)
-         ("C-c i f" . flyspell-mode))
-  :init
-  (use-package ispell
-    :bind (("C-c i c" . ispell-comments-and-strings)
-           ("C-c i d" . ispell-change-dictionary)
-           ("C-c i k" . ispell-kill-ispell)
-           ("C-c i m" . ispell-message)
-           ("C-c i r" . ispell-region)))
+(use-package ispell
+  :commands (ispell-comments-and-strings
+             ispell-change-dictionary
+             ispell-kill-ispell
+             ispell-message
+             ispell-region))
+
+(use-package flyspell :diminish " ⓢ"
+  :commands (flyspell-buffer
+             flyspell-mode)
   :config
-  (unbind-key "C-." flyspell-mode-map)
-  (unbind-key "C-c $" flyspell-mode-map))
+  (progn
+    (flyspell-mode 1)
+    (unbind-key "C-."   flyspell-mode-map)
+    (unbind-key "C-c $" flyspell-mode-map)))
 
-(use-package flycheck
-  :diminish (flycheck-mode . " ⓒ")
-  ;; :commands (flycheck-mode global-flycheck-mode)
+(use-package flycheck :diminish " ⓒ"
+  :demand t
+  :commands (flycheck-mode
+             hydra-flycheck/body)
   :config
-  (flycheck-add-mode 'php       'web-mode)
-  (flycheck-add-mode 'php-phpmd 'web-mode)
-  (flycheck-add-mode 'php-phpcs 'web-mode)
+  (progn
+    (add-hook 'after-init-hook #'global-flycheck-mode)
 
-  (defalias 'flycheck-show-error-at-point-soon
-    'flycheck-show-error-at-point)
+    (flycheck-add-mode 'php       'web-mode)
+    (flycheck-add-mode 'php-phpmd 'web-mode)
+    (flycheck-add-mode 'php-phpcs 'web-mode)
 
-  (add-hook 'after-init-hook #'global-flycheck-mode)
+    (defalias 'flycheck-show-error-at-point-soon
+      'flycheck-show-error-at-point)
 
-  (defhydra hydra-flycheck
-    (:pre (progn (setq hydra-lv t) (flycheck-list-errors))
-          :post (progn (setq hydra-lv nil) (quit-windows-on "*Flycheck errors*"))
-          :hint nil)
-    "Errors"
-    ("f"  flycheck-error-list-set-filter                            "Filter")
-    ("j"  flycheck-next-error                                       "Next")
-    ("k"  flycheck-previous-error                                   "Previous")
-    ("gg" flycheck-first-error                                      "First")
-    ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
-    ("q"  nil)))
+    (defhydra hydra-flycheck
+      (:pre (progn (setq hydra-lv t) (flycheck-list-errors))
+            :post (progn (setq hydra-lv nil) (quit-windows-on "*Flycheck errors*"))
+            :hint nil)
+      "Errors"
+      ("f"  flycheck-error-list-set-filter                            "Filter")
+      ("j"  flycheck-next-error                                       "Next")
+      ("k"  flycheck-previous-error                                   "Previous")
+      ("gg" flycheck-first-error                                      "First")
+      ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
+      ("q"  nil))))
 
 (use-package multiple-cursors
-  :bind (("C->" . mc/mark-next-like-this)
-         ("C-<" . mc/mark-previous-like-this)
-         ("C-c C-e" . mc/mark-all-like-this)))
+  :commands (mc/mark-next-like-this
+             mc/mark-previous-like-this
+             mc/mark-all-like-this))
 
-(use-package hideshow
-  :disabled t
-  :bind (("C-c h t" . hs-toggle-hiding)
-         ("C-c h o" . narrow-to-defun)
-         ("C-c h O" . widen))
-  :commands hs-minor-mode
-  :init (add-hook 'prog-mode-hook 'hs-minor-mode))
 (use-package origami
-  :commands origami-mode
-  :bind (("C-c h a" . origami-toggle-all-nodes)
-         ("C-c h t" . origami-recursively-toggle-node)
-         ("C-c h f" . origami-show-only-node)
-         ("C-c h r" . origami-reset)
-         ("C-c h o" . narrow-to-defun)
-         ("C-c h O" . widen))
-  :init (add-hook 'prog-mode-hook 'origami-mode))
+  :commands (origami-mode
+             origami-toggle-all-nodes
+             origami-recursively-toggle-node
+             origami-show-only-node
+             origami-reset)
+  :init (add-hook 'prog-mode-hook 'origami-mode)
+  :config (origami-mode 1))
 
 (use-package focus
-  :commands (focus-mode focus-read-only-mode)
-  :bind (("C-c h f" . focus-mode)
-         ("C-c h F" . focus-read-only-mode)))
+  :commands (focus-mode
+             focus-read-only-mode))
 
-(use-package elec-pair :disabled t :config (electric-pair-mode 1))
+(use-package elec-pair :disabled t
+  :config (electric-pair-mode 1))
 (use-package smartparens-config :ensure smartparens
-  :commands (smartparens-mode)
-  :bind (("C-M-f" . sp-forward-symbol)
-         ("C-M-b" . sp-backward-symbol)
-         ("C-M-a" . sp-backward-up-sexp)
-         ("C-M-e" . sp-up-sexp)
-         ("C-M-k" . sp-kill-sexp)
-         ("C-M-t" . sp-transpose-sexp))
-  :bind* (("M-f" . sp-forward-word)
-          ("M-b" . sp-backward-word)
-          ("<C-backspace>" . sp-backward-kill-word))
+  :commands (smartparens-mode
+             sp-forward-symbol
+             sp-backward-symbol
+             sp-backward-up-sexp
+             sp-up-sexp
+             sp-kill-sexp
+             sp-transpose-sexp
+             sp-forward-word
+             sp-backward-word
+             sp-backward-kill-word)
   :init
   (progn
     (and (boundp 'prog-mode-hook)
          (add-hook 'prog-mode-hook 'smartparens-mode))
     (and (boundp 'markdown-mode-hook)
-         (add-hook 'markdown-mode-hook 'smartparens-mode))
+         (add-hook 'markdown-mode-hook 'smartparens-mode)))
+  :config
+  (progn
+    (smartparens-mode 1)
     (defun sp-forward-word ()
       (interactive)
       (sp--forward-word))
@@ -169,12 +203,13 @@
       (sp--backward-word))))
 
 (use-package rainbow-mode
+  :commands rainbow-mode
   :init (add-hook 'prog-mode-hook 'rainbow-mode))
 
 (use-package bm
-  :bind (("<f2>" . bm-next)
-         ("S-<f2>" . bm-previous)
-         ("C-<f2>" . bm-toggle))
+  :commands (bm-next
+             bm-previous
+             bm-toggle)
   :init (setq bm-restore-repository-on-load t)
   :config
   (progn
@@ -189,22 +224,16 @@
     (add-hook 'after-revert-hook #'bm-buffer-restore)
     (add-hook 'vc-before-checkin-hook #'bm-buffer-save)))
 
-(use-package whitespace
-  :diminish ""
+;; http://ergoemacs.org/emacs/whitespace-mode.html
+(use-package whitespace :diminish ""
   :commands whitespace-mode
-  :init
-  (add-hook 'prog-mode-hook 'whitespace-mode)
+  :init (add-hook 'prog-mode-hook 'whitespace-mode)
   :config
-  ;http://ergoemacs.org/emacs/whitespace-mode.html
   (setq whitespace-line-column nil
         whitespace-style '(face trailing tab-mark lines-tail)
         ;; whitespace-display-mappings '((tab-mark 9 [9654 9] [92 9]))
         ))
 
 (use-package goto-chg :ensure t
-  :commands goto-last-change
-  ;; complementary to
-  ;; C-x r m / C-x r l
-  ;; and C-<space> C-<space> / C-u C-<space>
-  :bind* (("C-c p" . goto-last-change)
-          ("C-c n" . goto-last-change-reverse)))
+  :commands (goto-last-change
+             goto-last-change-reverse))
