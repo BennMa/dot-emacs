@@ -5,8 +5,9 @@
 ;;; Code:
 
 ;; ------ utility functions
-(defsubst add-hook-into-modes (func &rest modes)
-  (dolist (mode-hook modes) (add-hook mode-hook func)))
+(defun multiple-mode-add-hook (modes hook)
+  "Given a list of x-mode-hook symbols in MODE, add the HOOK to them."
+  (mapc (lambda (mode) (add-hook mode hook)) modes))
 
 (defun list-regex-match-p (string list)
   (catch 'matched_ (dolist (regex list)
@@ -158,7 +159,7 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
   (cond
    ((string-equal mode-name "Emacs-Lisp") ";;")
    ((string-equal mode-name "Lisp") ";;")
-   ((string-equal mode-name "PHP") "//")
+   ((string-equal mode-name "PHP") (call-interactively 'phpcbf))
    ((string-equal mode-name "Web") "//")
    ((string-equal mode-name "Py") "#")
    ((string-equal mode-name "Erlang") "%%")
@@ -177,21 +178,32 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
           (delq (current-buffer) 
                 (remove-if-not 'buffer-file-name (buffer-list)))))
 
+(defvar blaine--hungry-delete-string "[[:space:]\n\t]")
+(defun blaine/contextual-kill-word ()
+  "Hungry whitespace or kill word depending on context."
+  (interactive)
+  (if (looking-at-p blaine--hungry-delete-string)
+      (if (boundp 'hungry-delete-forward)
+          (call-interactively 'hungry-delete-forward)
+        (while (looking-at-p blaine--hungry-delete-string)
+          (delete-char 1)))
+    (cond
+     ((and (boundp 'smartparens-strict-mode) smartparens-strict-mode)
+      (call-interactively 'sp-kill-word))
+     (t (call-interactively 'kill-word)))))
+
 (defun blaine/contextual-backspace ()
   "Hungry whitespace or delete word depending on context."
   (interactive)
-  (if (looking-back "[[:space:]\n]\\{2,\\}" (- (point) 2))
-      (while (looking-back "[[:space:]\n]" (- (point) 1))
-        (delete-char -1))
+  (if (looking-back blaine--hungry-delete-string (- (point) 1))
+      (if (boundp 'hungry-delete-backward)
+          (call-interactively 'hungry-delete-backward)
+        (while (looking-back blaine--hungry-delete-string (- (point) 1))
+          (delete-char -1)))
     (cond
-     ((and (boundp 'smartparens-strict-mode)
-           smartparens-strict-mode)
-      (sp-backward-kill-word 1))
-     ((and (boundp 'subword-mode)
-           subword-mode)
-      (subword-backward-kill 1))
-     (t
-      (backward-kill-word 1)))))
+     ((and (boundp 'smartparens-strict-mode) smartparens-strict-mode)
+      (call-interactively 'sp-backward-kill-word))
+     (t (call-interactively 'backward-kill-word)))))
 
 (defun blaine/indent-buffer ()
   "Indent the entire buffer."

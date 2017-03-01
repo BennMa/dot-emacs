@@ -2,22 +2,24 @@
   :mode ("\\.scala\\'"   . scala-mode)
   :interpreter ("scala" . scala-mode)
   :config
-  (add-hook 'scala-mode-hook 
+  (add-hook 'scala-mode-hook
             (lambda ()
               (setq comment-start "/* "
                     comment-end " */"
                     comment-style 'multi-line
                     comment-empty-lines t)
-              (setq prettify-symbols-alist scala-prettify-symbols-alist)
-              (prettify-symbols-mode)))
-  
+              ;; (setq prettify-symbols-alist scala-prettify-symbols-alist)
+              ;; (prettify-symbols-mode)
+              (auto-highlight-symbol-mode 1)
+              ))
+
   (defun scala-mode-newline-comments ()
     "Custom newline appropriate for `scala-mode'."
     ;; shouldn't this be in a post-insert hook?
     (interactive)
     (call-interactively 'newline-and-indent)
     (scala-indent:insert-asterisk-on-multiline-comment))
-  
+
   (bind-key "RET" 'scala-mode-newline-comments scala-mode-map))
 
 (use-package sbt-mode

@@ -2,13 +2,13 @@
                     "M-b" 'sp-backward-word
                     "M-o C" 'highlight-changes-mode
                     "M-o h" 'hl-line-mode
-                    "M-%" 'anzu-query-replace
+                    "M-%"   'anzu-query-replace
                     "C-M-%" 'anzu-query-replace-regexp
                     "C-S-s" 'counsel-ag
                     "C-=" 'er/expand-region
-                    "M-=" '(lambda (arg) (interactive "p")
+                    "M-=" '(lambda () (interactive)
                              (save-excursion
-                               (er/expand-region arg)
+                               (call-interactively 'er/expand-region)
                                (call-interactively 'kill-ring-save)))
                     "C-M-=" 'er/mark-defun
                     "C-M-\\" 'sp-indent-defun
@@ -16,15 +16,37 @@
                     "C-2" 'ahs-forward
                     "C->" 'mc/mark-next-like-this
                     "C-<" 'mc/mark-previous-like-this
-                    "C-c D" 'dedicated-mode
-                    "C-c i b" 'flyspell-buffer
+                    "C-M->" 'mc/mark-all-like-this
+                    "<f2>" 'bm-next
+                    "S-<f2>" 'bm-previous
+                    "C-<f2>" 'bm-toggle)
+
+(general-define-key "C-M-f" 'sp-forward-sexp
+                    "C-M-b" 'sp-backward-sexp
+                    "C-M-a" 'sp-backward-up-sexp
+                    "C-M-e" 'sp-up-sexp
+                    ;; "C-M-a" 'sp-beginning-of-sexp
+                    ;; "C-M-e" 'sp-end-of-sexp
+                    ;; "C-M-k" 'sp-kill-sexp
+                    ;; "C-M-t" 'sp-transpose-sexp
+                    "C-M-j" '(lambda() (interactive) (delete-indentation t))
+                    "C-M-t" 'move-text-down
+                    "C-M-S-t" 'move-text-up
+                    ;; "C-M-d" 'hungry-delete-forward
+                    ;; "C-M-<backspace>" 'hungry-delete-backward
+                    "<C-backspace>" 'sp-backward-kill-sexp
+                    "M-d" 'blaine/contextual-kill-word
+                    "<M-backspace>" 'blaine/contextual-backspace
+                    "C-M-c" 'hide/show-comments-toggle)
+
+(general-define-key "C-c i b" 'flyspell-buffer
                     "C-c i f" 'flyspell-mode
                     "C-c i c" 'ispell-comments-and-strings
                     "C-c i d" 'ispell-change-dictionary
                     "C-c i k" 'ispell-kill-ispell
                     "C-c i m" 'ispell-message
                     "C-c i r" 'ispell-region
-                    "C-c C-f" 'hydra-flycheck/body
+                    ;; "C-c C-f" 'hydra-flycheck/body
                     "C-c C-e" 'mc/mark-all-like-this
                     "C-c h a" 'origami-toggle-all-nodes
                     "C-c h t" 'origami-recursively-toggle-node
@@ -35,19 +57,7 @@
                     "C-c h f" 'focus-mode
                     "C-c h F" 'focus-read-only-mode
                     "C-c p" 'goto-last-change
-                    "C-c n" 'goto-last-change-reverse
-                    "C-M-f" 'sp-forward-symbol ;
-                    "C-M-b" 'sp-backward-symbol
-                    "C-M-a" 'sp-backward-up-sexp
-                    "C-M-e" 'sp-up-sexp
-                    ;; "C-M-a" 'sp-beginning-of-sexp
-                    ;; "C-M-e" 'sp-end-of-sexp
-                    "C-M-k" 'sp-kill-sexp
-                    "C-M-t" 'sp-transpose-sexp
-                    "<C-backspace>" 'sp-backward-kill-word
-                    "<f2>" 'bm-next
-                    "S-<f2>" 'bm-previous
-                    "C-<f2>" 'bm-toggle)
+                    "C-c n" 'goto-last-change-reverse)
 
 ;; ------ packages
 (use-package swiper :commands swiper)
@@ -60,9 +70,10 @@
   :commands eldoc-mode)
 
 (use-package expand-region
-  :commands er/expand-region
+  :commands (er/expand-region
+             er/mark-defun)
   :config
-  (setq er/try-expand-list '(;; er/mark-word
+  (setq er/try-expand-list '( ;; er/mark-word
                              er/mark-symbol
                              er/mark-symbol-with-prefix
                              er/mark-next-accessor
@@ -89,10 +100,18 @@
   :config (global-highlight-parentheses-mode))
 
 (use-package indent-guide :diminish ""
+  :disabled t
   :config
   (progn
     ;; (set-face-background 'indent-guide-face "dimgray")
    (indent-guide-global-mode)))
+(use-package highlight-indent-guides
+  :init
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode))
+
+(use-package highlight-numbers
+  :init
+  (add-hook 'prog-mode-hook 'highlight-numbers-mode))
 
 (use-package hl-line :diminish ""
   :commands hl-line-mode
@@ -109,9 +128,6 @@
   :config
   (global-auto-highlight-symbol-mode t))
 
-(use-package dedicated
-  :commands dedicated-mode)
-
 (use-package ispell
   :commands (ispell-comments-and-strings
              ispell-change-dictionary
@@ -122,20 +138,20 @@
 (use-package flyspell :diminish " ⓢ"
   :commands (flyspell-buffer
              flyspell-mode)
+  :bind (:map flyspell-mode-map
+              ("C-." . nil)
+              ("C-c $" . nil))
   :config
   (progn
-    (flyspell-mode 1)
-    (unbind-key "C-."   flyspell-mode-map)
-    (unbind-key "C-c $" flyspell-mode-map)))
+    (flyspell-mode 1)))
 
 (use-package flycheck :diminish " ⓒ"
-  :demand t
   :commands (flycheck-mode
+             global-flycheck-mode
              hydra-flycheck/body)
+  :init (add-hook 'after-init-hook #'global-flycheck-mode)
   :config
   (progn
-    (add-hook 'after-init-hook #'global-flycheck-mode)
-
     (flycheck-add-mode 'php       'web-mode)
     (flycheck-add-mode 'php-phpmd 'web-mode)
     (flycheck-add-mode 'php-phpcs 'web-mode)
@@ -213,7 +229,7 @@
   :init (setq bm-restore-repository-on-load t)
   :config
   (progn
-    (add-hook' after-init-hook 'bm-repository-load)
+    (add-hook 'after-init-hook 'bm-repository-load)
     (add-hook 'find-file-hooks 'bm-buffer-restore)
     (add-hook 'kill-buffer-hook #'bm-buffer-save)
     (add-hook 'kill-emacs-hook #'(lambda nil
@@ -234,6 +250,28 @@
         ;; whitespace-display-mappings '((tab-mark 9 [9654 9] [92 9]))
         ))
 
-(use-package goto-chg :ensure t
+(use-package goto-chg
   :commands (goto-last-change
              goto-last-change-reverse))
+
+(use-package hungry-delete
+  :commands (hungry-delete-mode
+             hungry-delete-forward
+             hungry-delete-backward)
+  ;; :init (add-hook 'prog-mode-hook #'hungry-delete-mode)
+  )
+
+(use-package move-text
+  :commands (move-text-up
+             move-text-down))
+
+(use-package hide-comnt :ensure nil
+  :commands (hide/show-comments
+             hide/show-comments-toggle))
+
+(use-package aggressive-indent
+  :commands aggressive-indent-mode)
+
+(use-package linum :ensure nil
+  :commands (linum-mode)
+  :init (add-hook 'prog-mode-hook 'linum-mode))

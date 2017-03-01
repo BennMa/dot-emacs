@@ -30,3 +30,4 @@ ensime/
 .hl-save
 network-security.data
 customization-individual.el
+.tern-port

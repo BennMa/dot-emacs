@@ -29,10 +29,10 @@
       (with-eval-after-load 'term
         (define-key term-raw-map (kbd "s-v") 'term-paste)))
 
-    (use-package osx-trash :ensure t
+    (use-package osx-trash
       :config (setq delete-by-moving-to-trash t))
-    (use-package pbcopy :ensure t)
-    (use-package reveal-in-osx-finder :ensure t
+    (use-package pbcopy)
+    (use-package reveal-in-osx-finder
       :bind (("C-S-o" . reveal-in-osx-finder)))))
 
  ((eq system-type 'gnu/linux) ;; linux

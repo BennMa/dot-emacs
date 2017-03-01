@@ -214,6 +214,7 @@
  '(org-modules
 (quote
  (org-gnus org-habit org-id org-info org-depend org-velocity)))
+ '(org-projectile:projects-file "~/Dropbox/PKG/Task/PROJECTS_TODO.org")
  '(org-publish-project-alist
 (quote
  (("document" :base-directory "~/Dropbox/PKG/Document/" :base-extension "org" :publishing-directory "~/Dropbox/PKG/Publish/" :recursive t :publishing-function org-html-publish-to-html))))

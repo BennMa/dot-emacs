@@ -32,7 +32,6 @@
 (and (fboundp 'tooltip-mode) tooltip-mode (tooltip-mode -1))
 (and (fboundp 'scroll-bar-mode) scroll-bar-mode (scroll-bar-mode -1))
 (and (fboundp 'show-paren-mode) (not show-paren-mode) (show-paren-mode 1))
-(global-linum-mode 1)
 ;; (random t)
 
 ;; --- define constant
@@ -97,7 +96,7 @@ See also `locate-user-emacs-file'.")
 
   (qiang-set-font blaine--english-fonts blaine--font-size blaine--chinese-fonts))
 
-(use-package initsplit :ensure t)
+(use-package initsplit)
 (load (expand-file-name "settings" user-emacs-directory))
 
 (defun blaine//load-feature (feature-name)

@@ -10,17 +10,19 @@
 
 (load (expand-file-name "org-settings" user-emacs-directory))
 
-(general-define-key "C-." (defhydra hydra-org (:color blue :hint nil :columns 4 :idle 0.3)
-                            "Org Helper"
-                            ("." my-org-agenda-startup "StartUp")
-                            ("a" org-agenda "Agenda")
-                            ("c" org-capture "Capture")
-                            ("w" hydra-org-clock/body "Clock")
-                            ("l" org-kb/show-all "KB")
-                            ("d" org-kb/show-daily "Daily")
-                            ("s" org-kb/search "Search Documents")
-                            ("t" org-kb/collect "Collector")
-                            ("q" nil "Quit")))
+(general-define-key "C-." 'hydra-org/body)
+(defhydra hydra-org (:color blue :hint nil :columns 4 :idle 0.3)
+  "Org Helper"
+  ("." my-org-agenda-startup "StartUp")
+  ("C-." my-org-agenda-startup "StartUp")
+  ("a" org-agenda "Agenda")
+  ("c" org-capture "Capture")
+  ("w" hydra-org-clock/body "Clock")
+  ("l" org-kb/show-all "KB")
+  ("d" org-kb/show-daily "Daily")
+  ("s" org-kb/search "Search Documents")
+  ("t" org-kb/collect "Collector")
+  ("q" nil "Quit"))
 
 (use-package org
   :mode ("\\.org\\'"   . org-mode)
@@ -220,17 +222,23 @@ prepended to the element after the #+HEADERS: tag."
                  'org-kb/org-agenda-skip-expired-review-entry))) t)
   ))
 
-(use-package org-mobile :ensure nil)
+(use-package org-mobile :ensure nil
+  :defer t)
 
+;; https://github.com/IvanMalison/org-projectile
 (use-package org-projectile
-  :if (boundp 'projectile-mode)
+  :after projectile
   ;; :commands (org-projectile:project-todo-completing-read)
   :config
   (progn
     ;; (setq org-projectile:projects-file "~/Dropbox/PKG/Task/PROJECTS_TODO.org")
     (org-projectile:per-repo)
     (setq org-agenda-files (append org-agenda-files (org-projectile:todo-files)))
-    (add-to-list 'org-capture-templates (org-projectile:project-todo-entry "p"))))
+    (add-to-list 'org-capture-templates
+                 (org-projectile:project-todo-entry
+                  "l" "* TODO %? %a\n" "Linked Project TODO"))
+    (add-to-list 'org-capture-templates (org-projectile:project-todo-entry "p"))
+    ))
 
 (defhydra hydra-org-clock (:color blue :hint nil)
   "

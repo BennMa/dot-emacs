@@ -15,9 +15,6 @@
  '(ace-isearch-submode (quote ace-jump-char-mode))
  '(ace-popup-menu-show-pane-header t)
  '(ad-redefinition-action (quote accept))
- '(after-save-hook
-   (quote
-    (executable-make-buffer-file-executable-if-script-p)))
  '(ahs-default-range (quote ahs-range-whole-buffer))
  '(ahs-idle-interval 0.5)
  '(ahs-modes
@@ -84,7 +81,7 @@
  '(bmkp-crosshairs-flag nil)
  '(bmkp-last-as-first-bookmark-file "~/.emacs.d/.data/bookmarks")
  '(bookmark-default-file "~/.emacs.d/.data/bookmarks")
- '(browse-url-browser-function (quote ((".*" . browse-url-default-macosx-browser))))
+ '(browse-url-browser-function (quote browse-url-chromium))
  '(byte-compile-verbose nil)
  '(c-basic-offset 4)
  '(c-default-style
@@ -161,13 +158,16 @@
  '(clean-buffer-list-kill-regexps (quote (".*")))
  '(column-number-mode t)
  '(company-dabbrev-downcase nil)
+ '(company-dabbrev-ignore-case nil)
  '(company-frontends
    (quote
     (company-pseudo-tooltip-unless-just-one-frontend company-echo-metadata-frontend company-preview-frontend)))
  '(company-gtags-executable "/usr/local/bin/global")
  '(company-gtags-modes (quote (projectile-mode)))
- '(company-idle-delay 0)
- '(company-minimum-prefix-length 3)
+ '(company-idle-delay 0.2)
+ '(company-minimum-prefix-length 2)
+ '(company-require-match nil)
+ '(company-statistics-file "~/.emacs.d/.data/company-statistics-cache.el")
  '(company-tooltip-align-annotations t)
  '(company-transformers (quote (company-sort-by-backend-importance)))
  '(compilation-always-kill t)
@@ -183,7 +183,9 @@
  '(coq-one-command-per-line nil)
  '(coq-prog-args (quote ("-emacs" "-dont-load-proofs")))
  '(coq-prog-name "ssrcoq")
+ '(counsel-gtags-auto-update nil)
  '(counsel-gtags-prefix-key "nil")
+ '(counsel-gtags-update-interval-second 60)
  '(current-language-environment "UTF-8")
  '(cursor-type (quote bar))
  '(custom-buffer-done-function (quote kill-buffer))
@@ -242,21 +244,6 @@
  '(el-get-use-autoloads nil)
  '(electric-indent-mode nil)
  '(elscreen-display-tab nil)
- '(emacs-lisp-mode-hook
-   (quote
-    (turn-on-auto-fill
-     (lambda nil
-       (ignore-errors
-         (diminish
-          (quote auto-fill-function))))
-     eldoc-mode
-     (lambda nil
-       (local-set-key
-        [(meta 46)]
-        (quote find-function))
-       (local-set-key
-        [(control 109)]
-        (quote newline-and-indent))))))
  '(enable-recursive-minibuffers t)
  '(erc-auto-query (quote window-noselect))
  '(erc-autoaway-message "I'm away (after %i seconds of idle-time)")
@@ -369,6 +356,7 @@
  '(global-font-lock-mode t nil (font-lock))
  '(global-undo-tree-mode t)
  '(google-this-keybind "s")
+ '(google-this-modeline-indicator " G")
  '(grep-find-command (quote ("ag --noheading --column --ignore branches " . 43)))
  '(grep-find-ignored-directories
    (quote
@@ -411,9 +399,10 @@
  '(helm-recentf-fuzzy-match t)
  '(helm-split-window-default-side (quote right))
  '(helm-swoop-split-direction (quote split-window-horizontally))
+ '(highlight-indent-guides-method (quote column))
  '(hippie-expand-try-functions-list
    (quote
-    (yas-hippie-try-expand try-complete-file-name-partially try-complete-file-name try-expand-all-abbrevs try-expand-list try-expand-line try-expand-dabbrev try-expand-dabbrev-all-buffers try-expand-dabbrev-from-kill try-complete-lisp-symbol-partially try-complete-lisp-symbol)))
+    (try-expand-dabbrev try-expand-dabbrev-all-buffers try-expand-dabbrev-from-kill try-complete-file-name-partially try-complete-file-name try-expand-all-abbrevs try-expand-list try-expand-line try-complete-lisp-symbol-partially try-complete-lisp-symbol)))
  '(history-delete-duplicates t)
  '(history-length 200)
  '(httpd-host nil)
@@ -531,6 +520,7 @@
     (("\\`\\(org-\\)" "~/.emacs.d/org-settings.el" nil nil))))
  '(ispell-extra-args nil)
  '(ivy-count-format "(%d/%d) ")
+ '(ivy-height 15)
  '(ivy-use-ignore-default (quote always))
  '(ivy-use-virtual-buffers t)
  '(js-doc-author "benn")
@@ -547,6 +537,7 @@
  '(large-file-warning-threshold nil)
  '(line-number-mode t)
  '(line-spacing 0.3)
+ '(linum-delay t)
  '(load-dir-debug nil)
  '(load-dir-recursive t)
  '(load-prefer-newer t)
@@ -556,7 +547,7 @@
  '(mac-wheel-button-is-mouse-2 nil)
  '(magit-auto-revert-mode nil)
  '(magit-backup-mode t)
- '(magit-completing-read-function (quote helm--completing-read-default))
+ '(magit-completing-read-function (quote magit-builtin-completing-read))
  '(magit-diff-options nil)
  '(magit-highlight-trailing-whitespace nil)
  '(magit-highlight-whitespace nil)
@@ -646,7 +637,8 @@
  '(projectile-cache-file "~/.emacs.d/.data/projectile.cache")
  '(projectile-completion-system (quote ivy))
  '(projectile-enable-caching t)
- '(projectile-globally-ignored-files (quote ("TAGS" "GPATH" "GRTAGS" "GTAGS" ".DS_Store")))
+ '(projectile-globally-ignored-files (quote ("TAGS" ".DS_Store")))
+ '(projectile-keymap-prefix "")
  '(projectile-known-projects-file "~/.emacs.d/.data/projectile-bookmarks.eld")
  '(projectile-project-root-files
    (quote
@@ -657,7 +649,7 @@
  '(projectile-project-root-files-functions
    (quote
     (projectile-root-local projectile-root-bottom-up projectile-root-top-down projectile-root-top-down-recurring)))
- '(projectile-switch-project-action (quote projectile-dired))
+ '(projectile-switch-project-action (quote projectile-find-file))
  '(projectile-tags-backend (quote auto))
  '(ps-font-size (quote (8 . 10)))
  '(ps-footer-font-size (quote (12 . 14)))
@@ -671,11 +663,10 @@
  '(recentf-exclude
    (quote
     ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")))
- '(recentf-max-saved-items 2000)
+ '(recentf-max-saved-items 1000)
  '(recentf-save-file "~/.emacs.d/.data/recentf")
  '(redisplay-dont-pause t t)
  '(regex-tool-backend (quote perl))
- '(safe-local-variable-values (quote ((after-save-hook git-commit-changes))))
  '(sage-view-anti-aliasing-level 4)
  '(sage-view-margin (quote (20 . 20)))
  '(sage-view-scale 2.0)
@@ -685,6 +676,7 @@
  '(save-abbrevs (quote silently))
  '(save-interprogram-paste-before-kill t)
  '(save-kill-file-name "~/.emacs.d/.data/kill-ring-saved.el")
+ '(scala-indent:step 4)
  '(scroll-bar-mode nil)
  '(scroll-conservatively 10000)
  '(scroll-margin 0)
@@ -771,13 +763,6 @@
  '(term-buffer-maximum-size 0)
  '(term-scroll-show-maximum-output t)
  '(term-unbind-key-list (quote ("C-z" "C-x" "C-c" "C-h" "C-y" "<ESC>" "M-v")))
- '(text-mode-hook
-   (quote
-    (turn-on-auto-fill
-     (lambda nil
-       (ignore-errors
-         (diminish
-          (quote auto-fill-function)))))))
  '(tramp-auto-save-directory "~/.backups")
  '(tramp-default-method "ssh")
  '(tramp-default-method-alist
@@ -841,10 +826,7 @@
  '(x-stretch-cursor t)
  '(yaoddmuse-browse-function (quote w3m-browse-url))
  '(yaoddmuse-directory "~/.emacs.d/doc")
- '(yas-expand-only-for-last-commands (quote (self-insert-command)))
- '(yas-prompt-functions
-   (quote
-    (yas-ido-prompt yas-completing-prompt yas-no-prompt)))
+ '(yas-prompt-functions (quote (yas-completing-prompt yas-no-prompt)))
  '(yas-triggers-in-field nil)
  '(yas-wrap-around-region t)
  '(zencoding-preview-default nil))

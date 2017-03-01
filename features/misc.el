@@ -1,4 +1,6 @@
-(general-define-key (general-chord "zz") 'hydra-zoom/body)
+(general-define-key ;; (general-chord "zz") 'hydra-zoom/body
+                    ;; "C-c g" 'google-this
+                    )
 
 ;; ------ packages
 (use-package maxframe
@@ -63,7 +65,7 @@
   (bind-key "m" 'escreen-menu escreen-map)
   (escreen-install))
 
-(use-package zoom-frm :ensure t
+(use-package zoom-frm
   :commands (zoom-frm-in
              zoom-frm-out
              zoom-frm-unzoom
@@ -90,7 +92,7 @@
   :config
   (powerline-default-theme))
 
-(use-package multi-term :ensure t
+(use-package multi-term
   :bind (("M-t" . my-term-toggle)
          ("C-M-t" . multi-term))
   :config
@@ -216,9 +218,12 @@
     ))
 
 (use-package direx
-  :bind ("C-c d" . my-direx:jump-to-directory-other-window)
+  :bind (("C-x C-d" . my-direx:jump-to-directory-other-window))
   :config
   (progn
+    (add-hook 'direx:direx-mode-hook
+              #'(lambda ()
+                  (linum-mode -1)))
     ;; (add-hook 'direx:direx-mode-hook 'direx-k)
     ;; (push '(direx:direx-mode :position left :width 30 :dedicated t :stick t)
     ;;       popwin:special-display-config)
@@ -230,7 +235,6 @@
       (direx:jump-to-directory-other-window)
       (set-window-dedicated-p (selected-window) t))
 
-    (bind-key "TAB" 'direx:maybe-find-item direx:direx-mode-map)
     (defadvice direx:jump-to-directory-noselect
         (around direx:set-default-directory activate)
       (let ((default-directory (projectile-project-root)))
@@ -304,3 +308,7 @@
                  (eshell-parse-command
                   "*git"
                   (eshell-stringify-list (eshell-flatten-list args)))))))))
+
+(use-package google-this
+  :init (setq google-this-keybind (kbd "C-c g"))
+  :config (google-this-mode 1))

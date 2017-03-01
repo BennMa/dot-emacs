@@ -1,35 +1,85 @@
-(general-define-key "C-<tab>"            'blaine/last-buffer
+(general-define-key "M-."                'counsel-gtags-dwim
+                    "M-,"                'counsel-gtags-pop
+                    "C-<tab>"            'blaine/last-buffer
                     "C-y"                'ivy-switch-buffer
                     "C-S-y"              'counsel-projectile-switch-to-buffer
                     "C-x C-r"            'counsel-recentf
                     ;; "C-y"             'hydra-buffer/body
-                    "C-3"                'blaine/other-window
                     "C-w"                'hydra-window/body
+                    "C-M-w"              'blaine/other-window
                     "C-x 0"              'sticky-window-delete-window
                     "C-x 1"              'sticky-window-delete-other-windows
                     (general-chord "jj") 'avy-goto-char
                     (general-chord "jw") 'avy-goto-word-1
                     (general-chord "jl") 'avy-goto-line)
 
-;; ------ Packages
-(use-package ggtags :ensure t
-  :diminish (ggtags-mode . "ⓖ")
-  :commands (ggtags-mode
-             ggtags-find-tag-dwim
-             counsel-gtags-dwim
-             counsel-gtags-find-definition
-             counsel-gtags-find-reference
-             counsel-gtags-find-symbol
-             counsel-gtags-find-file
-             counsel-gtags-pop
-             counsel-gtags-create-tags
-             counsel-gtags-update-tags)
-  :bind* (("M-." . counsel-gtags-dwim)
-          ("M-," . counsel-gtags-pop))
-  ;; :bind* (("M-." . ggtags-find-tag-dwim)
-  ;;         ("M-," . pop-tag-mark))
-  :config (use-package counsel-gtags :ensure t))
+(defhydra hydra-buffer (:color blue :columns 4 :exit t)
+  "Buffers Switcher"
+  ("b"   blaine/last-buffer "Last Buffer")
+  ("l"   ivy-switch-buffer "All Buffers")
+  ("C-l"   ivy-switch-buffer "All Buffers")
+  ("p"   counsel-projectile-switch-to-buffer "Project Buffers")
+  ("s"   save-buffer "Save" :color red)
+  ("k"   kill-this-buffer "Kill this buffer"  :color red)
+  ("d"   blaine/delete-current-buffer-file "Delete This Buffer" :color red)
+  ("B"   blaine/ibuffer-startup "Ibuffer")
+  ("M-b" buffer-menu "Buffer Menu")
+  ("."   hydra-window/body "Windows")
+  ("q"   nil "Cancel" :color blue))
 
+(defhydra hydra-window (:hint nil :color amaranth :columns 3 :exit t :idle 0.3)
+   "
+^MOVE^ ^^^^   ^SPLIT^          ^SIZE^ ^^^^   ^COMMAND^   ^WINDOW^
+^ ^ _k_ ^ ^   _-_ : split H    ^ ^ _p_ ^ ^   _d_elete    ^1^ ^2^ ^3^ ^4^
+_h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
+^ ^ _j_ ^ ^   _s_ : split H    ^ ^ _n_ ^ ^   _u_ndo      ^9^ ^0^
+^ ^ ^ ^ ^ ^   _v_ : split V    ^ ^ ^ ^ ^ ^   _D_edicated
+"
+  ("h" windmove-left :color blue)
+  ("l" windmove-right :color blue)
+  ("j" windmove-down :color blue )
+  ("k" windmove-up :color blue)
+
+  ;; size
+  ("p" (lambda () (interactive) (enlarge-window -1)))
+  ("b" enlarge-window-horizontally)
+  ("f" (lambda () (interactive) (enlarge-window-horizontally -1)))
+  ("n" (lambda () (interactive) (enlarge-window 1)))
+
+  ;; splt
+  ("-" blaine/split-window-below-and-focus)
+  ("s" blaine/split-window-below-and-focus)
+  ("|" blaine/split-window-right-and-focus)
+  ("v" blaine/split-window-right-and-focus)
+
+  ("u" winner-undo)
+  ("m" sticky-window-delete-other-windows)
+  ("d" sticky-window-delete-window)
+
+  ("a" ace-window)
+  ("=" balance-windows)
+  ("D" dedicated-mode)
+
+  ;; change height and width
+  ("0" select-window-0 :color blue)
+  ("1" select-window-1 :color blue)
+  ("2" select-window-2 :color blue)
+  ("3" select-window-3 :color blue)
+  ("4" select-window-4 :color blue)
+  ("5" select-window-5 :color blue)
+  ("6" select-window-6 :color blue)
+  ("7" select-window-7 :color blue)
+  ("8" select-window-8 :color blue)
+  ("9" select-window-9 :color blue)
+
+  ;; ("D" kill-buffer-and-window "Delete Buffer" :color red)
+  ("w" blaine/other-window "Other Window" :color blue)
+  ("C-w" blaine/other-window "Other Window" :color blue)
+  ("." hydra-buffer/body "Buffers" :color blue)
+  ("q" nil "quit" :color blue))
+
+
+;; ------ Packages
 (progn ;; own functions
   (defcustom blaine--buffername-whitelist '()
     "white list of last buffer switcher"
@@ -92,7 +142,55 @@
           (other-window count all-frames)
           (when (not (member major-mode black-mode-list))
             (throw 'matched_ t))
-          (setq i (1+ i)))))))
+          (setq i (1+ i))))))
+  (defun blaine/split-window-right-and-focus()
+    (interactive)
+    (call-interactively 'split-window-right)
+    (call-interactively 'windmove-right))
+  (defun blaine/split-window-below-and-focus()
+    (interactive)
+    (call-interactively 'split-window-below)
+    (call-interactively 'windmove-down)))
+
+(use-package ggtags :diminish "ⓖ"
+  :commands (ggtags-mode
+             ggtags-global-mode
+             ggtags-find-tag-dwim
+             ggtags-find-tag-mouse
+             ggtags-find-definition
+             ggtags-find-reference
+             ggtags-find-other-symbol
+             ggtags-find-tag-regexp
+             ggtags-idutils-query
+             ggtags-grep
+             ggtags-find-file
+             ggtags-query-replace)
+  ;; :bind* (("M-." . ggtags-find-tag-dwim)
+  ;;         ("M-," . pop-tag-mark))
+  :config (ggtags-global-mode))
+
+(use-package counsel-gtags
+  :diminish ""
+  :commands (counsel-gtags-dwim
+             counsel-gtags-pop
+             counsel-gtags-find-definition
+             counsel-gtags-find-reference
+             counsel-gtags-find-symbol
+             counsel-gtags-find-file
+             counsel-gtags-create-tags
+             counsel-gtags-update-tags
+             counsel-gtags-create-or-update-tags)
+  :config
+  (progn
+    (defun counsel-gtags-create-or-update-tags ()
+      (interactive)
+      (if (or (getenv "GTAGSROOT")
+              (locate-dominating-file default-directory "GTAGS"))
+          (let ((current-prefix-arg 4))
+            (call-interactively 'counsel-gtags-update-tags))
+        (if (fboundp 'projectile-project-root)
+            (counsel-gtags-create-tags (projectile-project-root) "default")
+          (counsel-gtags--generate-tags))))))
 
 (use-package ibuffer
   :commands (blaine/ibuffer-startup
@@ -126,8 +224,7 @@
        ((> (buffer-size) 1000) (format "%7.1fk" (/ (buffer-size) 1000.0)))
        (t (format "%8d" (buffer-size)))))))
 
-(use-package window-numbering :ensure t
-  :demand t
+(use-package window-numbering
   :commands (window-numbering-mode
              select-window-0
              select-window-1
@@ -139,9 +236,9 @@
              select-window-7
              select-window-8
              select-window-9)
-  :config (window-numbering-mode 1))
+  :init (add-hook 'after-init-hook 'window-numbering-mode))
 
-(use-package ace-window :ensure t
+(use-package ace-window
   :commands (ace-window)
   :config
   (progn
@@ -163,7 +260,7 @@
              avy-goto-word-0))
 
 (use-package winner
-  :if (not noninteractive)
+  ;; :if (not noninteractive)
   :commands (winner-redo winner-undo)
   :config (winner-mode 1))
 
@@ -178,66 +275,7 @@
              sticky-window-delete-other-windows
              sticky-window-keep-window-visible))
 
-;; ------ Hydra
-(defhydra hydra-buffer (:color blue :columns 4 :exit t)
-  "Buffers Switcher"
-  ("b"   blaine/last-buffer "Last Buffer")
-  ("l"   ivy-switch-buffer "All Buffers")
-  ("C-l"   ivy-switch-buffer "All Buffers")
-  ("p"   counsel-projectile-switch-to-buffer "Project Buffers")
-  ("s"   save-buffer "Save" :color red)
-  ("k"   kill-this-buffer "Kill this buffer"  :color red)
-  ("d"   blaine/delete-current-buffer-file "Delete This Buffer" :color red)
-  ("B"   blaine/ibuffer-startup "Ibuffer")
-  ("M-b" buffer-menu "Buffer Menu")
-  ("."   hydra-window/body "Windows")
-  ("q"   nil "Cancel" :color blue))
+(use-package dedicated
+  :commands dedicated-mode)
 
-(defhydra hydra-window (:hint nil :color amaranth :columns 3 :exit t :idle 0.3)
-   "
-^MOVE^ ^^^^   ^SPLIT^          ^SIZE^ ^^^^   ^COMMAND^   ^WINDOW^
-^ ^ _k_ ^ ^   _-_ : split H    ^ ^ _p_ ^ ^   _d_elete    ^1^ ^2^ ^3^ ^4^
-_h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
-^ ^ _j_ ^ ^   _s_ : split H    ^ ^ _n_ ^ ^   _u_ndo      ^9^ ^0^
-^ ^ ^ ^ ^ ^   _v_ : split V    ^ ^ ^ ^ ^ ^
-"
-  ("h" windmove-left :color blue)
-  ("l" windmove-right :color blue)
-  ("j" windmove-down :color blue )
-  ("k" windmove-up :color blue)
-
-  ;; size
-  ("p" (lambda () (interactive) (enlarge-window -1)))
-  ("b" enlarge-window-horizontally)
-  ("f" (lambda () (interactive) (enlarge-window-horizontally -1)))
-  ("n" (lambda () (interactive) (enlarge-window 1)))
-
-  ;; splt
-  ("-" split-window-vertically)
-  ("s" split-window-vertically)
-  ("|" split-window-horizontally)
-  ("v" split-window-horizontally)
-
-  ("u" winner-undo)
-  ("m" sticky-window-delete-other-windows)
-  ("d" sticky-window-delete-window)
-
-  ("a" ace-window)
-  ("=" balance-windows)
-
-  ;; change height and width
-  ("0" select-window-0 :color blue)
-  ("1" select-window-1 :color blue)
-  ("2" select-window-2 :color blue)
-  ("3" select-window-3 :color blue)
-  ("4" select-window-4 :color blue)
-  ("5" select-window-5 :color blue)
-  ("6" select-window-6 :color blue)
-  ("7" select-window-7 :color blue)
-  ("8" select-window-8 :color blue)
-  ("9" select-window-9 :color blue)
-
-  ("D" kill-buffer-and-window "Delete Buffer" :color red)
-  ("w" blaine/other-window "Other Window" :color blue)
-  ("." hydra-buffer/body "Buffers" :color blue)
-  ("q" nil "quit" :color blue))
+;;; nav.el ends here
