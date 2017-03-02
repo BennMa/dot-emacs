@@ -1,27 +1,41 @@
 ;; ------ global keybindings
 (use-package hydra)
-(use-package key-chord :defer 1 :config (setq key-chord-two-keys-delay 0.2))
 (use-package diminish)
 (use-package bind-key)
+(use-package key-chord :defer 1 :config (setq key-chord-two-keys-delay 0.2))
 (use-package use-package-chords :config (key-chord-mode 1))
 (use-package restart-emacs :commands restart-emacs)
-(use-package server :config (unless (server-running-p) (server-start)))
 (use-package general
   :config
   (progn
     (general-define-key "RET" 'newline-and-indent
                         "C-a" 'mwim-beginning-of-code-or-line
                         "C-e" 'mwim-end-of-code-or-line
-                        "C-/" 'undo-tree-undo
                         "C-;" 'hydra-projectile-if-projectile-p
                         "C-x C-v" 'ivy-resume
-                        "C-S-v" 'scroll-other-window
-                        "C-M-v" 'scroll-down-command
                         "C-M-d" 'blaine/duplicate-line
-                        "C-M-S-v" 'scroll-other-window-down
+                        "M-i" 'counsel-imenu
                         "M-!" 'async-shell-command
-                        "M-`" 'other-frame
-                        "M-y" 'counsel-yank-pop
+                        "M-`" 'other-frame)
+    ;; C-x
+    (general-define-key :prefix "C-x"
+                        "y" '(lambda() (interactive) (blaine/insert-separator nil))
+                        "Y" '(lambda() (interactive) (blaine/insert-separator t))
+                        "v" 'blaine/buffer-info
+                        "d" 'dired-jump
+                        "C-e" 'pp-eval-last-sexp
+                        "C-o" 'blaine/kill-other-buffers
+                        "C-f" 'counsel-find-file)
+
+    ;; Major mode helper
+    (general-define-key "C-?"     '(lambda () (interactive)
+                                     (if (eq major-mode 'makey-key-mode)
+                                         (makey-key-mode-command nil)
+                                       (call-interactively 'discover-my-major)))
+                        "C-M-?"   'discover-my-mode)
+
+    ;; Copy&Paste keybindings
+    (general-define-key "M-y" 'counsel-yank-pop
                         "M-q" 'save-buffers-kill-terminal
                         "M-v" 'yank
                         "M-c" 'kill-ring-save
@@ -31,65 +45,36 @@
                                    (call-interactively 'counsel-M-x)))
                         "M-w" '(lambda () (interactive)
                                  (kill-buffer (current-buffer)))
-                        "M-w" 'kill-buffer-and-window ;;delete-window
+                        "M-W" 'kill-buffer-and-window ;;delete-window
                         ;; "M-n" 'make-frame
                         ;; "C-M-w" 'delete-frame
+                        "C-/" 'undo-tree-undo
                         "M-z" 'undo-tree-undo
                         "M-r" 'undo-tree-redo
                         "M-s" '(lambda () (interactive)
                                  (call-interactively (key-binding "\C-x\C-s")))
-                        "M-i" 'counsel-imenu)
-    ;; C-x
-    (general-define-key :prefix "C-x"
-                        "d" 'delete-whitespace-rectangle
-                        "F" 'set-fill-column
-                        "t" 'toggle-truncate-lines
-                        "y" '(lambda() (interactive) (blaine/insert-separator nil))
-                        "Y" '(lambda() (interactive) (blaine/insert-separator t))
-                        "v" 'blaine/buffer-info
-                        "d" 'dired-jump
-                        "C-e" 'pp-eval-last-sexp
-                        "C-o" 'blaine/kill-other-buffers
-                        "C-f" 'counsel-find-file)
-    ;; C-c
-    (general-define-key :prefix "C-c"
-                        "SPC" 'just-one-space
-                        "C-f" 'blaine/format-buffer
-                        "f"   'flush-lines
-                        "g"   'goto-line
-                        "k"   'keep-lines
-                        "o"   'customize-option
-                        "O"   'customize-group
-                        "F"   'customize-face
-                        "l"   'counsel-find-library
-                        "q"   'fill-region
-                        "["   'align-regexp
-                        "="   'count-matches
-                        ";"   'comment-or-uncomment-region)
-    ;; C-h
-    (general-define-key "C-h e"   nil
-                        "C-?"     '(lambda () (interactive)
-                                     (if (eq major-mode 'makey-key-mode)
-                                         (makey-key-mode-command nil)
-                                       (call-interactively 'discover-my-major)))
-                        "C-M-?"   'discover-my-mode
-                        ;; "C-h C-m" 'describe-mode
-                        )
+                        "C-v" 'scroll-up-command
+                        "C-M-v" 'scroll-down-command
+                        "C-S-v" 'scroll-other-window
+                        "C-M-S-v" 'scroll-other-window-down)
 
-    (general-define-key :prefix "C-h e"
-                        "c" 'finder-commentary
-                        "e" 'view-echo-area-messages
-                        "f" 'find-function
-                        "F" 'find-face-definition
-                        "i" 'info-apropos
-                        "k" 'find-function-on-key
-                        "l" 'find-library
-                        "s" 'blaine/scratch
-                        "v" 'find-variable
-                        "V" 'apropos-value
-                        "t" 'blaine/what-face)
-    ;; C-c e
-    (general-define-key "C-c e" (defhydra hydra-elisp-helper (:hint nil :color pink :columns 4 :exit t)
+    ;; System operations
+    (general-define-key "C-c s" (defhydra hydra-system-operations (:hint nil :color teal :columns 4)
+                                  ("SPC" just-one-space "One space")
+                                  ("d"   delete-whitespace-rectangle "Del whitespace")
+                                  ("F"   set-fill-column "Set fill column")
+                                  ("t"   toggle-truncate-lines "Toggle truncate lines")
+                                  ("l"   flush-lines "Del matched lines")
+                                  ("g"   goto-line "Goto line")
+                                  ("k"   keep-lines "Keep lines")
+                                  ("f"   fill-region "Fill region")
+                                  ("["   align-regexp "Align by regexp")
+                                  ("="   count-matches "Count matches")
+                                  (";"   comment-or-uncomment-region "Toggle comment")
+                                  ("q"   nil "Cancel")))
+
+    ;; Elisp related keybindings
+    (general-define-key "C-c e" (defhydra hydra-elisp-helper (:hint nil :color teal :columns 4)
                                   "Elisp Helper"
                                   ("E" elint-current-buffer "Elint Buffer")
                                   ("b" (lambda () (interactive)
@@ -103,9 +88,30 @@
                                   ("z" byte-recompile-directory "Byterecompile Dir")
                                   ("j" emacs-lisp-mode "Emacs Lisp Mode")
                                   ("q" nil "Cancel")))
+
+    ;; Extended Help Helper
+    (general-define-key "C-h e" (defhydra hydra-extended-help-helper (:hint nil :color teal :columns 4)
+                                  "Extended Help Helper"
+                                  ("e" view-echo-area-messages "Messages")
+                                  ("f" find-function "Find function")
+                                  ("F" find-face-definition "Find face definition")
+                                  ("i" info-apropos "Info apropos")
+                                  ("V" apropos-value "Apropos value")
+                                  ("k" find-function-on-key "Find function by key")
+                                  ;; ("l" find-library "Find library")
+                                  ("l" counsel-find-library "Library")
+                                  ("L" finder-commentary "Library commentary")
+                                  ("s" blaine/scratch "Scratch")
+                                  ("o" customize-option "Customize option")
+                                  ("O" customize-group "Customize group")
+                                  ("c" customize-face "Customize face")
+                                  ("v" find-variable "Find variable")
+                                  ("t" blaine/what-face "What face")
+                                  ("q" nil "Cancel")))
     ))
 
 ;; ------ packages
+(use-package server :config (unless (server-running-p) (server-start)))
 (use-package session)
 
 ;; (use-package cus-edit)

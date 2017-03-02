@@ -6,15 +6,11 @@
                     "C-c C-f" nil
                     "C-c i" 'js-doc-insert-function-doc)
 
-(general-define-key :keymaps 'json-mode-map
-                    "C-," 'hydra-json/body
-                    "C-c C-g" 'jsons-print-path)
-
-
 (defhydra hydra-javascript (:hint nil :color blue :exit t :columns 4)
   "Javascript Helper"
-  ("f" web-beautify-js  "Code Format")
+  ("f" web-beautify-js "Code Format")
   ("t" hydra-tern/body "Tern")
+  ("r" nil "Refactor")
   ("q" nil "Cancel"))
 
 (defhydra hydra-tern (:hint nil :color blue :exit t :columns 3)
@@ -28,6 +24,10 @@
   ("t" tern-get-type "Get type")
   ("r" tern-rename-variable "Rename Var")
   ("q" nil "Cancel"))
+
+(general-define-key :keymaps 'json-mode-map
+                    "C-," 'hydra-json/body
+                    "C-c C-g" 'jsons-print-path)
 
 (defhydra hydra-json (:hint nil :color blue :exit t :columns 4)
   "Json Helper"
@@ -58,11 +58,15 @@
              js-doc-insert-tag))
 
 (use-package tern
-  :commands tern-mode
+  :commands (tern-mode)
   :config
   (progn
     (use-package company-tern
-      :config (add-to-list 'company-backends 'company-tern))))
+      :config (add-to-list 'company-backends 'company-tern))
+
+    (defun delete-tern-process ()
+      (interactive)
+      (delete-process "Tern"))))
 
 (use-package json-snatcher
   :commands jsons-print-path)

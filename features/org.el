@@ -11,6 +11,7 @@
 (load (expand-file-name "org-settings" user-emacs-directory))
 
 (general-define-key "C-." 'hydra-org/body)
+
 (defhydra hydra-org (:color blue :hint nil :columns 4 :idle 0.3)
   "Org Helper"
   ("." my-org-agenda-startup "StartUp")
@@ -23,6 +24,32 @@
   ("s" org-kb/search "Search Documents")
   ("t" org-kb/collect "Collector")
   ("q" nil "Quit"))
+
+(defhydra hydra-org-clock (:color blue :hint nil)
+  "
+^Clock:^ ^In/out^     ^Edit^   ^Summary^    | ^Timers:^ ^Run^           ^Insert
+-^-^-----^-^----------^-^------^-^----------|--^-^------^-^-------------^------
+(_?_)    _i_n         _e_dit   _g_oto entry | (_z_)     _r_elative      ti_m_e
+^ ^     _c_ontinue   _q_uit   _d_isplay    |  ^ ^      cou_n_tdown     i_t_em
+^ ^     _o_ut        ^ ^      _r_eport     |  ^ ^      _p_ause toggle
+^ ^     ^ ^          ^ ^      ^ ^          |  ^ ^      _s_top
+"
+  ("i" org-clock-in)
+  ("c" org-clock-in-last)
+  ("o" org-clock-out)
+  ("e" org-clock-modify-effort-estimate)
+  ("q" org-clock-cancel)
+  ("g" org-clock-goto)
+  ("d" org-clock-display)
+  ("r" org-clock-report)
+  ("?" (org-info "Clocking commands"))
+  ("r" org-timer-start)
+  ("n" org-timer-set-timer)
+  ("p" org-timer-pause-or-continue)
+  ("s" org-timer-stop)
+  ("m" org-timer)
+  ("t" org-timer-item)
+  ("z" (org-info "Timers")))
 
 (use-package org
   :mode ("\\.org\\'"   . org-mode)
@@ -240,28 +267,4 @@ prepended to the element after the #+HEADERS: tag."
     (add-to-list 'org-capture-templates (org-projectile:project-todo-entry "p"))
     ))
 
-(defhydra hydra-org-clock (:color blue :hint nil)
-  "
-^Clock:^ ^In/out^     ^Edit^   ^Summary^    | ^Timers:^ ^Run^           ^Insert
--^-^-----^-^----------^-^------^-^----------|--^-^------^-^-------------^------
-(_?_)    _i_n         _e_dit   _g_oto entry | (_z_)     _r_elative      ti_m_e
-^ ^     _c_ontinue   _q_uit   _d_isplay    |  ^ ^      cou_n_tdown     i_t_em
-^ ^     _o_ut        ^ ^      _r_eport     |  ^ ^      _p_ause toggle
-^ ^     ^ ^          ^ ^      ^ ^          |  ^ ^      _s_top
-"
-  ("i" org-clock-in)
-  ("c" org-clock-in-last)
-  ("o" org-clock-out)
-  ("e" org-clock-modify-effort-estimate)
-  ("q" org-clock-cancel)
-  ("g" org-clock-goto)
-  ("d" org-clock-display)
-  ("r" org-clock-report)
-  ("?" (org-info "Clocking commands"))
-  ("r" org-timer-start)
-  ("n" org-timer-set-timer)
-  ("p" org-timer-pause-or-continue)
-  ("s" org-timer-stop)
-  ("m" org-timer)
-  ("t" org-timer-item)
-  ("z" (org-info "Timers")))
+;;; org.el ends here

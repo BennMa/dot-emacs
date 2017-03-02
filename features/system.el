@@ -39,4 +39,5 @@
   (progn
     (use-package cua
       :disabled t
-      :config (cua-mode 1)))))
+      :config (cua-mode 1))
+    (setq browse-url-browser-function 'browse-url-chromium))))

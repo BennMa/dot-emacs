@@ -19,7 +19,7 @@
  '(ahs-idle-interval 0.5)
  '(ahs-modes
    (quote
-    (actionscript-mode apache-mode bat-generic-mode c++-mode c-mode csharp-mode css-mode dos-mode emacs-lisp-mode html-mode ini-generic-mode java-mode javascript-mode js-mode js2-mode json-mode lisp-interaction-mode lua-mode latex-mode makefile-mode makefile-gmake-mode markdown-mode moccur-edit-mode nxml-mode nxhtml-mode outline-mode perl-mode cperl-mode web-mode php-mode python-mode rc-generic-mode reg-generic-mode ruby-mode sgml-mode sh-mode squirrel-mode text-mode tcl-mode visual-basic-mode)))
+    (actionscript-mode apache-mode bat-generic-mode c++-mode c-mode csharp-mode css-mode dos-mode emacs-lisp-mode html-mode ini-generic-mode java-mode javascript-mode js-mode js2-mode json-mode lisp-interaction-mode lua-mode latex-mode makefile-mode makefile-gmake-mode markdown-mode moccur-edit-mode nxml-mode nxhtml-mode outline-mode perl-mode cperl-mode web-mode php-mode python-mode rc-generic-mode reg-generic-mode ruby-mode sgml-mode sh-mode squirrel-mode text-mode tcl-mode visual-basic-mode scala-mode)))
  '(alert-default-style (quote fringe))
  '(alert-notifier-command
    "/Applications/Misc/terminal-notifier.app/Contents/MacOS/terminal-notifier")
@@ -81,7 +81,7 @@
  '(bmkp-crosshairs-flag nil)
  '(bmkp-last-as-first-bookmark-file "~/.emacs.d/.data/bookmarks")
  '(bookmark-default-file "~/.emacs.d/.data/bookmarks")
- '(browse-url-browser-function (quote browse-url-chromium))
+ '(browse-url-browser-function (quote browse-url-default-browser))
  '(byte-compile-verbose nil)
  '(c-basic-offset 4)
  '(c-default-style
@@ -597,7 +597,7 @@
  '(op/theme (quote emacs_love))
  '(package-selected-packages
    (quote
-    (origami ob-php focus bm rainbow-mode tiny smartparens ranger dired-k paradox counsel-gtags phpcbf php-auto-yasnippets php-extras org-agenda undo-tree yatemplate ggtags goto-chg sticky-windows zoom-frm ace-window window-numbering reveal-in-osx-finder pbcopy osx-trash counsel-projectile counsel ivy swiper hydra restart-emacs use-package-chords key-chord general clean-aindent-mode highlight-parentheses hl-parentheses hl-anything edts-mode ediff-keep zencoding-mode yaml-mode window-number which-key web-mode w3m vertigo use-package tide tabbar sr-speedbar sml-mode smex skewer-mode shackle session restclient quickrun project-explorer powerline popwin phpunit php-mode pdf-tools ox-ioslide org-page ob-typescript nlinum multi-term maxframe markdown-mode magit lua-mode js2-refactor inf-mongo indent-guide imenu-list imenu+ ido-yes-or-no ido-ubiquitous ido-grid-mode ibuffer-vc hl-line+ helm-swoop helm-projectile helm-gtags helm-ag google-this expand-region exec-path-from-shell esup escreen erlang ensime emmet-mode elscreen elpy dockerfile-mode docker discover-my-major direx dired+ dedicated company-tern company-emacs-eclim company-c-headers color-moccur cmake-mode circe-notifications buffer-move bookmark+ blog-admin backup-each-save back-button auto-yasnippet auto-highlight-symbol anzu ag ace-jump-mode)))
+    (company-statistics company-quickhelp aggressive-indent move-text hungry-delete highlight-numbers highlight-indent-guides origami ob-php focus bm rainbow-mode tiny smartparens ranger dired-k paradox counsel-gtags phpcbf php-auto-yasnippets php-extras org-agenda undo-tree yatemplate ggtags goto-chg sticky-windows zoom-frm ace-window window-numbering reveal-in-osx-finder pbcopy osx-trash counsel-projectile counsel ivy swiper hydra restart-emacs use-package-chords key-chord general clean-aindent-mode highlight-parentheses hl-parentheses hl-anything edts-mode ediff-keep zencoding-mode yaml-mode window-number which-key web-mode w3m vertigo use-package tide tabbar sr-speedbar sml-mode smex skewer-mode shackle session restclient quickrun project-explorer powerline popwin phpunit php-mode pdf-tools ox-ioslide org-page ob-typescript nlinum multi-term maxframe markdown-mode magit lua-mode js2-refactor inf-mongo indent-guide imenu-list imenu+ ido-yes-or-no ido-ubiquitous ido-grid-mode ibuffer-vc hl-line+ helm-swoop helm-projectile helm-gtags helm-ag google-this expand-region exec-path-from-shell esup escreen erlang ensime emmet-mode elscreen elpy dockerfile-mode docker discover-my-major direx dired+ dedicated company-tern company-emacs-eclim company-c-headers color-moccur cmake-mode circe-notifications buffer-move bookmark+ blog-admin backup-each-save back-button auto-yasnippet auto-highlight-symbol anzu ag ace-jump-mode)))
  '(page-break-lines-modes
    (quote
     (emacs-lisp-mode compilation-mode outline-mode prog-mode haskell-mode)))

@@ -1,5 +1,5 @@
 (use-package scala-mode
-  :mode ("\\.scala\\'"   . scala-mode)
+  :mode ("\\.scala\\'"  . scala-mode)
   :interpreter ("scala" . scala-mode)
   :config
   (add-hook 'scala-mode-hook
@@ -10,7 +10,7 @@
                     comment-empty-lines t)
               ;; (setq prettify-symbols-alist scala-prettify-symbols-alist)
               ;; (prettify-symbols-mode)
-              (auto-highlight-symbol-mode 1)
+              (ensime-mode 1)
               ))
 
   (defun scala-mode-newline-comments ()
@@ -37,6 +37,7 @@
 
 (use-package ensime
   :pin melpa-stable
-  :config
-  (setq ensime-startup-notification nil)
-  (setq ensime-startup-snapshot-notification nil))
+  :commands (ensime-mode)
+  :init
+  (progn
+    (setq ensime-startup-snapshot-notification nil)))
