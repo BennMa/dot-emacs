@@ -108,7 +108,7 @@
 (use-package git-gutter
   :diminish "GT"
   :commands (git-gutter-mode)
-  :init (add-hook 'prog-mode-hook 'git-gutter-mode)
+  ;; :init (add-hook 'prog-mode-hook 'git-gutter-mode)
   :config
   (progn
     (git-gutter:linum-setup)))

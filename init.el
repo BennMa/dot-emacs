@@ -115,6 +115,7 @@ See also `locate-user-emacs-file'.")
         "misc"
         "git"
         "org"
+        "term"
         "lang/javascript"
         "lang/php"
         "lang/scala"))
