@@ -1,4 +1,10 @@
-(general-define-key "M-f" 'sp-forward-word
+(general-define-key "RET" 'newline-and-indent
+                    "C-a" 'mwim-beginning-of-code-or-line
+                    "C-e" 'mwim-end-of-code-or-line
+                    "M-i" 'counsel-imenu
+                    "M-!" 'async-shell-command
+                    "M-`" 'other-frame
+                    "M-f" 'sp-forward-word
                     "M-b" 'sp-backward-word
                     "M-o C" 'highlight-changes-mode
                     "M-o h" 'hl-line-mode
@@ -21,7 +27,8 @@
                     "S-<f2>" 'bm-previous
                     "C-<f2>" 'bm-toggle)
 
-(general-define-key "C-M-f" 'sp-forward-sexp
+(general-define-key "C-M-d" 'blaine/duplicate-line
+                    "C-M-f" 'sp-forward-sexp
                     "C-M-b" 'sp-backward-sexp
                     "C-M-a" 'sp-backward-up-sexp
                     "C-M-e" 'sp-up-sexp
@@ -275,3 +282,36 @@
 (use-package linum :ensure nil
   :commands (linum-mode)
   :init (add-hook 'prog-mode-hook 'linum-mode))
+
+(use-package mwim
+  :commands (mwim
+             mwim-beginning
+             mwim-end
+             mwim-beginning-of-code-or-line
+             mwim-beginning-of-line-or-code
+             mwim-beginning-of-code-or-line-or-comment
+             mwim-end-of-code-or-line
+             mwim-end-of-line-or-code))
+
+(use-package popwin :disabled t :config (popwin-mode 1))
+;; Enforce rules for popup windows
+;; https://github.com/wasamasa/shackle
+(use-package shackle
+  :config
+  (progn
+    (setq shackle-rules
+          '((compilation-mode         :select nil)
+            ("*undo-tree*"            :size 0.25  :align right)
+            ("*eshell*"               :select t   :other t)
+            ("*Shell Command Output*" :select nil)
+            ("\\*Async Shell.*\\*"    :regexp t   :ignore t)
+            (occur-mode               :select nil :align t)
+            ("*Help*"                 :select t   :other t  :align right)
+            ("*Completions*"          :size 0.3   :align t)
+            ("*Messages*"             :select t   :other t  :align right)
+            ("\\*[Wo]*Man.*\\*"       :regexp t   :select t :inhibit-window-quit t :other t)
+            ("\\*poporg.*\\*"         :regexp t   :select t :other t)
+            ("\\`\\*helm.*?\\*\\'"    :regexp t   :size 0.3 :align t)
+            ("*Calendar*"             :select t   :size 0.3 :align below)))
+
+    (shackle-mode)))

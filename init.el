@@ -108,11 +108,13 @@ See also `locate-user-emacs-file'.")
 (blaine//load-feature "system")
 ;; load other packages
 (mapc 'blaine//load-feature
-      '("nav"
-        "misc"
-        "org"
-        "editing"
+      '("editing"
+        "dired"
+        "nav"
         "completion"
+        "misc"
+        "git"
+        "org"
         "lang/javascript"
         "lang/php"
         "lang/scala"))

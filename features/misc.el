@@ -1,13 +1,18 @@
-(general-define-key ;; (general-chord "zz") 'hydra-zoom/body
-                    ;; "C-c g" 'google-this
-                    )
+(general-define-key "C-c m" 'hydra-misc/body)
+(defhydra hydra-misc (:hint nil :color blue :columns 4)
+  "Misc Helper"
+  ("t" my-term-toggle "Toggle term")
+  ("m" emacs-toggle-size "Toggle frame size")
+  ("M" emacs-max "Max frame")
+  ("e" escreen-create-screen "Create new screen")
+  ("z" hydra-zoom/body "Zoom")
+  ("g" google-this "Google this")
+  ("q" nil "Cancel"))
 
 ;; ------ packages
 (use-package maxframe
-  :if window-system
-  :commands maximize-frame
-  :bind (("C-c M" . emacs-max)
-         ("C-c m" . emacs-toggle-size))
+  :commands (emacs-max
+             emacs-toggle-size)
   :config
   (progn
     (defvar emacs-min-top 23)
@@ -34,36 +39,12 @@
           (emacs-min)
         (maximize-frame)))))
 
-(use-package popwin :disabled t :config (popwin-mode 1))
-;; Enforce rules for popup windows
-;; https://github.com/wasamasa/shackle
-(use-package shackle
-  :config
-  (progn
-    (setq shackle-rules
-          '((compilation-mode         :select nil)
-            ("*undo-tree*"            :size 0.25  :align right)
-            ("*eshell*"               :select t   :other t)
-            ("*Shell Command Output*" :select nil)
-            ("\\*Async Shell.*\\*"    :regexp t   :ignore t)
-            (occur-mode               :select nil :align t)
-            ("*Help*"                 :select t   :other t  :align right)
-            ("*Completions*"          :size 0.3   :align t)
-            ("*Messages*"             :select t   :other t  :align right)
-            ("\\*[Wo]*Man.*\\*"       :regexp t   :select t :inhibit-window-quit t :other t)
-            ("\\*poporg.*\\*"         :regexp t   :select t :other t)
-            ("\\`\\*helm.*?\\*\\'"    :regexp t   :size 0.3 :align t)
-            ("*Calendar*"             :select t   :size 0.3 :align below)))
-
-    (shackle-mode)))
-
 (use-package escreen
-  ;; :bind-keymap ("C-c w" . escreen-map)
   :commands (escreen-create-screen)
-  :config
-  (bind-key "e" 'escreen-goto-last-screen escreen-map)
-  (bind-key "m" 'escreen-menu escreen-map)
-  (escreen-install))
+  :bind (:map escreen-map
+              ("e" . escreen-goto-last-screen)
+              ("m" . escreen-menu))
+  :config (escreen-install))
 
 (use-package zoom-frm
   :commands (zoom-frm-in
@@ -89,12 +70,10 @@
     ("q" nil :color blue)))
 
 (use-package powerline
-  :config
-  (powerline-default-theme))
+  :config (powerline-default-theme))
 
 (use-package multi-term
-  :bind (("M-t" . my-term-toggle)
-         ("C-M-t" . multi-term))
+  :commands (my-term-toggle)
   :config
   (when (require 'term nil t)
     (defun term-handle-ansi-terminal-messages (message)
@@ -111,7 +90,7 @@
                ignore)
           ;; Delete this command from MESSAGE.
           (setq message (replace-match "" t t message))
-          
+
           (cond ((= command-code ?c)
                  (setq term-ansi-at-dir argument))
                 ((= command-code ?h)
@@ -129,7 +108,7 @@
                    (magit-status argument)))
                 (t
                  (setq ignore t)))
-          
+
           ;; (when (and term-ansi-at-host term-ansi-at-dir term-ansi-at-user)
           ;;   (setq buffer-file-name
           ;;         (format "%s@%s:%s" term-ansi-at-user term-ansi-at-host term-ansi-at-dir))
@@ -143,7 +122,7 @@
           ;; (message "%s=%s=%s=%s=%s"
           ;;          term-ansi-at-host (system-name) term-ansi-at-user
           ;;          (user-real-login-name) term-ansi-at-dir)
-          
+
           (if ignore
               nil
             (setq default-directory
@@ -205,110 +184,10 @@
 
 (use-package paradox :commands paradox-list-packages)
 
-(use-package dired :ensure nil
-  :config
-  (progn
-    (use-package dired-k
-      :commands (dired-k direx-k dired-k-no-revert)
-      :init
-      (progn
-        ;; always execute dired-k when dired buffer is opened
-        (add-hook 'dired-initial-position-hook 'dired-k)
-        (add-hook 'dired-after-readin-hook #'dired-k-no-revert)))
-    ))
-
-(use-package direx
-  :bind (("C-x C-d" . my-direx:jump-to-directory-other-window))
-  :config
-  (progn
-    (add-hook 'direx:direx-mode-hook
-              #'(lambda ()
-                  (linum-mode -1)))
-    ;; (add-hook 'direx:direx-mode-hook 'direx-k)
-    ;; (push '(direx:direx-mode :position left :width 30 :dedicated t :stick t)
-    ;;       popwin:special-display-config)
-    (push '(direx:direx-mode :align left :select t :size 30) shackle-rules)
-    :config
-    (defun my-direx:jump-to-directory-other-window ()
-      (interactive)
-      ;; (switch-to-buffer-other-window (direx:jump-to-directory-noselect))
-      (direx:jump-to-directory-other-window)
-      (set-window-dedicated-p (selected-window) t))
-
-    (defadvice direx:jump-to-directory-noselect
-        (around direx:set-default-directory activate)
-      (let ((default-directory (projectile-project-root)))
-        ad-do-it))
-
-    (defun direx:do-rename-file ()
-      (interactive)
-      (let* ((item (direx:item-at-point!))
-             (file (direx:item-tree item))
-             (to (read-file-name (format "Rename %s to " (direx:tree-name file))
-                                 (direx:directory-dirname (direx:file-full-name file)))))
-        (dired-rename-file (direx:file-full-name file) to nil)
-        (direx:item-refresh-parent item)
-        (direx:move-to-item-name-part item)))
-
-    (defun direx:do-copy-files ()
-      (interactive)
-      (let* ((item (direx:item-at-point!))
-             (file (direx:item-tree item))
-             (to (read-directory-name (format "Copy %s to " (direx:tree-name file))
-                                      (direx:directory-dirname (direx:file-full-name file)))))
-        (dired-copy-file (direx:file-full-name file) to nil)
-        (direx:item-refresh-parent item)
-        (direx:move-to-item-name-part item)))))
-
-(use-package magit
-  :bind (("C-x g" . magit-status)
-         ("C-x G" . magit-log-buffer-file))
-  :config
-  (progn 
-    (setenv "GIT_PAGER" "")
-    (add-hook 'magit-mode-hook 'hl-line-mode)
-
-    ;; (unbind-key "M-h" magit-mode-map)
-    ;; (unbind-key "M-s" magit-mode-map)
-    ;; (unbind-key "M-m" magit-mode-map)
-    ;; (unbind-key "M-w" magit-mode-map)
-    ;; (unbind-key "C-<return>" magit-file-section-map)
-
-    ;; (bind-key "M-H" #'magit-show-level-2-all magit-mode-map)
-    ;; (bind-key "M-S" #'magit-show-level-4-all magit-mode-map)
-    (bind-key "U" #'magit-unstage-all magit-mode-map)
-
-    (add-hook 'magit-log-edit-mode-hook
-              #'(lambda ()
-                  (set-fill-column 72)
-                  (flyspell-mode)))
-
-    (defun magit-monitor (&optional no-display)
-      "Start git-monitor in the current directory."
-      (interactive)
-      (when (string-match "\\*magit: \\(.+?\\)\\*" (buffer-name))
-        (let ((name (format "*git-monitor: %s*"
-                            (match-string 1 (buffer-name)))))
-          (or (get-buffer name)
-              (let ((buf (get-buffer-create name)))
-                (ignore-errors
-                  (start-process "*git-monitor*" buf "git-monitor"
-                                 "-d" (expand-file-name default-directory)))
-                buf)))))
-    (add-hook 'magit-status-mode-hook #'(lambda () (magit-monitor t)))
-
-    (defun eshell/git (&rest args)
-      (cond
-       ((or (null args)
-            (and (string= (car args) "status") (null (cdr args))))
-        (magit-status-internal default-directory))
-       ((and (string= (car args) "log") (null (cdr args)))
-        (magit-log "HEAD"))
-       (t (throw 'eshell-replace-command
-                 (eshell-parse-command
-                  "*git"
-                  (eshell-stringify-list (eshell-flatten-list args)))))))))
-
 (use-package google-this
-  :init (setq google-this-keybind (kbd "C-c g"))
-  :config (google-this-mode 1))
+  :commands (google-this)
+  ;; :init (setq google-this-keybind (kbd "C-c m g"))
+  ;; :config (google-this-mode 1)
+  )
+
+;;; misc.el ends here

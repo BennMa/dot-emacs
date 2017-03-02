@@ -8,21 +8,14 @@
 (use-package general
   :config
   (progn
-    (general-define-key "RET" 'newline-and-indent
-                        "C-a" 'mwim-beginning-of-code-or-line
-                        "C-e" 'mwim-end-of-code-or-line
-                        "C-;" 'hydra-projectile-if-projectile-p
+    (general-define-key "C-;" 'hydra-projectile-if-projectile-p
                         "C-x C-v" 'ivy-resume
-                        "C-M-d" 'blaine/duplicate-line
-                        "M-i" 'counsel-imenu
-                        "M-!" 'async-shell-command
-                        "M-`" 'other-frame)
+                        "C-c ;" 'comment-or-uncomment-region)
     ;; C-x
     (general-define-key :prefix "C-x"
                         "y" '(lambda() (interactive) (blaine/insert-separator nil))
                         "Y" '(lambda() (interactive) (blaine/insert-separator t))
                         "v" 'blaine/buffer-info
-                        "d" 'dired-jump
                         "C-e" 'pp-eval-last-sexp
                         "C-o" 'blaine/kill-other-buffers
                         "C-f" 'counsel-find-file)
@@ -70,7 +63,6 @@
                                   ("f"   fill-region "Fill region")
                                   ("["   align-regexp "Align by regexp")
                                   ("="   count-matches "Count matches")
-                                  (";"   comment-or-uncomment-region "Toggle comment")
                                   ("q"   nil "Cancel")))
 
     ;; Elisp related keybindings
@@ -242,13 +234,3 @@
 
 (use-package discover-my-major
   :commands (discover-my-major discover-my-mode))
-
-(use-package mwim
-  :commands (mwim
-             mwim-beginning
-             mwim-end
-             mwim-beginning-of-code-or-line
-             mwim-beginning-of-line-or-code
-             mwim-beginning-of-code-or-line-or-comment
-             mwim-end-of-code-or-line
-             mwim-end-of-line-or-code))
