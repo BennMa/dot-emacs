@@ -112,6 +112,7 @@
   :init (multiple-mode-add-hook my--completion-modes 'yas-minor-mode)
   :config
   (progn
+    (setq yas-key-syntaxes (remove "w" yas-key-syntaxes))
     (yas-load-directory "~/.emacs.d/snippets/")
 
     ;; (defvar-local yas--expandable-keys-overlay nil)

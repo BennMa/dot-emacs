@@ -27,7 +27,7 @@
   ("."   hydra-window/body "Windows")
   ("q"   nil "Cancel" :color blue))
 
-(defhydra hydra-window (:hint nil :color amaranth :columns 3 :exit t :idle 0.3)
+(defhydra hydra-window (:hint nil :color amaranth :columns 3 :exit t :idle 0.5)
    "
 ^MOVE^ ^^^^   ^SPLIT^          ^SIZE^ ^^^^   ^COMMAND^   ^WINDOW^
 ^ ^ _k_ ^ ^   _-_ : split H    ^ ^ _p_ ^ ^   _d_elete    ^1^ ^2^ ^3^ ^4^

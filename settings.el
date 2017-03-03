@@ -525,6 +525,8 @@
  '(ivy-use-virtual-buffers t)
  '(js-doc-author "benn")
  '(js-doc-mail-address "benn@thenetcircle.com")
+ '(js2-bounce-indent-p t)
+ '(js2-indent-switch-body t)
  '(js3-enter-indents-newline t)
  '(js3-expr-indent-offset 2)
  '(js3-indent-on-enter-key t)
@@ -662,7 +664,7 @@
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
    (quote
-    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")) t)
+    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")))
  '(recentf-max-saved-items 1000)
  '(recentf-save-file "~/.emacs.d/.data/recentf")
  '(redisplay-dont-pause t t)

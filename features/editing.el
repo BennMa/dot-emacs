@@ -10,7 +10,8 @@
                     "M-o h" 'hl-line-mode
                     "M-%"   'anzu-query-replace
                     "C-M-%" 'anzu-query-replace-regexp
-                    "C-S-s" 'counsel-ag
+                    "C-S-s" 'swiper
+                    "C-S-a" 'counsel-ag
                     "C-=" 'er/expand-region
                     "M-=" '(lambda () (interactive)
                              (save-excursion

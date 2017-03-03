@@ -1,17 +1,15 @@
 (general-define-key :keymaps 'js2-mode-map
-                    "C-," 'hydra-javascript/body
                     "@" 'js-doc-insert-tag
                     "M-." 'tern-find-definition
                     "M-," 'tern-pop-find-definition
-                    "C-c C-f" nil
-                    "C-c i" 'js-doc-insert-function-doc)
-
-(defhydra hydra-javascript (:hint nil :color blue :exit t :columns 4)
-  "Javascript Helper"
-  ("f" web-beautify-js "Code Format")
-  ("t" hydra-tern/body "Tern")
-  ("r" nil "Refactor")
-  ("q" nil "Cancel"))
+                    "C-," (defhydra hydra-javascript (:hint nil :color blue :exit t :columns 4)
+                            "Javascript Helper"
+                            ("f" web-beautify-js "Code Format")
+                            ("i" js-doc-insert-function-doc "Insert Doc")
+                            ("t" hydra-tern/body "Tern")
+                            ("n" hydra-nodejs-repl/body "Nodejs Repl")
+                            ("r" nil "Refactor")
+                            ("q" nil "Cancel")))
 
 (defhydra hydra-tern (:hint nil :color blue :exit t :columns 3)
   "Tern Helper"
@@ -23,6 +21,14 @@
   ("d" tern-get-docs "Get docs")
   ("t" tern-get-type "Get type")
   ("r" tern-rename-variable "Rename Var")
+  ("q" nil "Cancel"))
+
+(defhydra hydra-nodejs-repl (:hint nil :color blue :exit t :columns 3)
+  "Nodejs Repl Helper"
+  ("e" nodejs-repl-send-last-sexp "Send last sexp")
+  ("r" nodejs-repl-send-region "Send region")
+  ("l" nodejs-repl-load-file "Load file")
+  ("s" nodejs-repl-switch-to-repl "Swith to repl")
   ("q" nil "Cancel"))
 
 (general-define-key :keymaps 'json-mode-map
@@ -41,7 +47,9 @@
   (progn
     (add-hook 'js2-mode-hook #'js2-refactor-mode)
     (add-hook 'js2-mode-hook #'aggressive-indent-mode)
-    (add-hook 'js2-mode-hook #'(lambda () (tern-mode t)))))
+    (add-hook 'js2-mode-hook #'skewer-mode)
+    (add-hook 'js2-mode-hook #'(lambda () (tern-mode t)))
+    ))
 
 (use-package json-mode
   :mode ("\\.json\\'" . json-mode))
@@ -75,3 +83,14 @@
   :commands (web-beautify-js
              web-beautify-css
              web-beautify-html))
+
+(use-package nodejs-repl
+  :commands (nodejs-repl-send-last-sexp
+             nodejs-repl-send-region
+             nodejs-repl-load-file
+             nodejs-repl-switch-to-repl))
+
+(use-package skewer-mode
+  :commands (skewer-mode
+             skewer-css-mode
+             skewer-html-mode))
