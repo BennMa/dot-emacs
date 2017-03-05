@@ -215,7 +215,9 @@
     (and (boundp 'prog-mode-hook)
          (add-hook 'prog-mode-hook 'smartparens-mode))
     (and (boundp 'markdown-mode-hook)
-         (add-hook 'markdown-mode-hook 'smartparens-mode)))
+         (add-hook 'markdown-mode-hook 'smartparens-mode))
+    ;; (add-hook 'emacs-lisp-mode-hook 'smartparens-strict-mode)
+    )
   :config
   (progn
     (smartparens-mode 1)

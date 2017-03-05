@@ -113,12 +113,14 @@ See also `locate-user-emacs-file'.")
         "nav"
         "completion"
         "misc"
+        "cedet"
         "git"
         "org"
         "term"
         "lang/javascript"
         "lang/php"
-        "lang/scala"))
+        "lang/scala"
+        "lang/python"))
 
 ;; (byte-recompile-directory user-package-settings-directory 0)
 ;; (mapc #'(lambda (file)

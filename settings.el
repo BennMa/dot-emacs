@@ -32,7 +32,7 @@
  '(appt-message-warning-time 60)
  '(auth-source-save-behavior nil)
  '(auto-compression-mode t nil (jka-compr))
- '(auto-save-file-name-transforms (quote (("\\`/[^/]*:.*" "/tmp" t))))
+ '(auto-save-file-name-transforms (quote ((".*" "~/.emacs.d/.data/auto-save-backups/" t))))
  '(auto-save-interval 64)
  '(auto-save-list-file-prefix "~/.emacs.d/.data/auto-save-list/.saves-")
  '(auto-save-timeout 2)
@@ -40,14 +40,8 @@
    (quote
     (97 115 100 102 103 104 106 107 108 119 101 114 116 121 117 105 111 112 120 99 118 98 110 109)))
  '(avy-style (quote at-full))
- '(backup-directory-alist
-   (quote
-    (("~/.emacs.d/" . "~/.emacs.d/.backups")
-     ("~/Mine/Emacs/" . "~/Mine/Emacs/.backups")
-     ("~/Mine/Documents/" . "~/Mine/Documents/.backups")
-     ("~/Mine/Projects/" . "~/Mine/Projects/.backups")
-     ("\\(recentf\\|archive/sent\\)" . "/tmp/emacs-backup")
-     (".*" . "~/.backups"))))
+ '(backup-by-copying t)
+ '(backup-directory-alist (quote (("." . "~/.emacs.d/.data/backups"))))
  '(backward-delete-char-untabify-method (quote untabify))
  '(bbdb-default-country "")
  '(bbdb-file "~/Mine/Documents/BBDB/benn.bbdb")
@@ -202,7 +196,7 @@
  '(deft-directory "~/Documents/notes")
  '(deft-text-mode (quote org-mode))
  '(delete-by-moving-to-trash t)
- '(delete-old-versions (quote none))
+ '(delete-old-versions t)
  '(delete-selection-mode t)
  '(diary-file "~/Documents/diary")
  '(diff-mode-hook
@@ -534,6 +528,7 @@
  '(js3-lazy-dots t)
  '(js3-paren-indent-offset 2)
  '(js3-square-indent-offset 4)
+ '(kept-new-versions 6)
  '(kill-do-not-save-duplicates t)
  '(kill-whole-line t)
  '(large-file-warning-threshold nil)
@@ -599,7 +594,7 @@
  '(op/theme (quote emacs_love))
  '(package-selected-packages
    (quote
-    (git-link git-gutter git-messenger git-timemachine company-statistics company-quickhelp aggressive-indent move-text hungry-delete highlight-numbers highlight-indent-guides origami ob-php focus bm rainbow-mode tiny smartparens ranger dired-k paradox counsel-gtags phpcbf php-auto-yasnippets php-extras org-agenda undo-tree yatemplate ggtags goto-chg sticky-windows zoom-frm ace-window window-numbering reveal-in-osx-finder pbcopy osx-trash counsel-projectile counsel ivy swiper hydra restart-emacs use-package-chords key-chord general clean-aindent-mode highlight-parentheses hl-parentheses hl-anything edts-mode ediff-keep zencoding-mode yaml-mode window-number which-key web-mode w3m vertigo use-package tide tabbar sr-speedbar sml-mode smex skewer-mode shackle session restclient quickrun project-explorer powerline popwin phpunit php-mode pdf-tools ox-ioslide org-page ob-typescript nlinum multi-term maxframe markdown-mode magit lua-mode js2-refactor inf-mongo indent-guide imenu-list imenu+ ido-yes-or-no ido-ubiquitous ido-grid-mode ibuffer-vc hl-line+ helm-swoop helm-projectile helm-gtags helm-ag google-this expand-region exec-path-from-shell esup escreen erlang ensime emmet-mode elscreen elpy dockerfile-mode docker discover-my-major direx dired+ dedicated company-tern company-emacs-eclim company-c-headers color-moccur cmake-mode circe-notifications buffer-move bookmark+ blog-admin backup-each-save back-button auto-yasnippet auto-highlight-symbol anzu ag ace-jump-mode)))
+    (nodejs-repl git-link git-gutter git-messenger git-timemachine company-statistics company-quickhelp aggressive-indent move-text hungry-delete highlight-numbers highlight-indent-guides origami ob-php focus bm rainbow-mode tiny smartparens ranger dired-k paradox counsel-gtags phpcbf php-auto-yasnippets php-extras org-agenda undo-tree yatemplate ggtags goto-chg sticky-windows zoom-frm ace-window window-numbering reveal-in-osx-finder pbcopy osx-trash counsel-projectile counsel ivy swiper hydra restart-emacs use-package-chords key-chord general clean-aindent-mode highlight-parentheses hl-parentheses hl-anything edts-mode ediff-keep zencoding-mode yaml-mode window-number which-key web-mode w3m vertigo use-package tide tabbar sr-speedbar sml-mode smex skewer-mode shackle session restclient quickrun project-explorer powerline popwin phpunit php-mode pdf-tools ox-ioslide org-page ob-typescript nlinum multi-term maxframe markdown-mode magit lua-mode js2-refactor inf-mongo indent-guide imenu-list imenu+ ido-yes-or-no ido-ubiquitous ido-grid-mode ibuffer-vc hl-line+ helm-swoop helm-projectile helm-gtags helm-ag google-this expand-region exec-path-from-shell esup escreen erlang ensime emmet-mode elscreen elpy dockerfile-mode docker discover-my-major direx dired+ dedicated company-tern company-emacs-eclim company-c-headers color-moccur cmake-mode circe-notifications buffer-move bookmark+ blog-admin backup-each-save back-button auto-yasnippet auto-highlight-symbol anzu ag ace-jump-mode)))
  '(page-break-lines-modes
    (quote
     (emacs-lisp-mode compilation-mode outline-mode prog-mode haskell-mode)))
@@ -765,7 +760,7 @@
  '(term-buffer-maximum-size 0)
  '(term-scroll-show-maximum-output t)
  '(term-unbind-key-list (quote ("C-z" "C-x" "C-c" "C-h" "C-y" "<ESC>" "M-v")))
- '(tramp-auto-save-directory "~/.backups")
+ '(tramp-auto-save-directory "~/.emacs.d/.data/tramp-backups")
  '(tramp-default-method "ssh")
  '(tramp-default-method-alist
    (quote
@@ -775,7 +770,7 @@
  '(trash-directory "~/.Trash")
  '(undo-limit 800000)
  '(undo-tree-auto-save-history t)
- '(undo-tree-history-directory-alist (quote ((".*" . "~/.backups"))))
+ '(undo-tree-history-directory-alist (quote ((".*" . "~/.emacs.d/.data/undo-tree-backups"))))
  '(undo-tree-mode-lighter "")
  '(undo-tree-visualizer-timestamps t)
  '(url-cache-directory "~/.emacs.d/.data/url/cache")
