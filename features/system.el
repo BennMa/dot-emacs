@@ -40,4 +40,12 @@
     (use-package cua
       :disabled t
       :config (cua-mode 1))
-    (setq browse-url-browser-function 'browse-url-chromium))))
+    (setq browse-url-browser-function 'browse-url-chromium)
+    (setenv "PATH" "/home/benn/.phpbrew/php/php-5.6.28/bin:/home/benn/.phpbrew/bin:/home/benn/.pyenv/plugins/pyenv-virtualenv/shims:/home/benn/.pyenv/shims:/home/benn/.pyenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin")
+    ;; (let ((my--exec-paths
+    ;;        '("/home/benn/.phpbrew/php/php-5.6.28/bin/")))
+    ;;   ;; (setenv "PATH" (concat (mapconcat 'identity my--exec-paths ";") ";" (getenv "PATH")))
+    ;;   (mapc #'(lambda (path)
+    ;;             (add-to-list 'exec-path path))
+    ;;         my--exec-paths))
+    )))

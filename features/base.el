@@ -183,8 +183,8 @@
      PROJECTILE: %(projectile-project-root)
     ^FIND FILE^        ^SEARCH/TAGS^        ^BUFFERS^       ^CACHE^                    ^PROJECT^
     _f_: file          _a_: ag              _i_: Ibuffer    _k_: cache clear           _p_: switch proj
-    _F_: file dwim     _g_: regenerate tag  _b_: switch to  _x_: remove known project
-  _C-f_: file pwd      _c_: find definition _s-k_: Kill all _X_: cleanup non-existing
+    _F_: file dwim     _g_: regenerate tag  _b_: switch to  _x_: remove known project  _l_: dir locals
+  _C-f_: file pwd      _c_: find definition _s-k_: Kill all _X_: cleanup non-existing  _v_: info
     _r_: recent file   _u_: find reference  ^ ^             _z_: cache current
     _d_: dir           _s_: find symbol
     ^ ^                _o_: multi-occur
@@ -214,6 +214,8 @@
       ("x"   projectile-remove-known-project)
       ("X"   projectile-cleanup-known-projects)
       ("z"   projectile-cache-current-file)
+      ("l"   projectile-edit-dir-locals)
+      ("v"   projectile-project-info)
       ("q"   nil "cancel" :color blue))))
 
 (use-package undo-tree
@@ -234,3 +236,14 @@
 
 (use-package discover-my-major
   :commands (discover-my-major discover-my-mode))
+
+(use-package savehist
+  :config (savehist-mode t))
+
+(use-package saveplace
+  :config
+  (progn
+    (if (fboundp 'save-place-mode)
+        ;; Emacs 25 has a proper mode for `save-place'
+        (save-place-mode)
+      (setq save-place t))))

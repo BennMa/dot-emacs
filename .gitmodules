@@ -1,3 +1,6 @@
 [submodule "snippets"]
 	path = snippets
 	url = git@github.com:BlaineMa/yasnippet-snippets.git
+[submodule "site-lisp/semantic-php"]
+	path = site-lisp/semantic-php
+	url = https://github.com/jorissteyn/semantic-php.git

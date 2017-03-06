@@ -16,17 +16,42 @@
               ("C-c t c" . phpunit-current-class)
               ("C-c t p" . phpunit-current-project))
   :config
-  (add-hook 'php-mode-hook 'eldoc-mode))
+  (progn
+    (global-ede-mode)
+    (load (expand-file-name "site-lisp/semantic-php/loaddefs" user-emacs-directory))
+    (with-eval-after-load 'company-semantic
+      (add-to-list 'company-semantic-modes 'php-mode))
+
+    (defun my/php-mode-hook()
+      (eldoc-mode t)
+      (aggressive-indent-mode t)
+      (semantic-mode t)
+      (ede-php-autoload-mode t)
+      (setq-local company-backends '((company-ac-php-backend
+                                      ;; php-extras-company
+                                      company-dabbrev-code
+                                      company-gtags
+                                      company-keywords)
+                                     company-semantic
+                                     company-files
+                                     company-dabbrev
+                                     company-oddmuse)))
+    (add-hook 'php-mode-hook 'my/php-mode-hook)))
+
+(use-package ede-php-autoload
+  :commands ede-php-autoload-mode
+  :config (require 'ede-php-autoload-mode))
+
+(use-package company-php
+  :commands company-ac-php-backend)
 
 (use-package php-extras
-  :after php-mode
-  :commands (php-extras-insert-previous-variable
+  :commands (php-extras-company
+             php-extras-insert-previous-variable
              php-extras-eldoc-documentation-function))
 
 (use-package php-auto-yasnippets
-  :commands yas/create-php-snippet
-  :bind (:map php-mode-map
-              ("C-c C-y" . yas/create-php-snippet)))
+  :commands yas/create-php-snippet)
 
 (use-package phpunit
   :commands (phpunit-current-test

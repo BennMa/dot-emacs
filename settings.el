@@ -156,8 +156,6 @@
  '(company-frontends
    (quote
     (company-pseudo-tooltip-unless-just-one-frontend company-echo-metadata-frontend company-preview-frontend)))
- '(company-gtags-executable "/usr/local/bin/global")
- '(company-gtags-modes (quote (projectile-mode)))
  '(company-idle-delay 0.2)
  '(company-minimum-prefix-length 2)
  '(company-require-match nil)
@@ -178,6 +176,7 @@
  '(coq-prog-args (quote ("-emacs" "-dont-load-proofs")))
  '(coq-prog-name "ssrcoq")
  '(counsel-gtags-auto-update nil)
+ '(counsel-gtags-ignore-case t)
  '(counsel-gtags-prefix-key "nil")
  '(counsel-gtags-update-interval-second 60)
  '(current-language-environment "UTF-8")
@@ -221,6 +220,8 @@
    (quote
     ("/usr/bin/eclipse" "/Applications/eclipse" "/usr/lib/eclipse" "/usr/local/lib/eclipse" "/usr/share/eclipse")))
  '(eclimd-default-workspace "~/workspace")
+ '(ede-project-placeholder-cache-file "~/.emacs.d/.data/ede-projects.el")
+ '(ede-simple-save-directory "~/.emacs.d/.data/ede")
  '(ediff-combination-pattern
    (quote
     ("<<<<<<< A: HEAD" A "||||||| Ancestor" Ancestor "=======" B ">>>>>>> B: Incoming")))
@@ -398,7 +399,7 @@
    (quote
     (try-expand-dabbrev try-expand-dabbrev-all-buffers try-expand-dabbrev-from-kill try-complete-file-name-partially try-complete-file-name try-expand-all-abbrevs try-expand-list try-expand-line try-complete-lisp-symbol-partially try-complete-lisp-symbol)))
  '(history-delete-duplicates t)
- '(history-length 200)
+ '(history-length 1000)
  '(httpd-host nil)
  '(ibuffer-always-show-predicates nil)
  '(ibuffer-default-display-maybe-show-predicates t)
@@ -610,6 +611,7 @@
  '(php-insert-doc-copyright-email "bennmsg@gmail.com")
  '(php-insert-doc-copyright-name "benn")
  '(php-insert-doc-uses-tag nil)
+ '(php-mode-coding-style (quote symfony2))
  '(phpunit-program "/usr/bin/php56 /home/benn/.composer/vendor/bin/phpunit")
  '(popwin:special-display-config
    (quote
@@ -664,6 +666,16 @@
  '(recentf-save-file "~/.emacs.d/.data/recentf")
  '(redisplay-dont-pause t t)
  '(regex-tool-backend (quote perl))
+ '(safe-local-variable-values
+   (quote
+    ((eval and
+           (fboundp
+            (quote ede-php-autoload-project))
+           (ede-php-autoload-project "Dating Framework" :file "/home/benn/Projects/Communities/Dating/cache/project_autoload.cache"))
+     (eval and
+           (fboundp
+            (quote ede-php-autoload-project))
+           (ede-php-autoload-project "Dating Framework")))))
  '(sage-view-anti-aliasing-level 4)
  '(sage-view-margin (quote (20 . 20)))
  '(sage-view-scale 2.0)
@@ -673,6 +685,13 @@
  '(save-abbrevs (quote silently))
  '(save-interprogram-paste-before-kill t)
  '(save-kill-file-name "~/.emacs.d/.data/kill-ring-saved.el")
+ '(save-place-file "~/.emacs.d/.data/places")
+ '(save-place-forget-unreadable-files t)
+ '(savehist-additional-variables
+   (quote
+    (mark-ring global-mark-ring search-ring regexp-search-ring extended-command-history)))
+ '(savehist-autosave-interval 60)
+ '(savehist-file "~/.emacs.d/.data/history")
  '(scala-indent:step 4)
  '(scroll-bar-mode nil)
  '(scroll-conservatively 10000)

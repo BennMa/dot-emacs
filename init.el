@@ -42,6 +42,7 @@ Various programs in Emacs store information in this directory.
 Note that this should end with a directory separator.
 See also `locate-user-emacs-file'.")
 (make-directory (expand-file-name ".data" user-emacs-directory) t)
+(make-directory (expand-file-name ".data/auto-save-backups" user-emacs-directory) t)
 
 ;; ------ package settings
 (require 'cl)
@@ -119,6 +120,7 @@ See also `locate-user-emacs-file'.")
         "term"
         "lang/javascript"
         "lang/php"
+        "lang/web"
         "lang/scala"
         "lang/python"))
 

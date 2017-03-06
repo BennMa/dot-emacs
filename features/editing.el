@@ -47,14 +47,14 @@
                     "<M-backspace>" 'blaine/contextual-backspace
                     "C-M-c" 'hide/show-comments-toggle)
 
-(general-define-key "C-c i b" 'flyspell-buffer
+(general-define-key "C-c c" 'hydra-flycheck/body
+                    "C-c i b" 'flyspell-buffer
                     "C-c i f" 'flyspell-mode
                     "C-c i c" 'ispell-comments-and-strings
                     "C-c i d" 'ispell-change-dictionary
                     "C-c i k" 'ispell-kill-ispell
                     "C-c i m" 'ispell-message
                     "C-c i r" 'ispell-region
-                    ;; "C-c C-f" 'hydra-flycheck/body
                     "C-c C-e" 'mc/mark-all-like-this
                     "C-c h a" 'origami-toggle-all-nodes
                     "C-c h t" 'origami-recursively-toggle-node
@@ -63,9 +63,7 @@
                     "C-c h o" 'narrow-to-defun
                     "C-c h O" 'widen
                     "C-c h f" 'focus-mode
-                    "C-c h F" 'focus-read-only-mode
-                    "C-c p" 'goto-last-change
-                    "C-c n" 'goto-last-change-reverse)
+                    "C-c h F" 'focus-read-only-mode)
 
 ;; ------ packages
 (use-package swiper :commands swiper)
@@ -157,13 +155,10 @@
   :commands (flycheck-mode
              global-flycheck-mode
              hydra-flycheck/body)
-  :init (add-hook 'after-init-hook #'global-flycheck-mode)
+  :init (add-hook 'after-init-hook 'global-flycheck-mode)
+  ;; :init (add-hook 'prog-mode-hook 'flycheck-mode)
   :config
   (progn
-    (flycheck-add-mode 'php       'web-mode)
-    (flycheck-add-mode 'php-phpmd 'web-mode)
-    (flycheck-add-mode 'php-phpcs 'web-mode)
-
     (defalias 'flycheck-show-error-at-point-soon
       'flycheck-show-error-at-point)
 
@@ -173,10 +168,10 @@
             :hint nil)
       "Errors"
       ("f"  flycheck-error-list-set-filter                            "Filter")
-      ("j"  flycheck-next-error                                       "Next")
-      ("k"  flycheck-previous-error                                   "Previous")
-      ("gg" flycheck-first-error                                      "First")
-      ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
+      ("n"  flycheck-next-error                                       "Next")
+      ("p"  flycheck-previous-error                                   "Previous")
+      ("<"  flycheck-first-error                                      "First")
+      (">"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
       ("q"  nil))))
 
 (use-package multiple-cursors
@@ -261,6 +256,7 @@
         ))
 
 (use-package goto-chg
+  :disabled t
   :commands (goto-last-change
              goto-last-change-reverse))
 
