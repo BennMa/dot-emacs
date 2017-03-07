@@ -314,3 +314,14 @@
             ("*Calendar*"             :select t   :size 0.3 :align below)))
 
     (shackle-mode)))
+
+(use-package savehist
+  :config (savehist-mode t))
+
+(use-package saveplace
+  :config
+  (progn
+    (if (fboundp 'save-place-mode)
+        ;; Emacs 25 has a proper mode for `save-place'
+        (save-place-mode)
+      (setq save-place t))))

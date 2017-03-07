@@ -236,14 +236,3 @@
 
 (use-package discover-my-major
   :commands (discover-my-major discover-my-mode))
-
-(use-package savehist
-  :config (savehist-mode t))
-
-(use-package saveplace
-  :config
-  (progn
-    (if (fboundp 'save-place-mode)
-        ;; Emacs 25 has a proper mode for `save-place'
-        (save-place-mode)
-      (setq save-place t))))
