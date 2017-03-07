@@ -106,7 +106,7 @@
 (use-package company-statistics
   :config (add-hook 'company-mode-hook 'company-statistics-mode))
 
-(use-package yasnippet :diminish ""
+(use-package yasnippet :diminish (yas-minor-mode . " Ⓨ")
   :mode ("/\\.emacs\\.d/snippets/" . snippet-mode)
   :commands yas-minor-mode
   :init (multiple-mode-add-hook my--completion-modes 'yas-minor-mode)
@@ -147,6 +147,13 @@
     (auto-insert-mode)
     (setq auto-insert-alist nil)
     (yatemplate-fill-alist)))
+
+(use-package abbrev :ensure nil
+  :diminish ""
+  :init
+  (progn
+    (add-hook 'text-mode-hook (lambda () (abbrev-mode 1)))
+    (setq-default abbrev-mode t)))
 
 (use-package hippie-exp
   :commands hippie-expand

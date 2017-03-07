@@ -6,6 +6,7 @@
   ("e" escreen-create-screen "Create new screen")
   ("z" hydra-zoom/body "Zoom")
   ("g" google-this "Google this")
+  ("s" sql-pool "SQL Pool")
   ("q" nil "Cancel"))
 
 ;; ------ packages
@@ -78,5 +79,42 @@
   ;; :init (setq google-this-keybind (kbd "C-c m g"))
   ;; :config (google-this-mode 1)
   )
+
+;; https://github.com/kiwanami/emacs-edbi
+;; https://truongtx.me/2014/08/23/setup-emacs-as-an-sql-database-client
+(use-package sql
+  :commands (sql-pool)
+  :config
+  (progn
+    (defun sql-pool ()
+      (interactive)
+      (ivy-read "SQL Pool: " sql-connection-alist
+                :action (lambda (connection)
+                          (my/sql-connect-preset (car connection)))))
+
+    (add-hook 'sql-interactive-mode-hook
+              (lambda ()
+                (setq sql-alternate-buffer-name (my/sql-make-smart-buffer-name))
+                (sql-rename-buffer)))
+
+    (defun my/sql-connect-preset (name)
+      "Connect to a predefined SQL connection listed in `sql-connection-alist'"
+      (eval `(let ,(cdr (assoc name sql-connection-alist))
+               (flet ((sql-get-login (&rest what)))
+                 (sql-product-interactive sql-product)))))
+
+    ;; names the buffer *SQL: <host>_<db>, which is easier to 
+    ;; find when you M-x list-buffers, or C-x C-b
+    (defun my/sql-make-smart-buffer-name ()
+      "Return a string that can be used to rename a SQLi buffer.
+  This is used to set `sql-alternate-buffer-name' within
+  `sql-interactive-mode'."
+      (or (and (boundp 'sql-name) sql-name)
+          (concat (if (not(string= "" sql-server))
+                      (concat
+                       (or (and (string-match "[0-9.]+" sql-server) sql-server)
+                           (car (split-string sql-server "\\.")))
+                       "/"))
+                  sql-database)))))
 
 ;;; misc.el ends here

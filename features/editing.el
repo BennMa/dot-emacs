@@ -195,6 +195,7 @@
 (use-package elec-pair :disabled t
   :config (electric-pair-mode 1))
 (use-package smartparens-config :ensure smartparens
+  :diminish (smartparens-mode . "")
   :commands (smartparens-mode
              sp-forward-symbol
              sp-backward-symbol
@@ -225,6 +226,7 @@
 
 (use-package rainbow-mode
   :commands rainbow-mode
+  :diminish (rainbow-mode . "")
   :init (add-hook 'prog-mode-hook 'rainbow-mode))
 
 (use-package bm
@@ -250,7 +252,7 @@
   :commands whitespace-mode
   :init (add-hook 'prog-mode-hook 'whitespace-mode)
   :config
-  (setq whitespace-line-column nil
+  (setq whitespace-line-column 100
         whitespace-style '(face trailing tab-mark lines-tail)
         ;; whitespace-display-mappings '((tab-mark 9 [9654 9] [92 9]))
         ))
@@ -311,6 +313,7 @@
             ("\\*[Wo]*Man.*\\*"       :regexp t   :select t :inhibit-window-quit t :other t)
             ("\\*poporg.*\\*"         :regexp t   :select t :other t)
             ("\\`\\*helm.*?\\*\\'"    :regexp t   :size 0.3 :align t)
+            ("*Flycheck errors*"      :size 0.3 :align below)
             ("*Calendar*"             :select t   :size 0.3 :align below)))
 
     (shackle-mode)))

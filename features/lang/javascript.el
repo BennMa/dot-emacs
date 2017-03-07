@@ -65,6 +65,30 @@
   :commands (js-doc-insert-function-doc
              js-doc-insert-tag))
 
+;; http://ternjs.net/doc/manual.html#server_api
+;; https://atom.io/packages/atom-ternjs
+;; {
+;;   "ecmaVersion": 6,
+;;   "libs": [
+;;     "browser"
+;;   ],
+;;   "loadEagerly": [
+;;     "path/to/your/js/**/*.js"
+;;   ],
+;;   "dontLoad": [
+;;     "node_modules/**",
+;;     "path/to/your/js/**/*.js"
+;;   ],
+;;   "plugins": {
+;;     "modules": {},
+;;     "es_modules": {},
+;;     "node": {},
+;;     "doc_comment": {
+;;       "fullDocs": true,
+;;       "strong": true
+;;     }
+;;   }
+;; }
 (use-package tern
   :commands (tern-mode)
   :config

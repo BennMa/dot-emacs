@@ -32,6 +32,7 @@
 (and (fboundp 'tooltip-mode) tooltip-mode (tooltip-mode -1))
 (and (fboundp 'scroll-bar-mode) scroll-bar-mode (scroll-bar-mode -1))
 (and (fboundp 'show-paren-mode) (not show-paren-mode) (show-paren-mode 1))
+;; https://www.emacswiki.org/emacs/HorizontalSplitting
 ;; (random t)
 
 ;; --- define constant
@@ -60,8 +61,11 @@ See also `locate-user-emacs-file'.")
 (package-initialize t)
 
 ;; load-path
-(add-to-list 'custom-theme-load-path
-             (expand-file-name "themes" user-emacs-directory))
+(and (boundp 'custom-theme-load-path)
+     (mapc #'(lambda (dir)
+               (let ((path (expand-file-name dir user-emacs-directory)))
+                 (add-to-list 'custom-theme-load-path path)))
+           '("themes" "themes/noctilux-theme")))
 (mapc #'(lambda (dir)
           (let ((path (expand-file-name dir user-emacs-directory)))
             (add-to-list 'load-path path)
@@ -85,7 +89,16 @@ See also `locate-user-emacs-file'.")
 (progn
   ;; org faces: http://orgmode.org/worg/org-color-themes.html
   ;; (load-theme 'my-leuven t)
-  (load-theme 'my-custom t)
+  ;; (load-theme 'my-custom t)
+
+  ;; https://github.com/hlissner/emacs-doom-theme
+  (use-package doom-themes
+    :config
+    (progn
+      (setq doom-enable-italic t
+            doom-enable-bold t
+            doom-enable-brighter-comments t)
+      (load-theme 'doom-molokai t)))
 
   (defvar blaine--english-fonts '("Inconsolata" "Source Code Pro" "Anonymous Pro" "Monaco"
                                   "Ubuntu Mono" "Droid Sans Mono"
@@ -99,6 +112,9 @@ See also `locate-user-emacs-file'.")
 
 (use-package initsplit)
 (load (expand-file-name "settings" user-emacs-directory))
+(let ((private-settings-file (expand-file-name "private-settings.el" user-emacs-directory)))
+  (and (file-exists-p private-settings-file)
+       (load-file private-settings-file)))
 
 (defun blaine//load-feature (feature-name)
   (load (expand-file-name (concat "features/" feature-name) user-emacs-directory)))

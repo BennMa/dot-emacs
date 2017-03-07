@@ -1,4 +1,5 @@
-(general-define-key "C-c g" 'hydra-git/body)
+(general-define-key "C-c g" 'hydra-git/body
+                    "C-c G" 'magit-status)
 (defhydra hydra-git (:hint nil :color blue :columns 4)
   "Magit Helper"
   ("s" magit-status "Status")

@@ -4,7 +4,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(Info-fit-frame-flag nil)
- '(abbrev-file-name "~/.emacs.d/abbrevs")
+ '(abbrev-file-name "~/.emacs.d/.data/abbrevs")
  '(ac-auto-show-menu 1.0)
  '(ac-auto-start 3)
  '(ac-comphist-file "~/.emacs.d/.data/ac-comphist.dat")
@@ -15,6 +15,7 @@
  '(ace-isearch-submode (quote ace-jump-char-mode))
  '(ace-popup-menu-show-pane-header t)
  '(ad-redefinition-action (quote accept))
+ '(aggressive-indent-sit-for-time 0.1)
  '(ahs-default-range (quote ahs-range-whole-buffer))
  '(ahs-idle-interval 0.5)
  '(ahs-modes
@@ -65,7 +66,7 @@
  '(blaine--buffername-blacklist (quote ("^ ?\\*" "Collector.org")))
  '(blaine--buffername-whitelist
    (quote
-    ("\\*mu4e-\\(main\\|headers\\)" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python" "\\*sbt\\*" "\\*scratch\\*")))
+    ("\\*mu4e-\\(main\\|headers\\)" "\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python" "\\*sbt\\*" "\\*scratch\\*" "\\*SQL")))
  '(bm-buffer-persistence t)
  '(bm-cycle-all-buffers t)
  '(bm-highlight-style (quote bm-highlight-only-fringe))
@@ -156,7 +157,7 @@
  '(company-frontends
    (quote
     (company-pseudo-tooltip-unless-just-one-frontend company-echo-metadata-frontend company-preview-frontend)))
- '(company-idle-delay 0.2)
+ '(company-idle-delay 0)
  '(company-minimum-prefix-length 2)
  '(company-require-match nil)
  '(company-statistics-file "~/.emacs.d/.data/company-statistics-cache.el")
@@ -317,8 +318,14 @@
  '(find-ls-option (quote ("-print0 | xargs -0 ls -ld" . "-ld")))
  '(find-ls-subdir-switches "-alh")
  '(flx-ido-use-faces nil)
- '(flycheck-disabled-checkers (quote (emacs-lisp-checkdoc)))
+ '(flycheck-checkers
+   (quote
+    (ada-gnat asciidoctor asciidoc c/c++-clang c/c++-gcc c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint d-dmd dockerfile-hadolint elixir-dogma emacs-lisp emacs-lisp-checkdoc erlang eruby-erubis fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck go-unconvert groovy haml handlebars haskell-stack-ghc haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-gjslint javascript-jscs javascript-standard json-jsonlint json-python-json less lua-luacheck lua perl perl-perlcritic php php-phpmd php-phpcs processing protobuf-protoc pug puppet-parser puppet-lint python-flake8 python-pylint python-pycompile r-lintr racket rpm-rpmlint markdown-mdl rst-sphinx rst ruby-rubocop ruby-rubylint ruby ruby-jruby rust-cargo rust scala scala-scalastyle scheme-chicken scss-lint sass/scss-sass-lint sass scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim slim-lint sql-sqlint systemd-analyze tex-chktex tex-lacheck texinfo typescript-tslint verilog-verilator xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby)))
+ '(flycheck-disabled-checkers (quote (emacs-lisp-checkdoc php-phpmd)))
  '(flycheck-display-errors-delay 0.0)
+ '(flycheck-php-phpmd-executable nil)
+ '(flycheck-phpcs-standard "~/Dropbox/Dotfiles/phpcs.xml")
+ '(flycheck-phpmd-rulesets (quote ("codesize" "design" "unusedcode")))
  '(flycheck-standard-error-navigation nil)
  '(flymake-compilation-prevents-syntax-check nil)
  '(flyspell-abbrev-p nil)
@@ -512,7 +519,8 @@
  '(initial-major-mode (quote fundamental-mode))
  '(initsplit-customizations-alist
    (quote
-    (("\\`\\(org-\\)" "~/.emacs.d/org-settings.el" nil nil))))
+    (("\\`\\(sql-connection-alist\\)" "~/.emacs.d/private-settings.el" nil nil)
+     ("\\`\\(org-\\)" "~/.emacs.d/org-settings.el" nil nil))))
  '(ispell-extra-args nil)
  '(ivy-count-format "(%d/%d) ")
  '(ivy-height 15)
@@ -725,8 +733,6 @@
  '(slime-startup-animation nil)
  '(sp-highlight-pair-overlay nil)
  '(speedbar-show-unknown-files t)
- '(split-height-threshold nil)
- '(split-width-threshold nil)
  '(sql-sqlite-program "sqlite3")
  '(sr-attributes-display-mask (quote (nil nil t nil nil nil)))
  '(sr-autoload-extensions nil)

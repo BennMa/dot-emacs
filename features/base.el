@@ -50,6 +50,7 @@
                         "C-M-v" 'scroll-down-command
                         "C-S-v" 'scroll-other-window
                         "C-M-S-v" 'scroll-other-window-down)
+    (general-define-key :keymaps 'isearch-mode-map "M-v" 'isearch-yank-kill)
 
     ;; System operations
     (general-define-key "C-c s" (defhydra hydra-system-operations (:hint nil :color teal :columns 4)

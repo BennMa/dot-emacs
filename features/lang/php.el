@@ -17,16 +17,17 @@
               ("C-c t p" . phpunit-current-project))
   :config
   (progn
-    (global-ede-mode)
+    ;; (global-ede-mode)
+    ;; semantic-php
     (load (expand-file-name "site-lisp/semantic-php/loaddefs" user-emacs-directory))
-    (with-eval-after-load 'company-semantic
-      (add-to-list 'company-semantic-modes 'php-mode))
 
     (defun my/php-mode-hook()
       (eldoc-mode t)
       (aggressive-indent-mode t)
       (semantic-mode t)
-      (ede-php-autoload-mode t)
+      (and (boundp global-ede-mode)
+           global-ede-mode
+           (ede-php-autoload-mode t))
       (setq-local company-backends '((company-ac-php-backend
                                       ;; php-extras-company
                                       company-dabbrev-code
@@ -36,7 +37,9 @@
                                      company-files
                                      company-dabbrev
                                      company-oddmuse)))
-    (add-hook 'php-mode-hook 'my/php-mode-hook)))
+    (add-hook 'php-mode-hook 'my/php-mode-hook)
+    (with-eval-after-load 'company-semantic
+      (add-to-list 'company-semantic-modes 'php-mode))))
 
 (use-package ede-php-autoload
   :commands ede-php-autoload-mode
