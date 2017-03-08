@@ -36,7 +36,7 @@
     ;; (add-to-list 'load-path (expand-file-name "site-lisp/metaturso-semantic-php" user-emacs-directory))
     ;; (require 'grammar-setup)
 
-    (require 'company-semantic (expand-file-name "lisp/company-semantic" user-emacs-directory))
+    (require 'company-semantic-ia)
 
     (defun my/php-mode-hook()
       (eldoc-mode t)
@@ -51,7 +51,7 @@
       ;; (setq-local semanticdb-find-default-throttle '(project unloaded system recursive))
       
       (setq-local company-backends '(
-                                     company-semantic
+                                     company-semantic-ia
                                      ;; (company-ac-php-backend
                                      ;;  ;; php-extras-company
                                      ;;  company-dabbrev-code
