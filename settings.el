@@ -157,9 +157,10 @@
  '(company-frontends
    (quote
     (company-pseudo-tooltip-unless-just-one-frontend company-echo-metadata-frontend company-preview-frontend)))
- '(company-idle-delay 0)
+ '(company-idle-delay 0.2)
  '(company-minimum-prefix-length 2)
  '(company-require-match nil)
+ '(company-semantic-begin-after-member-access t)
  '(company-statistics-file "~/.emacs.d/.data/company-statistics-cache.el")
  '(company-tooltip-align-annotations t)
  '(company-transformers (quote (company-sort-by-backend-importance)))
@@ -324,7 +325,7 @@
  '(flycheck-disabled-checkers (quote (emacs-lisp-checkdoc php-phpmd)))
  '(flycheck-display-errors-delay 0.0)
  '(flycheck-php-phpmd-executable nil)
- '(flycheck-phpcs-standard "~/Dropbox/Dotfiles/phpcs.xml")
+ '(flycheck-phpcs-standard "~/Dropbox/Dotfiles/phpcs/ruleset.xml")
  '(flycheck-phpmd-rulesets (quote ("codesize" "design" "unusedcode")))
  '(flycheck-standard-error-navigation nil)
  '(flymake-compilation-prevents-syntax-check nil)
@@ -620,6 +621,7 @@
  '(php-insert-doc-copyright-name "benn")
  '(php-insert-doc-uses-tag nil)
  '(php-mode-coding-style (quote symfony2))
+ '(phpcbf-standard "~/Dropbox/Dotfiles/phpcs/ruleset.xml")
  '(phpunit-program "/usr/bin/php56 /home/benn/.composer/vendor/bin/phpunit")
  '(popwin:special-display-config
    (quote
@@ -674,16 +676,6 @@
  '(recentf-save-file "~/.emacs.d/.data/recentf")
  '(redisplay-dont-pause t t)
  '(regex-tool-backend (quote perl))
- '(safe-local-variable-values
-   (quote
-    ((eval and
-           (fboundp
-            (quote ede-php-autoload-project))
-           (ede-php-autoload-project "Dating Framework" :file "/home/benn/Projects/Communities/Dating/cache/project_autoload.cache"))
-     (eval and
-           (fboundp
-            (quote ede-php-autoload-project))
-           (ede-php-autoload-project "Dating Framework")))))
  '(sage-view-anti-aliasing-level 4)
  '(sage-view-margin (quote (20 . 20)))
  '(sage-view-scale 2.0)

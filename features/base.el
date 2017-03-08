@@ -84,7 +84,7 @@
                                   ("o" customize-option "Customize option")
                                   ("O" customize-group "Customize group")
                                   ("c" customize-face "Customize face")
-                                  ("q" nil "Cancel")))
+                                  ("q" nil "Cancel" :color blue)))
 
     ;; Extended Help Helper
     (general-define-key "C-h e" (defhydra hydra-extended-help-helper (:hint nil :color teal :columns 4)
@@ -100,7 +100,7 @@
                                   ("l" counsel-find-library "Library")
                                   ("L" finder-commentary "Library commentary")
                                   ("t" blaine/what-face "What face")
-                                  ("q" nil "Cancel")))
+                                  ("q" nil "Cancel" :colur blue)))
     ))
 
 ;; ------ packages

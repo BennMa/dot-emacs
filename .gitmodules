@@ -4,3 +4,6 @@
 [submodule "site-lisp/semantic-php"]
 	path = site-lisp/semantic-php
 	url = https://github.com/jorissteyn/semantic-php.git
+[submodule "site-lisp/metaturso-semantic-php"]
+	path = site-lisp/metaturso-semantic-php
+	url = https://github.com/metaturso/semantic-php
