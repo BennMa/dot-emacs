@@ -70,7 +70,10 @@
     ("q" nil :color blue)))
 
 (use-package powerline
+  :disabled t
   :config (powerline-default-theme))
+(use-package smart-mode-line
+  :config (sml/setup))
 
 (use-package paradox :commands paradox-list-packages)
 
@@ -116,5 +119,8 @@
                            (car (split-string sql-server "\\.")))
                        "/"))
                   sql-database)))))
+
+(use-package mode-icons
+  :init (add-hook 'after-init-hook 'mode-icons-mode))
 
 ;;; misc.el ends here

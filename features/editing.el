@@ -124,7 +124,7 @@
   :config
   (progn
     ;; (use-package hl-line+)
-    ;; (global-hl-line-mode)
+    (global-hl-line-mode)
     ))
 
 (use-package auto-highlight-symbol :diminish ""

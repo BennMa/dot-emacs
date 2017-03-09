@@ -8,9 +8,13 @@
 (use-package general
   :config
   (progn
-    (general-define-key "C-;" 'hydra-projectile-if-projectile-p
+    (general-define-key "C-;"     'hydra-projectile-if-projectile-p
                         "C-x C-v" 'ivy-resume
-                        "C-c ;" 'comment-or-uncomment-region)
+                        "C-c ;"   'comment-or-uncomment-region
+                        "C-s"     'isearch-forward-regexp
+                        "C-r"     'isearch-backward-regexp
+                        "C-M-s"   'isearch-forward
+                        "C-M-r"   'isearch-backward)
     ;; C-x
     (general-define-key :prefix "C-x"
                         "y" '(lambda() (interactive) (blaine/insert-separator nil))

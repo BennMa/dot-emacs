@@ -58,7 +58,7 @@
               nil
             (setq default-directory
                   (file-name-as-directory
-                   (if (and (string= term-ansi-at-host "localhost") ;; (string= term-ansi-at-host (system-name))
+                   (if (and (string= term-ansi-at-host (system-name)) ;; (string= term-ansi-at-host (system-name))
                             (string= term-ansi-at-user (user-real-login-name)))
                        (expand-file-name term-ansi-at-dir)
                      (if (string= term-ansi-at-user (user-real-login-name))
