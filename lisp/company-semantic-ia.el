@@ -126,7 +126,7 @@ and `c-electric-colon', for automatic completion right after \">\" and
 
 (defun company-semantic-ia--prefix ()
   (if company-semantic-ia-begin-after-member-access
-      (company-grab-symbol-cons "\\.\\|->\\|::" 2)
+      (company-grab-symbol-cons "->\\|::" 2)
     (company-grab-symbol)))
 
 ;;;###autoload
@@ -141,7 +141,7 @@ and `c-electric-colon', for automatic completion right after \">\" and
                  (not (company-in-string-or-comment))
                  (or (company-semantic-ia--prefix) 'stop)))
     (candidates (if (and (equal arg "")
-                         (not (looking-back "->\\|\\." (- (point) 2))))
+                         (not (looking-back "->\\|::" (- (point) 2))))
                     (company-semantic-ia-completions-raw arg)
                   (company-semantic-ia-completions arg)))
     (meta (funcall company-semantic-ia-metadata-function
@@ -159,10 +159,11 @@ and `c-electric-colon', for automatic completion right after \">\" and
                         (semantic-tag-start tag)))))
     (post-completion (let ((anno (company-semantic-ia-annotation
                                   arg company-semantic-ia--current-tags)))
-                       (when (and company-semantic-ia-insert-arguments anno)
+                       (when (and company-semantic-ia-insert-arguments
+                                  anno
+                                  (not (string= anno "()")))
                          (insert anno)
-                         (company-template-c-like-templatify (concat arg anno)))
-                       ))))
+                         (company-template-c-like-templatify (concat arg anno)))))))
 
 (provide 'company-semantic-ia)
 ;;; company-semantic-ia.el ends here

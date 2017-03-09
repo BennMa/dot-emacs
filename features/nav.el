@@ -152,6 +152,17 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
     (call-interactively 'split-window-below)
     (call-interactively 'windmove-down)))
 
+;; C-x C-<SPC>	go back in global-mark-ring, respects prefix arg
+;; C-x C-<left>	go back in global-mark-ring
+;; C-x C-<right>	go forward in global-mark-ring
+;; C-x <SPC>	go back in (buffer-local) mark-ring, respects prefix arg
+;; C-x <left>	go back in (buffer-local) mark-ring
+;; C-x <right>	go forward in (buffer-local) mark-ring
+(use-package back-button
+  :diminish ""
+  :commands back-button-mode
+  :init (add-hook 'after-init-hook 'back-button-mode))
+
 (use-package ggtags :diminish "ⓖ"
   :commands (ggtags-mode
              ggtags-global-mode
