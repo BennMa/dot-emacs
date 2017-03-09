@@ -160,7 +160,8 @@
              counsel-yank-pop))
 
 (use-package projectile
-  :diminish (projectile-mode . " ⓟ")
+  ;; use projectile-mode-line instead
+  ;; :diminish (projectile-mode . (concat " [ⓟ" (projectile-project-name) "]"))
   :commands (projectile-mode
              projectile-global-mode
              hydra-projectile/body
@@ -171,6 +172,9 @@
   :config
   (progn
     (projectile-global-mode 1)
+    (remove-hook 'projectile-idle-timer-hook 'projectile-regenerate-tags)
+    (add-hook 'projectile-idle-timer-hook 'counsel-gtags-create-or-update-tags)
+    
     ;; https://github.com/ericdanan/counsel-projectile
     (use-package counsel-projectile :config (counsel-projectile-on))
     (defun hydra-projectile-if-projectile-p ()

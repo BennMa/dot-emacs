@@ -646,9 +646,19 @@
  '(projectile-cache-file "~/.emacs.d/.data/projectile.cache")
  '(projectile-completion-system (quote ivy))
  '(projectile-enable-caching t)
+ '(projectile-enable-idle-timer t)
  '(projectile-globally-ignored-files (quote ("TAGS" ".DS_Store")))
+ '(projectile-idle-timer-seconds 120)
  '(projectile-keymap-prefix "")
  '(projectile-known-projects-file "~/.emacs.d/.data/projectile-bookmarks.eld")
+ '(projectile-mode-line
+   (quote
+    (:eval
+     (if
+         (file-remote-p default-directory)
+         " ⓟ"
+       (format " ⓟ[%s]"
+               (projectile-project-name))))))
  '(projectile-project-root-files
    (quote
     ("CMakeLists.txt" "Makefile" "rebar.config" "project.clj" "build.boot" "SConstruct" "pom.xml" "build.sbt" "gradlew" "build.gradle" "Gemfile" "requirements.txt" "setup.py" "tox.ini" "package.json" "gulpfile.js" "Gruntfile.js" "bower.json" "composer.json" "Cargo.toml" "mix.exs" "stack.yaml" "TAGS")))
@@ -671,7 +681,7 @@
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
    (quote
-    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")) t)
+    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")))
  '(recentf-max-saved-items 1000)
  '(recentf-save-file "~/.emacs.d/.data/recentf")
  '(redisplay-dont-pause t t)

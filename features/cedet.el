@@ -17,12 +17,12 @@
     (defvar semanticdb-project-root-functions nil)
     (add-to-list 'semanticdb-project-root-functions 'my/projectile-project-root)
 
-    (defun my/semantic-hook ()
-      (imenu-add-to-menubar "TAGS"))
-    (add-hook 'semantic-init-hooks 'my/semantic-hook)
+    ;; (defun my/semantic-hook ()
+    ;;   (imenu-add-to-menubar "TAGS"))
+    ;; (add-hook 'semantic-init-hooks 'my/semantic-hook)
 
     (setq semantic-default-submodes '(global-semantic-highlight-func-mode
-                                      global-semantic-idle-summary-mode
+                                      ;; global-semantic-idle-summary-mode
                                       ;; global-semantic-idle-completions-mode
                                       global-semantic-stickyfunc-mode
                                       global-semantic-idle-scheduler-mode
@@ -31,4 +31,9 @@
 (use-package stickyfunc-enhance
   :after semantic)
 
-(use-package srefactor :disabled t)
+(use-package srefactor
+  :commands (srefactor-refactor-at-point
+             srefactor-lisp-one-line
+             srefactor-lisp-format-sexp
+             srefactor-lisp-format-defun
+             srefactor-lisp-format-buffer))

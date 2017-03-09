@@ -2,9 +2,11 @@
                     "C-," (defhydra hydra-php (:hint nil :color blue :exit t :columns 4)
                             "PHP Helper"
                             ("f" phpcbf "Code Format")
-                            ("d" my/php-generate-func-doc "Generate func doc")
+                            ("d" semantic-ia-show-doc "Show doc")
+                            ("g" my/php-generate-func-doc "Generate func doc")
                             ("r" hydra-php-refactor/body "Refactor")
-                            ("q" nil "Cancel")))
+                            ("q" nil "Cancel"))
+                    "M-." 'semantic-ia-fast-jump)
 
 (defhydra hydra-php-refactor (:hint nil :color blue :exit t :columns 2)
   "PHP Refactor Helper"
@@ -27,7 +29,6 @@
               ("C-c t p" . phpunit-current-project))
   :config
   (progn
-    ;; (global-ede-mode)
     (with-eval-after-load 'semantic
       (semanticdb-enable-gnu-global-databases 'php-mode))
 
@@ -42,33 +43,26 @@
       (eldoc-mode t)
       ;; (aggressive-indent-mode t)
       (semantic-mode t)
-      (php-refactor-mode t)
-      (and (boundp global-ede-mode)
-           global-ede-mode
-           (ede-php-autoload-mode t))
-
       ;; (setq-local semanticdb-ebrowse-file-match "\\.\\(php\\)")
       ;; (setq-local semanticdb-find-default-throttle '(project unloaded system recursive))
-      
+      (php-refactor-mode t)
+      ;; (ede-php-autoload-mode t)
       (setq-local company-backends '(
                                      company-semantic-ia
-                                     ;; (company-ac-php-backend
-                                     ;;  ;; php-extras-company
-                                     ;;  company-dabbrev-code
-                                     ;;  company-gtags
-                                     ;;  company-keywords
-                                     ;;  company-semantic)
-                                     ;; company-files
-                                     ;; company-dabbrev
-                                     ;; company-oddmuse
+                                      ;; :separate php-extras-company)
+                                     ;; (company-dabbrev-code company-gtags company-etags company-keywords)
                                      )))
+
     (add-hook 'php-mode-hook 'my/php-mode-hook)
     (with-eval-after-load 'company-semantic
       (add-to-list 'company-semantic-modes 'php-mode))))
 
 (use-package ede-php-autoload
   :commands ede-php-autoload-mode
-  :config (require 'ede-php-autoload-mode))
+  :config
+  (progn
+    (and (boundp global-ede-mode) global-ede-mode (global-ede-mode))
+    (require 'ede-php-autoload-mode)))
 
 (use-package company-php
   :commands company-ac-php-backend)
@@ -90,6 +84,7 @@
   :commands phpcbf)
 
 (use-package php-refactor-mode
+  :diminish (php-refactor-mode . "")
   :commands php-refactor-mode)
 
 (use-package php-boris :disabled t)
