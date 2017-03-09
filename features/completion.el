@@ -83,6 +83,7 @@
           (if (looking-at "->") t nil))))))
 
 ;; ------ packages
+;; https://github.com/company-mode/company-mode/issues/350
 (use-package company :diminish ""
   :commands (company-mode)
   :init (multiple-mode-add-hook my--completion-modes 'company-mode)
