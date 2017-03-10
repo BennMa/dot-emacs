@@ -9,9 +9,11 @@
                     "C-M-w"              'blaine/other-window
                     "C-x 0"              'sticky-window-delete-window
                     "C-x 1"              'sticky-window-delete-other-windows
-                    (general-chord "jj") 'avy-goto-char
-                    (general-chord "jw") 'avy-goto-word-1
-                    (general-chord "jl") 'avy-goto-line)
+                    "C-j"                'avy-goto-word-1
+                    ;; (general-chord "jj") 'avy-goto-char
+                    ;; (general-chord "jw") 'avy-goto-word-1
+                    ;; (general-chord "jl") 'avy-goto-line
+                    )
 
 (defhydra hydra-buffer (:color blue :columns 4 :exit t)
   "Buffers Switcher"
@@ -27,7 +29,7 @@
   ("."   hydra-window/body "Windows")
   ("q"   nil "Cancel" :color blue))
 
-(defhydra hydra-window (:hint nil :color amaranth :columns 3 :exit t :idle 0.5)
+(defhydra hydra-window (:hint nil :columns 3 :color teal :idle 0.5)
    "
 ^MOVE^ ^^^^   ^SPLIT^          ^SIZE^ ^^^^   ^COMMAND^   ^WINDOW^
 ^ ^ _k_ ^ ^   _-_ : split H    ^ ^ _p_ ^ ^   _d_elete    ^1^ ^2^ ^3^ ^4^
@@ -35,16 +37,16 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
 ^ ^ _j_ ^ ^   _s_ : split H    ^ ^ _n_ ^ ^   _u_ndo      ^9^ ^0^
 ^ ^ ^ ^ ^ ^   _v_ : split V    ^ ^ ^ ^ ^ ^   _D_edicated
 "
-  ("h" windmove-left :color blue)
-  ("l" windmove-right :color blue)
-  ("j" windmove-down :color blue )
-  ("k" windmove-up :color blue)
+  ("h" windmove-left)
+  ("l" windmove-right)
+  ("j" windmove-down )
+  ("k" windmove-up)
 
   ;; size
-  ("p" (lambda () (interactive) (enlarge-window -1)))
-  ("b" enlarge-window-horizontally)
-  ("f" (lambda () (interactive) (enlarge-window-horizontally -1)))
-  ("n" (lambda () (interactive) (enlarge-window 1)))
+  ("p" (lambda () (interactive) (enlarge-window 1)) :color red)
+  ("n" (lambda () (interactive) (enlarge-window -1)) :color red)
+  ("b" (lambda () (interactive) (enlarge-window-horizontally -1)) :color red)
+  ("f" enlarge-window-horizontally :color red)
 
   ;; splt
   ("-" blaine/split-window-below-and-focus)
@@ -61,22 +63,22 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
   ("D" dedicated-mode)
 
   ;; change height and width
-  ("0" select-window-0 :color blue)
-  ("1" select-window-1 :color blue)
-  ("2" select-window-2 :color blue)
-  ("3" select-window-3 :color blue)
-  ("4" select-window-4 :color blue)
-  ("5" select-window-5 :color blue)
-  ("6" select-window-6 :color blue)
-  ("7" select-window-7 :color blue)
-  ("8" select-window-8 :color blue)
-  ("9" select-window-9 :color blue)
+  ("0" select-window-0)
+  ("1" select-window-1)
+  ("2" select-window-2)
+  ("3" select-window-3)
+  ("4" select-window-4)
+  ("5" select-window-5)
+  ("6" select-window-6)
+  ("7" select-window-7)
+  ("8" select-window-8)
+  ("9" select-window-9)
 
   ;; ("D" kill-buffer-and-window "Delete Buffer" :color red)
-  ("w" blaine/other-window "Other Window" :color blue)
-  ("C-w" blaine/other-window "Other Window" :color blue)
-  ("." hydra-buffer/body "Buffers" :color blue)
-  ("q" nil "quit" :color blue))
+  ("w" blaine/other-window "Other Window")
+  ("C-w" blaine/other-window "Other Window")
+  ("." hydra-buffer/body "Buffers")
+  ("q" nil "quit"))
 
 
 ;; ------ Packages
@@ -193,15 +195,16 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
              counsel-gtags-create-or-update-tags)
   :config
   (progn
-    (defun counsel-gtags-create-or-update-tags ()
+    (defun counsel-gtags-create-or-update-tags (&optional no-create-p)
       (interactive)
       (if (or (getenv "GTAGSROOT")
               (locate-dominating-file default-directory "GTAGS"))
           (let ((current-prefix-arg 4))
             (call-interactively 'counsel-gtags-update-tags))
-        (if (fboundp 'projectile-project-root)
-            (counsel-gtags-create-tags (projectile-project-root) "default")
-          (counsel-gtags--generate-tags))))))
+        (unless no-create-p
+            (if (fboundp 'projectile-project-root)
+                (counsel-gtags-create-tags (projectile-project-root) "default")
+              (counsel-gtags--generate-tags)))))))
 
 (use-package ibuffer
   :commands (blaine/ibuffer-startup

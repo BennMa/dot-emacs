@@ -47,6 +47,13 @@
                     "<M-backspace>" 'blaine/contextual-backspace
                     "C-M-c" 'hide/show-comments-toggle)
 
+;; Toggler
+(general-define-key "C-c t" (defhydra hydra-toggler (:hint nil :color blue :columns 4)
+                              "Toggler Helper"
+                              ("a" toggle-aggressive-indent-mode "aggressive-indent-mode")
+                              ("i" imenu-list-smart-toggle "imenu-list")
+                              ("q" nil "Cancel")))
+
 (general-define-key "C-c c" 'hydra-flycheck/body
                     "C-c i b" 'flyspell-buffer
                     "C-c i f" 'flyspell-mode
@@ -278,7 +285,15 @@
              hide/show-comments-toggle))
 
 (use-package aggressive-indent
-  :commands aggressive-indent-mode)
+  :commands (aggressive-indent-mode
+             toggle-aggressive-indent-mode)
+  :config
+  (progn
+    (defun toggle-aggressive-indent-mode ()
+      (interactive)
+      (if aggressive-indent-mode
+          (aggressive-indent-mode -1)
+        (aggressive-indent-mode 1)))))
 
 (use-package linum :ensure nil
   :commands (linum-mode)
@@ -329,3 +344,7 @@
         ;; Emacs 25 has a proper mode for `save-place'
         (save-place-mode)
       (setq save-place t))))
+
+(use-package imenu-list
+  :commands (imenu-list-smart-toggle
+             imenu-list-minor-mode))

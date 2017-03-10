@@ -7,6 +7,7 @@
   ("z" hydra-zoom/body "Zoom")
   ("g" google-this "Google this")
   ("s" sql-pool "SQL Pool")
+  ("r" regex-tool "Regex tool")
   ("q" nil "Cancel"))
 
 ;; ------ packages
@@ -122,5 +123,8 @@
 
 (use-package mode-icons
   :init (add-hook 'after-init-hook 'mode-icons-mode))
+
+(use-package regex-tool
+  :commands (regex-tool))
 
 ;;; misc.el ends here

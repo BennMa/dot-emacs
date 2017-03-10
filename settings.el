@@ -37,6 +37,7 @@
  '(auto-save-interval 64)
  '(auto-save-list-file-prefix "~/.emacs.d/.data/auto-save-list/.saves-")
  '(auto-save-timeout 2)
+ '(avy-goto-word-0-regexp "\\_<\\(\\sw\\|\\s_\\)")
  '(avy-keys
    (quote
     (97 115 100 102 103 104 106 107 108 119 101 114 116 121 117 105 111 112 120 99 118 98 110 109)))
@@ -514,6 +515,8 @@
  '(image-dired-dir "~/.emacs.d/.data/image-dired/")
  '(imenu-auto-rescan t)
  '(imenu-auto-rescan-maxout 10000)
+ '(imenu-list-focus-after-activation t)
+ '(imenu-list-size 0.2)
  '(imenu-sort-function nil)
  '(imenu-use-popup-menu nil)
  '(indent-tabs-mode nil)
@@ -765,7 +768,15 @@
  '(projectile-enable-caching t)
  '(projectile-enable-idle-timer t)
  '(projectile-globally-ignored-files (quote ("TAGS" ".DS_Store")))
- '(projectile-idle-timer-seconds 120)
+ '(projectile-idle-timer-hook
+   (quote
+    ((lambda nil
+       (and
+        (fboundp
+         (quote counsel-gtags-create-or-update-tags))
+        (message "Updated tags by projectile timer")
+        (counsel-gtags-create-or-update-tags t))))))
+ '(projectile-idle-timer-seconds 60)
  '(projectile-keymap-prefix "")
  '(projectile-known-projects-file "~/.emacs.d/.data/projectile-bookmarks.eld")
  '(projectile-mode-line
@@ -798,7 +809,7 @@
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
    (quote
-    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")) t)
+    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")))
  '(recentf-max-saved-items 1000)
  '(recentf-save-file "~/.emacs.d/.data/recentf")
  '(redisplay-dont-pause t t)

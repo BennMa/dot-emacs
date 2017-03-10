@@ -41,7 +41,7 @@
 
     (defun my/php-mode-hook()
       (eldoc-mode t)
-      ;; (aggressive-indent-mode t)
+      (aggressive-indent-mode t)
       (semantic-mode t)
       ;; (setq-local semanticdb-ebrowse-file-match "\\.\\(php\\)")
       ;; (setq-local semanticdb-find-default-throttle '(project unloaded system recursive))

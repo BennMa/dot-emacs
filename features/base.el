@@ -25,7 +25,7 @@
                         "C-f" 'counsel-find-file)
 
     ;; Major mode helper
-    (general-define-key "C-?"     '(lambda () (interactive)
+    (general-define-key "M-?"     '(lambda () (interactive)
                                      (if (eq major-mode 'makey-key-mode)
                                          (makey-key-mode-command nil)
                                        (call-interactively 'discover-my-major)))
@@ -94,16 +94,17 @@
     (general-define-key "C-h e" (defhydra hydra-extended-help-helper (:hint nil :color teal :columns 4)
                                   "Extended Help Helper"
                                   ("e" view-echo-area-messages "Messages")
-                                  ("f" find-function "Find function")
-                                  ("F" find-face-definition "Find face definition")
                                   ("v" find-variable "Find variable")
+                                  ("k" find-function-on-key "Find function by key")
+                                  ("f" find-function "Find function")
+                                  ("l" counsel-find-library "Find library")
+                                  ;; ("l" find-library "Find library")
+                                  ("L" finder-commentary "Check library commentary")
+                                  ("c" describe-char "Describe char")
+                                  ("w" blaine/what-face "What face")
+                                  ("F" find-face-definition "Find face definition")
                                   ("i" info-apropos "Info apropos")
                                   ("V" apropos-value "Apropos value")
-                                  ("k" find-function-on-key "Find function by key")
-                                  ;; ("l" find-library "Find library")
-                                  ("l" counsel-find-library "Library")
-                                  ("L" finder-commentary "Library commentary")
-                                  ("t" blaine/what-face "What face")
                                   ("q" nil "Cancel" :colur blue)))
     ))
 
@@ -127,7 +128,7 @@
   (progn
     (ivy-mode 1)
     (general-define-key :keymaps 'ivy-minibuffer-map
-                        "C-?"   (defhydra hydra-ivy (:hint nil :color pink :columns 4)
+                        "M-?"   (defhydra hydra-ivy (:hint nil :color pink :columns 4)
                                   "Ivy Helper"
                                   ("M-o" ivy-dispatching-done "Dispatching Done")
                                   ("C-j" ivy-alt-done "Alt Done")
@@ -143,7 +144,7 @@
                                   ("C-r" ivy-reverse-i-search "Search History")
                                   ("M-w" ivy-kill-ring-save "Copy")
                                   ("C-c C-o" ivy-occur "Occur")
-                                  ("C-?" nil "Cancel"))
+                                  ("M-?" nil "Cancel"))
                         "M-v"   'yank
                         "C-M-v" 'ivy-scroll-down-command)))
 
@@ -165,7 +166,7 @@
 
 (use-package projectile
   ;; use projectile-mode-line instead
-  ;; :diminish (projectile-mode . (concat " [ⓟ" (projectile-project-name) "]"))
+  :diminish (projectile-mode . " ⓟ")
   :commands (projectile-mode
              projectile-global-mode
              hydra-projectile/body
@@ -176,8 +177,6 @@
   :config
   (progn
     (projectile-global-mode 1)
-    (remove-hook 'projectile-idle-timer-hook 'projectile-regenerate-tags)
-    (add-hook 'projectile-idle-timer-hook 'counsel-gtags-create-or-update-tags)
     
     ;; https://github.com/ericdanan/counsel-projectile
     (use-package counsel-projectile :config (counsel-projectile-on))

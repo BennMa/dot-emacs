@@ -93,6 +93,9 @@
   :commands (tern-mode)
   :config
   (progn
+    ;; https://github.com/syl20bnr/spacemacs/pull/3465/commits/73031fd7f20c2b5c5fb55a067f0c1fddc387152c
+    (add-to-list 'tern-command "--no-port-file" 'append)
+
     (use-package company-tern
       :config (add-to-list 'company-backends 'company-tern))
 
