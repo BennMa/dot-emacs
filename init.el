@@ -139,7 +139,8 @@ See also `locate-user-emacs-file'.")
         "lang/php"
         "lang/web"
         "lang/scala"
-        "lang/python"))
+        "lang/python"
+        "mail"))
 
 ;; (byte-recompile-directory user-package-settings-directory 0)
 ;; (mapc #'(lambda (file)
