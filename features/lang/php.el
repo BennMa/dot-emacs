@@ -24,9 +24,9 @@
               ("C-." . nil)
               ("C-c C-y" . yas/create-php-snippet)
               ("C-c C-f" . php-extras-eldoc-documentation-function)
-              ("C-c t t" . phpunit-current-test)
-              ("C-c t c" . phpunit-current-class)
-              ("C-c t p" . phpunit-current-project))
+              ("C-c C-t t" . phpunit-current-test)
+              ("C-c C-t c" . phpunit-current-class)
+              ("C-c C-t p" . phpunit-current-project))
   :config
   (progn
     (with-eval-after-load 'semantic

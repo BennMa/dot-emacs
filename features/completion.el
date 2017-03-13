@@ -1,10 +1,12 @@
 (defvar my--completion-modes '(prog-mode-hook
                                markdown-mode-hook
-                               org-mode-hook))
+                               ;; org-mode-hook
+                               ))
 
 (dolist (mode-map '(prog-mode-map
                     markdown-mode-map
-                    org-mode-map))
+                    ;; org-mode-map
+                    ))
   (general-define-key :keymaps mode-map
                       "<tab>" 'blaine/tab-indent-or-complete))
 

@@ -46,7 +46,8 @@ See also `locate-user-emacs-file'.")
 (make-directory (expand-file-name ".data/auto-save-backups" user-emacs-directory) t)
 
 ;; ------ package settings
-(require 'cl)
+(eval-when-compile
+  (require 'cl))
 (require 'package)
 (setq
    package-enable-at-startup nil
@@ -98,18 +99,9 @@ See also `locate-user-emacs-file'.")
       (setq doom-enable-italic t
             doom-enable-bold t
             doom-enable-brighter-comments t)
-      (load-theme 'doom-molokai t)))
-
-  ;; (defvar blaine--english-fonts '("Inconsolata" "Source Code Pro" "Anonymous Pro" "Monaco"
-  ;;                                 "Ubuntu Mono" "Droid Sans Mono"
-  ;;                                 "Menlo" "DejaVu Sans Mono" "Courier New"
-  ;;                                 "Monospace" "Courier" "Iosevka Light"))
-  ;; (defvar blaine--chinese-fonts '("宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
-  ;;                                 "Microsoft Yahei"))
-  ;; (defvar blaine--font-size (if (eq system-type 'darwin) 14 11))
-
-  ;; (qiang-set-font blaine--english-fonts blaine--font-size blaine--chinese-fonts)
-  )
+      (load-theme 'doom-molokai t)
+      (custom-set-faces '(font-lock-comment-face
+                          ((t (:inherit font-lock-comment-face :slant italic))))))))
 
 (use-package initsplit)
 (load (expand-file-name "settings" user-emacs-directory))
@@ -141,11 +133,6 @@ See also `locate-user-emacs-file'.")
         "lang/scala"
         "lang/python"
         "mail"))
-
-;; (byte-recompile-directory user-package-settings-directory 0)
-;; (mapc #'(lambda (file)
-;;           (load (substring file 0 -3)))
-;;       (directory-files user-init-directory t ".*\\.el" t))
 
 ;; ------ post initialization
 (when blaine--debug
