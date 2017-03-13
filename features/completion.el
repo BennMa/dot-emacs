@@ -144,6 +144,7 @@
              aya-persist-snippet))
 
 (use-package yatemplate
+  :disabled t
   :defer 2 ;; WORKAROUND https://github.com/mineo/yatemplate/issues/3
   :config
   (progn

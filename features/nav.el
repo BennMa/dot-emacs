@@ -163,8 +163,9 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
 ;; C-x <right>	go forward in (buffer-local) mark-ring
 (use-package back-button
   :diminish ""
+  :defer 3
   :commands back-button-mode
-  :init (add-hook 'after-init-hook 'back-button-mode))
+  :config (back-button-mode))
 
 (use-package ggtags :diminish "ⓖ"
   :commands (ggtags-mode
@@ -240,6 +241,7 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
        (t (format "%8d" (buffer-size)))))))
 
 (use-package window-numbering
+  :defer 3
   :commands (window-numbering-mode
              select-window-0
              select-window-1
@@ -251,7 +253,7 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
              select-window-7
              select-window-8
              select-window-9)
-  :init (add-hook 'after-init-hook 'window-numbering-mode))
+  :config (window-numbering-mode))
 
 (use-package ace-window
   :commands (ace-window)

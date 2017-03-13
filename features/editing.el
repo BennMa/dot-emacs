@@ -162,8 +162,8 @@
   :commands (flycheck-mode
              global-flycheck-mode
              hydra-flycheck/body)
-  :init (add-hook 'after-init-hook 'global-flycheck-mode)
-  ;; :init (add-hook 'prog-mode-hook 'flycheck-mode)
+  ;; :init (add-hook 'after-init-hook 'global-flycheck-mode)
+  :init (add-hook 'prog-mode-hook 'flycheck-mode)
   :config
   (progn
     (defalias 'flycheck-show-error-at-point-soon

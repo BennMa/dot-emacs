@@ -74,6 +74,7 @@
   :disabled t
   :config (powerline-default-theme))
 (use-package smart-mode-line
+  :defer 2
   :config (sml/setup))
 
 (use-package paradox :commands paradox-list-packages)
@@ -122,7 +123,8 @@
                   sql-database)))))
 
 (use-package mode-icons
-  :init (add-hook 'after-init-hook 'mode-icons-mode))
+  :defer 8
+  :config (mode-icons-mode))
 
 (use-package regex-tool
   :commands (regex-tool))

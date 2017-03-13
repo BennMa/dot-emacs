@@ -85,6 +85,12 @@ See also `locate-user-emacs-file'.")
 (eval-when-compile
   (require 'use-package))
 
+(use-package initsplit)
+(load (expand-file-name "settings" user-emacs-directory))
+(let ((private-settings-file (expand-file-name "private-settings.el" user-emacs-directory)))
+  (and (file-exists-p private-settings-file)
+       (load-file private-settings-file)))
+
 ;; ------ packages
 (load (expand-file-name "functions"  user-emacs-directory))
 (progn
@@ -103,22 +109,17 @@ See also `locate-user-emacs-file'.")
       (custom-set-faces '(font-lock-comment-face
                           ((t (:inherit font-lock-comment-face :slant italic))))))))
 
-(use-package initsplit)
-(load (expand-file-name "settings" user-emacs-directory))
-(let ((private-settings-file (expand-file-name "private-settings.el" user-emacs-directory)))
-  (and (file-exists-p private-settings-file)
-       (load-file private-settings-file)))
-
 (defun blaine//load-feature (feature-name)
   (load (expand-file-name (concat "features/" feature-name) user-emacs-directory)))
 
-;; load base packages
-(blaine//load-feature "base")
 ;; load operation system related packages
 (blaine//load-feature "system")
+;; load base packages
+(blaine//load-feature "base")
 ;; load other packages
 (mapc 'blaine//load-feature
-      '("editing"
+      '(
+        "editing"
         "dired"
         "nav"
         "completion"
@@ -132,7 +133,8 @@ See also `locate-user-emacs-file'.")
         "lang/web"
         "lang/scala"
         "lang/python"
-        "mail"))
+        "mail"
+        ))
 
 ;; ------ post initialization
 (when blaine--debug
