@@ -74,7 +74,7 @@
   :disabled t
   :config (powerline-default-theme))
 (use-package smart-mode-line
-  :defer 2
+  ;; :defer 2
   :config (sml/setup))
 
 (use-package paradox :commands paradox-list-packages)

@@ -702,6 +702,7 @@
  '(mouse-wheel-scroll-amount (quote (2 ((shift) . 1) ((control)))))
  '(mu4e-attachment-dir "~/Downloads")
  '(mu4e-headers-include-related nil)
+ '(mu4e-update-interval 60)
  '(mu4e-view-show-images nil)
  '(mudel-mode-hook (quote (mudel-add-scroll-to-bottom)))
  '(mudel-output-filter-functions (quote (ansi-color-process-output)))
@@ -813,7 +814,7 @@
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
    (quote
-    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")))
+    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")) t)
  '(recentf-max-saved-items 1000)
  '(recentf-save-file "~/.emacs.d/.data/recentf")
  '(redisplay-dont-pause t t)
@@ -995,5 +996,6 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(doom-minibuffer-active ((t nil)))
+ '(font-lock-comment-face ((t (:inherit font-lock-comment-face :slant italic))))
  '(window-number-face ((t nil)) t)
  '(window-numbering-face ((t (:foreground "keyboardFocusIndicatorColor"))) t))
