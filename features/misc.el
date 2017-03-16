@@ -1,4 +1,4 @@
-(general-define-key "C-c m" 'hydra-misc/body)
+(general-define-key "C-c z" 'hydra-misc/body)
 (defhydra hydra-misc (:hint nil :color blue :columns 4)
   "Misc Helper"
   ("m" emacs-toggle-size "Toggle frame size")

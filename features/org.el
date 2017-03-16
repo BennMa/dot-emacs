@@ -10,12 +10,11 @@
 
 (load (expand-file-name "org-settings" user-emacs-directory))
 
-(general-define-key "C-." 'hydra-org/body)
+(general-define-key "C-c o" 'hydra-org/body)
 
 (defhydra hydra-org (:color blue :hint nil :columns 4 :idle 0.3)
   "Org Helper"
-  ("." my-org-agenda-startup "StartUp")
-  ("C-." my-org-agenda-startup "StartUp")
+  ("o" my-org-agenda-startup "StartUp")
   ("a" org-agenda "Agenda")
   ("c" org-capture "Capture")
   ("w" hydra-org-clock/body "Clock")

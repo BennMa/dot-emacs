@@ -25,7 +25,7 @@
                         "C-f" 'counsel-find-file)
 
     ;; Major mode helper
-    (general-define-key "M-?"     '(lambda () (interactive)
+    (general-define-key "C-?"     '(lambda () (interactive)
                                      (if (eq major-mode 'makey-key-mode)
                                          (makey-key-mode-command nil)
                                        (call-interactively 'discover-my-major)))
@@ -128,7 +128,7 @@
   (progn
     (ivy-mode 1)
     (general-define-key :keymaps 'ivy-minibuffer-map
-                        "M-?"   (defhydra hydra-ivy (:hint nil :color pink :columns 4)
+                        "C-?"   (defhydra hydra-ivy (:hint nil :color pink :columns 4)
                                   "Ivy Helper"
                                   ("M-o" ivy-dispatching-done "Dispatching Done")
                                   ("C-j" ivy-alt-done "Alt Done")
@@ -144,7 +144,7 @@
                                   ("C-r" ivy-reverse-i-search "Search History")
                                   ("M-w" ivy-kill-ring-save "Copy")
                                   ("C-c C-o" ivy-occur "Occur")
-                                  ("M-?" nil "Cancel"))
+                                  ("C-?" nil "Cancel"))
                         "M-v"   'yank
                         "C-M-v" 'ivy-scroll-down-command)))
 
