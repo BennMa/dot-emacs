@@ -35,7 +35,8 @@
     
     ;; tell mu4e how to sync email
     (setq mu4e-mu-binary (executable-find "mu"))
-    (setq mu4e-get-mail-command (concat (executable-find "proxychains") " " (executable-find "mbsync") " -a"))
+    (setq mu4e-get-mail-command
+          (concat (executable-find "proxychains") " " (executable-find "mbsync") " -a"))
 
     ;; taken from mu4e page to define bookmarks
     (add-to-list 'mu4e-bookmarks
@@ -66,6 +67,8 @@
 
 (use-package mu4e-alert
   :init (add-hook 'mu4e-main-mode-hook 'mu4e-alert-enable-notifications)
+  ;; :init (add-hook 'after-init-hook 'mu4e-alert-enable-notifications)
+  :commands (mu4e-alert-enable-notifications)
   :config
   (progn
     (mu4e-alert-set-default-style
