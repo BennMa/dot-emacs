@@ -22,8 +22,7 @@
    (quote
     (actionscript-mode apache-mode bat-generic-mode c++-mode c-mode csharp-mode css-mode dos-mode emacs-lisp-mode html-mode ini-generic-mode java-mode javascript-mode js-mode js2-mode json-mode lisp-interaction-mode lua-mode latex-mode makefile-mode makefile-gmake-mode markdown-mode moccur-edit-mode nxml-mode nxhtml-mode outline-mode perl-mode cperl-mode web-mode php-mode python-mode rc-generic-mode reg-generic-mode ruby-mode sgml-mode sh-mode squirrel-mode text-mode tcl-mode visual-basic-mode scala-mode)))
  '(alert-default-style (quote fringe))
- '(alert-notifier-command
-   "/usr/local/bin/terminal-notifier")
+ '(alert-notifier-command "/usr/local/bin/terminal-notifier")
  '(align-c++-modes (quote (csharp-mode c++-mode c-mode java-mode groovy-mode)))
  '(align-to-tab-stop nil)
  '(allout-command-prefix ".")
@@ -702,8 +701,19 @@
  '(mouse-wheel-scroll-amount (quote (2 ((shift) . 1) ((control)))))
  '(mu4e-attachment-dir "~/Downloads")
  '(mu4e-confirm-quit t)
+ '(mu4e-headers-date-format "%Y/%m/%d %H:%M:%S")
+ '(mu4e-headers-fields
+   (quote
+    ((:human-date . 20)
+     (:flags . 6)
+     (:mailing-list . 10)
+     (:from-or-to . 22)
+     (:subject))))
  '(mu4e-headers-include-related nil)
- '(mu4e-update-interval 60)
+ '(mu4e-update-interval 180)
+ '(mu4e-user-mail-address-list
+   (quote
+    ("sjembn@gmail.com" "bennmsg@gmail.com" "benn@thenetcircle.com" "mabaineng@gmail.com")))
  '(mu4e-view-show-images nil)
  '(mudel-mode-hook (quote (mudel-add-scroll-to-bottom)))
  '(mudel-output-filter-functions (quote (ansi-color-process-output)))

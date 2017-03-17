@@ -36,7 +36,9 @@
     ;; tell mu4e how to sync email
     (setq mu4e-mu-binary (executable-find "mu"))
     (setq mu4e-get-mail-command
-          (concat (executable-find "proxychains") " " (executable-find "mbsync") " -a"))
+          (concat
+           (executable-find "mbsync") " benntnc" " && "
+           (executable-find "proxychains") " " (executable-find "mbsync") " bennmsg"))
 
     ;; taken from mu4e page to define bookmarks
     (add-to-list 'mu4e-bookmarks

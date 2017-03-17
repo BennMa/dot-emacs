@@ -52,7 +52,8 @@
 
 (use-package org
   :mode ("\\.org\\'"   . org-mode)
-  :commands (org-mode org-capture)
+  :commands (org-mode
+             org-capture)
   :config
   (progn
     ;; ------ basic settings
@@ -222,7 +223,25 @@ prepended to the element after the #+HEADERS: tag."
     ;;   (bind-key ">" 'org-agenda-filter-by-top-headline map)
 
     ;;   (unbind-key "M-m" map))
+
+    ;; https://github.com/IvanMalison/org-projectile
+    (use-package org-projectile
+      :after projectile
+      ;; :commands (org-projectile:project-todo-completing-read)
+      :config
+      (progn
+        ;; (setq org-projectile:projects-file "~/Dropbox/PKG/Task/PROJECTS_TODO.org")
+        (org-projectile:per-repo)
+        (setq org-agenda-files (append org-agenda-files (org-projectile:todo-files)))
+        (add-to-list 'org-capture-templates
+                     (org-projectile:project-todo-entry
+                      "l" "* TODO %? %a\n" "Linked Project TODO"))
+        (add-to-list 'org-capture-templates (org-projectile:project-todo-entry "p"))
+        ))
     ))
+
+(use-package org-mobile :ensure nil
+  :defer t)
 
 (use-package org-knowledgebase :ensure nil
   :commands (org-kb/show-all
@@ -235,35 +254,17 @@ prepended to the element after the #+HEADERS: tag."
     ;;       popwin:special-display-config)
 
     (setq org-agenda-files
-      (append org-agenda-files
-              (directory-files-recursively org-kb-doc-dir t org-agenda-file-regexp)))
+          (append org-agenda-files
+                  (directory-files-recursively org-kb-doc-dir t org-agenda-file-regexp)))
 
     (add-hook 'org-after-todo-state-change-hook 'org-kb/archive-my-daily-jobs)
     (add-hook 'org-clock-out-hook 'org-kb/archive-my-daily-jobs)
 
     (org-defkey org-agenda-mode-map "D" 'org-kb/org-agenda-magic-done)
     (add-to-list 'org-agenda-custom-commands
-             '("q" "All Review Entries" tags ":review:"
-               ((org-agenda-skip-function ;; (org-agenda-files (list org-my-knowledgebase-dir))
-                 'org-kb/org-agenda-skip-expired-review-entry))) t)
-  ))
-
-(use-package org-mobile :ensure nil
-  :defer t)
-
-;; https://github.com/IvanMalison/org-projectile
-(use-package org-projectile
-  :after projectile
-  ;; :commands (org-projectile:project-todo-completing-read)
-  :config
-  (progn
-    ;; (setq org-projectile:projects-file "~/Dropbox/PKG/Task/PROJECTS_TODO.org")
-    (org-projectile:per-repo)
-    (setq org-agenda-files (append org-agenda-files (org-projectile:todo-files)))
-    (add-to-list 'org-capture-templates
-                 (org-projectile:project-todo-entry
-                  "l" "* TODO %? %a\n" "Linked Project TODO"))
-    (add-to-list 'org-capture-templates (org-projectile:project-todo-entry "p"))
+                 '("q" "All Review Entries" tags ":review:"
+                   ((org-agenda-skip-function ;; (org-agenda-files (list org-my-knowledgebase-dir))
+                     'org-kb/org-agenda-skip-expired-review-entry))) t)
     ))
 
 ;;; org.el ends here

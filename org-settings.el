@@ -33,6 +33,17 @@
        (org-agenda-sorting-strategy
         (quote
          (priority-down)))))
+     ("p" "Current Project tasks" todo ""
+      ((org-agenda-skip-function
+        (quote
+         (org-agenda-skip-entry-if
+          (quote regexp)
+          "\\* SOMEDAY")))
+       (org-agenda-sorting-strategy
+        (quote
+         (priority-down)))
+       (org-agenda-files (funcall org-projectile:project-name-to-org-file
+                                   (projectile-project-name)))))
      ("w" "Waiting tasks" todo "WAITING"
       ((org-agenda-overriding-header "Waiting tasks:")
        (org-agenda-sorting-strategy
@@ -43,6 +54,7 @@
      ("r" "All Review Entries" tags ":review:"
       ((org-agenda-skip-function
         (quote k/org-agenda-skip-expired-review-entry)))))))
+ '(org-agenda-custom-commands-contexts (quote (("p" (projectile-project-p)))))
  '(org-agenda-deadline-leaders (quote ("!D!: " "D%02d: ")))
  '(org-agenda-default-appointment-duration 60)
  '(org-agenda-files
