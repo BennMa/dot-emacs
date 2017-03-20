@@ -245,6 +245,7 @@
  '(electric-indent-mode nil)
  '(elscreen-display-tab nil)
  '(enable-recursive-minibuffers t)
+ '(ensime-auto-connect (quote ask))
  '(erc-auto-query (quote window-noselect))
  '(erc-autoaway-message "I'm away (after %i seconds of idle-time)")
  '(erc-autojoin-domain-only t)
@@ -825,7 +826,7 @@
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
    (quote
-    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")))
+    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")) t)
  '(recentf-max-saved-items 1000)
  '(recentf-save-file "~/.emacs.d/.data/recentf")
  '(redisplay-dont-pause t t)

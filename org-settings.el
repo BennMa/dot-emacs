@@ -6,54 +6,6 @@
  '(org-M-RET-may-split-line (quote ((headline) (default . t))))
  '(org-adapt-indentation nil)
  '(org-agenda-auto-exclude-function nil)
- '(org-agenda-custom-commands
-   (quote
-    (("A" "Agenda & High Priority Tasks"
-      ((agenda "" nil)
-       (todo ""
-             ((org-agenda-overriding-header "High Priority Tasks: ")
-              (org-agenda-skip-function
-               (quote
-                (org-agenda-skip-entry-if
-                 (quote regexp)
-                 "\\* SOMEDAY"
-                 (quote notregexp)
-                 "\\=.*\\[#\\(A\\|B\\)\\]")))
-              (org-agenda-sorting-strategy
-               (quote
-                (priority-down))))))
-      nil)
-     ("l" "All tasks" todo ""
-      ((org-agenda-overriding-header "Unscheduled tasks: ")
-       (org-agenda-skip-function
-        (quote
-         (org-agenda-skip-entry-if
-          (quote regexp)
-          "\\* SOMEDAY")))
-       (org-agenda-sorting-strategy
-        (quote
-         (priority-down)))))
-     ("p" "Current Project tasks" todo ""
-      ((org-agenda-skip-function
-        (quote
-         (org-agenda-skip-entry-if
-          (quote regexp)
-          "\\* SOMEDAY")))
-       (org-agenda-sorting-strategy
-        (quote
-         (priority-down)))
-       (org-agenda-files (funcall org-projectile:project-name-to-org-file
-                                   (projectile-project-name)))))
-     ("w" "Waiting tasks" todo "WAITING"
-      ((org-agenda-overriding-header "Waiting tasks:")
-       (org-agenda-sorting-strategy
-        (quote
-         (todo-state-up priority-down category-up)))))
-     ("o" "Someday tasks" todo "SOMEDAY"
-      ((org-agenda-overriding-header "Someday tasks:")))
-     ("r" "All Review Entries" tags ":review:"
-      ((org-agenda-skip-function
-        (quote k/org-agenda-skip-expired-review-entry)))))))
  '(org-agenda-custom-commands-contexts (quote (("p" (projectile-project-p)))))
  '(org-agenda-deadline-leaders (quote ("!D!: " "D%02d: ")))
  '(org-agenda-default-appointment-duration 60)

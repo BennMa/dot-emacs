@@ -10,7 +10,8 @@
 
 (load (expand-file-name "org-settings" user-emacs-directory))
 
-(general-define-key "C-c o" 'hydra-org/body)
+(general-define-key "C-c o" 'hydra-org/body
+                    "C-c O" 'my-org-agenda-startup)
 
 (defhydra hydra-org (:color blue :hint nil :columns 4 :idle 0.3)
   "Org Helper"
@@ -183,9 +184,36 @@ prepended to the element after the #+HEADERS: tag."
     ))
 
 (use-package org-agenda :ensure nil
-  :commands (my-org-agenda-startup org-agenda)
+  :commands (my-org-agenda-startup
+             my-org-agenda-current-project
+             org-agenda)
   :config
   (progn
+    (setq org-agenda-custom-commands
+          '(("A" "Agenda & High Priority Tasks"
+             ((agenda "" nil)
+              (todo ""
+                    ((org-agenda-overriding-header "High Priority Tasks: ")
+                     (org-agenda-skip-function
+                      '(org-agenda-skip-entry-if 'regexp "\\* SOMEDAY" 'notregexp "\\=.*\\[#\\(A\\|B\\)\\]"))
+                     (org-agenda-sorting-strategy
+                      '(priority-down)))))
+             nil)
+            ("l" "All tasks" todo ""
+             ((org-agenda-overriding-header "Unscheduled tasks: ")
+              (org-agenda-skip-function
+               '(org-agenda-skip-entry-if 'regexp "\\* SOMEDAY"))
+              (org-agenda-sorting-strategy
+               '(priority-down))))
+            ("w" "Waiting tasks" todo "WAITING"
+             ((org-agenda-overriding-header "Waiting tasks:")
+              (org-agenda-sorting-strategy
+               '(todo-state-up priority-down category-up))))
+            ("o" "Someday tasks" todo "SOMEDAY"
+             ((org-agenda-overriding-header "Someday tasks:")))
+            ("r" "All Review Entries" tags ":review:"
+             ((org-agenda-skip-function 'k/org-agenda-skip-expired-review-entry)))))
+
     (defun my-org-agenda-mode-hook ()
       ;; (setq line-spacing 0.25)
       (hl-line-mode 1))
@@ -237,6 +265,24 @@ prepended to the element after the #+HEADERS: tag."
                      (org-projectile:project-todo-entry
                       "l" "* TODO %? %a\n" "Linked Project TODO"))
         (add-to-list 'org-capture-templates (org-projectile:project-todo-entry "p"))
+
+        (add-to-list 'org-agenda-custom-commands
+                     '("p" "Current Project tasks" todo ""
+                       ((org-agenda-overriding-header "Current Project Tasks:")
+                        (org-agenda-skip-function
+                         '(org-agenda-skip-entry-if 'regexp "\\* SOMEDAY"))
+                        (org-agenda-sorting-strategy
+                         '(priority-down))))
+                     t)
+
+        (defun my-org-agenda-current-project (arg)
+          "Show agenda view for current project"
+          (interactive "P")
+          (let ((org-agenda-files
+                 (list (expand-file-name
+                        (funcall org-projectile:project-name-to-org-file
+                                 (projectile-project-name))))))
+            (org-agenda arg "p" nil)))
         ))
     ))
 
