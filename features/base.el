@@ -179,7 +179,7 @@
     (projectile-global-mode 1)
     
     ;; https://github.com/ericdanan/counsel-projectile
-    (use-package counsel-projectile :config (counsel-projectile-on))
+    (use-package counsel-projectile :config (counsel-projectile-mode))
     (defun hydra-projectile-if-projectile-p ()
       (interactive)
       (if (projectile-project-p)

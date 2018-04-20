@@ -256,15 +256,16 @@ prepended to the element after the #+HEADERS: tag."
     (use-package org-projectile
       :after projectile
       ;; :commands (org-projectile:project-todo-completing-read)
+      :disabled t
       :config
       (progn
         ;; (setq org-projectile:projects-file "~/Dropbox/PKG/Task/PROJECTS_TODO.org")
-        (org-projectile:per-repo)
-        (setq org-agenda-files (append org-agenda-files (org-projectile:todo-files)))
+        (org-projectile-per-project)
+        (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
         (add-to-list 'org-capture-templates
-                     (org-projectile:project-todo-entry
+                     (org-projectile-project-todo-entry
                       "l" "* TODO %? %a\n" "Linked Project TODO"))
-        (add-to-list 'org-capture-templates (org-projectile:project-todo-entry "p"))
+        (add-to-list 'org-capture-templates (org-projectile-project-todo-entry "p"))
 
         (add-to-list 'org-agenda-custom-commands
                      '("p" "Current Project tasks" todo ""
@@ -280,7 +281,7 @@ prepended to the element after the #+HEADERS: tag."
           (interactive "P")
           (let ((org-agenda-files
                  (list (expand-file-name
-                        (funcall org-projectile:project-name-to-org-file
+                        (funcall org-projectile-project-name-to-org-file
                                  (projectile-project-name))))))
             (org-agenda arg "p" nil)))
         ))
