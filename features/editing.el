@@ -27,7 +27,7 @@
                     "<f2>" 'bm-next
                     "S-<f2>" 'bm-previous
                     "C-<f2>" 'bm-toggle
-                    "C-x C-n" 'blaine/duplicate-line)
+                    "C-x C-n" 'my/duplicate-line)
 
 (general-define-key "C-M-f" 'sp-forward-sexp
                     "C-M-b" 'sp-backward-sexp
@@ -43,8 +43,8 @@
                     ;; "C-M-d" 'hungry-delete-forward
                     ;; "C-M-<backspace>" 'hungry-delete-backward
                     "<C-backspace>" 'sp-backward-kill-sexp
-                    "M-d" 'blaine/contextual-kill-word
-                    "<M-backspace>" 'blaine/contextual-backspace
+                    "M-d" 'my/contextual-kill-word
+                    "<M-backspace>" 'my/contextual-backspace
                     "C-M-c" 'hide/show-comments-toggle)
 
 ;; Toggler

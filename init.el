@@ -6,7 +6,7 @@
 
 ;; ------ Set emacs start time
 (defconst emacs-start-time (current-time))
-(defun blaine//emacs-load-time (title)
+(defun my//emacs-load-time (title)
     (let ((elapsed (float-time (time-subtract (current-time)
                                               emacs-start-time))))
       (message "Loading %s...done (%.3fs)" title elapsed)))
@@ -20,7 +20,7 @@
  (warn "Use a newer version of Emacs for a full featured environment!"))
 
 ;; ------ some early settings
-(defvar blaine--debug t "if print debug info")
+(defvar my--debug t "if print debug info")
 
 (setq gc-cons-threshold 8000000 ; augmente la taille du garbage collector
       ring-bell-function 'ignore
@@ -76,7 +76,7 @@ See also `locate-user-emacs-file'.")
 (let ((default-directory (expand-file-name "elpa" user-emacs-directory)))
   (normal-top-level-add-subdirs-to-load-path))
 
-(setq use-package-verbose blaine--debug
+(setq use-package-verbose my--debug
       use-package-minimum-reported-time 0.01
       use-package-always-ensure t)
 (unless (package-installed-p 'use-package)
@@ -109,15 +109,15 @@ See also `locate-user-emacs-file'.")
       (custom-set-faces '(font-lock-comment-face
                           ((t (:inherit font-lock-comment-face :slant italic))))))))
 
-(defun blaine//load-feature (feature-name)
+(defun my//load-feature (feature-name)
   (load (expand-file-name (concat "features/" feature-name) user-emacs-directory)))
 
 ;; load operation system related packages
-(blaine//load-feature "system")
+(my//load-feature "system")
 ;; load base packages
-(blaine//load-feature "base")
+(my//load-feature "base")
 ;; load other packages
-(mapc 'blaine//load-feature
+(mapc 'my//load-feature
       '(
         "editing"
         "dired"
@@ -137,11 +137,11 @@ See also `locate-user-emacs-file'.")
         ))
 
 ;; ------ post initialization
-(when blaine--debug
-  (blaine//emacs-load-time load-file-name)
+(when my--debug
+  (my//emacs-load-time load-file-name)
   (add-hook 'after-init-hook
             `(lambda ()
-               (blaine//emacs-load-time (concat ,load-file-name " [after-init]")))
+               (my//emacs-load-time (concat ,load-file-name " [after-init]")))
             t))
 
 ;;; init.el ends here

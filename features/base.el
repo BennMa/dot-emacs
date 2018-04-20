@@ -17,11 +17,11 @@
                         "C-M-r"   'isearch-backward)
     ;; C-x
     (general-define-key :prefix "C-x"
-                        "y" '(lambda() (interactive) (blaine/insert-separator nil))
-                        "Y" '(lambda() (interactive) (blaine/insert-separator t))
-                        "v" 'blaine/buffer-info
+                        "y" '(lambda() (interactive) (my/insert-separator nil))
+                        "Y" '(lambda() (interactive) (my/insert-separator t))
+                        "v" 'my/buffer-info
                         "C-e" 'pp-eval-last-sexp
-                        "C-o" 'blaine/kill-other-buffers
+                        "C-o" 'my/kill-other-buffers
                         "C-f" 'counsel-find-file)
 
     ;; Major mode helper
@@ -59,7 +59,7 @@
     ;; System operations
     (general-define-key "C-c s" (defhydra hydra-system-operations (:hint nil :color teal :columns 4)
                                   ("SPC" just-one-space "One space")
-                                  ("s"   blaine/scratch "Scratch")
+                                  ("s"   my/scratch "Scratch")
                                   ("d"   delete-whitespace-rectangle "Del whitespace")
                                   ("F"   set-fill-column "Set fill column")
                                   ("t"   toggle-truncate-lines "Toggle truncate lines")
@@ -101,7 +101,7 @@
                                   ;; ("l" find-library "Find library")
                                   ("L" finder-commentary "Check library commentary")
                                   ("c" describe-char "Describe char")
-                                  ("w" blaine/what-face "What face")
+                                  ("w" my/what-face "What face")
                                   ("F" find-face-definition "Find face definition")
                                   ("i" info-apropos "Info apropos")
                                   ("V" apropos-value "Apropos value")

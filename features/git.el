@@ -108,6 +108,7 @@
 
 (use-package git-gutter
   :diminish "GT"
+  :disabled t
   :commands (git-gutter-mode)
   ;; :init (add-hook 'prog-mode-hook 'git-gutter-mode)
   :config

@@ -1,12 +1,12 @@
 (general-define-key "M-."                'counsel-gtags-dwim
                     "M-,"                'counsel-gtags-pop
-                    "C-<tab>"            'blaine/last-buffer
+                    "C-<tab>"            'my/last-buffer
                     "C-y"                'ivy-switch-buffer
                     "C-S-y"              'counsel-projectile-switch-to-buffer
                     "C-x C-r"            'counsel-recentf
                     ;; "C-y"             'hydra-buffer/body
                     "C-w"                'hydra-window/body
-                    "C-M-w"              'blaine/other-window
+                    "C-M-w"              'my/other-window
                     "C-x 0"              'sticky-window-delete-window
                     "C-x 1"              'sticky-window-delete-other-windows
                     "C-j"                'avy-goto-char
@@ -18,14 +18,14 @@
 
 (defhydra hydra-buffer (:color blue :columns 4 :exit t)
   "Buffers Switcher"
-  ("b"   blaine/last-buffer "Last Buffer")
+  ("b"   my/last-buffer "Last Buffer")
   ("l"   ivy-switch-buffer "All Buffers")
   ("C-l"   ivy-switch-buffer "All Buffers")
   ("p"   counsel-projectile-switch-to-buffer "Project Buffers")
   ("s"   save-buffer "Save" :color red)
   ("k"   kill-this-buffer "Kill this buffer"  :color red)
-  ("d"   blaine/delete-current-buffer-file "Delete This Buffer" :color red)
-  ("B"   blaine/ibuffer-startup "Ibuffer")
+  ("d"   my/delete-current-buffer-file "Delete This Buffer" :color red)
+  ("B"   my/ibuffer-startup "Ibuffer")
   ("M-b" buffer-menu "Buffer Menu")
   ("."   hydra-window/body "Windows")
   ("q"   nil "Cancel" :color blue))
@@ -50,10 +50,10 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
   ("f" enlarge-window-horizontally :color red)
 
   ;; splt
-  ("-" blaine/split-window-below-and-focus)
-  ("s" blaine/split-window-below-and-focus)
-  ("|" blaine/split-window-right-and-focus)
-  ("v" blaine/split-window-right-and-focus)
+  ("-" my/split-window-below-and-focus)
+  ("s" my/split-window-below-and-focus)
+  ("|" my/split-window-right-and-focus)
+  ("v" my/split-window-right-and-focus)
 
   ("u" winner-undo)
   ("m" sticky-window-delete-other-windows)
@@ -76,27 +76,27 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
   ("9" select-window-9)
 
   ;; ("D" kill-buffer-and-window "Delete Buffer" :color red)
-  ("w" blaine/other-window "Other Window")
-  ("C-w" blaine/other-window "Other Window")
+  ("w" my/other-window "Other Window")
+  ("C-w" my/other-window "Other Window")
   ("." hydra-buffer/body "Buffers")
   ("q" nil "quit"))
 
 
 ;; ------ Packages
 (progn ;; own functions
-  (defcustom blaine--buffername-whitelist '()
+  (defcustom my--buffername-whitelist '()
     "white list of last buffer switcher"
     :type '(repeat regexp))
-  (defcustom blaine--buffermode-whitelist '()
+  (defcustom my--buffermode-whitelist '()
     "white list of modes of last buffer switcher"
     :type '(repeat string))
-  (defcustom blaine--buffername-blacklist '()
+  (defcustom my--buffername-blacklist '()
     "black list of last buffer switcher"
     :type '(repeat regexp))
-  (defcustom blaine--buffermode-blacklist '()
+  (defcustom my--buffermode-blacklist '()
     "black list of modes of last buffer switcher"
     :type '(repeat string))
-  (defun blaine/last-buffer ()
+  (defun my/last-buffer ()
     "switch to last active buffer by white list and black list"
     (interactive)
     (let ((i 1)
@@ -111,19 +111,19 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
                                      (symbol-name (buffer-local-value 'major-mode last-buffer))
                                    ""))
           (when (or (list-regex-match-p last-buffer-name
-                                        blaine--buffername-whitelist)
+                                        my--buffername-whitelist)
                     (member-ignore-case last-buffer-mode
-                                        blaine--buffermode-whitelist)
+                                        my--buffermode-whitelist)
                     (not (or (list-regex-match-p last-buffer-name
-                                                 blaine--buffername-blacklist)
+                                                 my--buffername-blacklist)
                              (member-ignore-case last-buffer-mode
-                                                 blaine--buffermode-blacklist))))
+                                                 my--buffermode-blacklist))))
             (switch-to-buffer last-buffer-name)
             (throw 'matched_ t))
           (setq i (1+ i))
           nil)
         )))
-  (defun blaine/delete-current-buffer-file ()
+  (defun my/delete-current-buffer-file ()
     "Delete the current buffer and the file connected with it"
     (interactive)
     (let ((filename (buffer-file-name))
@@ -135,7 +135,7 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
           (delete-file filename)
           (kill-buffer buffer)
           (message "File '%s' successfully removed" filename)))))
-  (defun blaine/other-window (count &optional all-frames)
+  (defun my/other-window (count &optional all-frames)
     (interactive "p")
     (let ((i 1)
           (black-mode-list '(;; direx:direx-mode
@@ -146,11 +146,11 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
           (when (not (member major-mode black-mode-list))
             (throw 'matched_ t))
           (setq i (1+ i))))))
-  (defun blaine/split-window-right-and-focus()
+  (defun my/split-window-right-and-focus()
     (interactive)
     (call-interactively 'split-window-right)
     (call-interactively 'windmove-right))
-  (defun blaine/split-window-below-and-focus()
+  (defun my/split-window-below-and-focus()
     (interactive)
     (call-interactively 'split-window-below)
     (call-interactively 'windmove-down)))
@@ -209,7 +209,7 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
               (counsel-gtags--generate-tags)))))))
 
 (use-package ibuffer
-  :commands (blaine/ibuffer-startup
+  :commands (my/ibuffer-startup
              ibuffer)
   :config
   (progn
@@ -218,14 +218,14 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
                   (ibuffer-auto-mode 1)
                   (ibuffer-switch-to-saved-filter-groups "default")))
 
-    (defun blaine/ibuffer-startup ()
+    (defun my/ibuffer-startup ()
       "Open ibuffer with cursour pointed to most recent buffer name"
       (interactive)
       (let ((recent-buffer-name (buffer-name)))
         (ibuffer)
         (ibuffer-jump-to-buffer recent-buffer-name)))
 
-    (defun blaine/ibuffer-never-show-predicates (buffer)
+    (defun my/ibuffer-never-show-predicates (buffer)
       (let ((name (buffer-name buffer)))
         (and (not (or (member name '("*scratch*", "*Messages*"))
                       (string-match-p "^\\*terminal" name)))

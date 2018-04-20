@@ -35,15 +35,15 @@
     (use-package reveal-in-osx-finder
       :bind (("C-S-o" . reveal-in-osx-finder)))
 
-    (defvar blaine--english-fonts '("Inconsolata" "Source Code Pro" "Anonymous Pro" "Monaco"
+    (defvar my--english-fonts '("Inconsolata" "Source Code Pro" "Anonymous Pro" "Monaco"
                                     "Ubuntu Mono" "Droid Sans Mono"
                                     "Menlo" "DejaVu Sans Mono" "Courier New"
                                     "Monospace" "Courier" "Iosevka Light"))
-    (defvar blaine--chinese-fonts '("宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
+    (defvar my--chinese-fonts '("宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
                                     "Microsoft Yahei"))
-    (defvar blaine--font-size (if (eq system-type 'darwin) 14 11))
+    (defvar my--font-size (if (eq system-type 'darwin) 14 11))
 
-    (qiang-set-font blaine--english-fonts blaine--font-size blaine--chinese-fonts)
+    (qiang-set-font my--english-fonts my--font-size my--chinese-fonts)
     ))
 
  ((eq system-type 'gnu/linux) ;; linux

@@ -60,11 +60,11 @@
  '(bbdb/mail-auto-create-p nil)
  '(bc-bookmark-file "~/.emacs.d/.data/breadcrumb")
  '(bind-key-segregation-regexp "\\`\\(\\(C-[chx.] \\|M-[gso] \\)\\([CM]-\\)?\\|.+-\\)")
- '(blaine--buffermode-blacklist
+ '(my--buffermode-blacklist
    (quote
     ("direx:direx-mode" "diary-mode" "circe-query-mode" "circe-server-mode" "circe-channel-mode" "circe-chat-mode")))
- '(blaine--buffername-blacklist (quote ("^ ?\\*" "Collector.org")))
- '(blaine--buffername-whitelist
+ '(my--buffername-blacklist (quote ("^ ?\\*" "Collector.org")))
+ '(my--buffername-whitelist
    (quote
     ("\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python" "\\*sbt\\*" "\\*scratch\\*" "\\*SQL" "\\*mu4e-headers\\*")))
  '(bm-buffer-persistence t)
@@ -432,7 +432,7 @@
            (name 16 -1)
            " " filename))))
  '(ibuffer-maybe-show-regexps nil)
- '(ibuffer-never-show-predicates (quote (blaine/ibuffer-never-show-predicates)) nil (ibuf-ext))
+ '(ibuffer-never-show-predicates (quote (my/ibuffer-never-show-predicates)) nil (ibuf-ext))
  '(ibuffer-saved-filter-groups
    (quote
     (("default"
