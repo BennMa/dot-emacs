@@ -26,10 +26,10 @@
                     "C-M->" 'mc/mark-all-like-this
                     "<f2>" 'bm-next
                     "S-<f2>" 'bm-previous
-                    "C-<f2>" 'bm-toggle)
+                    "C-<f2>" 'bm-toggle
+                    "C-x C-n" 'blaine/duplicate-line)
 
-(general-define-key "C-M-d" 'blaine/duplicate-line
-                    "C-M-f" 'sp-forward-sexp
+(general-define-key "C-M-f" 'sp-forward-sexp
                     "C-M-b" 'sp-backward-sexp
                     "C-M-a" 'sp-backward-up-sexp
                     "C-M-e" 'sp-up-sexp
