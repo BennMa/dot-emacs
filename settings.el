@@ -61,11 +61,11 @@
  '(bbdb/mail-auto-create-p nil)
  '(bc-bookmark-file "~/.emacs.d/.data/breadcrumb")
  '(bind-key-segregation-regexp "\\`\\(\\(C-[chx.] \\|M-[gso] \\)\\([CM]-\\)?\\|.+-\\)")
- '(blaine--buffermode-blacklist
+ '(my--buffermode-blacklist
    (quote
     ("direx:direx-mode" "diary-mode" "circe-query-mode" "circe-server-mode" "circe-channel-mode" "circe-chat-mode")))
- '(blaine--buffername-blacklist (quote ("^ ?\\*" "Collector.org")))
- '(blaine--buffername-whitelist
+ '(my--buffername-blacklist (quote ("^ ?\\*" "Collector.org")))
+ '(my--buffername-whitelist
    (quote
     ("\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python" "\\*sbt\\*" "\\*scratch\\*" "\\*SQL" "\\*mu4e-headers\\*")))
  '(bm-buffer-persistence t)
@@ -198,8 +198,11 @@
       (fullscreen))))
  '(default-major-mode (quote text-mode) t)
  '(deft-auto-save-interval 0.0)
- '(deft-directory "~/Documents/notes")
+ '(deft-directory "~/Dropbox/PKG/Document")
+ '(deft-recursive t)
  '(deft-text-mode (quote org-mode))
+ '(deft-use-filename-as-title t)
+ '(deft-use-filter-string-for-filename t)
  '(delete-by-moving-to-trash t)
  '(delete-old-versions t)
  '(delete-selection-mode t)
@@ -432,7 +435,7 @@
            (name 16 -1)
            " " filename))))
  '(ibuffer-maybe-show-regexps nil)
- '(ibuffer-never-show-predicates (quote (blaine/ibuffer-never-show-predicates)) nil (ibuf-ext))
+ '(ibuffer-never-show-predicates (quote (my/ibuffer-never-show-predicates)) nil (ibuf-ext))
  '(ibuffer-saved-filter-groups
    (quote
     (("default"
@@ -747,7 +750,7 @@
  '(op/theme (quote emacs_love))
  '(package-selected-packages
    (quote
-    (mu4e-maildirs-extension mu4e-alert regex-tool smart-mode-line mode-icons srefactor php-refactor-mode parinfer company-php ede-php-autoload stickyfunc-enhance nodejs-repl git-link git-gutter git-messenger git-timemachine company-statistics company-quickhelp aggressive-indent move-text hungry-delete highlight-numbers highlight-indent-guides origami ob-php focus bm rainbow-mode tiny smartparens ranger dired-k paradox counsel-gtags phpcbf php-auto-yasnippets php-extras org-agenda undo-tree yatemplate ggtags goto-chg sticky-windows zoom-frm ace-window window-numbering reveal-in-osx-finder pbcopy osx-trash counsel-projectile counsel ivy swiper hydra restart-emacs use-package-chords key-chord general clean-aindent-mode highlight-parentheses hl-parentheses hl-anything edts-mode ediff-keep zencoding-mode yaml-mode window-number which-key web-mode w3m vertigo use-package tide tabbar sr-speedbar sml-mode smex skewer-mode shackle session restclient quickrun project-explorer powerline popwin phpunit php-mode pdf-tools ox-ioslide org-page ob-typescript nlinum multi-term maxframe markdown-mode magit lua-mode js2-refactor inf-mongo indent-guide imenu-list imenu+ ido-yes-or-no ido-ubiquitous ido-grid-mode ibuffer-vc hl-line+ helm-swoop helm-projectile helm-gtags helm-ag google-this expand-region exec-path-from-shell esup escreen erlang ensime emmet-mode elscreen elpy dockerfile-mode docker discover-my-major direx dired+ dedicated company-tern company-emacs-eclim company-c-headers color-moccur cmake-mode circe-notifications buffer-move bookmark+ blog-admin backup-each-save back-button auto-yasnippet auto-highlight-symbol anzu ag ace-jump-mode)))
+    (deft mu4e-maildirs-extension mu4e-alert regex-tool smart-mode-line mode-icons srefactor php-refactor-mode parinfer company-php ede-php-autoload stickyfunc-enhance nodejs-repl git-link git-gutter git-messenger git-timemachine company-statistics company-quickhelp aggressive-indent move-text hungry-delete highlight-numbers highlight-indent-guides origami ob-php focus bm rainbow-mode tiny smartparens ranger dired-k paradox counsel-gtags phpcbf php-auto-yasnippets php-extras org-agenda undo-tree yatemplate ggtags goto-chg sticky-windows zoom-frm ace-window window-numbering reveal-in-osx-finder pbcopy osx-trash counsel-projectile counsel ivy swiper hydra restart-emacs use-package-chords key-chord general clean-aindent-mode highlight-parentheses hl-parentheses hl-anything edts-mode ediff-keep zencoding-mode yaml-mode window-number which-key web-mode w3m vertigo use-package tide tabbar sr-speedbar sml-mode smex skewer-mode shackle session restclient quickrun project-explorer powerline popwin phpunit php-mode pdf-tools ox-ioslide org-page ob-typescript nlinum multi-term maxframe markdown-mode magit lua-mode js2-refactor inf-mongo indent-guide imenu-list imenu+ ido-yes-or-no ido-ubiquitous ido-grid-mode ibuffer-vc hl-line+ helm-swoop helm-projectile helm-gtags helm-ag google-this expand-region exec-path-from-shell esup escreen erlang ensime emmet-mode elscreen elpy dockerfile-mode docker discover-my-major direx dired+ dedicated company-tern company-emacs-eclim company-c-headers color-moccur cmake-mode circe-notifications buffer-move bookmark+ blog-admin backup-each-save back-button auto-yasnippet auto-highlight-symbol anzu ag ace-jump-mode)))
  '(page-break-lines-modes
    (quote
     (emacs-lisp-mode compilation-mode outline-mode prog-mode haskell-mode)))

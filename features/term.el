@@ -89,9 +89,9 @@
       (interactive)
       (let ((b (my-term-last-buffer (buffer-list))))
         (if (eq 'term-mode major-mode)
-            (let ((blaine--buffername-whitelist
-                   (remove "\\*terminal" blaine--buffername-whitelist)))
-              (blaine/last-buffer))
+            (let ((my--buffername-whitelist
+                   (remove "\\*terminal" my--buffername-whitelist)))
+              (my/last-buffer))
           (if (not b)
               (multi-term)
             (switch-to-buffer b)))))

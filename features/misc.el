@@ -8,6 +8,8 @@
   ("g" google-this "Google this")
   ("s" sql-pool "SQL Pool")
   ("r" regex-tool "Regex tool")
+  ("d" deft "Deft")
+  ("D" deft-find-file "Deft find file")
   ("q" nil "Cancel"))
 
 ;; ------ packages
@@ -128,5 +130,15 @@
 
 (use-package regex-tool
   :commands (regex-tool))
+
+(general-define-key :keymaps 'deft-mode-map
+                    "C-," (defhydra hydra-deft (:hint nil :color blue :exit t :columns 4)
+                            "Deft Helper"
+                            ("d" deft-delete-file "Delete file")
+                            ("i" deft-toggle-incremental-search "Toggle incremental search")
+                            ("n" deft-new-file "New file")
+                            ("q" nil "Cancel")))
+(use-package deft
+  :commands (deft))
 
 ;;; misc.el ends here

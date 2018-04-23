@@ -12,9 +12,9 @@
   ("q" nil "Cancel"))
 
 (general-define-key :keymaps 'mu4e-main-mode-map
-                    "q"     'blaine/last-buffer)
+                    "q"     'my/last-buffer)
 (general-define-key :keymaps 'mu4e-headers-mode-map
-                    "q"     'blaine/last-buffer)
+                    "q"     'my/last-buffer)
 
 (defvar my-mu4e-dir (cond
                     ((eq system-type 'darwin) "/usr/local/Cellar/mu/0.9.18/share/emacs/site-lisp/mu/mu4e")

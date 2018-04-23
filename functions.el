@@ -70,7 +70,7 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
                             zh-font))
         (setq face-font-rescale-alist chinese-font-size))))
 
-(defun blaine/copy-line (arg)
+(defun my/copy-line (arg)
   "Copy line in the kill ring, With prefix arg will copy whole line include spaces"
   (interactive "P")
   (save-excursion
@@ -80,7 +80,7 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
     (kill-ring-save (point) (line-end-position)))
   (message "the line was copied"))
 
-(defun blaine/duplicate-line ()
+(defun my/duplicate-line ()
   "Duplicate the line containing point."
   (interactive)
   (save-excursion
@@ -95,7 +95,7 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
       (open-line 1)
       (insert line-text))))
 
-(defun blaine//get-comment ()
+(defun my//get-comment ()
   "Get comment for different modes"
   (cond
    ((string-equal mode-name "Emacs-Lisp") ";;")
@@ -105,17 +105,17 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
    ((string-equal mode-name "Py") "#")
    ((string-equal mode-name "Erlang") "%%")
    (t (if comment-start comment-start ""))))
-(defun blaine/insert-separator(&optional paragraph-p)
+(defun my/insert-separator(&optional paragraph-p)
   (save-excursion
     (insert
      (format (if paragraph-p
                  "%s ====== "
                "%s ------ ")
-             (blaine//get-comment))))
-  (forward-char (+ (length (blaine//get-comment)) 8)))
+             (my//get-comment))))
+  (forward-char (+ (length (my//get-comment)) 8)))
 
 
-(defun blaine/buffer-info(short-p)
+(defun my/buffer-info(short-p)
   "show and copy current buffer info based on major-mode"
   (interactive "P")
   (let ((result nil)
@@ -132,29 +132,29 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
       (message result)
       (kill-new result))))
 
-(defun blaine/beginning-of-line (&optional n)
+(defun my/beginning-of-line (&optional n)
   (interactive "p")
   (let ((curr-point (point)))
     (beginning-of-line-text n)
     (if (= curr-point (point))
         (beginning-of-line))))
 
-(defun blaine/scratch ()
+(defun my/scratch ()
   (interactive)
   (let ((current-mode major-mode))
     (switch-to-buffer-other-window (get-buffer-create "*scratch*"))
     (goto-char (point-min))))
 
-(defun blaine/quickping (host)
+(defun my/quickping (host)
   (= 0 (call-process "ping" nil nil nil "-c1" "-W50" "-q" host)))
 
-(defun blaine/what-face (pos)
+(defun my/what-face (pos)
   (interactive "d")
   (let ((face (or (get-char-property (point) 'read-face-name)
                   (get-char-property (point) 'face))))
     (if face (message "Face: %s" face) (message "No face at %d" pos))))
 
-(defun blaine/format-buffer()
+(defun my/format-buffer()
   (interactive)
   (cond
    ((string-equal mode-name "Emacs-Lisp") ";;")
@@ -171,41 +171,41 @@ If set/leave chinese-font-size to nil, it will follow english-font-size"
    ((eq major-mode 'css-mode) (web-beautify-css))
    (t nil)))
 
-(defun blaine/kill-other-buffers ()
+(defun my/kill-other-buffers ()
     "Kill all other buffers."
     (interactive)
     (mapc 'kill-buffer 
           (delq (current-buffer) 
                 (remove-if-not 'buffer-file-name (buffer-list)))))
 
-(defvar blaine--hungry-delete-string "[[:space:]\n\t]")
-(defun blaine/contextual-kill-word ()
+(defvar my--hungry-delete-string "[[:space:]\n\t]")
+(defun my/contextual-kill-word ()
   "Hungry whitespace or kill word depending on context."
   (interactive)
-  (if (looking-at-p blaine--hungry-delete-string)
+  (if (looking-at-p my--hungry-delete-string)
       (if (boundp 'hungry-delete-forward)
           (call-interactively 'hungry-delete-forward)
-        (while (looking-at-p blaine--hungry-delete-string)
+        (while (looking-at-p my--hungry-delete-string)
           (delete-char 1)))
     (cond
      ((and (boundp 'smartparens-strict-mode) smartparens-strict-mode)
       (call-interactively 'sp-kill-word))
      (t (call-interactively 'kill-word)))))
 
-(defun blaine/contextual-backspace ()
+(defun my/contextual-backspace ()
   "Hungry whitespace or delete word depending on context."
   (interactive)
-  (if (looking-back blaine--hungry-delete-string (- (point) 1))
+  (if (looking-back my--hungry-delete-string (- (point) 1))
       (if (boundp 'hungry-delete-backward)
           (call-interactively 'hungry-delete-backward)
-        (while (looking-back blaine--hungry-delete-string (- (point) 1))
+        (while (looking-back my--hungry-delete-string (- (point) 1))
           (delete-char -1)))
     (cond
      ((and (boundp 'smartparens-strict-mode) smartparens-strict-mode)
       (call-interactively 'sp-backward-kill-word))
      (t (call-interactively 'backward-kill-word)))))
 
-(defun blaine/indent-buffer ()
+(defun my/indent-buffer ()
   "Indent the entire buffer."
   (interactive)
   (save-excursion

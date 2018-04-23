@@ -1,5 +1,5 @@
-(general-define-key "C-x d" 'dired-jump
-                    "C-x C-d" 'my-direx:jump-to-directory-other-window)
+(general-define-key "C-x C-j" 'dired-jump
+                    "C-x C-S-j" 'my-direx:jump-to-directory-other-window)
 
 (use-package dired :ensure nil
   :config

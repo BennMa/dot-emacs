@@ -8,7 +8,7 @@
                     ;; org-mode-map
                     ))
   (general-define-key :keymaps mode-map
-                      "<tab>" 'blaine/tab-indent-or-complete))
+                      "<tab>" 'my/tab-indent-or-complete))
 
 (general-define-key "M-/" 'hippie-expand
                     ;; "C-<return>" . 'company-complete-common
@@ -17,17 +17,17 @@
 
 (general-define-key :keymaps 'company-active-map
                     "M-h" 'company-quickhelp-manual-begin
-                    "<tab>" 'blaine/expand-snippet-or-complete-selection)
+                    "<tab>" 'my/expand-snippet-or-complete-selection)
 
 (general-define-key :keymaps 'yas-keymap
-                    "<tab>" 'blaine/tab-complete-or-next-field
+                    "<tab>" 'my/tab-complete-or-next-field
                     ;; "C-<tab>" 'yas-next-field
-                    "C-g" 'blaine/abort-company-or-yas)
+                    "C-g" 'my/abort-company-or-yas)
 
 (general-define-key :keymaps 'yas-minor-mode-map "<tab>" nil)
 
 (progn ;; helper functions
-  (defun blaine/tab-indent-or-complete ()
+  (defun my/tab-indent-or-complete ()
     (interactive)
     (cond
      ((minibufferp)
@@ -35,8 +35,8 @@
      (t
       (indent-for-tab-command)
       (if (or (not yas/minor-mode)
-              (null (blaine//do-yas-expand)))
-          (if (blaine//check-expansion)
+              (null (my//do-yas-expand)))
+          (if (my//check-expansion)
               (progn
                 (company-manual-begin)
                 (if (null company-candidates)
@@ -44,26 +44,26 @@
                       (company-abort)
                       (indent-for-tab-command)))))))))
 
-  (defun blaine/abort-company-or-yas ()
+  (defun my/abort-company-or-yas ()
     (interactive)
     (if (null company-candidates)
         (yas-abort-snippet)
       (company-abort)))
 
-  (defun blaine/expand-snippet-or-complete-selection ()
+  (defun my/expand-snippet-or-complete-selection ()
     (interactive)
     (if (or (not yas/minor-mode)
-            (null (blaine//do-yas-expand))
+            (null (my//do-yas-expand))
             (company-abort))
         (company-complete-selection)))
 
-  (defun blaine/tab-complete-or-next-field ()
+  (defun my/tab-complete-or-next-field ()
     (interactive)
     (if (or (not yas/minor-mode)
-            (null (blaine//do-yas-expand)))
+            (null (my//do-yas-expand)))
         (if company-candidates
             (company-complete-selection)
-          (if (blaine//check-expansion)
+          (if (my//check-expansion)
               (progn
                 (company-manual-begin)
                 (if (null company-candidates)
@@ -72,11 +72,11 @@
                       (yas-next-field))))
             (yas-next-field)))))
 
-  (defun blaine//do-yas-expand ()
+  (defun my//do-yas-expand ()
     (let ((yas/fallback-behavior 'return-nil))
       (yas/expand)))
 
-  (defun blaine//check-expansion ()
+  (defun my//check-expansion ()
     (save-excursion
       (if (looking-at "\\_>") t
         (backward-char 1)

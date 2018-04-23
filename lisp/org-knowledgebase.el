@@ -1,6 +1,6 @@
 ;;; org-knowledgebase.el --- my knowledge base -*- lexical-binding: t -*-
 
-;; Copyright (C) 2016-02-01 blaine
+;; Copyright (C) 2016-02-01 baineng
 ;; License: MIT
 
 ;;; Commentary:
