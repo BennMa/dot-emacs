@@ -8,7 +8,7 @@
 (use-package general
   :config
   (progn
-    (general-define-key "C-;"     'hydra-projectile-if-projectile-p
+    (general-define-key "C-;"   'hydra-projectile-if-projectile-p
                         "C-x C-v" 'ivy-resume
                         "C-c ;"   'comment-or-uncomment-region
                         "C-s"     'isearch-forward-regexp
@@ -168,15 +168,15 @@
   ;; use projectile-mode-line instead
   :diminish (projectile-mode . " ⓟ")
   :commands (projectile-mode
-             projectile-global-mode
              hydra-projectile/body
              hydra-projectile-if-projectile-p
              projectile-project-root
              projectile-project-p
              counsel-projectile-switch-to-buffer)
+  :init (setq projectile-keymap-prefix "")
   :config
   (progn
-    (projectile-global-mode 1)
+    (projectile-mode 1)
     
     ;; https://github.com/ericdanan/counsel-projectile
     (use-package counsel-projectile :config (counsel-projectile-on))

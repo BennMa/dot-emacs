@@ -48,11 +48,17 @@
 
  ((eq system-type 'gnu/linux) ;; linux
   (progn
+    (use-package xclip
+      :disabled t
+      :config
+      (xclip-mode 1)
+      (turn-on-xclip))
     (use-package cua
       :disabled t
       :config (cua-mode 1))
     (setq browse-url-browser-function 'browse-url-chromium)
-    (setenv "PATH" "/home/benn/.config/composer/vendor/bin:/home/benn/.phpbrew/php/php-5.6.28/bin:/home/benn/.phpbrew/bin:/home/benn/.pyenv/plugins/pyenv-virtualenv/shims:/home/benn/.pyenv/shims:/home/benn/.pyenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin")
+    (setenv "PATH" "/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/home/benn/.gem/ruby/2.3.0/bin:/home/benn/.config/composer/vendor/bin:/home/benn/.phpbrew/php/php-7.1.6/bin:/home/benn/.phpbrew/bin:/home/benn/.pyenv/shims:/home/benn/.pyenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin")
+    (set-default-font "-*-Hack-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1")
     ;; (let ((my--exec-paths
     ;;        '("/home/benn/.phpbrew/php/php-5.6.28/bin/")))
     ;;   ;; (setenv "PATH" (concat (mapconcat 'identity my--exec-paths ";") ";" (getenv "PATH")))

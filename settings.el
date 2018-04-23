@@ -41,6 +41,7 @@
    (quote
     (97 115 100 102 103 104 106 107 108 119 101 114 116 121 117 105 111 112 120 99 118 98 110 109)))
  '(avy-style (quote at-full))
+ '(back-button-smartrep-prefix "nil")
  '(backup-by-copying t)
  '(backup-directory-alist (quote (("." . "~/.emacs.d/.data/backups"))))
  '(backward-delete-char-untabify-method (quote untabify))
@@ -157,7 +158,7 @@
  '(company-frontends
    (quote
     (company-pseudo-tooltip-unless-just-one-frontend company-echo-metadata-frontend company-preview-frontend)))
- '(company-idle-delay 0.2)
+ '(company-idle-delay 0.1)
  '(company-minimum-prefix-length 2)
  '(company-require-match nil)
  '(company-semantic-begin-after-member-access t)
@@ -245,7 +246,9 @@
  '(electric-indent-mode nil)
  '(elscreen-display-tab nil)
  '(enable-recursive-minibuffers t)
- '(ensime-auto-connect (quote ask))
+ '(ensime-auto-connect (quote never))
+ '(ensime-graphical-tooltips t)
+ '(ensime-use-helm t)
  '(erc-auto-query (quote window-noselect))
  '(erc-autoaway-message "I'm away (after %i seconds of idle-time)")
  '(erc-autojoin-domain-only t)
@@ -570,6 +573,7 @@
  '(magit-unstage-all-confirm nil)
  '(magit-use-overlays nil)
  '(make-cursor-line-fully-visible nil)
+ '(markdown-command "/usr/bin/markdown")
  '(max-lisp-eval-depth 50000)
  '(max-specpdl-size 5000)
  '(menu-bar-mode nil)
@@ -730,6 +734,8 @@
  '(next-line-add-newlines nil)
  '(ns-alternate-modifier (quote alt))
  '(ns-command-modifier (quote meta))
+ '(nxml-child-indent 4)
+ '(nxml-outline-child-indent 4)
  '(nxml-sexp-element-flag t)
  '(nxml-slash-auto-complete-flag t)
  '(olivetti-hide-mode-line t)
@@ -794,7 +800,6 @@
         (message "Updated tags by projectile timer")
         (counsel-gtags-create-or-update-tags t))))))
  '(projectile-idle-timer-seconds 60)
- '(projectile-keymap-prefix "")
  '(projectile-known-projects-file "~/.emacs.d/.data/projectile-bookmarks.eld")
  '(projectile-mode-line
    (quote
@@ -826,7 +831,7 @@
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
    (quote
-    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")) t)
+    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")))
  '(recentf-max-saved-items 1000)
  '(recentf-save-file "~/.emacs.d/.data/recentf")
  '(redisplay-dont-pause t t)
@@ -994,6 +999,7 @@
  '(whitespace-silent t t)
  '(whitespace-style (quote (face trailing lines space-before-tab empty)))
  '(workgroups-mode nil)
+ '(x-select-enable-primary nil)
  '(x-stretch-cursor t)
  '(yaoddmuse-browse-function (quote w3m-browse-url))
  '(yaoddmuse-directory "~/.emacs.d/doc")

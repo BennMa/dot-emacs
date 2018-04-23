@@ -26,10 +26,10 @@
                     "C-M->" 'mc/mark-all-like-this
                     "<f2>" 'bm-next
                     "S-<f2>" 'bm-previous
-                    "C-<f2>" 'bm-toggle)
+                    "C-<f2>" 'bm-toggle
+                    "C-x C-j" 'blaine/duplicate-line)
 
-(general-define-key "C-M-d" 'blaine/duplicate-line
-                    "C-M-f" 'sp-forward-sexp
+(general-define-key "C-M-f" 'sp-forward-sexp
                     "C-M-b" 'sp-backward-sexp
                     "C-M-a" 'sp-backward-up-sexp
                     "C-M-e" 'sp-up-sexp
@@ -38,11 +38,12 @@
                     ;; "C-M-k" 'sp-kill-sexp
                     ;; "C-M-t" 'sp-transpose-sexp
                     "C-M-j" '(lambda() (interactive) (delete-indentation t))
-                    "C-M-t" 'move-text-down
-                    "C-M-S-t" 'move-text-up
+                    "C-<down>" 'move-text-down
+                    "C-<up>"   'move-text-up
                     ;; "C-M-d" 'hungry-delete-forward
                     ;; "C-M-<backspace>" 'hungry-delete-backward
                     "<C-backspace>" 'sp-backward-kill-sexp
+                    "<C-S-backspace>" 'sp-kill-whole-line
                     "M-d" 'blaine/contextual-kill-word
                     "<M-backspace>" 'blaine/contextual-backspace
                     "C-M-c" 'hide/show-comments-toggle)
@@ -348,3 +349,11 @@
 (use-package imenu-list
   :commands (imenu-list-smart-toggle
              imenu-list-minor-mode))
+
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "multimarkdown"))

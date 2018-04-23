@@ -133,6 +133,7 @@ See also `locate-user-emacs-file'.")
         "lang/web"
         "lang/scala"
         "lang/python"
+        "lang/misc"
         "mail"
         ))
 
