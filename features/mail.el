@@ -1,4 +1,4 @@
-(run-with-idle-timer 10 nil 'mu4e) 
+;; (run-with-idle-timer 10 nil 'mu4e) 
 
 (general-define-key "C-c m" 'hydra-mail/body
                     "C-c M" '(lambda() (interactive) (error (switch-to-buffer "*mu4e-headers*")))

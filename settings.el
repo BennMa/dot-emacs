@@ -61,13 +61,6 @@
  '(bbdb/mail-auto-create-p nil)
  '(bc-bookmark-file "~/.emacs.d/.data/breadcrumb")
  '(bind-key-segregation-regexp "\\`\\(\\(C-[chx.] \\|M-[gso] \\)\\([CM]-\\)?\\|.+-\\)")
- '(my--buffermode-blacklist
-   (quote
-    ("direx:direx-mode" "diary-mode" "circe-query-mode" "circe-server-mode" "circe-channel-mode" "circe-chat-mode")))
- '(my--buffername-blacklist (quote ("^ ?\\*" "Collector.org")))
- '(my--buffername-whitelist
-   (quote
-    ("\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python" "\\*sbt\\*" "\\*scratch\\*" "\\*SQL" "\\*mu4e-headers\\*")))
  '(bm-buffer-persistence t)
  '(bm-cycle-all-buffers t)
  '(bm-highlight-style (quote bm-highlight-only-fringe))
@@ -576,7 +569,7 @@
  '(magit-unstage-all-confirm nil)
  '(magit-use-overlays nil)
  '(make-cursor-line-fully-visible nil)
- '(markdown-command "/usr/bin/markdown")
+ '(markdown-command "/usr/bin/markdown" t)
  '(max-lisp-eval-depth 50000)
  '(max-specpdl-size 5000)
  '(menu-bar-mode nil)
@@ -734,6 +727,13 @@
  '(multi-term-scroll-to-bottom-on-output t)
  '(multi-term-switch-after-close nil)
  '(multi-term-try-create nil)
+ '(my--buffermode-blacklist
+   (quote
+    ("direx:direx-mode" "diary-mode" "circe-query-mode" "circe-server-mode" "circe-channel-mode" "circe-chat-mode")))
+ '(my--buffername-blacklist (quote ("^ ?\\*" "Collector.org")))
+ '(my--buffername-whitelist
+   (quote
+    ("\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python" "\\*sbt\\*" "\\*scratch\\*" "\\*SQL" "\\*mu4e-headers\\*")))
  '(next-line-add-newlines nil)
  '(ns-alternate-modifier (quote alt))
  '(ns-command-modifier (quote meta))
@@ -750,7 +750,7 @@
  '(op/theme (quote emacs_love))
  '(package-selected-packages
    (quote
-    (deft mu4e-maildirs-extension mu4e-alert regex-tool smart-mode-line mode-icons srefactor php-refactor-mode parinfer company-php ede-php-autoload stickyfunc-enhance nodejs-repl git-link git-gutter git-messenger git-timemachine company-statistics company-quickhelp aggressive-indent move-text hungry-delete highlight-numbers highlight-indent-guides origami ob-php focus bm rainbow-mode tiny smartparens ranger dired-k paradox counsel-gtags phpcbf php-auto-yasnippets php-extras org-agenda undo-tree yatemplate ggtags goto-chg sticky-windows zoom-frm ace-window window-numbering reveal-in-osx-finder pbcopy osx-trash counsel-projectile counsel ivy swiper hydra restart-emacs use-package-chords key-chord general clean-aindent-mode highlight-parentheses hl-parentheses hl-anything edts-mode ediff-keep zencoding-mode yaml-mode window-number which-key web-mode w3m vertigo use-package tide tabbar sr-speedbar sml-mode smex skewer-mode shackle session restclient quickrun project-explorer powerline popwin phpunit php-mode pdf-tools ox-ioslide org-page ob-typescript nlinum multi-term maxframe markdown-mode magit lua-mode js2-refactor inf-mongo indent-guide imenu-list imenu+ ido-yes-or-no ido-ubiquitous ido-grid-mode ibuffer-vc hl-line+ helm-swoop helm-projectile helm-gtags helm-ag google-this expand-region exec-path-from-shell esup escreen erlang ensime emmet-mode elscreen elpy dockerfile-mode docker discover-my-major direx dired+ dedicated company-tern company-emacs-eclim company-c-headers color-moccur cmake-mode circe-notifications buffer-move bookmark+ blog-admin backup-each-save back-button auto-yasnippet auto-highlight-symbol anzu ag ace-jump-mode)))
+    (jdee deft mu4e-maildirs-extension mu4e-alert regex-tool smart-mode-line mode-icons srefactor php-refactor-mode parinfer company-php ede-php-autoload stickyfunc-enhance nodejs-repl git-link git-gutter git-messenger git-timemachine company-statistics company-quickhelp aggressive-indent move-text hungry-delete highlight-numbers highlight-indent-guides origami ob-php focus bm rainbow-mode tiny smartparens ranger dired-k paradox counsel-gtags phpcbf php-auto-yasnippets php-extras org-agenda undo-tree yatemplate ggtags goto-chg sticky-windows zoom-frm ace-window window-numbering reveal-in-osx-finder pbcopy osx-trash counsel-projectile counsel ivy swiper hydra restart-emacs use-package-chords key-chord general clean-aindent-mode highlight-parentheses hl-parentheses hl-anything edts-mode ediff-keep zencoding-mode yaml-mode window-number which-key web-mode w3m vertigo use-package tide tabbar sr-speedbar sml-mode smex skewer-mode shackle session restclient quickrun project-explorer powerline popwin phpunit php-mode pdf-tools ox-ioslide org-page ob-typescript nlinum multi-term maxframe markdown-mode magit lua-mode js2-refactor inf-mongo indent-guide imenu-list imenu+ ido-yes-or-no ido-ubiquitous ido-grid-mode ibuffer-vc hl-line+ helm-swoop helm-projectile helm-gtags helm-ag google-this expand-region exec-path-from-shell esup escreen erlang ensime emmet-mode elscreen elpy dockerfile-mode docker discover-my-major direx dired+ dedicated company-tern company-emacs-eclim company-c-headers color-moccur cmake-mode circe-notifications buffer-move bookmark+ blog-admin backup-each-save back-button auto-yasnippet auto-highlight-symbol anzu ag ace-jump-mode)))
  '(page-break-lines-modes
    (quote
     (emacs-lisp-mode compilation-mode outline-mode prog-mode haskell-mode)))
@@ -834,7 +834,7 @@
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
    (quote
-    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")))
+    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")) t)
  '(recentf-max-saved-items 1000)
  '(recentf-save-file "~/.emacs.d/.data/recentf")
  '(redisplay-dont-pause t t)
@@ -861,6 +861,7 @@
  '(scroll-margin 0)
  '(scroll-step 1)
  '(select-enable-clipboard t)
+ '(select-enable-primary nil)
  '(semantic-imenu-index-directory t)
  '(semantic-which-function-use-color t)
  '(semanticdb-default-save-directory "~/.emacs.d/.data/semanticdb")
@@ -1002,7 +1003,6 @@
  '(whitespace-silent t t)
  '(whitespace-style (quote (face trailing lines space-before-tab empty)))
  '(workgroups-mode nil)
- '(x-select-enable-primary nil)
  '(x-stretch-cursor t)
  '(yaoddmuse-browse-function (quote w3m-browse-url))
  '(yaoddmuse-directory "~/.emacs.d/doc")
