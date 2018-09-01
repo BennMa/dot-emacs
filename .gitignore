@@ -31,3 +31,5 @@ ensime/
 network-security.data
 customization-individual.el
 .tern-port
+anaconda-mode/
+request/

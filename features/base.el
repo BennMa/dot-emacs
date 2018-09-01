@@ -8,7 +8,7 @@
 (use-package general
   :config
   (progn
-    (general-define-key "C-;"   'hydra-projectile-if-projectile-p
+    (general-define-key "C-c p"   'hydra-projectile-if-projectile-p
                         "C-x C-v" 'ivy-resume
                         "C-c ;"   'comment-or-uncomment-region
                         "C-s"     'isearch-forward-regexp

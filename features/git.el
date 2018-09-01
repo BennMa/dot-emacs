@@ -116,4 +116,5 @@
     (git-gutter:linum-setup)))
 
 (use-package git-link
+  :disabled t
   :commands git-link)
