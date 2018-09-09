@@ -60,6 +60,7 @@
     ;; ------ basic settings
     (unbind-key "C-<tab>" org-mode-map)
     (unbind-key "C-y" org-mode-map)
+    (unbind-key "C-j" org-mode-map)
 
     (defun my-org-mode-hook ()
       ;; (setq line-spacing 0.25)
@@ -181,6 +182,11 @@ prepended to the element after the #+HEADERS: tag."
     ;;     (setq pub-dir (concat org-my-export-output-directory-prefix (substring extension 1)))
     ;;     (when (not (file-directory-p pub-dir))
     ;;       (make-directory pub-dir))))
+
+    (use-package toc-org
+      :config
+      (add-hook 'org-mode-hook 'toc-org-enable))
+
     ))
 
 (use-package org-agenda :ensure nil
