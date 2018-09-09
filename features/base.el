@@ -237,7 +237,7 @@
     (general-define-key :keymaps 'undo-tree-map "C-?" nil)))
 
 (use-package exec-path-from-shell
-  :defer 2
+  ;; :defer 2
   :if (memq window-system '(mac ns))
   :commands (exec-path-from-shell-initialize
              exec-path-from-shell-copy-env)

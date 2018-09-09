@@ -5,8 +5,8 @@
                     "C-S-y"              'counsel-projectile-switch-to-buffer
                     "C-x C-r"            'counsel-recentf
                     ;; "C-y"             'hydra-buffer/body
-                    "C-w"                'hydra-window/body
-                    "C-M-w"              'my/other-window
+                    "C-o"                'hydra-window/body
+                    "C-M-o"              'my/other-window
                     "C-x 0"              'sticky-window-delete-window
                     "C-x 1"              'sticky-window-delete-other-windows
                     "C-j"                'avy-goto-char

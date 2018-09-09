@@ -84,7 +84,7 @@
  '(org-clock-clocked-in-display nil)
  '(org-clock-idle-time 10)
  '(org-clock-in-resume t)
- '(org-clock-in-switch-to-state "STARTED")
+ '(org-clock-in-switch-to-state "TODO")
  '(org-clock-into-drawer "LOGBOOK")
  '(org-clock-mode-line-total (quote current))
  '(org-clock-modeline-total (quote current))
@@ -210,14 +210,13 @@
  '(org-todo-keyword-faces
 (quote
  (("TODO" :foreground "red" :weight bold)
-  ("STARTED" :foreground "dark orange" :weight bold)
-  ("WAITING" :foreground "medium blue" :weight bold)
+  ("PREPARATORY" :foreground "dark orange" :weight bold)
   ("SOMEDAY" :foreground "dark blue" :weight bold)
   ("CANCELED" :foreground "gray" :weight bold)
   ("DONE" :foreground "ForestGreen" :weight bold))))
  '(org-todo-keywords
 (quote
- ((sequence "TODO(t)" "STARTED(s)" "WAITING(w)" "SOMEDAY(o)" "|" "CANCELED(c)" "DONE(d)"))))
+ ((sequence "TODO(t)" "PREPARATORY(p)" "SOMEDAY(s)" "|" "CANCELED(c)" "DONE(d)"))))
  '(org-todo-repeat-to-state "TODO")
  '(org-use-property-inheritance (quote ("AREA")))
  '(org-use-speed-commands t)

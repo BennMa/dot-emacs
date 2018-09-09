@@ -187,28 +187,35 @@ prepended to the element after the #+HEADERS: tag."
   :commands (my-org-agenda-startup
              my-org-agenda-current-project
              org-agenda)
+  :demand t
   :config
   (progn
     (setq org-agenda-custom-commands
-          '(("A" "Agenda & High Priority Tasks"
+          '(("A" "Agenda & Tasks [sort by priority]"
              ((agenda "" nil)
-              (todo ""
-                    ((org-agenda-overriding-header "High Priority Tasks: ")
-                     (org-agenda-skip-function
-                      '(org-agenda-skip-entry-if 'regexp "\\* SOMEDAY" 'notregexp "\\=.*\\[#\\(A\\|B\\)\\]"))
+              (todo "TODO"
+                    ((org-agenda-overriding-header "Tasks [sort by priority]: ")
+                     ;; (org-agenda-skip-function
+                     ;;  ;; '(org-agenda-skip-entry-if 'regexp "\\* SOMEDAY" 'notregexp "\\=.*\\[#\\(A\\|B\\)\\]")
+                     ;;  '(org-agenda-skip-entry-if 'regexp "\\* SOMEDAY" 'scheduled)
+                     ;;  )
                      (org-agenda-sorting-strategy
-                      '(priority-down)))))
+                      '(todo-state-up priority-down)))))
              nil)
-            ("l" "All tasks" todo ""
-             ((org-agenda-overriding-header "Unscheduled tasks: ")
-              (org-agenda-skip-function
-               '(org-agenda-skip-entry-if 'regexp "\\* SOMEDAY"))
+            ;; ("l" "All tasks" todo ""
+            ;;  ((org-agenda-overriding-header "Unscheduled tasks: ")
+            ;;   (org-agenda-skip-function
+            ;;    '(org-agenda-skip-entry-if 'regexp "\\* SOMEDAY"))
+            ;;   (org-agenda-sorting-strategy
+            ;;    '(priority-down))))
+            ;; ("w" "Waiting tasks" todo "WAITING"
+            ;;  ((org-agenda-overriding-header "Waiting tasks:")
+            ;;   (org-agenda-sorting-strategy
+            ;;    '(todo-state-up priority-down category-up))))
+            ("p" "Preparatory tasks" todo "PREPARATORY"
+             ((org-agenda-overriding-header "Preparatory tasks:")
               (org-agenda-sorting-strategy
-               '(priority-down))))
-            ("w" "Waiting tasks" todo "WAITING"
-             ((org-agenda-overriding-header "Waiting tasks:")
-              (org-agenda-sorting-strategy
-               '(todo-state-up priority-down category-up))))
+               '(priority-down category-up))))
             ("o" "Someday tasks" todo "SOMEDAY"
              ((org-agenda-overriding-header "Someday tasks:")))
             ("r" "All Review Entries" tags ":review:"

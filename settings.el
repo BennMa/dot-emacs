@@ -733,7 +733,7 @@
  '(my--buffername-blacklist (quote ("^ ?\\*" "Collector.org")))
  '(my--buffername-whitelist
    (quote
-    ("\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python" "\\*sbt\\*" "\\*scratch\\*" "\\*SQL" "\\*mu4e-headers\\*")))
+    ("\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python" "\\*sbt\\*" "\\*scratch\\*" "\\*SQL" "\\*mu4e-headers\\*" "\\*ein:")))
  '(next-line-add-newlines nil)
  '(ns-alternate-modifier (quote alt))
  '(ns-command-modifier (quote meta))
@@ -834,7 +834,7 @@
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
    (quote
-    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")) t)
+    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")))
  '(recentf-max-saved-items 1000)
  '(recentf-save-file "~/.emacs.d/.data/recentf")
  '(redisplay-dont-pause t t)
