@@ -83,11 +83,13 @@
     ;; ------ hydra
     (defhydra hydra-org-template (:color blue :hint nil)
       "
- _c_enter  _q_uote     _e_macs-lisp    _L_aTeX:
- _l_atex   _E_xample   _p_hp           _i_ndex:
- _a_scii   _v_erse     _S_cala         _I_NCLUDE:
- _s_rc     _n_ote      _P_ython        _H_TML:
- _h_tml    ^ ^         ^ ^             _A_SCII:
+ _c_enter  _q_uote     _1_.emacs-lisp    _L_aTeX:
+ _l_atex   _E_xample   _2_.shell         _i_ndex:
+ _a_scii   _v_erse     _3_.python        _I_NCLUDE:
+ _s_rc     _n_ote      _4_.scala         _H_TML:
+ _h_tml    ^ ^         _5_.java          _A_SCII:
+ ^ ^       ^ ^         _6_.javascript    ^ ^
+ ^ ^       ^ ^         _7_.php           ^ ^
 "
       ("s" (hot-expand "<s"))
       ("E" (hot-expand "<e"))
@@ -106,11 +108,13 @@
       ("a" (hot-expand "<a"))
       ("L" (hot-expand "<L"))
       ("i" (hot-expand "<i"))
-      ("e" (hot-expand "<s" "emacs-lisp"))
-      ("p" (hot-expand "<s" "php"))
-      ("S" (hot-expand "<s" "scala"))
-      ("P" (hot-expand "<s" "python"))
-      ("j" (hot-expand "<s" "js"))
+      ("1" (hot-expand "<s" "emacs-lisp"))
+      ("2" (hot-expand "<s" "sh"))
+      ("3" (hot-expand "<s" "python"))
+      ("4" (hot-expand "<s" "scala"))
+      ("5" (hot-expand "<s" "java"))
+      ("6" (hot-expand "<s" "js"))
+      ("7" (hot-expand "<s" "php"))
       ("I" (hot-expand "<I"))
       ("H" (hot-expand "<H"))
       ("A" (hot-expand "<A"))
