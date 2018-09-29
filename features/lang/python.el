@@ -5,6 +5,10 @@
              (add-hook 'python-mode-hook 'elpy-mode))
   :config (elpy-enable))
 
+(use-package yapfify
+  :config
+  (add-hook 'python-mode-hook 'yapf-mode))
+
 (use-package anaconda-mode
   :config
   (add-hook 'python-mode-hook 'anaconda-mode)

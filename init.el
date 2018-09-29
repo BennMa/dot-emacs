@@ -105,7 +105,16 @@ See also `locate-user-emacs-file'.")
       (setq doom-enable-italic t
             doom-enable-bold t
             doom-enable-brighter-comments t)
-      (load-theme 'doom-molokai t)
+      ;; (load-theme 'doom-molokai t)
+      (load-theme 'doom-nord-light t)
+      (let ((height (face-attribute 'default :height)))
+        ;; for all linum/nlinum users
+        (set-face-attribute 'linum nil :height height)
+        ;; only for `linum-relative' users:
+        ;; (set-face-attribute 'linum-relative-current-face nil :height height)
+        ;; only for `nlinum-relative' users:
+        ;; (set-face-attribute 'nlinum-relative-current-face nil :height height)
+        )
       (custom-set-faces '(font-lock-comment-face
                           ((t (:inherit font-lock-comment-face :slant italic))))))))
 
