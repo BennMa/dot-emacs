@@ -482,7 +482,7 @@
         (name . "^\\*Messages\\*$")))))))
  '(ibuffer-show-empty-filter-groups nil)
  '(ibuffer-shrink-to-minimum-size t t)
- '(ibuffer-use-other-window t)
+ '(ibuffer-use-other-window nil)
  '(icicle-Completions-text-scale-decrease 0)
  '(icicle-apropos-cycle-next-keys (quote ([next] [(control 110)])))
  '(icicle-apropos-cycle-previous-keys (quote ([prior] [(control 112)])))
@@ -834,7 +834,7 @@
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
    (quote
-    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")) t)
+    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")))
  '(recentf-max-saved-items 1000)
  '(recentf-save-file "~/.emacs.d/.data/recentf")
  '(redisplay-dont-pause t t)

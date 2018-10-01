@@ -10,7 +10,7 @@
                     "C-x 0"              'sticky-window-delete-window
                     "C-x 1"              'sticky-window-delete-other-windows
                     "C-j"                'avy-goto-char
-                    "C-S-j"              'avy-goto-char-in-line
+                    "C-S-j"              'avy-goto-line
                     ;; (general-chord "jj") 'avy-goto-char
                     ;; (general-chord "jw") 'avy-goto-word-1
                     ;; (general-chord "jl") 'avy-goto-line
