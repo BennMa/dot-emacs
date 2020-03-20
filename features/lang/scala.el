@@ -10,7 +10,7 @@
                     comment-empty-lines t)
               ;; (setq prettify-symbols-alist scala-prettify-symbols-alist)
               ;; (prettify-symbols-mode)
-              (ensime-mode 1)
+              ;; (ensime-mode 1)
               ))
 
   (defun scala-mode-newline-comments ()
@@ -37,6 +37,7 @@
 
 (use-package ensime
   :pin melpa-stable
+  :disabled t
   :commands (ensime-mode)
   :init
   (progn

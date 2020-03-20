@@ -159,7 +159,7 @@
                   ""))
         (pnt))
     (unless (string= (buffer-file-name) collect-file)
-      (find-file-other-window collect-file))
+      (find-file collect-file))
     (goto-char (point-min))
     ;; (if (string= (buffer-substring-no-properties 1 4) "* \n")
     (if (looking-at-p "\\* +?\n")

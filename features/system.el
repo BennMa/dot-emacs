@@ -35,7 +35,7 @@
     (use-package reveal-in-osx-finder
       :bind (("C-S-o" . reveal-in-osx-finder)))
 
-    (defvar my--english-fonts '("Inconsolata" "Source Code Pro" "Anonymous Pro" "Monaco"
+    (defvar my--english-fonts '("Iosevka" "Inconsolata" "Source Code Pro" "Anonymous Pro" "Monaco"
                                     "Ubuntu Mono" "Droid Sans Mono"
                                     "Menlo" "DejaVu Sans Mono" "Courier New"
                                     "Monospace" "Courier" "Iosevka Light"))
@@ -44,6 +44,12 @@
     (defvar my--font-size (if (eq system-type 'darwin) 14 11))
 
     (qiang-set-font my--english-fonts my--font-size my--chinese-fonts)
+    (set-face-attribute 'variable-pitch nil :family "Baskerville")
+    ;; (set-face-attribute 'default nil :family "Iosevka" :height 140)
+    ;; (set-face-attribute 'fixed-pitch nil :family "Iosevka")
+
+    (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+    (add-to-list 'default-frame-alist '(ns-appearance . light))
     ))
 
  ((eq system-type 'gnu/linux) ;; linux
@@ -57,7 +63,7 @@
       :disabled t
       :config (cua-mode 1))
     (setq browse-url-browser-function 'browse-url-chromium)
-    (setenv "PATH" "/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/home/benn/.gem/ruby/2.3.0/bin:/home/benn/.config/composer/vendor/bin:/home/benn/.phpbrew/php/php-7.1.6/bin:/home/benn/.phpbrew/bin:/home/benn/.pyenv/shims:/home/benn/.pyenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin")
+    ;; (setenv "PATH" "/usr/local/openresty/bin:/usr/local/openresty/nginx/sbin:/home/benn/.gem/ruby/2.3.0/bin:/home/benn/.config/composer/vendor/bin:/home/benn/.phpbrew/php/php-7.1.6/bin:/home/benn/.phpbrew/bin:/home/benn/.pyenv/shims:/home/benn/.pyenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin")
     (set-default-font "-*-Hack-normal-normal-normal-*-14-*-*-*-m-0-iso10646-1")
     ;; (let ((my--exec-paths
     ;;        '("/home/benn/.phpbrew/php/php-5.6.28/bin/")))

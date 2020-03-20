@@ -37,6 +37,7 @@
 _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
 ^ ^ _j_ ^ ^   _s_ : split H    ^ ^ _n_ ^ ^   _u_ndo      ^9^ ^0^
 ^ ^ ^ ^ ^ ^   _v_ : split V    ^ ^ ^ ^ ^ ^   _D_edicated
+^ ^ ^ ^ ^ ^   ^ ^ ^ ^ ^ ^ ^    ^ ^ ^ ^ ^ ^   _t_ranspose
 "
   ("h" windmove-left)
   ("l" windmove-right)
@@ -62,6 +63,7 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
   ("a" ace-window)
   ("=" balance-windows)
   ("D" dedicated-mode)
+  ("t" my/transpose-windows)
 
   ;; change height and width
   ("0" select-window-0)
@@ -153,7 +155,18 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
   (defun my/split-window-below-and-focus()
     (interactive)
     (call-interactively 'split-window-below)
-    (call-interactively 'windmove-down)))
+    (call-interactively 'windmove-down))
+  (defun my/transpose-windows (arg)
+    "Transpose the buffers shown in two windows."
+    (interactive "p")
+    (let ((selector (if (>= arg 0) 'next-window 'previous-window)))
+      (while (/= arg 0)
+        (let ((this-win (window-buffer))
+              (next-win (window-buffer (funcall selector))))
+          (set-window-buffer (selected-window) next-win)
+          (set-window-buffer (funcall selector) this-win)
+          (select-window (funcall selector)))
+        (setq arg (if (plusp arg) (1- arg) (1+ arg)))))))
 
 ;; C-x C-<SPC>	go back in global-mark-ring, respects prefix arg
 ;; C-x C-<left>	go back in global-mark-ring

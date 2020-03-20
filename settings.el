@@ -176,7 +176,7 @@
  '(counsel-gtags-prefix-key "nil")
  '(counsel-gtags-update-interval-second 60)
  '(current-language-environment "UTF-8")
- '(cursor-type (quote box))
+ '(cursor-type (quote bar))
  '(custom-buffer-done-function (quote kill-buffer))
  '(custom-file "~/.emacs.d/settings.el")
  '(custom-raised-buttons nil)
@@ -332,6 +332,7 @@
  '(flycheck-phpmd-rulesets (quote ("codesize" "design" "unusedcode")))
  '(flycheck-standard-error-navigation nil)
  '(flymake-compilation-prevents-syntax-check nil)
+ '(flymake-proc-compilation-prevents-syntax-check nil)
  '(flyspell-abbrev-p nil)
  '(flyspell-incorrect-hook nil)
  '(flyspell-use-meta-tab nil)
@@ -525,8 +526,7 @@
  '(initial-major-mode (quote fundamental-mode))
  '(initsplit-customizations-alist
    (quote
-    (("\\`\\(sql-connection-alist\\)" "~/.emacs.d/private-settings.el" nil nil)
-     ("\\`\\(org-\\)" "~/.emacs.d/org-settings.el" nil nil))))
+    (("\\`\\(org-\\)" "~/.emacs.d/org-settings.el" nil nil))))
  '(ispell-extra-args nil)
  '(ivy-count-format "(%d/%d) ")
  '(ivy-height 15)
@@ -730,7 +730,8 @@
  '(my--buffermode-blacklist
    (quote
     ("direx:direx-mode" "diary-mode" "circe-query-mode" "circe-server-mode" "circe-channel-mode" "circe-chat-mode")))
- '(my--buffername-blacklist (quote ("^ ?\\*" "Collector.org")))
+ '(my--buffermode-whitelist nil)
+ '(my--buffername-blacklist (quote ("^ ?\\*")))
  '(my--buffername-whitelist
    (quote
     ("\\*\\(?:unsent .*\\|Group\\|Article .*\\|Summary .*\\)" "\\*terminal" "\\*magit:" "\\*Tail:" "\\*erlang" "\\*Customize" "\\*eshell" "\\*Async Shell Command\\*" "\\*python" "\\*sbt\\*" "\\*scratch\\*" "\\*SQL" "\\*mu4e-headers\\*" "\\*ein:")))
@@ -741,7 +742,8 @@
  '(nxml-outline-child-indent 4)
  '(nxml-sexp-element-flag t)
  '(nxml-slash-auto-complete-flag t)
- '(olivetti-hide-mode-line t)
+ '(olivetti-body-width 0.9)
+ '(olivetti-hide-mode-line nil)
  '(op/personal-github-link "https://github.com/BennMa")
  '(op/repository-directory "/Users/benn/Mine/Projects/Personal/bennma.github.io")
  '(op/site-domain "https://bennma.github.io/")
@@ -750,7 +752,7 @@
  '(op/theme (quote emacs_love))
  '(package-selected-packages
    (quote
-    (yapfify toc-org company-anaconda anaconda-mode ein jdee deft mu4e-maildirs-extension mu4e-alert regex-tool smart-mode-line mode-icons srefactor php-refactor-mode parinfer company-php ede-php-autoload stickyfunc-enhance nodejs-repl git-link git-gutter git-messenger git-timemachine company-statistics company-quickhelp aggressive-indent move-text hungry-delete highlight-numbers highlight-indent-guides origami ob-php focus bm rainbow-mode tiny smartparens ranger dired-k paradox counsel-gtags phpcbf php-auto-yasnippets php-extras org-agenda undo-tree yatemplate ggtags goto-chg sticky-windows zoom-frm ace-window window-numbering reveal-in-osx-finder pbcopy osx-trash counsel-projectile counsel ivy swiper hydra restart-emacs use-package-chords key-chord general clean-aindent-mode highlight-parentheses hl-parentheses hl-anything edts-mode ediff-keep zencoding-mode yaml-mode window-number which-key web-mode w3m vertigo use-package tide tabbar sr-speedbar sml-mode smex skewer-mode shackle session restclient quickrun project-explorer powerline popwin phpunit php-mode pdf-tools ox-ioslide org-page ob-typescript nlinum multi-term maxframe markdown-mode magit lua-mode js2-refactor inf-mongo indent-guide imenu-list imenu+ ido-yes-or-no ido-ubiquitous ido-grid-mode ibuffer-vc hl-line+ helm-swoop helm-projectile helm-gtags helm-ag google-this expand-region exec-path-from-shell esup escreen erlang ensime emmet-mode elscreen elpy dockerfile-mode docker discover-my-major direx dired+ dedicated company-tern company-emacs-eclim company-c-headers color-moccur cmake-mode circe-notifications buffer-move bookmark+ blog-admin backup-each-save back-button auto-yasnippet auto-highlight-symbol anzu ag ace-jump-mode)))
+    (counsel-projectile json-snatcher smart-mode-line yasnippet company counsel ivy key-chord emacs-async org-super-agenda htmlize pyenv-mode olivetti olivetti-mode poet-theme pipenv company-tern magithub php-extras company-php ede-php-autoload php-mode skewer-mode nodejs-repl web-beautify tern js-doc js2-refactor json-mode js2-mode multi-term toc-org org-bullets git-messenger git-timemachine magit srefactor stickyfunc-enhance deft regex-tool mode-icons google-this paradox mu4e-maildirs-extension mu4e-alert lua-mode ein company-anaconda anaconda-mode yapfify ensime sbt-mode scala-mode web-mode php-refactor-mode phpcbf phpunit php-auto-yasnippets reveal-in-osx-finder pbcopy osx-trash window-numbering which-key use-package-chords undo-tree smartparens shackle session restart-emacs rainbow-mode projectile origami mwim multiple-cursors move-text maxframe markdown-mode initsplit imenu-list hydra hungry-delete highlight-parentheses highlight-numbers highlight-indent-guides ggtags general focus flycheck expand-region exec-path-from-shell doom-themes discover-my-major direx dired-k diminish dedicated counsel-gtags company-statistics company-quickhelp clean-aindent-mode bm back-button auto-yasnippet auto-highlight-symbol anzu aggressive-indent ace-window ace-jump-mode)))
  '(page-break-lines-modes
    (quote
     (emacs-lisp-mode compilation-mode outline-mode prog-mode haskell-mode)))
@@ -803,6 +805,7 @@
         (message "Updated tags by projectile timer")
         (counsel-gtags-create-or-update-tags t))))))
  '(projectile-idle-timer-seconds 60)
+ '(projectile-indexing-method (quote native))
  '(projectile-known-projects-file "~/.emacs.d/.data/projectile-bookmarks.eld")
  '(projectile-mode-line
    (quote
@@ -829,6 +832,7 @@
  '(ps-header-title-font-size (quote (14 . 16)))
  '(ps-line-number-font-size 10)
  '(ps-print-color-p nil)
+ '(python-shell-exec-path (quote ("/home/benn/.pyenv/shims/python")))
  '(rdebug-many-windows nil)
  '(read-buffer-function (quote ido-read-buffer))
  '(recentf-auto-cleanup (quote never))
@@ -942,13 +946,13 @@
  '(term-buffer-maximum-size 0)
  '(term-scroll-show-maximum-output t)
  '(term-unbind-key-list (quote ("C-z" "C-x" "C-c" "C-h" "C-y" "<ESC>" "M-v")))
- '(tramp-auto-save-directory "~/.emacs.d/.data/tramp-backups")
- '(tramp-default-method "ssh")
+ '(tramp-auto-save-directory "~/.emacs.d/.data/tramp-backups" nil (tramp))
+ '(tramp-default-method "ssh" nil (tramp))
  '(tramp-default-method-alist
    (quote
-    (("\\`\\(127\\.0\\.0\\.1\\|::1\\|localhost6?\\)\\'" "\\`root\\'" "sudo"))))
- '(tramp-encoding-shell "/bin/sh")
- '(tramp-persistency-file-name "~/.emacs.d/.data/tramp")
+    (("\\`\\(127\\.0\\.0\\.1\\|::1\\|localhost6?\\)\\'" "\\`root\\'" "sudo"))) nil (tramp))
+ '(tramp-encoding-shell "/bin/sh" nil (tramp))
+ '(tramp-persistency-file-name "~/.emacs.d/.data/tramp" nil (tramp))
  '(trash-directory "~/.Trash")
  '(undo-limit 800000)
  '(undo-tree-auto-save-history t)

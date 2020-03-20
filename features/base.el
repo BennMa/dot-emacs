@@ -8,7 +8,7 @@
 (use-package general
   :config
   (progn
-    (general-define-key "M-p"   'hydra-projectile-if-projectile-p
+    (general-define-key "M-p"     'hydra-projectile-if-projectile-p
                         "C-x C-v" 'ivy-resume
                         "C-c ;"   'comment-or-uncomment-region
                         "C-s"     'isearch-forward-regexp
@@ -174,10 +174,11 @@
              projectile-project-p
              counsel-projectile-switch-to-buffer)
   ;; :init (setq projectile-keymap-prefix "")
+  :init (setq projectile-keymap-prefix "p")
   :config
   (progn
     (projectile-mode 1)
-    
+
     ;; https://github.com/ericdanan/counsel-projectile
     (use-package counsel-projectile :config (counsel-projectile-mode))
     (defun hydra-projectile-if-projectile-p ()
@@ -199,6 +200,8 @@
     ^ ^                _,_: pop
 "
       ("a"   counsel-projectile-ag)
+      ("g"   projectile-grep)
+      ;; ("g"   counsel-projectile-grep)
       ("b"   counsel-projectile-switch-to-buffer)
       ("k"   projectile-invalidate-cache)
       ("d"   counsel-projectile-find-dir)
@@ -206,8 +209,7 @@
       ("F"   projectile-find-file-dwim)
       ("C-f" projectile-find-file-in-directory)
       ;; ("g"   projectile-regenerate-tags) ;; regenerate tags by ggtags
-      ("g"   counsel-gtags-create-or-update-tags)
-      ("c"   counsel-gtags-find-definition)
+      ("c"   counsel-gtags-create-or-update-tags)
       ("."   counsel-gtags-find-definition)
       (","   counsel-gtags-pop)
       ("u"   counsel-gtags-find-reference)
@@ -238,7 +240,7 @@
 
 (use-package exec-path-from-shell
   :defer 2
-  :if (memq window-system '(mac ns))
+  :if (memq window-system '(mac ns x))
   :commands (exec-path-from-shell-initialize
              exec-path-from-shell-copy-env)
   :config (exec-path-from-shell-initialize))

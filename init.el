@@ -44,22 +44,40 @@ Note that this should end with a directory separator.
 See also `locate-user-emacs-file'.")
 (make-directory (expand-file-name ".data" user-emacs-directory) t)
 (make-directory (expand-file-name ".data/auto-save-backups" user-emacs-directory) t)
+(let ((dir (expand-file-name ".data/pcache/" user-emacs-directory)))
+    (make-directory dir t)
+    (setq pcache-directory dir))
+
 
 ;; ------ package settings
 (eval-when-compile
   (require 'cl))
-(require 'package)
-(setq
-   package-enable-at-startup nil
-   ;; package-load-list '((use-package t))
-   package-check-signature nil
-   package-archives
-   '(("melpa-stable" . "https://stable.melpa.org/packages/")
-     ("melpa" . "https://melpa.org/packages/")
-     ("marmalade"   . "https://marmalade-repo.org/packages/")
-     ("org"         . "http://orgmode.org/elpa/")
-     ("gnu"         . "https://elpa.gnu.org/packages/")))
+;; (require 'package)
+(setq package-enable-at-startup nil
+      ;; package-load-list '((use-package t))
+      package-check-signature nil)
+(setq package-archives
+      '(
+        ;; ("popkit"    . "https://elpa.popkit.org/packages/") ;; chinese mirror (https://github.com/aborn/popkit-elpa)
+        ("melpa-stable" . "https://stable.melpa.org/packages/")
+        ("melpa"        . "https://melpa.org/packages/")
+        ("org"          . "http://orgmode.org/elpa/")
+        ("gnu"          . "https://elpa.gnu.org/packages/")
+        ))
+(setq package-archive-priorities
+      '(("melpa-stable" . 20)
+        ;; ("popkit"       . 20)
+        ("org"          . 20)
+        ("gnu"          . 10)
+        ("melpa"        . 0)))
 (package-initialize t)
+(if (not package-archive-contents)
+  (package-refresh-contents))
+(setq required-basic-packages '(use-package))
+(dolist (pkg required-basic-packages)
+  (if (and (not (package-installed-p pkg))
+	   (assoc pkg package-archive-contents))
+      (package-install pkg)))
 
 ;; load-path
 (and (boundp 'custom-theme-load-path)
@@ -86,6 +104,7 @@ See also `locate-user-emacs-file'.")
   (require 'use-package))
 
 (use-package initsplit)
+(use-package session)
 (load (expand-file-name "settings" user-emacs-directory))
 (let ((private-settings-file (expand-file-name "private-settings.el" user-emacs-directory)))
   (and (file-exists-p private-settings-file)
@@ -93,27 +112,10 @@ See also `locate-user-emacs-file'.")
 
 ;; ------ packages
 (load (expand-file-name "functions"  user-emacs-directory))
-(progn
-  ;; org faces: http://orgmode.org/worg/org-color-themes.html
-  ;; (load-theme 'my-leuven t)
-  ;; (load-theme 'my-custom t)
-
-  ;; https://github.com/hlissner/emacs-doom-theme
-  (use-package doom-themes
-    :config
-    (progn
-      (setq doom-enable-italic t
-            doom-enable-bold t
-            doom-enable-brighter-comments t)
-      ;; (load-theme 'doom-molokai t)
-      (load-theme 'doom-nord-light t)
-      ;; (load-theme 'doom-nord t)
-      (custom-set-faces '(font-lock-comment-face
-                          ((t (:inherit font-lock-comment-face :slant italic))))))))
 
 (defun my//load-feature (feature-name)
   (load (expand-file-name (concat "features/" feature-name) user-emacs-directory)))
-
+(my//load-feature "theme")
 ;; load operation system related packages
 (my//load-feature "system")
 ;; load base packages

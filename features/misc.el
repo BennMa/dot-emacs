@@ -1,4 +1,6 @@
-(general-define-key "C-c z" 'hydra-misc/body)
+(general-define-key "C-c z" 'hydra-misc/body
+                    "<f4>"  'deft
+                    "C-<f4>" 'deft-find-file)
 (defhydra hydra-misc (:hint nil :color blue :columns 4)
   "Misc Helper"
   ("m" emacs-toggle-size "Toggle frame size")
@@ -43,6 +45,7 @@
         (maximize-frame)))))
 
 (use-package escreen
+  :disabled t
   :commands (escreen-create-screen)
   :bind (:map escreen-map
               ("e" . escreen-goto-last-screen)
@@ -50,6 +53,7 @@
   :config (escreen-install))
 
 (use-package zoom-frm
+  :disabled t
   :commands (zoom-frm-in
              zoom-frm-out
              zoom-frm-unzoom
@@ -139,6 +143,16 @@
                             ("n" deft-new-file "New file")
                             ("q" nil "Cancel")))
 (use-package deft
-  :commands (deft))
+  :commands (deft)
+  :bind (:map deft-mode-map
+              ("C-<return>" . deft-open-file-other-window)
+              ("M-<return>" . deft-new-file-named)
+              ("M-v" . deft-filter-yank))
+  :config
+  (unbind-key "C-o" deft-mode-map)
+  (unbind-key "C-y" deft-mode-map))
+
+;; https://github.com/jwiegley/emacs-async
+;; (use-package emacs-async)
 
 ;;; misc.el ends here

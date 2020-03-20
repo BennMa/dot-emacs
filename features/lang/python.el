@@ -10,6 +10,7 @@
   (add-hook 'python-mode-hook 'yapf-mode))
 
 (use-package anaconda-mode
+  :diminish (anaconda-mode . " [AC]")
   :config
   (add-hook 'python-mode-hook 'anaconda-mode)
   (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
@@ -27,3 +28,16 @@
   (require 'ein-loaddefs)
   (require 'ein-notebook)
   (require 'ein-subpackages))
+
+(use-package pipenv
+  :diminish (pipenv-mode . " [PE]")
+  :hook (python-mode . pipenv-mode)
+  :init
+  (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended))
+
+
+(require 'pyenv-mode)
+(add-hook 'python-mode-hook 'pyenv-mode)
+;; (use-package pyenv-mode
+  ;; :disabled t
+  ;; :hook (python-mode . pyenv-mode))

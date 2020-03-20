@@ -33,7 +33,7 @@
       (semanticdb-enable-gnu-global-databases 'php-mode))
 
     ;; semantic-php
-    (load (expand-file-name "site-lisp/semantic-php/loaddefs" user-emacs-directory))
+    ; (load (expand-file-name "site-lisp/semantic-php/loaddefs" user-emacs-directory))
     ;; (add-to-list 'load-path (expand-file-name "site-lisp/metaturso-semantic-php" user-emacs-directory))
     ;; (require 'grammar-setup)
 
@@ -68,6 +68,7 @@
   :commands company-ac-php-backend)
 
 (use-package php-extras
+  :disabled t
   :commands (php-extras-company
              php-extras-insert-previous-variable
              php-extras-eldoc-documentation-function))

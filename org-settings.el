@@ -1,114 +1,108 @@
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-M-RET-may-split-line (quote ((headline) (default . t))))
- '(org-adapt-indentation nil)
- '(org-agenda-auto-exclude-function nil)
- '(org-agenda-custom-commands-contexts (quote (("p" (projectile-project-p)))))
- '(org-agenda-deadline-leaders (quote ("!D!: " "D%02d: ")))
- '(org-agenda-default-appointment-duration 60)
- '(org-agenda-files
+ '(org-x-redmine-title-prefix-match-function (quote org-x-redmine-title-prefix-match))
+ '(org-x-redmine-title-prefix-function (quote org-x-redmine-title-prefix))
+ '(org-x-backends (quote (ox-org ox-redmine)))
+ '(org-velocity-search-method (quote regexp))
+ '(org-velocity-force-new t)
+ '(org-velocity-exit-on-match t)
+ '(org-velocity-capture-templates
    (quote
-    ("~/Dropbox/PKG/Task/INBOX.org" "~/Dropbox/PKG/Task/Collector.org" "~/Dropbox/PKG/Task/PROJECTS.org")))
- '(org-agenda-fontify-priorities t)
- '(org-agenda-include-diary t)
- '(org-agenda-inhibit-startup t)
- '(org-agenda-log-mode-items (quote (closed clock state)))
- '(org-agenda-ndays 1)
- '(org-agenda-persistent-filter t)
- '(org-agenda-prefix-format
-   (quote
-    ((agenda . "  %-11c%?-12t% s")
-     (timeline . "  % s")
-     (todo . "  %-11c")
-     (tags . "  %-11c"))))
- '(org-agenda-scheduled-leaders (quote ("" "S%d: ")))
- '(org-agenda-scheduled-relative-text "S%d: ")
- '(org-agenda-scheduled-text "")
- '(org-agenda-show-all-dates t)
- '(org-agenda-skip-deadline-if-done t)
- '(org-agenda-skip-scheduled-if-deadline-is-shown t)
- '(org-agenda-skip-scheduled-if-done t)
- '(org-agenda-skip-unavailable-files t)
- '(org-agenda-sorting-strategy
-   (quote
-    ((agenda habit-down time-up todo-state-up priority-down user-defined-down)
-     (todo priority-down category-keep)
-     (tags priority-down category-keep)
-     (search category-keep))))
- '(org-agenda-start-on-weekday nil)
- '(org-agenda-start-with-log-mode nil)
- '(org-agenda-tags-column -100)
- '(org-agenda-text-search-extra-files (quote (agenda-archives)))
- '(org-agenda-use-time-grid nil)
- '(org-archive-location "%s_archive::datetree")
- '(org-archive-save-context-info (quote (time category itags)))
- '(org-attach-method (quote mv))
- '(org-babel-load-languages
-   (quote
-    ((typescript . t)
-     (emacs-lisp . t)
-     (sh . t)
-     (ruby . t)
-     (python . t)
-     (scala . t)
-     (C . t)
-     (css . t)
-     (java . t)
-     (js . t))))
- '(org-beamer-frame-default-options "fragile")
- '(org-capture-templates
-   (quote
-    (("a" "Add Task" entry
-      (file "~/Dropbox/PKG/Task/Collector.org")
-      "* TODO %?
+    (("v" "Velocity" entry
+      (file "~/Dropbox/PKG/Task/QuickTasks.org")
+      "* %:search
+%i%?
 :PROPERTIES:
-:ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
-:END:" :prepend t)
-     ("p" "Add Project" entry
-      (file "~/Dropbox/PKG/Task/PROJECTS.org")
-      "* %?
-:PROPERTIES:
-:ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
-:END:
-** Notes
-** Tasks" :prepend t)
-     ("n" "Note" entry
-      (file "~/Dropbox/PKG/Task/Collector.org")
-      "* %?
-:PROPERTIES:
-:ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
-:END:"))))
- '(org-clock-clocked-in-display nil)
- '(org-clock-idle-time 10)
- '(org-clock-in-resume t)
- '(org-clock-in-switch-to-state "TODO")
- '(org-clock-into-drawer "LOGBOOK")
- '(org-clock-mode-line-total (quote current))
- '(org-clock-modeline-total (quote current))
- '(org-clock-out-remove-zero-time-clocks t)
- '(org-clock-out-switch-to-state nil)
- '(org-clock-persist t)
- '(org-clock-persist-file "~/.emacs.d/.data/org-clock-save.el")
- '(org-clock-resolve-expert t)
- '(org-completion-use-ido t)
- '(org-confirm-babel-evaluate nil)
- '(org-confirm-elisp-link-function nil)
- '(org-confirm-shell-link-function nil)
- '(org-crypt-disable-auto-save nil)
- '(org-cycle-global-at-bob t)
- '(org-deadline-warning-days 14)
- '(org-default-notes-file "~/Dropbox/PKG/Task/Collector.org")
- '(org-default-priority 67)
- '(org-directory "~/Dropbox/PKG/Task/")
- '(org-ditaa-jar-path "~/bin/DitaaEps.jar")
- '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "OUT")))
- '(org-edit-src-auto-save-idle-delay 0)
- '(org-edit-src-content-indentation 0)
- '(org-enforce-todo-dependencies t)
- '(org-export-babel-evaluate nil)
+:ID:       %(shell-command-to-string \\\"uuidgen\\\"):CREATED:  %U
+:END:" :prepend t))))
+ '(org-velocity-bucket "~/Dropbox/PKG/Task/QuickTasks.org")
+ '(org-velocity-always-use-bucket t)
+ '(org-use-tag-inheritance nil)
+ '(org-use-speed-commands t)
+ '(org-use-property-inheritance (quote ("AREA")))
+ '(org-todo-repeat-to-state "TODO")
+ '(org-todo-keywords
+   (quote
+    ((sequence "TODO(t)" "SOMEDAY(s)" "|" "CANCELED(c)" "DONE(d)"))))
+ '(org-todo-keyword-faces
+   (quote
+    (("TODO" :foreground "red" :weight bold)
+     ("SOMEDAY" :foreground "dark blue" :weight bold)
+     ("CANCELED" :foreground "gray" :weight bold)
+     ("DONE" :foreground "ForestGreen" :weight bold))))
+ '(org-time-clocksum-use-fractional t)
+ '(org-tags-column -78)
+ '(org-stuck-projects (quote ("STUCK" nil nil "")))
+ '(org-startup-indented t)
+ '(org-src-window-setup (quote current-window))
+ '(org-src-tab-acts-natively t)
+ '(org-src-preserve-indentation nil)
+ '(org-src-lang-modes
+   (quote
+    (("ocaml" . tuareg)
+     ("elisp" . emacs-lisp)
+     ("ditaa" . artist)
+     ("asymptote" . asy)
+     ("dot" . fundamental)
+     ("sqlite" . sql)
+     ("calc" . fundamental)
+     ("C" . c)
+     ("cpp" . c++)
+     ("C++" . c++)
+     ("screen" . shell-script)
+     ("js" . js2))))
+ '(org-src-fontify-natively t)
+ '(org-reverse-note-order t)
+ '(org-return-follows-link t)
+ '(org-refile-targets
+   (quote
+    (("~/Dropbox/PKG/Task/QuickTasks.org" :tag . "PROJECT"))))
+ '(org-publish-project-alist
+   (quote
+    (("document" :base-directory "~/Dropbox/PKG/Document/" :base-extension "org" :publishing-directory "~/Dropbox/PKG/Publish/" :recursive t :publishing-function org-html-publish-to-html)
+     ("org-blog" :base-directory "~/Dropbox/PKG/Blog/org/" :base-extension "org" :publishing-directory "~/Dropbox/PKG/Blog/jekyll/" :recursive t :publishing-function org-html-publish-to-html :headline-levels 4 :html-extension "html" :body-only t)
+     ("org-blog-static" :base-directory "~/Dropbox/PKG/Blog/org/" :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php" :publishing-directory "~/Dropbox/PKG/Blog/" :recursive t :publishing-function org-publish-attachment)
+     ("blog" :components
+      ("org-blog" "org-blog-static")))))
+ '(org-projectile:projects-file "~/Dropbox/PKG/Task/org-projectile-tasks.org")
+ '(org-modules
+   (quote
+    (org-gnus org-habit org-id org-info org-depend org-velocity)))
+ '(org-mobile-inbox-for-pull "~/Dropbox/PKG/Task/FROM-MOBILE.org")
+ '(org-mobile-directory "~/Dropbox/PKG/MobileOrg")
+ '(org-log-done (quote time))
+ '(org-latex-default-packages-alist
+   (quote
+    (("T1" "fontenc" t)
+     ("" "fixltx2e" nil)
+     ("" "graphicx" t)
+     ("" "longtable" nil)
+     ("" "float" nil)
+     ("" "wrapfig" nil)
+     ("" "rotating" nil)
+     ("normalem" "ulem" t)
+     ("" "amsmath" t)
+     ("" "textcomp" t)
+     ("" "marvosym" t)
+     ("" "wasysym" t)
+     ("" "amssymb" t)
+     ("" "hyperref" nil)
+     "\\tolerance=1000")))
+ '(org-irc-link-to-logs t t)
+ '(org-insert-heading-respect-content t)
+ '(org-indent-mode-turns-on-hiding-stars t)
+ '(org-image-actual-width (quote (800)))
+ '(org-id-locations-file "~/.emacs.d/.data/org-id-locations")
+ '(org-html-validation-link nil)
+ '(org-hide-leading-stars t)
+ '(org-habit-today-glyph 45)
+ '(org-habit-preceding-days 42)
+ '(org-footnote-section nil)
+ '(org-fontify-whole-heading-line nil)
+ '(org-fontify-done-headline t)
+ '(org-fast-tag-selection-single-key (quote expert))
+ '(org-extend-today-until 8)
+ '(org-export-with-todo-keywords nil)
+ '(org-export-use-babel nil)
  '(org-export-latex-classes
    (quote
     (("article" "\\documentclass[11pt]{article}"
@@ -140,107 +134,94 @@
       ("\\subsection{%s}" . "\\subsection*{%s}")
       ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
      ("beamer" "\\documentclass{beamer}" org-beamer-sectioning))))
- '(org-export-with-todo-keywords nil)
- '(org-extend-today-until 8)
- '(org-fast-tag-selection-single-key (quote expert))
- '(org-fontify-done-headline t)
- '(org-fontify-whole-heading-line nil)
- '(org-footnote-section nil)
- '(org-habit-preceding-days 42)
- '(org-habit-today-glyph 45)
- '(org-hide-leading-stars t)
- '(org-html-validation-link nil)
- '(org-id-locations-file "~/.emacs.d/.data/org-id-locations")
- '(org-image-actual-width (quote (800)))
- '(org-indent-mode-turns-on-hiding-stars t)
- '(org-insert-heading-respect-content t)
- '(org-irc-link-to-logs t t)
- '(org-latex-default-packages-alist
-(quote
- (("T1" "fontenc" t)
-  ("" "fixltx2e" nil)
-  ("" "graphicx" t)
-  ("" "longtable" nil)
-  ("" "float" nil)
-  ("" "wrapfig" nil)
-  ("" "rotating" nil)
-  ("normalem" "ulem" t)
-  ("" "amsmath" t)
-  ("" "textcomp" t)
-  ("" "marvosym" t)
-  ("" "wasysym" t)
-  ("" "amssymb" t)
-  ("" "hyperref" nil)
-  "\\tolerance=1000")))
- '(org-log-done (quote time))
- '(org-mobile-directory "~/Dropbox/PKG/MobileOrg")
- '(org-mobile-inbox-for-pull "~/Dropbox/PKG/Task/FROM-MOBILE.org")
- '(org-modules
-(quote
- (org-gnus org-habit org-id org-info org-depend org-velocity)))
- '(org-projectile:projects-file "~/Dropbox/PKG/Task/PROJECTS_TODO.org")
- '(org-publish-project-alist
-(quote
- (("document" :base-directory "~/Dropbox/PKG/Document/" :base-extension "org" :publishing-directory "~/Dropbox/PKG/Publish/" :recursive t :publishing-function org-html-publish-to-html))))
- '(org-refile-targets (quote (("~/Dropbox/PKG/Task/PROJECTS.org" :level . 1))))
- '(org-return-follows-link t)
- '(org-reverse-note-order t)
- '(org-src-fontify-natively t)
- '(org-src-lang-modes
-(quote
- (("ocaml" . tuareg)
-  ("elisp" . emacs-lisp)
-  ("ditaa" . artist)
-  ("asymptote" . asy)
-  ("dot" . fundamental)
-  ("sqlite" . sql)
-  ("calc" . fundamental)
-  ("C" . c)
-  ("cpp" . c++)
-  ("C++" . c++)
-  ("screen" . shell-script)
-  ("js" . js2))))
- '(org-src-preserve-indentation nil)
- '(org-src-tab-acts-natively t)
- '(org-src-window-setup (quote current-window))
- '(org-startup-indented t)
- '(org-stuck-projects (quote ("STUCK" nil nil "")))
- '(org-tags-column -78)
- '(org-time-clocksum-use-fractional t)
- '(org-todo-keyword-faces
-(quote
- (("TODO" :foreground "red" :weight bold)
-  ("PREPARATORY" :foreground "dark orange" :weight bold)
-  ("SOMEDAY" :foreground "dark blue" :weight bold)
-  ("CANCELED" :foreground "gray" :weight bold)
-  ("DONE" :foreground "ForestGreen" :weight bold))))
- '(org-todo-keywords
-(quote
- ((sequence "TODO(t)" "PREPARATORY(p)" "SOMEDAY(s)" "|" "CANCELED(c)" "DONE(d)"))))
- '(org-todo-repeat-to-state "TODO")
- '(org-use-property-inheritance (quote ("AREA")))
- '(org-use-speed-commands t)
- '(org-use-tag-inheritance nil)
- '(org-velocity-always-use-bucket t)
- '(org-velocity-bucket "~/Dropbox/PKG/Task/PROJECTS.org")
- '(org-velocity-capture-templates
-(quote
- (("v" "Velocity" entry
-   (file "~/Dropbox/PKG/Task/INBOX.org")
-   "* %:search
-%i%?
+ '(org-enforce-todo-dependencies t)
+ '(org-edit-src-content-indentation 0)
+ '(org-edit-src-auto-save-idle-delay 0)
+ '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "OUT")))
+ '(org-ditaa-jar-path "~/bin/DitaaEps.jar")
+ '(org-directory "~/Dropbox/PKG/")
+ '(org-default-priority 67)
+ '(org-default-notes-file "~/Dropbox/PKG/Task/QuickNotes.org")
+ '(org-deadline-warning-days 14)
+ '(org-cycle-global-at-bob t)
+ '(org-crypt-disable-auto-save nil)
+ '(org-confirm-shell-link-function nil)
+ '(org-confirm-elisp-link-function nil)
+ '(org-confirm-babel-evaluate nil)
+ '(org-completion-use-ido t)
+ '(org-clock-resolve-expert t)
+ '(org-clock-persist-file "~/.emacs.d/.data/org-clock-save.el")
+ '(org-clock-persist t)
+ '(org-clock-out-switch-to-state nil)
+ '(org-clock-out-remove-zero-time-clocks t)
+ '(org-clock-modeline-total (quote current))
+ '(org-clock-mode-line-total (quote current))
+ '(org-clock-into-drawer "LOGBOOK")
+ '(org-clock-in-switch-to-state "TODO")
+ '(org-clock-in-resume t)
+ '(org-clock-idle-time 10)
+ '(org-clock-clocked-in-display nil)
+ '(org-capture-templates
+   (quote
+    (("a" "Add Task" entry
+      (file "~/Dropbox/PKG/Task/QuickTasks.org")
+      "* TODO %?
 :PROPERTIES:
-:ID:       %(shell-command-to-string \\\"uuidgen\\\"):CREATED:  %U
-:END:" :prepend t))))
- '(org-velocity-exit-on-match t)
- '(org-velocity-force-new t)
- '(org-velocity-search-method (quote regexp))
- '(org-x-backends (quote (ox-org ox-redmine)))
- '(org-x-redmine-title-prefix-function (quote org-x-redmine-title-prefix))
- '(org-x-redmine-title-prefix-match-function (quote org-x-redmine-title-prefix-match)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-priority ((t (:inherit nil)))))
+:ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
+:END:" :prepend t)
+     ("p" "Add Project" entry
+      (file "~/Dropbox/PKG/Task/QuickTasks.org")
+      "* %? :PROJECT:
+:PROPERTIES:
+:ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
+:END:" :prepend t)
+     ("n" "Note" entry
+      (file "~/Dropbox/PKG/Task/QuickNotes.org")
+      "* %?"))))
+ '(org-beamer-frame-default-options "fragile")
+ '(org-babel-load-languages
+   (quote
+    ((emacs-lisp . t)
+     (ruby . t)
+     (python . t)
+     (C . t)
+     (css . t)
+     (java . t)
+     (js . t))))
+ '(org-attach-method (quote mv))
+ '(org-archive-save-context-info (quote (time category itags)))
+ '(org-archive-location "%s_archive::datetree")
+ '(org-agenda-use-time-grid nil)
+ '(org-agenda-text-search-extra-files (quote (agenda-archives)))
+ '(org-agenda-tags-column -100)
+ '(org-agenda-start-with-log-mode nil)
+ '(org-agenda-start-on-weekday nil)
+ '(org-agenda-span (quote day))
+ '(org-agenda-sorting-strategy
+   (quote
+    ((agenda habit-down time-up todo-state-up priority-down user-defined-down)
+     (todo priority-down category-keep)
+     (tags priority-down category-keep)
+     (search category-keep))))
+ '(org-agenda-skip-unavailable-files t)
+ '(org-agenda-skip-scheduled-if-done t)
+ '(org-agenda-skip-scheduled-if-deadline-is-shown t)
+ '(org-agenda-skip-deadline-if-done t)
+ '(org-agenda-show-all-dates t)
+ '(org-agenda-scheduled-text "")
+ '(org-agenda-scheduled-relative-text "S%d: ")
+ '(org-agenda-scheduled-leaders (quote ("" "S%d: ")))
+ '(org-agenda-persistent-filter t)
+ '(org-agenda-ndays 1)
+ '(org-agenda-log-mode-items (quote (closed clock state)))
+ '(org-agenda-inhibit-startup t)
+ '(org-agenda-include-diary t)
+ '(org-agenda-fontify-priorities t)
+ '(org-agenda-default-appointment-duration 60)
+ '(org-agenda-deadline-leaders (quote ("!D!: " "D%02d: ")))
+ '(org-agenda-custom-commands-contexts (quote (("p" (projectile-project-p)))))
+ '(org-agenda-auto-exclude-function nil)
+ '(org-adapt-indentation nil)
+ '(org-M-RET-may-split-line (quote ((headline) (default . t)))))
+
+(custom-set-faces)

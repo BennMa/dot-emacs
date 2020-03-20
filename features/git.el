@@ -100,10 +100,12 @@
   :config (magithub-feature-autoinject t))
 
 (use-package git-timemachine
+  :disabled t
   :commands (git-timemachine
              git-timemachine-toggle))
 
 (use-package git-messenger
+  :disabled t
   :commands (git-messenger:popup-message))
 
 (use-package git-gutter
