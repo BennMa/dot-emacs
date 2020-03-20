@@ -1,1 +1,0 @@
-(provide 'test-analyser)

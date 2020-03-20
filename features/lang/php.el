@@ -33,7 +33,7 @@
       (semanticdb-enable-gnu-global-databases 'php-mode))
 
     ;; semantic-php
-    ; (load (expand-file-name "site-lisp/semantic-php/loaddefs" user-emacs-directory))
+    ;; (load (expand-file-name "site-lisp/semantic-php/loaddefs" user-emacs-directory))
     ;; (add-to-list 'load-path (expand-file-name "site-lisp/metaturso-semantic-php" user-emacs-directory))
     ;; (require 'grammar-setup)
 
