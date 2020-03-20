@@ -4,7 +4,7 @@
   ;; (load-theme 'my-custom t)
 
   ;; ;; https://github.com/bbatsov/zenburn-emacs
-  ;; (use-package zenburn-theme)
+  
   (setq zenburn-override-colors-alist
       '(("zenburn-bg+05" . "#282828")
         ("zenburn-bg+1"  . "#2F2F2F")
@@ -16,7 +16,8 @@
   (setq zenburn-scale-org-headlines t)
   ;; scale headings in outline-mode
   (setq zenburn-scale-outline-headlines t)
-  (load-theme 'zenburn t)
+  (use-package zenburn-theme)
+  ;; (load-theme 'zenburn t)
 
   ;; ;; https://github.com/hlissner/emacs-doom-theme
   ;; (use-package doom-themes
