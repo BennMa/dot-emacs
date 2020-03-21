@@ -8,13 +8,13 @@
  '(org-velocity-capture-templates
    (quote
     (("v" "Velocity" entry
-      (file "~/Dropbox/PKG/Task/QuickTasks.org")
+      (file "~/Dropbox/PKB/Task/QuickTasks.org")
       "* %:search
 %i%?
 :PROPERTIES:
 :ID:       %(shell-command-to-string \\\"uuidgen\\\"):CREATED:  %U
 :END:" :prepend t))))
- '(org-velocity-bucket "~/Dropbox/PKG/Task/QuickTasks.org")
+ '(org-velocity-bucket "~/Dropbox/PKB/Task/QuickTasks.org")
  '(org-velocity-always-use-bucket t)
  '(org-use-tag-inheritance nil)
  '(org-use-speed-commands t)
@@ -55,20 +55,20 @@
  '(org-return-follows-link t)
  '(org-refile-targets
    (quote
-    (("~/Dropbox/PKG/Task/QuickTasks.org" :tag . "PROJECT"))))
+    (("~/Dropbox/PKB/Task/QuickTasks.org" :tag . "PROJECT"))))
  '(org-publish-project-alist
    (quote
-    (("document" :base-directory "~/Dropbox/PKG/Document/" :base-extension "org" :publishing-directory "~/Dropbox/PKG/Publish/" :recursive t :publishing-function org-html-publish-to-html)
-     ("org-blog" :base-directory "~/Dropbox/PKG/Blog/org/" :base-extension "org" :publishing-directory "~/Dropbox/PKG/Blog/jekyll/" :recursive t :publishing-function org-html-publish-to-html :headline-levels 4 :html-extension "html" :body-only t)
-     ("org-blog-static" :base-directory "~/Dropbox/PKG/Blog/org/" :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php" :publishing-directory "~/Dropbox/PKG/Blog/" :recursive t :publishing-function org-publish-attachment)
+    (("document" :base-directory "~/Dropbox/PKB/Document/" :base-extension "org" :publishing-directory "~/Dropbox/PKB/Publish/" :recursive t :publishing-function org-html-publish-to-html)
+     ("org-blog" :base-directory "~/Dropbox/PKB/Blog/org/" :base-extension "org" :publishing-directory "~/Dropbox/PKB/Blog/jekyll/" :recursive t :publishing-function org-html-publish-to-html :headline-levels 4 :html-extension "html" :body-only t)
+     ("org-blog-static" :base-directory "~/Dropbox/PKB/Blog/org/" :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php" :publishing-directory "~/Dropbox/PKB/Blog/" :recursive t :publishing-function org-publish-attachment)
      ("blog" :components
       ("org-blog" "org-blog-static")))))
- '(org-projectile:projects-file "~/Dropbox/PKG/Task/org-projectile-tasks.org")
+ '(org-projectile:projects-file "~/Dropbox/PKB/Task/org-projectile-tasks.org")
  '(org-modules
    (quote
     (org-gnus org-habit org-id org-info org-depend org-velocity)))
- '(org-mobile-inbox-for-pull "~/Dropbox/PKG/Task/FROM-MOBILE.org")
- '(org-mobile-directory "~/Dropbox/PKG/MobileOrg")
+ '(org-mobile-inbox-for-pull "~/Dropbox/PKB/Task/FROM-MOBILE.org")
+ '(org-mobile-directory "~/Dropbox/PKB/MobileOrg")
  '(org-log-done (quote time))
  '(org-latex-default-packages-alist
    (quote
@@ -139,9 +139,9 @@
  '(org-edit-src-auto-save-idle-delay 0)
  '(org-drawers (quote ("PROPERTIES" "CLOCK" "LOGBOOK" "OUT")))
  '(org-ditaa-jar-path "~/bin/DitaaEps.jar")
- '(org-directory "~/Dropbox/PKG/")
+ '(org-directory "~/Dropbox/PKB/")
  '(org-default-priority 67)
- '(org-default-notes-file "~/Dropbox/PKG/Task/QuickNotes.org")
+ '(org-default-notes-file "~/Dropbox/PKB/Task/QuickNotes.org")
  '(org-deadline-warning-days 14)
  '(org-cycle-global-at-bob t)
  '(org-crypt-disable-auto-save nil)
@@ -164,19 +164,19 @@
  '(org-capture-templates
    (quote
     (("a" "Add Task" entry
-      (file "~/Dropbox/PKG/Task/QuickTasks.org")
+      (file "~/Dropbox/PKB/Task/QuickTasks.org")
       "* TODO %?
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
 :END:" :prepend t)
      ("p" "Add Project" entry
-      (file "~/Dropbox/PKG/Task/QuickTasks.org")
+      (file "~/Dropbox/PKB/Task/QuickTasks.org")
       "* %? :PROJECT:
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
 :END:" :prepend t)
      ("n" "Note" entry
-      (file "~/Dropbox/PKG/Task/QuickNotes.org")
+      (file "~/Dropbox/PKB/Task/QuickNotes.org")
       "* %?"))))
  '(org-beamer-frame-default-options "fragile")
  '(org-babel-load-languages
@@ -194,7 +194,7 @@
  '(org-agenda-use-time-grid nil)
  '(org-agenda-text-search-extra-files (quote (agenda-archives)))
  '(org-agenda-tags-column -100)
- '(org-agenda-start-with-log-mode nil)
+ '(org-agenda-start-with-log-mode t)
  '(org-agenda-start-on-weekday nil)
  '(org-agenda-span (quote day))
  '(org-agenda-sorting-strategy
@@ -220,6 +220,8 @@
  '(org-agenda-default-appointment-duration 60)
  '(org-agenda-deadline-leaders (quote ("!D!: " "D%02d: ")))
  '(org-agenda-custom-commands-contexts (quote (("p" (projectile-project-p)))))
+ '(org-agenda-compact-blocks nil)
+ '(org-agenda-block-separator 61)
  '(org-agenda-auto-exclude-function nil)
  '(org-adapt-indentation nil)
  '(org-M-RET-may-split-line (quote ((headline) (default . t)))))

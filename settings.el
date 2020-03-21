@@ -191,7 +191,7 @@
       (fullscreen))))
  '(default-major-mode (quote text-mode) t)
  '(deft-auto-save-interval 0.0)
- '(deft-directory "~/Dropbox/PKG/Document")
+ '(deft-directory "~/Dropbox/PKB/Document")
  '(deft-recursive t)
  '(deft-text-mode (quote org-mode))
  '(deft-use-filename-as-title t)

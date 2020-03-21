@@ -10,16 +10,17 @@
 
 (load (expand-file-name "org-settings" user-emacs-directory))
 
-(general-define-key "C-c o" 'hydra-org/body) ;; "C-c O" #'(lambda () (interactive) (my-org-agenda t)
+(general-define-key "C-c o" 'hydra-org/body)
 
 (defhydra hydra-org (:color blue :hint nil :columns 4 :idle 0.3)
   "Org Helper"
-  ("o" (lambda () (interactive) (my-org-agenda t)) "My Agenda")
-  ("O" (lambda () (interactive) (my-org-agenda nil)) "My Group Tasks")
   ("a" org-agenda "Agenda")
+  ("z" #'(lambda () (interactive) (org-agenda nil "z")) "My Agenda")
+  ("Z" #'(lambda () (interactive) (org-agenda nil "Z")) "My Agenda")
   ;; ("c" org-capture "Capture")
-  ("t" (lambda () (interactive) (org-capture nil "a")) "Capture Task")
-  ("n" (lambda () (interactive) (org-capture nil "n")) "Capture Note")
+  ;; ("p" my-org-agenda-current-project "Current Project")
+  ("t" #'(lambda () (interactive) (org-capture nil "a")) "Capture Task")
+  ("n" #'(lambda () (interactive) (org-capture nil "n")) "Capture Note")
   ("w" hydra-org-clock/body "Clock")
   ("l" org-kb/show-all "KB")
   ("d" org-kb/show-daily "Daily")
@@ -179,7 +180,7 @@ prepended to the element after the #+HEADERS: tag."
               (setcar (nthcdr 3 it) (point)))))
         it))
 
-    ;; (defcustom org-my-export-output-directory-prefix "~/Dropbox/PKG/Publish/export_"
+    ;; (defcustom org-my-export-output-directory-prefix "~/Dropbox/PKB/Publish/export_"
     ;;   "prefix of directory used for org-mode export"
     ;;   :type 'string
     ;;   :group 'org-mine)
@@ -198,44 +199,54 @@ prepended to the element after the #+HEADERS: tag."
     ))
 
 (use-package org-agenda :ensure nil
-  :commands (my-org-agenda
-             my-org-agenda-current-project
+  :commands (my-org-agenda-current-project
              org-agenda)
   :demand t
   :config
   (progn
-    (setq org-agenda-files (append
-                            '("~/Dropbox/PKG/Task/QuickTasks.org" "~/Dropbox/PKG/Task/QuickNotes.org")
-                            (directory-files-recursively "~/Dropbox/PKG/Document" t org-agenda-file-regexp)))
+    (setq org-agenda-files
+          (append '("~/Dropbox/PKB/Task/QuickTasks.org" "~/Dropbox/PKB/Task/QuickNotes.org")
+                  (directory-files-recursively "~/Dropbox/PKB/Document" t org-agenda-file-regexp)))
     (setq org-agenda-custom-commands
-          '(("g" "Groups Of Tasks"
-             ((alltodo ""
-                       ((org-agenda-overriding-header "All Tasks [sort by priority]: ")
-                        ;; (org-agenda-prefix-format "[ ] %T: ")
+          '(
+            ("z" "My Agenda"
+             ((agenda "")
+              (todo "TODO"
+                       ((org-agenda-overriding-header "Group Of Tasks [sort by priority]: ")
+                        (org-super-agenda-groups
+                         '((:auto-group t)))
+                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp))
                         (org-agenda-sorting-strategy
                          '(todo-state-up priority-down))))))
-            ("A" "Agenda & Tasks [sort by priority]"
-             ((agenda "" ((org-agenda-span 1)
-                          (org-deadline-warning-days 7)
-                          ;; (org-agenda-todo-keyword-format "[ ]")
-                          (org-agenda-scheduled-leaders '("" ""))
-                          (org-agenda-prefix-format "%t%s")))
-              (todo "TODO"
-                    ((org-agenda-overriding-header "Tasks [sort by priority]: ")
-                     ;; (org-agenda-prefix-format "[ ] %T: ")
-                     ;; (org-agenda-todo-keyword-format "")
-                     ;; (org-agenda-skip-function
-                     ;;  ;; '(org-agenda-skip-entry-if 'regexp "\\* SOMEDAY" 'notregexp "\\=.*\\[#\\(A\\|B\\)\\]")
-                     ;;  '(org-agenda-skip-entry-if 'regexp "\\* SOMEDAY" 'scheduled)
-                     ;;  )
-                     (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp))
-                     (org-agenda-sorting-strategy
-                      '(todo-state-up priority-down)))))
-             (;; (org-agenda-with-colors nil)
-              ;; (org-agenda-compact-blocks t)
-              ;; (org-agenda-remove-tags t)
-              (ps-number-of-columns 2)
-              (ps-landscape-mode t)))
+            ("Z" "My Agenda (All Tasks)"
+             ((alltodo ""
+                       ((org-agenda-overriding-header "All Tasks [sort by priority]: ")
+                        (org-super-agenda-groups
+                         '((:auto-group t)))
+                        (org-agenda-sorting-strategy
+                         '(todo-state-up priority-down))))))
+            ;; ("A" "Agenda & Tasks [sort by priority]"
+            ;;  ((agenda "" ((org-agenda-span 1)
+            ;;               (org-deadline-warning-days 7)
+            ;;               ;; (org-agenda-todo-keyword-format "[ ]")
+            ;;               (org-agenda-scheduled-leaders '("" ""))
+            ;;               (org-agenda-prefix-format "%t%s")))
+            ;;   (todo "TODO"
+            ;;         ((org-agenda-overriding-header "Tasks [sort by priority]: ")
+            ;;          ;; (org-agenda-prefix-format "[ ] %T: ")
+            ;;          ;; (org-agenda-todo-keyword-format "")
+            ;;          ;; (org-agenda-skip-function
+            ;;          ;;  ;; '(org-agenda-skip-entry-if 'regexp "\\* SOMEDAY" 'notregexp "\\=.*\\[#\\(A\\|B\\)\\]")
+            ;;          ;;  '(org-agenda-skip-entry-if 'regexp "\\* SOMEDAY" 'scheduled)
+            ;;          ;;  )
+            ;;          (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp))
+            ;;          (org-agenda-sorting-strategy
+            ;;           '(todo-state-up priority-down)))))
+            ;;  (;; (org-agenda-with-colors nil)
+            ;;   ;; (org-agenda-compact-blocks t)
+            ;;   ;; (org-agenda-remove-tags t)
+            ;;   (ps-number-of-columns 2)
+            ;;   (ps-landscape-mode t)))
             ;; ("l" "All tasks" todo ""
             ;;  ((org-agenda-overriding-header "Unscheduled tasks: ")
             ;;   (org-agenda-skip-function
@@ -246,10 +257,11 @@ prepended to the element after the #+HEADERS: tag."
             ;;  ((org-agenda-overriding-header "Waiting tasks:")
             ;;   (org-agenda-sorting-strategy
             ;;    '(todo-state-up priority-down category-up))))
-            ("o" "Someday tasks" todo "SOMEDAY"
-             ((org-agenda-overriding-header "Someday tasks:")))
+            ;; ("o" "Someday tasks" todo "SOMEDAY"
+            ;;  ((org-agenda-overriding-header "Someday tasks:")))
             ("r" "All Review Entries" tags ":review:"
-             ((org-agenda-skip-function 'k/org-agenda-skip-expired-review-entry)))))
+             ((org-agenda-skip-function 'k/org-agenda-skip-expired-review-entry)))
+            ))
 
     (use-package org-super-agenda
       :hook ((org-agenda-mode . org-super-agenda-mode)))
@@ -258,47 +270,6 @@ prepended to the element after the #+HEADERS: tag."
       ;; (setq line-spacing 0.25)
       (hl-line-mode 1))
     (add-hook 'org-agenda-mode-hook 'my-org-agenda-mode-hook)
-
-    (defun my-org-agenda (&optional agenda-p)
-      (let ((buf (get-buffer "*Org Agenda*")))
-        ;; (if buf
-        ;;     (let ((wind (get-buffer-window buf)))
-        ;;       (if wind
-        ;;           (when (called-interactively-p 'any)
-        ;;             (select-window wind))
-        ;;         (if (called-interactively-p 'any)
-        ;;             (select-window (display-buffer buf t t))
-        ;;           (display-buffer buf))))
-        ;;   (org-fit-window-to-buffer)
-        ;;   )
-        (cond
-         (agenda-p
-          (progn
-            (setq org-super-agenda-groups
-                  '((:name "Done today"
-                           :and (:regexp "State \"DONE\""
-                                         :log t))
-                    (:name "Schedule"
-                           :time-grid t)
-                    (:name "Today"
-                           :scheduled today)
-                    (:habit t)
-                    (:name "Due today"
-                           :deadline today)
-                    (:name "Overdue"
-                           :deadline past)
-                    (:name "Due soon"
-                           :deadline future)
-                    (:name "Scheduled earlier"
-                           :scheduled past)
-                    ))
-            (org-agenda nil "a")))
-         ((not agenda-p)
-          (progn
-            (setq org-super-agenda-groups
-                  '((:auto-group t)))
-            (org-agenda nil "g"))))
-        ))
 
     ;; (let ((map org-agenda-mode-map))
     ;;   (bind-key "\C-n" 'next-line map)
@@ -323,7 +294,7 @@ prepended to the element after the #+HEADERS: tag."
       :disabled t
       :config
       (progn
-        ;; (setq org-projectile:projects-file "~/Dropbox/PKG/Task/PROJECTS_TODO.org")
+        ;; (setq org-projectile:projects-file "~/Dropbox/PKB/Task/PROJECTS_TODO.org")
         (org-projectile-per-project)
         (setq org-agenda-files (append org-agenda-files (org-projectile-todo-files)))
         (add-to-list 'org-capture-templates

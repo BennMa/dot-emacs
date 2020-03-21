@@ -13,15 +13,15 @@
 (require 'org-agenda)
 (require 'ivy)
 
-(defcustom org-kb-doc-dir "~/Dropbox/PKG/Document"
+(defcustom org-kb-doc-dir "~/Dropbox/PKB/Document"
   "Personal Knowledge Base Directory"
   :type 'string
   :group 'org-knowledgebase)
-(defcustom org-kb-daily-dir "~/Dropbox/PKG/Task/Daily"
+(defcustom org-kb-daily-dir "~/Dropbox/PKB/Task/Daily"
   "Personal Daily Directory"
   :type 'string
   :group 'org-knowledgebase)
-(defcustom org-kb-collector-file "~/Dropbox/PKG/Task/Collector.org"
+(defcustom org-kb-collector-file "~/Dropbox/PKB/Task/Collector.org"
   "Personal Small Piece Collector"
   :type 'string
   :group 'org-knowledgebase)

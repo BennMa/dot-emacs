@@ -48,7 +48,6 @@ See also `locate-user-emacs-file'.")
     (make-directory dir t)
     (setq pcache-directory dir))
 
-
 ;; ------ package settings
 (eval-when-compile
   (require 'cl))
@@ -73,11 +72,6 @@ See also `locate-user-emacs-file'.")
 (package-initialize t)
 (if (not package-archive-contents)
   (package-refresh-contents))
-(setq required-basic-packages '(use-package))
-(dolist (pkg required-basic-packages)
-  (if (and (not (package-installed-p pkg))
-	   (assoc pkg package-archive-contents))
-      (package-install pkg)))
 
 ;; load-path
 (and (boundp 'custom-theme-load-path)
@@ -98,7 +92,8 @@ See also `locate-user-emacs-file'.")
       use-package-minimum-reported-time 0.01
       use-package-always-ensure t)
 (unless (package-installed-p 'use-package)
-  (package-refresh-contents)
+  (unless (assoc 'use-package package-archive-contents)
+    (package-refresh-contents))
   (package-install 'use-package))
 (eval-when-compile
   (require 'use-package))
