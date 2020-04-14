@@ -9,7 +9,8 @@
   :config
   (progn
     (general-define-key "M-p"     'hydra-projectile-if-projectile-p
-                        "C-x C-v" 'ivy-resume
+                        "C-c C-r" 'ivy-resume
+                        "<f6>"    'ivy-resume
                         "C-c ;"   'comment-or-uncomment-region
                         "C-s"     'isearch-forward-regexp
                         "C-r"     'isearch-backward-regexp

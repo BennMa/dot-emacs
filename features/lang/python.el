@@ -1,43 +1,61 @@
+;; useful links:
+;; https://steelkiwi.com/blog/emacs-configuration-working-python/
+
+;; this package requires python libs:
+;; - jedi
+;; - pipenv
+;; - yapf
+;; - virtualenv
+
 (use-package elpy
-  :disabled t
+  :disabled
   :commands (elpy-mode)
-  :init (and (fboundp 'python-mode-hook)
-             (add-hook 'python-mode-hook 'elpy-mode))
+  :hook (python-mode . elpy-mode)
   :config (elpy-enable))
 
 (use-package yapfify
-  :config
-  (add-hook 'python-mode-hook 'yapf-mode))
+  :hook (python-mode . yapf-mode))
 
 (use-package anaconda-mode
   :diminish (anaconda-mode . " [AC]")
-  :config
-  (add-hook 'python-mode-hook 'anaconda-mode)
-  (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-
-  (use-package company-anaconda
-    :config
-    (eval-after-load "company"
-      '(add-to-list 'company-backends 'company-anaconda))))
+  :hook ((python-mode . anaconda-mode)
+         (python-mode . anaconda-eldoc-mode))
+  :bind (:map anaconda-mode-map
+              ("M-?" . anaconda-mode-show-doc)
+              ("M-." . anaconda-mode-find-definitions)
+              ("M-," . anaconda-mode-go-back)
+              ("C-c a" . anaconda-mode-find-assignments)
+              ("C-c r" . anaconda-mode-find-references)
+              ("C-M-i" . anaconda-mode-complete)))
 
 (use-package ein
-  :commands (ein:notebooklist-login
-             ein:notebooklist-open)
+  :commands (ein:run
+             ein:login)
   :config
-  (require 'ein)
-  (require 'ein-loaddefs)
-  (require 'ein-notebook)
-  (require 'ein-subpackages))
+  (load "ein-autoloads"))
 
 (use-package pipenv
   :diminish (pipenv-mode . " [PE]")
   :hook (python-mode . pipenv-mode)
   :init
-  (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-extended))
+  (setq pipenv-projectile-after-switch-function #'pipenv-projectile-after-switch-default)
 
+  ;; fix bug about void function of flycheck-default-executable-find
+  (if (not (functionp 'flycheck-default-executable-find))
+      (defun flycheck-default-executable-find (command)
+        (executable-find command))))
 
-(require 'pyenv-mode)
-(add-hook 'python-mode-hook 'pyenv-mode)
-;; (use-package pyenv-mode
-  ;; :disabled t
-  ;; :hook (python-mode . pyenv-mode))
+(use-package pyenv-mode
+  :hook (python-mode . pyenv-mode)
+  :config
+  (unbind-key "C-c C-s" pyenv-mode-map)
+  (unbind-key "C-c C-u" pyenv-mode-map))
+
+(use-package company-anaconda)
+;; (use-package company-jedi)
+(defun my/python-mode-hook ()
+  (eval-after-load "company"
+    (progn
+      (make-local-variable 'company-backends)
+      '(add-to-list 'company-backends 'company-anaconda))))
+(add-hook 'python-mode-hook 'my/python-mode-hook)

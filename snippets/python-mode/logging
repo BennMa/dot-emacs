@@ -1,6 +1,7 @@
 # -*- mode: snippet -*-
 # name: logging
 # key: log
+# condition: (not t)
 # --
 logger = logging.getLogger("${1:name}")
 logger.setLevel(logging.${2:level})

@@ -95,22 +95,22 @@
                   (eshell-stringify-list (eshell-flatten-list args)))))))))
 
 (use-package magithub
-  :disabled t
+  :disabled
   :after magit
   :config (magithub-feature-autoinject t))
 
 (use-package git-timemachine
-  :disabled t
+  :disabled
   :commands (git-timemachine
              git-timemachine-toggle))
 
 (use-package git-messenger
-  :disabled t
+  :disabled
   :commands (git-messenger:popup-message))
 
 (use-package git-gutter
   :diminish "GT"
-  :disabled t
+  :disabled
   :commands (git-gutter-mode)
   ;; :init (add-hook 'prog-mode-hook 'git-gutter-mode)
   :config
@@ -118,5 +118,9 @@
     (git-gutter:linum-setup)))
 
 (use-package git-link
-  :disabled t
+  :disabled
   :commands git-link)
+
+;; fix the issue of that emacs will create index.lock sometimes
+(eval-after-load 'vc-hooks
+  '(remove-hook 'find-file-hook #'vc-refresh-state))

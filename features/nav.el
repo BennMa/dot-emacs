@@ -5,8 +5,6 @@
                     "C-S-y"              'counsel-projectile-switch-to-buffer
                     "C-x C-r"            'counsel-recentf
                     ;; "C-y"             'hydra-buffer/body
-                    "C-o"                'hydra-window/body
-                    "C-M-o"              'my/other-window
                     "C-x 0"              'sticky-window-delete-window
                     "C-x 1"              'sticky-window-delete-other-windows
                     "C-j"                'avy-goto-char
@@ -16,19 +14,16 @@
                     ;; (general-chord "jl") 'avy-goto-line
                     )
 
-(defhydra hydra-buffer (:color blue :columns 4 :exit t)
-  "Buffers Switcher"
-  ("b"   my/last-buffer "Last Buffer")
-  ("l"   ivy-switch-buffer "All Buffers")
-  ("C-l"   ivy-switch-buffer "All Buffers")
-  ("p"   counsel-projectile-switch-to-buffer "Project Buffers")
-  ("s"   save-buffer "Save" :color red)
-  ("k"   kill-this-buffer "Kill this buffer"  :color red)
-  ("d"   my/delete-current-buffer-file "Delete This Buffer" :color red)
-  ("B"   my/ibuffer-startup "Ibuffer")
-  ("M-b" buffer-menu "Buffer Menu")
-  ("."   hydra-window/body "Windows")
-  ("q"   nil "Cancel" :color blue))
+
+(general-define-key "C-M-w" 'hydra-window/body
+                    "A-h"   'windmove-left
+                    "A-l"   'windmove-right
+                    "A-j"   'windmove-down
+                    "A-k"   'windmove-up
+                    "A-d"   'sticky-window-delete-window
+                    "C-x -" 'my/split-window-below-and-focus
+                    "C-x |" 'my/split-window-right-and-focus
+                    "C-x o" 'my/other-window)
 
 (defhydra hydra-window (:hint nil :columns 3 :color teal :idle 0.5)
    "
@@ -83,6 +78,19 @@ _h_ _a_ _l_   _|_ : split V    _b_ ^=^ _f_   _m_aximize  ^5^ ^6^ ^7^ ^8^
   ("." hydra-buffer/body "Buffers")
   ("q" nil "quit"))
 
+(defhydra hydra-buffer (:color blue :columns 4 :exit t)
+  "Buffers Switcher"
+  ("b"   my/last-buffer "Last Buffer")
+  ("l"   ivy-switch-buffer "All Buffers")
+  ("C-l" ivy-switch-buffer "All Buffers")
+  ("p"   counsel-projectile-switch-to-buffer "Project Buffers")
+  ("s"   save-buffer "Save" :color red)
+  ("k"   kill-this-buffer "Kill this buffer"  :color red)
+  ("d"   my/delete-current-buffer-file "Delete This Buffer" :color red)
+  ("B"   my/ibuffer-startup "Ibuffer")
+  ("M-b" buffer-menu "Buffer Menu")
+  ("."   hydra-window/body "Windows")
+  ("q"   nil "Cancel" :color blue))
 
 ;; ------ Packages
 (progn ;; own functions

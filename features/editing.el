@@ -6,7 +6,7 @@
                     "M-`" 'other-frame
                     "M-f" 'sp-forward-word
                     "M-b" 'sp-backward-word
-                    "M-o C" 'highlight-changes-mode
+                    "M-o c" 'highlight-changes-mode
                     "M-o h" 'hl-line-mode
                     "M-%"   'anzu-query-replace
                     "C-M-%" 'anzu-query-replace-regexp
@@ -24,10 +24,14 @@
                     "C->" 'mc/mark-next-like-this
                     "C-<" 'mc/mark-previous-like-this
                     "C-M->" 'mc/mark-all-like-this
-                    "<f2>" 'bm-next
-                    "S-<f2>" 'bm-previous
-                    "C-<f2>" 'bm-toggle
-                    "C-x C-n" 'my/duplicate-line)
+                    "C-S-c" 'mc/edit-lines
+                    "C-S-<mouse-1>" 'mc/add-cursor-on-click
+                    "<f2>" 'bm-toggle
+                    "C-<f2>" 'bm-previous
+                    "S-<f2>" 'bm-next
+                    "C-x C-n" 'my/duplicate-line
+                    ;; C-; iedit to rename a symbol in the file
+                    )
 
 (general-define-key "C-M-f" 'sp-forward-sexp
                     "C-M-b" 'sp-backward-sexp
@@ -63,7 +67,6 @@
                     "C-c i k" 'ispell-kill-ispell
                     "C-c i m" 'ispell-message
                     "C-c i r" 'ispell-region
-                    "C-c C-e" 'mc/mark-all-like-this
                     "C-c h a" 'origami-toggle-all-nodes
                     "C-c h t" 'origami-recursively-toggle-node
                     "C-c h f" 'origami-show-only-node
@@ -171,8 +174,8 @@
       'flycheck-show-error-at-point)
 
     (defhydra hydra-flycheck
-      (:pre (progn (setq hydra-lv t) (flycheck-list-errors))
-            :post (progn (setq hydra-lv nil) (quit-windows-on "*Flycheck errors*"))
+      (:pre (flycheck-list-errors)
+            :post (quit-windows-on "*Flycheck errors*")
             :hint nil)
       "Errors"
       ("f"  flycheck-error-list-set-filter                            "Filter")
@@ -185,7 +188,8 @@
 (use-package multiple-cursors
   :commands (mc/mark-next-like-this
              mc/mark-previous-like-this
-             mc/mark-all-like-this))
+             mc/mark-all-like-this
+             mc/edit-lines))
 
 (use-package origami
   :commands (origami-mode
@@ -357,3 +361,6 @@
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
+
+;; C-; to rename a symbol in the file
+(use-package iedit)

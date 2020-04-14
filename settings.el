@@ -26,6 +26,7 @@
  '(align-c++-modes (quote (csharp-mode c++-mode c-mode java-mode groovy-mode)))
  '(align-to-tab-stop nil)
  '(allout-command-prefix ".")
+ '(anaconda-mode-installation-directory "~/.emacs.d/.data/anaconda-mode")
  '(ansi-color-names-vector
    ["black" "red" "green" "brown" "blue" "magenta" "blue" "white"])
  '(appt-display-interval 30)
@@ -63,7 +64,7 @@
  '(bind-key-segregation-regexp "\\`\\(\\(C-[chx.] \\|M-[gso] \\)\\([CM]-\\)?\\|.+-\\)")
  '(bm-buffer-persistence t)
  '(bm-cycle-all-buffers t)
- '(bm-highlight-style (quote bm-highlight-only-fringe))
+ '(bm-highlight-style (quote bm-highlight-line-and-fringe))
  '(bm-repository-file "~/.emacs.d/.data/.bm-repository")
  '(bmkp-bmenu-commands-file "~/.emacs.d/.data/bmk-bmenu-commands.el")
  '(bmkp-bmenu-state-file "~/.emacs.d/.data/bmk-bmenu-state.el")
@@ -752,7 +753,7 @@
  '(op/theme (quote emacs_love))
  '(package-selected-packages
    (quote
-    (counsel-projectile json-snatcher smart-mode-line yasnippet company counsel ivy key-chord emacs-async org-super-agenda htmlize pyenv-mode olivetti olivetti-mode poet-theme pipenv company-tern magithub php-extras company-php ede-php-autoload php-mode skewer-mode nodejs-repl web-beautify tern js-doc js2-refactor json-mode js2-mode multi-term toc-org org-bullets git-messenger git-timemachine magit srefactor stickyfunc-enhance deft regex-tool mode-icons google-this paradox mu4e-maildirs-extension mu4e-alert lua-mode ein company-anaconda anaconda-mode yapfify ensime sbt-mode scala-mode web-mode php-refactor-mode phpcbf phpunit php-auto-yasnippets reveal-in-osx-finder pbcopy osx-trash window-numbering which-key use-package-chords undo-tree smartparens shackle session restart-emacs rainbow-mode projectile origami mwim multiple-cursors move-text maxframe markdown-mode initsplit imenu-list hydra hungry-delete highlight-parentheses highlight-numbers highlight-indent-guides ggtags general focus flycheck expand-region exec-path-from-shell doom-themes discover-my-major direx dired-k diminish dedicated counsel-gtags company-statistics company-quickhelp clean-aindent-mode bm back-button auto-yasnippet auto-highlight-symbol anzu aggressive-indent ace-window ace-jump-mode)))
+    (org yatemplate iedit company-jedi counsel-projectile json-snatcher smart-mode-line yasnippet company counsel ivy key-chord emacs-async org-super-agenda htmlize pyenv-mode olivetti olivetti-mode poet-theme pipenv company-tern magithub php-extras company-php ede-php-autoload php-mode skewer-mode nodejs-repl web-beautify tern js-doc js2-refactor json-mode js2-mode multi-term toc-org org-bullets git-messenger git-timemachine magit srefactor stickyfunc-enhance deft regex-tool mode-icons google-this paradox mu4e-maildirs-extension mu4e-alert lua-mode ein company-anaconda anaconda-mode yapfify ensime sbt-mode scala-mode web-mode php-refactor-mode phpcbf phpunit php-auto-yasnippets reveal-in-osx-finder pbcopy osx-trash window-numbering which-key use-package-chords undo-tree smartparens shackle session restart-emacs rainbow-mode projectile origami mwim multiple-cursors move-text maxframe markdown-mode initsplit imenu-list hydra hungry-delete highlight-parentheses highlight-numbers highlight-indent-guides ggtags general focus flycheck expand-region exec-path-from-shell doom-themes discover-my-major direx dired-k diminish dedicated counsel-gtags company-statistics company-quickhelp clean-aindent-mode bm back-button auto-yasnippet auto-highlight-symbol anzu aggressive-indent ace-window ace-jump-mode)))
  '(page-break-lines-modes
    (quote
     (emacs-lisp-mode compilation-mode outline-mode prog-mode haskell-mode)))
@@ -771,6 +772,7 @@
  '(php-mode-coding-style (quote symfony2))
  '(phpcbf-standard "~/Dropbox/Dotfiles/phpcs/ruleset.xml")
  '(phpunit-program "/usr/bin/php56 /home/benn/.composer/vendor/bin/phpunit")
+ '(pipenv-with-flycheck t)
  '(popwin:special-display-config
    (quote
     (("*Miniedit Help*" :noselect t)
@@ -832,13 +834,14 @@
  '(ps-header-title-font-size (quote (14 . 16)))
  '(ps-line-number-font-size 10)
  '(ps-print-color-p nil)
+ '(python-environment-directory "~/.emacs.d/.data/.python-environments")
  '(python-shell-exec-path (quote ("/home/benn/.pyenv/shims/python")))
  '(rdebug-many-windows nil)
  '(read-buffer-function (quote ido-read-buffer))
  '(recentf-auto-cleanup (quote never))
  '(recentf-exclude
    (quote
-    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")) t)
+    ("~\\'" "\\`out\\'" "\\.log\\'" "^/[^/]*:" "\\.el\\.gz\\'")))
  '(recentf-max-saved-items 1000)
  '(recentf-save-file "~/.emacs.d/.data/recentf")
  '(redisplay-dont-pause t t)
@@ -920,6 +923,7 @@
  '(tags-case-fold-search nil)
  '(tail-max-size 25)
  '(tail-volatile nil)
+ '(temporary-bookmark-p t)
  '(term-bind-key-alist
    (quote
     (("C-c C-q" . term-send-esc)
@@ -1022,5 +1026,6 @@
  ;; If there is more than one, they won't work right.
  '(doom-minibuffer-active ((t nil)))
  '(font-lock-comment-face ((t (:inherit font-lock-comment-face :slant italic))))
+ '(mc/cursor-face ((t (:inverse-video t))))
  '(window-number-face ((t nil)) t)
  '(window-numbering-face ((t (:foreground "keyboardFocusIndicatorColor"))) t))

@@ -22,17 +22,22 @@
  '(org-todo-repeat-to-state "TODO")
  '(org-todo-keywords
    (quote
-    ((sequence "TODO(t)" "SOMEDAY(s)" "|" "CANCELED(c)" "DONE(d)"))))
+    ((sequence "TODO(t)" "WAITING(w)" "SOMEDAY(s)" "|" "CANCELED(c)" "DONE(d)"))))
  '(org-todo-keyword-faces
    (quote
     (("TODO" :foreground "red" :weight bold)
+     ("WAITING" :foreground "orange" :weight bold)
      ("SOMEDAY" :foreground "dark blue" :weight bold)
      ("CANCELED" :foreground "gray" :weight bold)
      ("DONE" :foreground "ForestGreen" :weight bold))))
  '(org-time-clocksum-use-fractional t)
  '(org-tags-column -78)
+ '(org-super-agenda-unmatched-order 99)
+ '(org-super-agenda-unmatched-name "No Group Tasks")
+ '(org-super-agenda-group-property-name "AGENDA-GROUP")
  '(org-stuck-projects (quote ("STUCK" nil nil "")))
  '(org-startup-indented t)
+ '(org-startup-folded (quote content))
  '(org-src-window-setup (quote current-window))
  '(org-src-tab-acts-natively t)
  '(org-src-preserve-indentation nil)
@@ -64,12 +69,13 @@
      ("blog" :components
       ("org-blog" "org-blog-static")))))
  '(org-projectile:projects-file "~/Dropbox/PKB/Task/org-projectile-tasks.org")
- '(org-modules
-   (quote
-    (org-gnus org-habit org-id org-info org-depend org-velocity)))
+ '(org-pretty-entities nil)
+ '(org-modules (quote (org-habit org-depend org-toc org-velocity)))
  '(org-mobile-inbox-for-pull "~/Dropbox/PKB/Task/FROM-MOBILE.org")
  '(org-mobile-directory "~/Dropbox/PKB/MobileOrg")
  '(org-log-done (quote time))
+ '(org-link-shell-confirm-function nil)
+ '(org-link-elisp-confirm-function nil)
  '(org-latex-default-packages-alist
    (quote
     (("T1" "fontenc" t)
@@ -168,13 +174,9 @@
       "* TODO %?
 :PROPERTIES:
 :ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
-:END:" :prepend t)
-     ("p" "Add Project" entry
-      (file "~/Dropbox/PKB/Task/QuickTasks.org")
-      "* %? :PROJECT:
-:PROPERTIES:
-:ID:       %(shell-command-to-string \"uuidgen\"):CREATED:  %U
-:END:" :prepend t)
+:END:
+
+" :prepend t)
      ("n" "Note" entry
       (file "~/Dropbox/PKB/Task/QuickNotes.org")
       "* %?"))))
@@ -191,11 +193,13 @@
  '(org-attach-method (quote mv))
  '(org-archive-save-context-info (quote (time category itags)))
  '(org-archive-location "%s_archive::datetree")
+ '(org-agenda-window-setup (quote only-window))
+ '(org-agenda-window-frame-fractions (quote (0.3 . 0.5)))
  '(org-agenda-use-time-grid nil)
  '(org-agenda-text-search-extra-files (quote (agenda-archives)))
  '(org-agenda-tags-column -100)
  '(org-agenda-start-with-log-mode t)
- '(org-agenda-start-on-weekday nil)
+ '(org-agenda-start-with-clockreport-mode nil)
  '(org-agenda-span (quote day))
  '(org-agenda-sorting-strategy
    (quote
@@ -214,7 +218,6 @@
  '(org-agenda-persistent-filter t)
  '(org-agenda-ndays 1)
  '(org-agenda-log-mode-items (quote (closed clock state)))
- '(org-agenda-inhibit-startup t)
  '(org-agenda-include-diary t)
  '(org-agenda-fontify-priorities t)
  '(org-agenda-default-appointment-duration 60)

@@ -10,22 +10,23 @@
 
 (load (expand-file-name "org-settings" user-emacs-directory))
 
-(general-define-key "C-c o" 'hydra-org/body)
+(general-define-key "C-o" 'hydra-org/body)
 
 (defhydra hydra-org (:color blue :hint nil :columns 4 :idle 0.3)
   "Org Helper"
-  ("a" org-agenda "Agenda")
-  ("z" #'(lambda () (interactive) (org-agenda nil "z")) "My Agenda")
-  ("Z" #'(lambda () (interactive) (org-agenda nil "Z")) "My Agenda")
+  ;; ("a" org-agenda "Agenda")
+  ("a" #'(lambda () (interactive) (org-agenda nil "z")) "My Agenda")
+  ("z" #'(lambda () (interactive) (org-agenda nil "Z")) "Unscheduled Tasks")
   ;; ("c" org-capture "Capture")
   ;; ("p" my-org-agenda-current-project "Current Project")
   ("t" #'(lambda () (interactive) (org-capture nil "a")) "Capture Task")
   ("n" #'(lambda () (interactive) (org-capture nil "n")) "Capture Note")
   ("w" hydra-org-clock/body "Clock")
-  ("l" org-kb/show-all "KB")
-  ("d" org-kb/show-daily "Daily")
-  ("s" org-kb/search "Search Documents")
-  ;; ("t" org-kb/collect "Collector")
+  ("l" org-pkb/show-all "PKB")
+  ("d" org-pkb/show-daily "PKB Daily")
+  ("r" #'(lambda () (interactive) (org-agenda nil "r")) "PKB Review")
+  ("s" org-pkb/search "PKB Search")
+  ;; ("t" org-pkb/collect "Collector")
   ("q" nil "Quit"))
 
 (defhydra hydra-org-clock (:color blue :hint nil)
@@ -54,6 +55,9 @@
   ("t" org-timer-item)
   ("z" (org-info "Timers")))
 
+;; remove buildin org-mode in load-path, to use newest org-mode downloaded from pacakge-install
+(if (eq system-type 'darwin)
+    (delete "/Applications/Emacs.app/Contents/Resources/lisp/org" load-path))
 (use-package org
   :mode ("\\.org\\'"   . org-mode)
   :commands (org-mode
@@ -64,6 +68,9 @@
     (unbind-key "C-<tab>" org-mode-map)
     (unbind-key "C-y" org-mode-map)
     (unbind-key "C-j" org-mode-map)
+
+    ;; presist org-clock
+    (org-clock-persistence-insinuate)
 
     (defun my-org-mode-hook ()
       ;; (setq line-spacing 0.25)
@@ -172,7 +179,7 @@ prepended to the element after the #+HEADERS: tag."
                                   "Notes"
                                 "Tasks")))
         (message target-headline)
-        (when (string-match-p "PROJECTS.org$" file)
+        (when (string-match-p "Projects.org$" file)
           (save-excursion
             (with-current-buffer (find-file-noselect file)
               (goto-char pos)
@@ -198,33 +205,69 @@ prepended to the element after the #+HEADERS: tag."
 
     ))
 
+;; === Start of org-agenda ===
+
 (use-package org-agenda :ensure nil
   :commands (my-org-agenda-current-project
              org-agenda)
   :demand t
   :config
   (progn
-    (setq org-agenda-files
-          (append '("~/Dropbox/PKB/Task/QuickTasks.org" "~/Dropbox/PKB/Task/QuickNotes.org")
-                  (directory-files-recursively "~/Dropbox/PKB/Document" t org-agenda-file-regexp)))
+    (setq org-agenda-files (append
+                            '("~/Dropbox/PKB/Task/QuickTasks.org" "~/Dropbox/PKB/Task/QuickNotes.org")
+                            '("~/Dropbox/PKB/Task/Projects.org")
+                            ;; (directory-files-recursively "~/Dropbox/PKB/Document" t org-agenda-file-regexp)
+                            ))
+
+    ;; Org-Agenda shortcut https://orgmode.org/manual/Agenda-Commands.html
     (setq org-agenda-custom-commands
           '(
             ("z" "My Agenda"
-             ((agenda "")
-              (todo "TODO"
-                       ((org-agenda-overriding-header "Group Of Tasks [sort by priority]: ")
-                        (org-super-agenda-groups
-                         '((:auto-group t)))
-                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp))
-                        (org-agenda-sorting-strategy
-                         '(todo-state-up priority-down))))))
-            ("Z" "My Agenda (All Tasks)"
+             ((agenda ""
+                      ((org-super-agenda-groups
+                        '((:log t)  ; Automatically named "Log"
+                          (:habit t)
+                          (:name "Time Grid"
+                                 :time-grid t)
+                          (:name "Scheduled Today"
+                                 :scheduled today)
+                          (:name "Due today"
+                                 :deadline today)
+                          (:name "Overdue"
+                                 :deadline past)
+                          (:name "Due soon"
+                                 :deadline future)
+                          (:name "Waiting..."
+                                 :todo "WAITING"
+                                 :order 98)
+                          (:name "Scheduled earlier"
+                                 :scheduled past)))))))
+            ("Z" "Unshceduled Tasks (Group)"
              ((alltodo ""
-                       ((org-agenda-overriding-header "All Tasks [sort by priority]: ")
+                       ((org-agenda-overriding-header "Unshceduled Tasks: ")
                         (org-super-agenda-groups
-                         '((:auto-group t)))
-                        (org-agenda-sorting-strategy
-                         '(todo-state-up priority-down))))))
+                         '((:name "High Priority Tasks" :priority>= "B")
+                           (:name "Someday Tasks" :todo "SOMEDAY" :order 99)
+                           (:auto-group t)))
+                        (org-agenda-skip-function '(org-agenda-skip-entry-if 'scheduled))
+                        ;; (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp))
+                        (org-agenda-sorting-strategy '(todo-state-up priority-down))))))
+            ))
+
+            ;; ("z" "My Agenda"
+            ;;  ((agenda ""
+            ;;           ((org-agenda-start-on-weekday nil)
+            ;;            (org-agenda-span 3)
+            ;;            (org-agenda-start-day "-1d")))
+            ;;   (todo "TODO"
+            ;;            ((org-agenda-overriding-header "Group Of Tasks [sort by priority]: ")
+            ;;             (org-super-agenda-groups
+            ;;              '((:auto-group t)))
+            ;;             (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp))
+            ;;             (org-agenda-skip-function
+            ;;              '(org-agenda-skip-entry-if 'notregexp " \\[#\\(A\\|B\\)\\] "))
+            ;;             (org-agenda-sorting-strategy
+            ;;              '(todo-state-up priority-down))))))
             ;; ("A" "Agenda & Tasks [sort by priority]"
             ;;  ((agenda "" ((org-agenda-span 1)
             ;;               (org-deadline-warning-days 7)
@@ -259,16 +302,14 @@ prepended to the element after the #+HEADERS: tag."
             ;;    '(todo-state-up priority-down category-up))))
             ;; ("o" "Someday tasks" todo "SOMEDAY"
             ;;  ((org-agenda-overriding-header "Someday tasks:")))
-            ("r" "All Review Entries" tags ":review:"
-             ((org-agenda-skip-function 'k/org-agenda-skip-expired-review-entry)))
-            ))
 
     (use-package org-super-agenda
       :hook ((org-agenda-mode . org-super-agenda-mode)))
 
     (defun my-org-agenda-mode-hook ()
       ;; (setq line-spacing 0.25)
-      (hl-line-mode 1))
+      (hl-line-mode 1)
+      (origami-mode 1))
     (add-hook 'org-agenda-mode-hook 'my-org-agenda-mode-hook)
 
     ;; (let ((map org-agenda-mode-map))
@@ -320,34 +361,38 @@ prepended to the element after the #+HEADERS: tag."
                                  (projectile-project-name))))))
             (org-agenda arg "p" nil)))
         ))
+
+    (use-package org-pkb :ensure nil
+      :demand
+      :commands (org-pkb/show-all
+                 org-pkb/show-daily
+                 org-pkb/search
+                 org-pkb/org-agenda-skip-expired-review-entry)
+
+      :config
+      (progn
+        ;; (push '("Collector.org" :position bottom :height 15 :stick t)
+        ;;       popwin:special-display-config)
+
+        ;; (add-hook 'org-after-todo-state-change-hook 'org-pkb/archive-my-daily-jobs)
+        ;; (add-hook 'org-clock-out-hook 'org-pkb/archive-my-daily-jobs)
+
+        (org-defkey org-agenda-mode-map "D" 'org-pkb/org-agenda-magic-done)
+        (add-to-list 'org-agenda-custom-commands
+                     '("r" "All Review Entries" tags ":review:"
+                       ((org-agenda-files (directory-files-recursively org-pkb-doc-dir t org-agenda-file-regexp))
+                        (org-agenda-overriding-header "Review Entries: ")
+                        (org-agenda-prefix-format "  %-12:c")
+                        (org-agenda-remove-tags t)
+                        (org-agenda-skip-function 'org-pkb/org-agenda-skip-expired-review-entry)))
+                     t)
+        ))
     ))
+
+;; === End of org-agenda ===
 
 (use-package org-mobile :ensure nil
   :defer t)
-
-(use-package org-knowledgebase :ensure nil
-  :commands (org-kb/show-all
-             org-kb/show-daily
-             org-kb/search
-             org-kb/collect)
-  :config
-  (progn
-    ;; (push '("Collector.org" :position bottom :height 15 :stick t)
-    ;;       popwin:special-display-config)
-
-    (setq org-agenda-files
-          (append org-agenda-files
-                  (directory-files-recursively org-kb-doc-dir t org-agenda-file-regexp)))
-
-    (add-hook 'org-after-todo-state-change-hook 'org-kb/archive-my-daily-jobs)
-    (add-hook 'org-clock-out-hook 'org-kb/archive-my-daily-jobs)
-
-    (org-defkey org-agenda-mode-map "D" 'org-kb/org-agenda-magic-done)
-    (add-to-list 'org-agenda-custom-commands
-                 '("q" "All Review Entries" tags ":review:"
-                   ((org-agenda-skip-function ;; (org-agenda-files (list org-my-knowledgebase-dir))
-                     'org-kb/org-agenda-skip-expired-review-entry))) t)
-    ))
 
 (use-package htmlize)
 

@@ -47,11 +47,12 @@
       ;; (setq-local semanticdb-find-default-throttle '(project unloaded system recursive))
       (php-refactor-mode t)
       ;; (ede-php-autoload-mode t)
-      (setq-local company-backends '(
-                                     company-semantic-ia
-                                      ;; :separate php-extras-company)
-                                     ;; (company-dabbrev-code company-gtags company-etags company-keywords)
-                                     )))
+      (eval-after-load "company"
+        (setq-local company-backends '(
+                                       company-semantic-ia
+                                       ;; :separate php-extras-company)
+                                       ;; (company-dabbrev-code company-gtags company-etags company-keywords)
+                                       ))))
 
     (add-hook 'php-mode-hook 'my/php-mode-hook)
     (with-eval-after-load 'company-semantic

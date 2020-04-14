@@ -109,6 +109,7 @@
 (use-package company-statistics
   :config (add-hook 'company-mode-hook 'company-statistics-mode))
 
+;; http://joaotavora.github.io/yasnippet/snippet-development.html
 (use-package yasnippet :diminish (yas-minor-mode . " Ⓨ")
   :mode ("/\\.emacs\\.d/snippets/" . snippet-mode)
   :commands yas-minor-mode
@@ -144,7 +145,6 @@
              aya-persist-snippet))
 
 (use-package yatemplate
-  :disabled t
   :defer 2 ;; WORKAROUND https://github.com/mineo/yatemplate/issues/3
   :config
   (progn
