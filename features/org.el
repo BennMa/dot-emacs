@@ -166,26 +166,26 @@ prepended to the element after the #+HEADERS: tag."
                   (call-interactively 'save-buffer)))))))
     (run-with-idle-timer 10 t 'my-auto-save-org-files)
 
-    (defadvice org-refile-get-location (around my-org-refile-target activate)
-      "Refile entry to specific category such as Notes or Tasks"
-      (let* ((it ad-do-it)
-             (file (nth 1 it))
-             (re (nth 2 it))
-             (pos (nth 3 it))
-             (target-headline (if (member (if (equal major-mode 'org-agenda-mode)
-                                              "TODO"
-                                            (org-get-todo-state))
-                                          '("NOTE" "" nil))
-                                  "Notes"
-                                "Tasks")))
-        (message target-headline)
-        (when (string-match-p "Projects.org$" file)
-          (save-excursion
-            (with-current-buffer (find-file-noselect file)
-              (goto-char pos)
-              (re-search-forward (concat "^\\*\\* " target-headline))
-              (setcar (nthcdr 3 it) (point)))))
-        it))
+    ;; (defadvice org-refile-get-location (around my-org-refile-target activate)
+    ;;   "Refile entry to specific category such as Notes or Tasks"
+    ;;   (let* ((it ad-do-it)
+    ;;          (file (nth 1 it))
+    ;;          (re (nth 2 it))
+    ;;          (pos (nth 3 it))
+    ;;          (target-headline (if (member (if (equal major-mode 'org-agenda-mode)
+    ;;                                           "TODO"
+    ;;                                         (org-get-todo-state))
+    ;;                                       '("NOTE" "" nil))
+    ;;                               "Notes"
+    ;;                             "Tasks")))
+    ;;     (message target-headline)
+    ;;     (when (string-match-p "Projects.org$" file)
+    ;;       (save-excursion
+    ;;         (with-current-buffer (find-file-noselect file)
+    ;;           (goto-char pos)
+    ;;           (re-search-forward (concat "^\\*\\* " target-headline))
+    ;;           (setcar (nthcdr 3 it) (point)))))
+    ;;     it))
 
     ;; (defcustom org-my-export-output-directory-prefix "~/Dropbox/PKB/Publish/export_"
     ;;   "prefix of directory used for org-mode export"

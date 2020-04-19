@@ -58,9 +58,7 @@
  '(org-src-fontify-natively t)
  '(org-reverse-note-order t)
  '(org-return-follows-link t)
- '(org-refile-targets
-   (quote
-    (("~/Dropbox/PKB/Task/QuickTasks.org" :tag . "PROJECT"))))
+ '(org-refile-targets (quote (("~/Dropbox/PKB/Task/Projects.org" :level . 1))))
  '(org-publish-project-alist
    (quote
     (("document" :base-directory "~/Dropbox/PKB/Document/" :base-extension "org" :publishing-directory "~/Dropbox/PKB/Publish/" :recursive t :publishing-function org-html-publish-to-html)
