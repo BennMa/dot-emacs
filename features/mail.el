@@ -80,3 +80,7 @@
      (cond
       ((eq system-type 'darwin) 'notifier) ;; requires `terminal-notifier'
       ((eq system-type 'gnu/linux) 'libnotify)))))
+
+(use-package dockerfile-mode
+  :config
+  (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode)))

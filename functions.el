@@ -47,28 +47,74 @@
            (equal ":" (string (elt font-size 0))))
       (format "%s%s" font-name font-size)
     (format "%s %s" font-name font-size)))
+;; (defun qiang-set-font (english-fonts
+;;                        &optional
+;;                        english-font-size
+;;                        chinese-fonts)
+;;   "english-font-size could be set to \":pixelsize=18\" or a integer.
+;; If set/leave chinese-font-size to nil, it will follow english-font-size"
+;;   (if window-system
+;;       (let* ((en-font (qiang-make-font-string
+;;                        (find-if #'qiang-font-existsp english-fonts)
+;;                        english-font-size))
+;;              (useable-zh-font (find-if #'qiang-font-existsp chinese-fonts))
+;;              (zh-font (font-spec :family useable-zh-font))
+;;              (chinese-font-size (list (cons useable-zh-font 1.0))))
+;;         (message "Set English Font to %s" en-font)
+;;         (set-face-attribute
+;;          'default nil :font en-font)
+;;         (message "Set Chinese Font to %s" zh-font)
+;;         (dolist (charset '(kana han symbol cjk-misc bopomofo))
+;;           (set-fontset-font (frame-parameter nil 'font)
+;;                             charset
+;;                             zh-font))
+;;         (setq face-font-rescale-alist chinese-font-size))))
+
+;; refs: http://baohaojun.github.io/perfect-emacs-chinese-font.html
 (defun qiang-set-font (english-fonts
-                       &optional
                        english-font-size
-                       chinese-fonts)
+                       chinese-fonts
+                       &optional chinese-fonts-scale
+                       )
+  (setq chinese-fonts-scale (or chinese-fonts-scale 1.2))
+  (setq face-font-rescale-alist `(("Microsoft Yahei" . ,chinese-fonts-scale)
+                                  ("Microsoft_Yahei" . ,chinese-fonts-scale)
+                                  ("微软雅黑" . ,chinese-fonts-scale)
+                                  ("WenQuanYi Zen Hei" . ,chinese-fonts-scale)))
   "english-font-size could be set to \":pixelsize=18\" or a integer.
 If set/leave chinese-font-size to nil, it will follow english-font-size"
-  (if window-system
-      (let* ((en-font (qiang-make-font-string
-                       (find-if #'qiang-font-existsp english-fonts)
-                       english-font-size))
-             (useable-zh-font (find-if #'qiang-font-existsp chinese-fonts))
-             (zh-font (font-spec :family useable-zh-font))
-             (chinese-font-size (list (cons useable-zh-font 1.0))))
-        (message "Set English Font to %s" en-font)
-        (set-face-attribute
-         'default nil :font en-font)
-        (message "Set Chinese Font to %s" zh-font)
-        (dolist (charset '(kana han symbol cjk-misc bopomofo))
-          (set-fontset-font (frame-parameter nil 'font)
-                            charset
-                            zh-font))
-        (setq face-font-rescale-alist chinese-font-size))))
+  (require 'cl)                         ; for find if
+  (let ((en-font (qiang-make-font-string
+                  (find-if #'qiang-font-existsp english-fonts)
+                  english-font-size))
+        (zh-font (font-spec :family (find-if #'qiang-font-existsp chinese-fonts))))
+
+    ;; Set the default English font
+    ;;
+    ;; The following 2 method cannot make the font settig work in new frames.
+    ;; (set-default-font "Consolas:pixelsize=18")
+    ;; (add-to-list 'default-frame-alist '(font . "Consolas:pixelsize=18"))
+    ;; We have to use set-face-attribute
+    (set-face-attribute
+     'default nil :font en-font)
+    (condition-case font-error
+        (progn
+          (set-face-font 'italic (font-spec :family "JetBrains Mono" :slant 'italic :weight 'normal :size (+ 0.0 english-font-size)))
+          (set-face-font 'bold-italic (font-spec :family "JetBrains Mono" :slant 'italic :weight 'bold :size (+ 0.0 english-font-size)))
+
+          (set-fontset-font t 'symbol (font-spec :family "JetBrains Mono")))
+      (error nil))
+    (set-fontset-font t 'symbol (font-spec :family "Unifont") nil 'append)
+    (set-fontset-font t nil (font-spec :family "DejaVu Sans"))
+
+    ;; Set Chinese font
+    ;; Do not use 'unicode charset, it will cause the english font setting invalid
+    (dolist (charset '(kana han cjk-misc bopomofo))
+      (set-fontset-font t charset zh-font)))
+  (when (and (boundp 'global-emojify-mode)
+             global-emojify-mode)
+    (global-emojify-mode 1))
+  (shell-command-to-string "setsid sawfish-client -e '(maximize-window (input-focus))'"))
 
 (defun my/copy-line (arg)
   "Copy line in the kill ring, With prefix arg will copy whole line include spaces"

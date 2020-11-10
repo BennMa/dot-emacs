@@ -570,7 +570,7 @@
  '(magit-unstage-all-confirm nil)
  '(magit-use-overlays nil)
  '(make-cursor-line-fully-visible nil)
- '(markdown-command "/usr/bin/markdown" t)
+ '(markdown-command "/usr/bin/markdown")
  '(max-lisp-eval-depth 50000)
  '(max-specpdl-size 5000)
  '(menu-bar-mode nil)
@@ -753,7 +753,7 @@
  '(op/theme (quote emacs_love))
  '(package-selected-packages
    (quote
-    (org yatemplate iedit company-jedi counsel-projectile json-snatcher smart-mode-line yasnippet company counsel ivy key-chord emacs-async org-super-agenda htmlize pyenv-mode olivetti olivetti-mode poet-theme pipenv company-tern magithub php-extras company-php ede-php-autoload php-mode skewer-mode nodejs-repl web-beautify tern js-doc js2-refactor json-mode js2-mode multi-term toc-org org-bullets git-messenger git-timemachine magit srefactor stickyfunc-enhance deft regex-tool mode-icons google-this paradox mu4e-maildirs-extension mu4e-alert lua-mode ein company-anaconda anaconda-mode yapfify ensime sbt-mode scala-mode web-mode php-refactor-mode phpcbf phpunit php-auto-yasnippets reveal-in-osx-finder pbcopy osx-trash window-numbering which-key use-package-chords undo-tree smartparens shackle session restart-emacs rainbow-mode projectile origami mwim multiple-cursors move-text maxframe markdown-mode initsplit imenu-list hydra hungry-delete highlight-parentheses highlight-numbers highlight-indent-guides ggtags general focus flycheck expand-region exec-path-from-shell doom-themes discover-my-major direx dired-k diminish dedicated counsel-gtags company-statistics company-quickhelp clean-aindent-mode bm back-button auto-yasnippet auto-highlight-symbol anzu aggressive-indent ace-window ace-jump-mode)))
+    (dockerfile-mode org yatemplate iedit company-jedi counsel-projectile json-snatcher smart-mode-line yasnippet company counsel ivy key-chord emacs-async org-super-agenda htmlize pyenv-mode olivetti olivetti-mode poet-theme pipenv company-tern magithub php-extras company-php ede-php-autoload php-mode skewer-mode nodejs-repl web-beautify tern js-doc js2-refactor json-mode js2-mode multi-term toc-org org-bullets git-messenger git-timemachine magit srefactor stickyfunc-enhance deft regex-tool mode-icons google-this paradox mu4e-maildirs-extension mu4e-alert lua-mode ein company-anaconda anaconda-mode yapfify ensime sbt-mode scala-mode web-mode php-refactor-mode phpcbf phpunit php-auto-yasnippets reveal-in-osx-finder pbcopy osx-trash window-numbering which-key use-package-chords undo-tree smartparens shackle session restart-emacs rainbow-mode projectile origami mwim multiple-cursors move-text maxframe markdown-mode initsplit imenu-list hydra hungry-delete highlight-parentheses highlight-numbers highlight-indent-guides ggtags general focus flycheck expand-region exec-path-from-shell doom-themes discover-my-major direx dired-k diminish dedicated counsel-gtags company-statistics company-quickhelp clean-aindent-mode bm back-button auto-yasnippet auto-highlight-symbol anzu aggressive-indent ace-window ace-jump-mode)))
  '(page-break-lines-modes
    (quote
     (emacs-lisp-mode compilation-mode outline-mode prog-mode haskell-mode)))
@@ -950,12 +950,12 @@
  '(term-buffer-maximum-size 0)
  '(term-scroll-show-maximum-output t)
  '(term-unbind-key-list (quote ("C-z" "C-x" "C-c" "C-h" "C-y" "<ESC>" "M-v")))
- '(tramp-auto-save-directory "~/.emacs.d/.data/tramp-backups" nil (tramp))
- '(tramp-default-method "ssh" nil (tramp))
+ '(tramp-auto-save-directory "~/.emacs.d/.data/tramp-backups")
+ '(tramp-default-method "ssh")
  '(tramp-default-method-alist
    (quote
-    (("\\`\\(127\\.0\\.0\\.1\\|::1\\|localhost6?\\)\\'" "\\`root\\'" "sudo"))) nil (tramp))
- '(tramp-encoding-shell "/bin/sh" nil (tramp))
+    (("\\`\\(127\\.0\\.0\\.1\\|::1\\|localhost6?\\)\\'" "\\`root\\'" "sudo"))))
+ '(tramp-encoding-shell "/bin/sh")
  '(tramp-persistency-file-name "~/.emacs.d/.data/tramp" nil (tramp))
  '(trash-directory "~/.Trash")
  '(undo-limit 800000)

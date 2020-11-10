@@ -68,7 +68,9 @@
       ("org-blog" "org-blog-static")))))
  '(org-projectile:projects-file "~/Dropbox/PKB/Task/org-projectile-tasks.org")
  '(org-pretty-entities nil)
- '(org-modules (quote (org-habit org-depend org-toc org-velocity)))
+ '(org-modules
+   (quote
+    (org-habit org-depend org-mac-iCal org-mac-link org-toc org-velocity)))
  '(org-mobile-inbox-for-pull "~/Dropbox/PKB/Task/FROM-MOBILE.org")
  '(org-mobile-directory "~/Dropbox/PKB/MobileOrg")
  '(org-log-done (quote time))
@@ -145,7 +147,7 @@
  '(org-ditaa-jar-path "~/bin/DitaaEps.jar")
  '(org-directory "~/Dropbox/PKB/")
  '(org-default-priority 67)
- '(org-default-notes-file "~/Dropbox/PKB/Task/QuickNotes.org")
+ '(org-default-notes-file "~/Dropbox/PKB/Task/QuickCaptures.org")
  '(org-deadline-warning-days 14)
  '(org-cycle-global-at-bob t)
  '(org-crypt-disable-auto-save nil)
@@ -176,7 +178,7 @@
 
 " :prepend t)
      ("n" "Note" entry
-      (file "~/Dropbox/PKB/Task/QuickNotes.org")
+      (file "~/Dropbox/PKB/Task/QuickCaptures.org")
       "* %?"))))
  '(org-beamer-frame-default-options "fragile")
  '(org-babel-load-languages
@@ -218,6 +220,7 @@
  '(org-agenda-log-mode-items (quote (closed clock state)))
  '(org-agenda-include-diary t)
  '(org-agenda-fontify-priorities t)
+ '(org-agenda-diary-file "/Users/benn/Dropbox/PKB/Task/diary")
  '(org-agenda-default-appointment-duration 60)
  '(org-agenda-deadline-leaders (quote ("!D!: " "D%02d: ")))
  '(org-agenda-custom-commands-contexts (quote (("p" (projectile-project-p)))))

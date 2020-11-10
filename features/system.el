@@ -35,15 +35,15 @@
     (use-package reveal-in-osx-finder
       :bind (("C-S-o" . reveal-in-osx-finder)))
 
-    (defvar my--english-fonts '("Iosevka" "Inconsolata" "Source Code Pro" "Anonymous Pro" "Monaco"
-                                    "Ubuntu Mono" "Droid Sans Mono"
-                                    "Menlo" "DejaVu Sans Mono" "Courier New"
-                                    "Monospace" "Courier" "Iosevka Light"))
-    (defvar my--chinese-fonts '("宋体" "黑体" "新宋体" "文泉驿等宽微米黑"
-                                    "Microsoft Yahei"))
+    ;; (defvar my--english-fonts '("Iosevka" "Inconsolata" "Source Code Pro" "Anonymous Pro" "Monaco"
+    ;;                                 "Ubuntu Mono" "Droid Sans Mono"
+    ;;                                 "Menlo" "DejaVu Sans Mono" "Courier New"
+    ;;                                 "Monospace" "Courier" "Iosevka Light"))
+    (defvar my--english-fonts '("JetBrains Mono" "Monaco" "Consolas" "DejaVu Sans Mono" "Monospace" "Courier New"))
+    (defvar my--chinese-fonts '("Microsoft Yahei" "Microsoft_Yahei" "微软雅黑" "文泉驿等宽微米黑" "黑体" "新宋体" "宋体"))
     (defvar my--font-size (if (eq system-type 'darwin) 14 11))
 
-    (qiang-set-font my--english-fonts my--font-size my--chinese-fonts)
+    (qiang-set-font my--english-fonts my--font-size my--chinese-fonts 1)
     (set-face-attribute 'variable-pitch nil :family "Baskerville")
     ;; (set-face-attribute 'default nil :family "Iosevka" :height 140)
     ;; (set-face-attribute 'fixed-pitch nil :family "Iosevka")

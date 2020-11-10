@@ -10,7 +10,7 @@
 
 (load (expand-file-name "org-settings" user-emacs-directory))
 
-(general-define-key "C-o" 'hydra-org/body)
+(general-define-key "C-c o" 'hydra-org/body)
 
 (defhydra hydra-org (:color blue :hint nil :columns 4 :idle 0.3)
   "Org Helper"
@@ -56,8 +56,8 @@
   ("z" (org-info "Timers")))
 
 ;; remove buildin org-mode in load-path, to use newest org-mode downloaded from pacakge-install
-(if (eq system-type 'darwin)
-    (delete "/Applications/Emacs.app/Contents/Resources/lisp/org" load-path))
+;;(if (eq system-type 'darwin)
+;;    (delete "/Applications/Emacs.app/Contents/Resources/lisp/org" load-path))
 (use-package org
   :mode ("\\.org\\'"   . org-mode)
   :commands (org-mode
@@ -78,7 +78,9 @@
       (buffer-face-mode 1)
       ;; (set (make-local-variable 'mantic-mode) nil)
       (turn-off-auto-fill)
-      (company-mode -1))
+      (company-mode -1)
+      ;; (define-key org-mode-map (kbd "C-c g") 'org-mac-grab-link)
+      )
     (add-hook 'org-mode-hook 'my-org-mode-hook)
 
     (use-package org-bullets
@@ -100,6 +102,7 @@
  _h_tml    ^ ^         _5_.java          _A_SCII:
  ^ ^       ^ ^         _6_.javascript    ^ ^
  ^ ^       ^ ^         _7_.php           ^ ^
+ ^ ^       ^ ^         _8_.sql           ^ ^
 "
       ("s" (hot-expand "<s"))
       ("E" (hot-expand "<e"))
@@ -119,12 +122,13 @@
       ("L" (hot-expand "<L"))
       ("i" (hot-expand "<i"))
       ("1" (hot-expand "<s" "emacs-lisp"))
-      ("2" (hot-expand "<s" "sh :exports both"))
-      ("3" (hot-expand "<s" "python :exports both"))
+      ("2" (hot-expand "<s" "sh"))
+      ("3" (hot-expand "<s" "python"))
       ("4" (hot-expand "<s" "scala"))
       ("5" (hot-expand "<s" "java"))
       ("6" (hot-expand "<s" "js"))
       ("7" (hot-expand "<s" "php"))
+      ("8" (hot-expand "<s" "sql"))
       ("I" (hot-expand "<I"))
       ("H" (hot-expand "<H"))
       ("A" (hot-expand "<A"))
@@ -214,7 +218,7 @@ prepended to the element after the #+HEADERS: tag."
   :config
   (progn
     (setq org-agenda-files (append
-                            '("~/Dropbox/PKB/Task/QuickTasks.org" "~/Dropbox/PKB/Task/QuickNotes.org")
+                            '("~/Dropbox/PKB/Task/QuickTasks.org" "~/Dropbox/PKB/Task/QuickCaptures.org")
                             '("~/Dropbox/PKB/Task/Projects.org")
                             ;; (directory-files-recursively "~/Dropbox/PKB/Document" t org-agenda-file-regexp)
                             ))
@@ -241,7 +245,11 @@ prepended to the element after the #+HEADERS: tag."
                                  :todo "WAITING"
                                  :order 98)
                           (:name "Scheduled earlier"
-                                 :scheduled past)))))))
+                                 :scheduled past)))))
+              ;; (org-agenda-mode-hook
+              ;;  (lambda ()
+              ;;    (org-mac-iCal)))
+              ))
             ("Z" "Unshceduled Tasks (Group)"
              ((alltodo ""
                        ((org-agenda-overriding-header "Unshceduled Tasks: ")

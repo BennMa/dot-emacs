@@ -47,7 +47,7 @@
                     ;; "C-M-d" 'hungry-delete-forward
                     ;; "C-M-<backspace>" 'hungry-delete-backward
                     "<C-backspace>" 'sp-backward-kill-sexp
-                    "<C-S-backspace>" 'sp-kill-whole-line
+                    "<C-M-backspace>" 'sp-kill-whole-line
                     "M-d" 'my/contextual-kill-word
                     "<M-backspace>" 'my/contextual-backspace
                     "C-M-c" 'hide/show-comments-toggle)

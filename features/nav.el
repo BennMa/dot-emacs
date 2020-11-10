@@ -15,12 +15,12 @@
                     )
 
 
-(general-define-key "C-M-w" 'hydra-window/body
-                    "A-h"   'windmove-left
-                    "A-l"   'windmove-right
-                    "A-j"   'windmove-down
-                    "A-k"   'windmove-up
-                    "A-d"   'sticky-window-delete-window
+(general-define-key "C-o" 'hydra-window/body
+                    ;; "A-h"   'windmove-left
+                    ;; "A-l"   'windmove-right
+                    ;; "A-j"   'windmove-down
+                    ;; "A-k"   'windmove-up
+                    ;; "A-d"   'sticky-window-delete-window
                     "C-x -" 'my/split-window-below-and-focus
                     "C-x |" 'my/split-window-right-and-focus
                     "C-x o" 'my/other-window)
