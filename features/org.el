@@ -227,25 +227,24 @@ prepended to the element after the #+HEADERS: tag."
     (setq org-agenda-custom-commands
           '(
             ("z" "My Agenda"
-             ((agenda ""
-                      ((org-super-agenda-groups
-                        '((:log t)  ; Automatically named "Log"
-                          (:habit t)
-                          (:name "Time Grid"
-                                 :time-grid t)
-                          (:name "Scheduled Today"
-                                 :scheduled today)
-                          (:name "Due today"
-                                 :deadline today)
-                          (:name "Overdue"
-                                 :deadline past)
-                          (:name "Due soon"
-                                 :deadline future)
-                          (:name "Waiting..."
-                                 :todo "WAITING"
-                                 :order 98)
-                          (:name "Scheduled earlier"
-                                 :scheduled past)))))
+             ((agenda "" ((org-super-agenda-groups
+                           '((:log t)  ; Automatically named "Log"
+                             (:habit t)
+                             (:name "Time Grid"
+                                    :time-grid t)
+                             (:name "Scheduled Today"
+                                    :scheduled today)
+                             (:name "Due today"
+                                    :deadline today)
+                             (:name "Overdue"
+                                    :deadline past)
+                             (:name "Due soon"
+                                    :deadline future)
+                             (:name "Waiting..."
+                                    :todo "WAITING"
+                                    :order 98)
+                             (:name "Scheduled earlier"
+                                    :scheduled past)))))
               ;; (org-agenda-mode-hook
               ;;  (lambda ()
               ;;    (org-mac-iCal)))
@@ -401,6 +400,10 @@ prepended to the element after the #+HEADERS: tag."
 
 (use-package org-mobile :ensure nil
   :defer t)
+
+(use-package org-alert
+  :init
+  (setq alert-default-style 'osx-notifier))
 
 (use-package htmlize)
 

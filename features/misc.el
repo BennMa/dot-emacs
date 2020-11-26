@@ -22,8 +22,8 @@
   (progn
     (defvar emacs-min-top 23)
     (defvar emacs-min-left 0)
-    (defvar emacs-min-width 85)
-    (defvar emacs-min-height 35)
+    (defvar emacs-min-width 150)
+    (defvar emacs-min-height 50)
     (defun emacs-min ()
       (interactive)
       (set-frame-parameter (selected-frame) 'fullscreen nil)
@@ -40,7 +40,7 @@
       (set-frame-parameter (selected-frame) 'horizontal-scroll-bars nil))
     (defun emacs-toggle-size ()
       (interactive)
-      (if (> (cdr (assq 'width (frame-parameters))) 100)
+      (if (> (cdr (assq 'width (frame-parameters))) emacs-min-width)
           (emacs-min)
         (maximize-frame)))))
 

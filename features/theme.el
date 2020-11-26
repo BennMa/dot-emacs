@@ -16,8 +16,16 @@
   (setq zenburn-scale-org-headlines t)
   ;; scale headings in outline-mode
   (setq zenburn-scale-outline-headlines t)
-  (use-package zenburn-theme)
-  ;; (load-theme 'zenburn t)
+  ;; (use-package zenburn-theme)
+  (load-theme 'zenburn t)
+
+  ;; (use-package tao-theme
+  ;;   :config
+  ;;   (load-theme 'tao-yang t))
+
+  ;; (use-package atom-one-dark-theme
+  ;;   :config
+  ;;   (load-theme 'atom-one-dark t))
 
   ;; ;; https://github.com/hlissner/emacs-doom-theme
   ;; (use-package doom-themes

@@ -222,7 +222,6 @@
  '(org-agenda-fontify-priorities t)
  '(org-agenda-diary-file "/Users/benn/Dropbox/PKB/Task/diary")
  '(org-agenda-default-appointment-duration 60)
- '(org-agenda-deadline-leaders (quote ("!D!: " "D%02d: ")))
  '(org-agenda-custom-commands-contexts (quote (("p" (projectile-project-p)))))
  '(org-agenda-compact-blocks nil)
  '(org-agenda-block-separator 61)

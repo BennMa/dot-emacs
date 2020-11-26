@@ -97,6 +97,7 @@
     (add-to-list 'tern-command "--no-port-file" 'append)
 
     (use-package company-tern
+      :disabled t
       :config (add-to-list 'company-backends 'company-tern))
 
     (defun delete-tern-process ()

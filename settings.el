@@ -189,6 +189,8 @@
     (quote
      ((menu-bar-lines . 0)
       (tool-bar-lines . 0)
+      (width . 150)
+      (height . 50)
       (fullscreen))))
  '(default-major-mode (quote text-mode) t)
  '(deft-auto-save-interval 0.0)
